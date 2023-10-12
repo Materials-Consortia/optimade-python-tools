@@ -97,9 +97,11 @@ class BaseEndpointTests:
     def test_meta_response(self):
         """General test for `meta` property in response"""
         assert "meta" in self.json_response
-        meta_required_keys = ResponseMeta.model_json_schema()["required"]
+        meta_required_keys = ResponseMeta.model_json_schema(mode="validation")[
+            "required"
+        ]
         meta_optional_keys = list(
-            set(ResponseMeta.model_json_schema()["properties"].keys())
+            set(ResponseMeta.model_json_schema(mode="validation")["properties"].keys())
             - set(meta_required_keys)
         )
         implemented_optional_keys = [

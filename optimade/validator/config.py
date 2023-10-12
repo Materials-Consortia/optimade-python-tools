@@ -33,7 +33,7 @@ __all__ = ("ValidatorConfig", "VALIDATOR_CONFIG")
 
 _ENTRY_SCHEMAS = {
     endp: retrieve_queryable_properties(
-        ENTRY_INFO_SCHEMAS[endp](), ("id", "type", "attributes")
+        ENTRY_INFO_SCHEMAS[endp](mode="validation"), ("id", "type", "attributes")
     )
     for endp in ENTRY_INFO_SCHEMAS
 }

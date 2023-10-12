@@ -10,8 +10,8 @@ from optimade.models import (
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
 
 ENTRY_INFO_SCHEMAS: Dict[str, Callable[[], Dict]] = {
-    "structures": StructureResource.schema,
-    "references": ReferenceResource.schema,
+    "structures": StructureResource.model_json_schema,
+    "references": ReferenceResource.model_json_schema,
 }
 """This dictionary is used to define the `/info/<entry_type>` endpoints."""
 
@@ -56,6 +56,36 @@ def retrieve_queryable_properties(
     properties = {}
     for name, value in schema["properties"].items():
         if not queryable_properties or name in queryable_properties:
+            if name in properties:
+                continue
+
+            if "allOf" in value:
+                for dict_ in value["allOf"]:
+                    value.update(dict_)
+
+            if "anyOf" in value:
+                dict_to_use = {}
+                # Go through anyOf and find the first dict that is not type=null, going
+                # first for the reference type, if it exists.
+                # Then go through anyOf again and find the first dict that is not
+                # type=null and not a reference.
+
+                # This makes the reference type the fallback.
+                # It should support anyOf types of just {reference, null} as well as
+                # {reference, type, null}.
+                for dict_ in value["anyOf"]:
+                    if dict_.get("type", "") == "null":
+                        continue
+                    if "$ref" in dict_:
+                        dict_to_use = dict_
+                        break
+                for dict_ in value["anyOf"]:
+                    if dict_.get("type", "") == "null" or "$ref" in dict_:
+                        continue
+                    else:
+                        dict_to_use = dict_
+                value.update(dict_to_use)
+
             if "$ref" in value:
                 path = value["$ref"].split("/")[1:]
                 sub_schema = schema.copy()

@@ -1485,7 +1485,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ResourceLinks-Output"
+                "$ref": "#/components/schemas/ResourceLinks"
               },
               {
                 "type": "null"
@@ -1697,7 +1697,7 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ResponseMeta-Output"
+                "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
             "description": "A meta object containing non-standard information"
@@ -1722,7 +1722,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/Resource-Output"
+                  "$ref": "#/components/schemas/Resource"
                 },
                 "type": "array"
               },
@@ -1737,7 +1737,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ToplevelLinks-Output"
+                "$ref": "#/components/schemas/ToplevelLinks"
               },
               {
                 "type": "null"
@@ -1812,7 +1812,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ResourceLinks-Output"
+                "$ref": "#/components/schemas/ResourceLinks"
               },
               {
                 "type": "null"
@@ -1917,7 +1917,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ErrorLinks-Output"
+                "$ref": "#/components/schemas/ErrorLinks"
               },
               {
                 "type": "null"
@@ -2000,31 +2000,7 @@
         "title": "Error",
         "description": "An error response"
       },
-      "ErrorLinks-Input": {
-        "properties": {
-          "about": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "About",
-            "description": "A link that leads to further details about this particular occurrence of the problem."
-          }
-        },
-        "type": "object",
-        "title": "ErrorLinks",
-        "description": "A Links object specific to Error objects"
-      },
-      "ErrorLinks-Output": {
+      "ErrorLinks": {
         "properties": {
           "about": {
             "anyOf": [
@@ -2053,11 +2029,11 @@
           "data": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Resource-Input"
+                "$ref": "#/components/schemas/Resource"
               },
               {
                 "items": {
-                  "$ref": "#/components/schemas/Resource-Input"
+                  "$ref": "#/components/schemas/Resource"
                 },
                 "type": "array"
               },
@@ -2072,7 +2048,7 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ResponseMeta-Input"
+                "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
             "description": "A meta object containing non-standard information."
@@ -2090,7 +2066,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/Resource-Input"
+                  "$ref": "#/components/schemas/Resource"
                 },
                 "type": "array"
               },
@@ -2105,7 +2081,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ToplevelLinks-Input"
+                "$ref": "#/components/schemas/ToplevelLinks"
               },
               {
                 "type": "null"
@@ -2164,100 +2140,7 @@
         "title": "ErrorSource",
         "description": "an object containing references to the source of the error"
       },
-      "Implementation-Input": {
-        "properties": {
-          "name": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Name",
-            "description": "name of the implementation"
-          },
-          "version": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Version",
-            "description": "version string of the current implementation"
-          },
-          "homepage": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Homepage",
-            "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the homepage of the implementation."
-          },
-          "source_url": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Source Url",
-            "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation source, either downloadable archive or version control system."
-          },
-          "maintainer": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ImplementationMaintainer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "A dictionary providing details about the maintainer of the implementation."
-          },
-          "issue_tracker": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Issue Tracker",
-            "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation's issue tracker."
-          }
-        },
-        "type": "object",
-        "title": "Implementation",
-        "description": "Information on the server implementation"
-      },
-      "Implementation-Output": {
+      "Implementation": {
         "properties": {
           "name": {
             "anyOf": [
@@ -2379,7 +2262,7 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ResponseMeta-Output"
+                "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
             "description": "A meta object containing non-standard information"
@@ -2404,7 +2287,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/Resource-Output"
+                  "$ref": "#/components/schemas/Resource"
                 },
                 "type": "array"
               },
@@ -2419,7 +2302,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ToplevelLinks-Output"
+                "$ref": "#/components/schemas/ToplevelLinks"
               },
               {
                 "type": "null"
@@ -2528,7 +2411,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ResourceLinks-Output"
+                "$ref": "#/components/schemas/ResourceLinks"
               },
               {
                 "type": "null"
@@ -2693,7 +2576,7 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ResponseMeta-Output"
+                "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
             "description": "A meta object containing non-standard information"
@@ -2738,7 +2621,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ToplevelLinks-Output"
+                "$ref": "#/components/schemas/ToplevelLinks"
               },
               {
                 "type": "null"
@@ -2789,7 +2672,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ErrorLinks-Input"
+                "$ref": "#/components/schemas/ErrorLinks"
               },
               {
                 "type": "null"
@@ -2922,52 +2805,7 @@
         "title": "Person",
         "description": "A person, i.e., an author, editor or other."
       },
-      "Provider-Input": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "a short name for the database provider"
-          },
-          "description": {
-            "type": "string",
-            "title": "Description",
-            "description": "a longer description of the database provider"
-          },
-          "prefix": {
-            "type": "string",
-            "pattern": "^[a-z]([a-z]|[0-9]|_)*$",
-            "title": "Prefix",
-            "description": "database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes."
-          },
-          "homepage": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Homepage",
-            "description": "a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object."
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "description",
-          "prefix"
-        ],
-        "title": "Provider",
-        "description": "Information on the database provider of the implementation."
-      },
-      "Provider-Output": {
+      "Provider": {
         "properties": {
           "name": {
             "type": "string",
@@ -3080,7 +2918,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ResourceLinks-Output"
+                "$ref": "#/components/schemas/ResourceLinks"
               },
               {
                 "type": "null"
@@ -3559,7 +3397,7 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ResponseMeta-Output"
+                "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
             "description": "A meta object containing non-standard information"
@@ -3604,7 +3442,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ToplevelLinks-Output"
+                "$ref": "#/components/schemas/ToplevelLinks"
               },
               {
                 "type": "null"
@@ -3651,7 +3489,7 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ResponseMeta-Output"
+                "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
             "description": "A meta object containing non-standard information"
@@ -3696,7 +3534,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ToplevelLinks-Output"
+                "$ref": "#/components/schemas/ToplevelLinks"
               },
               {
                 "type": "null"
@@ -3770,7 +3608,7 @@
         "title": "Relationships",
         "description": "Members of the relationships object (\"relationships\") represent references from the resource object in which it's defined to other resource objects.\nKeys MUST NOT be:\n    type\n    id"
       },
-      "Resource-Input": {
+      "Resource": {
         "properties": {
           "id": {
             "type": "string",
@@ -3785,7 +3623,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ResourceLinks-Input"
+                "$ref": "#/components/schemas/ResourceLinks"
               },
               {
                 "type": "null"
@@ -3835,72 +3673,7 @@
         "title": "Resource",
         "description": "Resource objects appear in a JSON API document to represent resources."
       },
-      "Resource-Output": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id",
-            "description": "Resource ID"
-          },
-          "type": {
-            "type": "string",
-            "title": "Type",
-            "description": "Resource type"
-          },
-          "links": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ResourceLinks-Output"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "a links object containing links related to the resource."
-          },
-          "meta": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Meta"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
-          },
-          "attributes": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Attributes"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "an attributes object representing some of the resource\u2019s data."
-          },
-          "relationships": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Relationships"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)\ndescribing relationships between the resource and other JSON API resources."
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "type"
-        ],
-        "title": "Resource",
-        "description": "Resource objects appear in a JSON API document to represent resources."
-      },
-      "ResourceLinks-Input": {
+      "ResourceLinks": {
         "properties": {
           "self": {
             "anyOf": [
@@ -3924,31 +3697,7 @@
         "title": "ResourceLinks",
         "description": "A Resource Links object"
       },
-      "ResourceLinks-Output": {
-        "properties": {
-          "self": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Self",
-            "description": "A link that identifies the resource represented by the resource object."
-          }
-        },
-        "type": "object",
-        "title": "ResourceLinks",
-        "description": "A Resource Links object"
-      },
-      "ResponseMeta-Input": {
+      "ResponseMeta": {
         "properties": {
           "query": {
             "allOf": [
@@ -4020,7 +3769,7 @@
           "provider": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Provider-Input"
+                "$ref": "#/components/schemas/Provider"
               },
               {
                 "type": "null"
@@ -4067,7 +3816,7 @@
           "implementation": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Implementation-Input"
+                "$ref": "#/components/schemas/Implementation"
               },
               {
                 "type": "null"
@@ -4079,161 +3828,7 @@
             "anyOf": [
               {
                 "items": {
-                  "$ref": "#/components/schemas/Warnings-Input"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "uniqueItems": true,
-            "title": "Warnings",
-            "description": "A list of warning resource objects representing non-critical errors or warnings.\nA warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `\"warning\"`.\nThe field `detail` MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\nThe field `status`, representing a HTTP response status code, MUST NOT be present for a warning resource object.\nThis is an exclusive field for error resource objects."
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "required": [
-          "query",
-          "api_version",
-          "more_data_available"
-        ],
-        "title": "ResponseMeta",
-        "description": "A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)\nthat contains JSON API meta objects of non-standard\nmeta-information.\n\nOPTIONAL additional information global to the query that is not\nspecified in this document, MUST start with a\ndatabase-provider-specific prefix."
-      },
-      "ResponseMeta-Output": {
-        "properties": {
-          "query": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMetaQuery"
-              }
-            ],
-            "description": "Information on the Query that was requested"
-          },
-          "api_version": {
-            "type": "string",
-            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
-            "title": "Api Version",
-            "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`.",
-            "examples": [
-              "0.10.1",
-              "1.0.0-rc.2",
-              "1.2.3-rc.5+develop"
-            ]
-          },
-          "more_data_available": {
-            "type": "boolean",
-            "title": "More Data Available",
-            "description": "`false` if the response contains all data for the request (e.g., a request issued to a single entry endpoint, or a `filter` query at the last page of a paginated response) and `true` if the response is incomplete in the sense that multiple objects match the request, and not all of them have been included in the response (e.g., a query with multiple pages that is not at the last page)."
-          },
-          "schema": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Schema",
-            "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) that points to a schema for the response.\nIf it is a string, or a dictionary containing no `meta` field, the provided URL MUST point at an [OpenAPI](https://swagger.io/specification/) schema.\nIt is possible that future versions of this specification allows for alternative schema types.\nHence, if the `meta` field of the JSON API links object is provided and contains a field `schema_type` that is not equal to the string `OpenAPI` the client MUST not handle failures to parse the schema or to validate the response against the schema as errors."
-          },
-          "time_stamp": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Time Stamp",
-            "description": "A timestamp containing the date and time at which the query was executed."
-          },
-          "data_returned": {
-            "anyOf": [
-              {
-                "type": "integer",
-                "minimum": 0.0
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Data Returned",
-            "description": "An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination."
-          },
-          "provider": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Provider-Output"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "information on the database provider of the implementation."
-          },
-          "data_available": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Data Available",
-            "description": "An integer containing the total number of data resource objects available in the database for the endpoint."
-          },
-          "last_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Last Id",
-            "description": "a string containing the last ID returned"
-          },
-          "response_message": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Response Message",
-            "description": "response string from the server"
-          },
-          "implementation": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Implementation-Output"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "a dictionary describing the server implementation"
-          },
-          "warnings": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Warnings-Output"
+                  "$ref": "#/components/schemas/Warnings"
                 },
                 "type": "array"
               },
@@ -4456,7 +4051,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ResourceLinks-Output"
+                "$ref": "#/components/schemas/ResourceLinks"
               },
               {
                 "type": "null"
@@ -4839,7 +4434,7 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ResponseMeta-Output"
+                "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
             "description": "A meta object containing non-standard information"
@@ -4884,7 +4479,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ToplevelLinks-Output"
+                "$ref": "#/components/schemas/ToplevelLinks"
               },
               {
                 "type": "null"
@@ -4931,7 +4526,7 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ResponseMeta-Output"
+                "$ref": "#/components/schemas/ResponseMeta"
               }
             ],
             "description": "A meta object containing non-standard information"
@@ -4976,7 +4571,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ToplevelLinks-Output"
+                "$ref": "#/components/schemas/ToplevelLinks"
               },
               {
                 "type": "null"
@@ -5003,7 +4598,7 @@
         ],
         "title": "StructureResponseOne"
       },
-      "ToplevelLinks-Input": {
+      "ToplevelLinks": {
         "properties": {
           "self": {
             "anyOf": [
@@ -5113,117 +4708,7 @@
         "title": "ToplevelLinks",
         "description": "A set of Links objects, possibly including pagination"
       },
-      "ToplevelLinks-Output": {
-        "properties": {
-          "self": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Self",
-            "description": "A link to itself"
-          },
-          "related": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Related",
-            "description": "A related resource link"
-          },
-          "first": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "First",
-            "description": "The first page of data"
-          },
-          "last": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Last",
-            "description": "The last page of data"
-          },
-          "prev": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Prev",
-            "description": "The previous page of data"
-          },
-          "next": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Next",
-            "description": "The next page of data"
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "title": "ToplevelLinks",
-        "description": "A set of Links objects, possibly including pagination"
-      },
-      "Warnings-Input": {
+      "Warnings": {
         "properties": {
           "id": {
             "anyOf": [
@@ -5240,99 +4725,7 @@
           "links": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/ErrorLinks-Input"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "A links object storing about"
-          },
-          "code": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Code",
-            "description": "an application-specific error code, expressed as a string value."
-          },
-          "title": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Title",
-            "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
-          },
-          "detail": {
-            "type": "string",
-            "title": "Detail",
-            "description": "A human-readable explanation specific to this occurrence of the problem."
-          },
-          "source": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ErrorSource"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "An object containing references to the source of the error"
-          },
-          "meta": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Meta"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "a meta object containing non-standard meta-information about the error."
-          },
-          "type": {
-            "type": "string",
-            "pattern": "^warning$",
-            "title": "Type",
-            "description": "Warnings must be of type \"warning\"",
-            "default": "warning"
-          }
-        },
-        "type": "object",
-        "required": [
-          "detail",
-          "type"
-        ],
-        "title": "Warnings",
-        "description": "OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.\n\nFrom the specification:\n\nA warning resource object is defined similarly to a JSON API error object, but MUST also include the field type, which MUST have the value \"warning\".\nThe field detail MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\n\nNote: Must be named \"Warnings\", since \"Warning\" is a built-in Python class."
-      },
-      "Warnings-Output": {
-        "properties": {
-          "id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Id",
-            "description": "A unique identifier for this particular occurrence of the problem."
-          },
-          "links": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ErrorLinks-Output"
+                "$ref": "#/components/schemas/ErrorLinks"
               },
               {
                 "type": "null"
