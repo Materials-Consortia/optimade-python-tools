@@ -32,6 +32,16 @@ data_files = [
             "dim_names": ["dim_frames", "dim_sites", "dim_cartesian_dimensions"],
         },
     ),
+    (
+        "6516a2990672a155c7351bab:cartesian_site_positions.npy",
+        "numpy",
+        {
+            "endpoint": "trajectories",
+            "parent_id": "6516a2990672a155c7351bab",
+            "property_name": "cartesian_site_positions",
+            "dim_names": ["dim_frames", "dim_sites", "dim_cartesian_dimensions"],
+        },
+    ),
 ]
 
 for var, path in data_paths.items():
