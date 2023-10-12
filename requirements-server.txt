@@ -3,4 +3,5 @@ elasticsearch-dsl==7.4.0
 fastapi==0.103.1
 jsonlines==3.1.0
 mongomock==4.1.2
+numpy>=1.20
 pymongo==4.5.0
