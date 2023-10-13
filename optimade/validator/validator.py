@@ -973,7 +973,7 @@ class ImplementationValidator:
                 request=request_str,
             )
             if deserialized:
-                return deserialized.dict()
+                return deserialized.model_dump()
 
         return False
 

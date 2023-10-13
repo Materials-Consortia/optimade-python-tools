@@ -92,7 +92,7 @@ class ToplevelLinks(BaseModel):
 
         """
         for field, value in self:
-            if field not in self.model_json_schema(mode="validation")["properties"]:
+            if field not in self.model_fields:
                 setattr(
                     self,
                     field,

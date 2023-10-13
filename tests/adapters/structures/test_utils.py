@@ -123,7 +123,9 @@ def test_scaled_cell_consistency(structures):
 def test_species_from_species_at_sites():
     """Test that species can be inferred from species_at_sites"""
     species_at_sites = ["Si"]
-    assert [d.dict() for d in species_from_species_at_sites(species_at_sites)] == [
+    assert [
+        d.model_dump() for d in species_from_species_at_sites(species_at_sites)
+    ] == [
         {
             "name": "Si",
             "concentration": [1.0],
@@ -137,7 +139,7 @@ def test_species_from_species_at_sites():
 
     species_at_sites = ["Si", "Si", "O", "O", "O", "O"]
     assert sorted(
-        [d.dict() for d in species_from_species_at_sites(species_at_sites)],
+        [d.model_dump() for d in species_from_species_at_sites(species_at_sites)],
         key=lambda _: _["name"],
     ) == sorted(
         [

@@ -117,7 +117,7 @@ def handle_response_fields(
     while results:
         new_entry = results.pop(0)
         try:
-            new_entry = new_entry.dict(exclude_unset=True, by_alias=True)  # type: ignore[union-attr]
+            new_entry = new_entry.model_dump(exclude_unset=True, by_alias=True)  # type: ignore[union-attr]
         except AttributeError:
             pass
 
@@ -183,7 +183,7 @@ def get_included_relationships(
             continue
 
         if not isinstance(relationships, dict):
-            relationships = relationships.dict()
+            relationships = relationships.model_dump()
 
         for entry_type in ENTRY_COLLECTIONS:
             # Skip entry type if it is not in `include_param`

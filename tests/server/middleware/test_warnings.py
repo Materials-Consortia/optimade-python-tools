@@ -1,7 +1,15 @@
 """Test `AddWarning` middleware."""
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pytest import WarningsRecorder
+
+    from ..utils import OptimadeTestClient
 
 
-def test_showwarning_overload(both_clients, recwarn):
+def test_showwarning_overload(
+    both_clients: "OptimadeTestClient", recwarn: "WarningsRecorder"
+) -> None:
     """Make sure warnings.showwarning can be overloaded correctly"""
     import warnings
 
@@ -25,7 +33,7 @@ def test_showwarning_overload(both_clients, recwarn):
     # Make sure a "normal" warning is treated as usual
     warnings.warn(warning_message, UserWarning)
     assert len(add_warning_middleware._warnings) == 1
-    assert len(recwarn.list) == 2
+    assert len(recwarn.list) == 2, ", ".join(str(_) for _ in recwarn.list)
     assert recwarn.pop(OptimadeWarning)
     assert recwarn.pop(UserWarning)
 

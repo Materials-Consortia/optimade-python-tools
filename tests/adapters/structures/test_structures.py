@@ -138,11 +138,12 @@ def test_common_converters(raw_structure, RAW_STRUCTURES):
     """Test common converters"""
     structure = Structure(raw_structure)
 
-    assert structure.as_json == StructureResource(**raw_structure).json()
-    assert structure.as_dict == StructureResource(**raw_structure).dict()
+    assert structure.as_json == StructureResource(**raw_structure).model_dump_json()
+    assert structure.as_dict == StructureResource(**raw_structure).model_dump()
 
-    # Since calling .dict() and .json() will return also all default-valued properties,
-    # the raw structure should at least be a sub-set of the resource's full list of properties.
+    # Since calling .model_dump() and .model_dump_json() will return also all
+    # default-valued properties, the raw structure should at least be a sub-set of the
+    # resource's full list of properties.
     for raw_structure in RAW_STRUCTURES:
         raw_structure_property_set = set(raw_structure.keys())
         resource_property_set = set(Structure(raw_structure).as_dict.keys())
@@ -209,7 +210,7 @@ def test_two_way_conversion(RAW_STRUCTURES, format):
             continue
         reconverted_structure = Structure.ingest_from(
             converted_structure, format
-        ).entry.dict()
+        ).entry.model_dump()
         compare_lossy_conversion(
             structure["attributes"], reconverted_structure["attributes"]
         )
@@ -227,7 +228,7 @@ def test_two_way_conversion_with_implicit_type(RAW_STRUCTURES, format):
             continue
         reconverted_structure = Structure.ingest_from(
             converted_structure, format=None
-        ).entry.dict()
+        ).entry.model_dump()
 
         compare_lossy_conversion(
             structure["attributes"], reconverted_structure["attributes"]
