@@ -1,18 +1,34 @@
-from collections.abc import Iterable
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Iterable, Optional, get_args
+
+from pydantic import BaseModel, TypeAdapter
+from typing_extensions import _AnnotatedAlias
 
 from optimade.models import (
     DataType,
+    EntryResource,
     ErrorResponse,
     ReferenceResource,
     StructureResource,
 )
 
+if TYPE_CHECKING:  # pragma: no cover
+    from typing import Literal, Union
+
+    from optimade.models.utils import SupportLevel
+
+    QueryableProperties = dict[
+        str,
+        dict[
+            Literal["description", "unit", "queryable", "support", "sortable", "type"],
+            Optional[Union[str, SupportLevel, bool]],
+        ],
+    ]
+
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
 
-ENTRY_INFO_SCHEMAS: dict[str, Callable[[], dict]] = {
-    "structures": StructureResource.model_json_schema,
-    "references": ReferenceResource.model_json_schema,
+ENTRY_INFO_SCHEMAS: dict[str, type[EntryResource]] = {
+    "structures": StructureResource,
+    "references": ReferenceResource,
 }
 """This dictionary is used to define the `/info/<entry_type>` endpoints."""
 
@@ -34,16 +50,15 @@ except ModuleNotFoundError:
 
 
 def retrieve_queryable_properties(
-    schema: dict,
+    schema: type[EntryResource],
     queryable_properties: Optional[Iterable[str]] = None,
     entry_type: Optional[str] = None,
-) -> dict:
-    """Recursively loops through the schema of a pydantic model and
-    resolves all references, returning a dictionary of all the
+) -> "QueryableProperties":
+    """Recursively loops through a pydantic model, returning a dictionary of all the
     OPTIMADE-queryable properties of that model.
 
     Parameters:
-        schema: The schema of the pydantic model.
+        schema: The pydantic model.
         queryable_properties: The list of properties to find in the schema.
         entry_type: An optional entry type for the model. Will be used to
             lookup schemas for any config-defined fields.
@@ -54,66 +69,70 @@ def retrieve_queryable_properties(
         and type, where provided.
 
     """
-    properties = {}
-    for name, value in schema["properties"].items():
+    properties: "QueryableProperties" = {}
+    for name, value in schema.model_fields.items():
+        # Proceed if the field (name) is given explicitly in the queryable_properties
+        # list or if the queryable_properties list is empty (i.e., all properties are
+        # requested)
         if not queryable_properties or name in queryable_properties:
             if name in properties:
                 continue
 
-            if "allOf" in value:
-                for dict_ in value["allOf"]:
-                    value.update(dict_)
+            # If the field is another data model, "unpack" it by recursively calling
+            # this function.
 
-            if "anyOf" in value:
-                dict_to_use = {}
-                # Go through anyOf and find the first dict that is not type=null, going
-                # first for the reference type, if it exists.
-                # Then go through anyOf again and find the first dict that is not
-                # type=null and not a reference.
+            # If the field is a Union, get the first non-None type (this includes
+            # Optional[T])
+            annotation = value.annotation
+            for arg in get_args(annotation):
+                if arg not in (None, type(None)):
+                    annotation = arg
+                    break
 
-                # This makes the reference type the fallback.
-                # It should support anyOf types of just {reference, null} as well as
-                # {reference, type, null}.
-                for dict_ in value["anyOf"]:
-                    if dict_.get("type", "") == "null":
-                        continue
-                    if "$ref" in dict_:
-                        dict_to_use = dict_
-                        break
-                for dict_ in value["anyOf"]:
-                    if dict_.get("type", "") == "null" or "$ref" in dict_:
-                        continue
-                    else:
-                        dict_to_use = dict_
-                value.update(dict_to_use)
+            if isinstance(annotation, _AnnotatedAlias):
+                annotation = get_args(annotation)[0]
 
-            if "$ref" in value:
-                path = value["$ref"].split("/")[1:]
-                sub_schema = schema.copy()
-                while path:
-                    next_key = path.pop(0)
-                    sub_schema = sub_schema[next_key]
-                sub_queryable_properties = sub_schema["properties"].keys()
+            # Ensure that the annotation is a builtin type
+            annotation = getattr(annotation, "__origin__", annotation)
+
+            if annotation not in (None, type(None)) and issubclass(
+                annotation, BaseModel
+            ):
+                sub_queryable_properties = list(annotation.model_fields)
                 properties.update(
-                    retrieve_queryable_properties(sub_schema, sub_queryable_properties)
+                    retrieve_queryable_properties(annotation, sub_queryable_properties)
                 )
-            else:
-                properties[name] = {"description": value.get("description", "")}
-                # Update schema with extension keys provided they are not None
-                for key in (
-                    "x-optimade-unit",
-                    "x-optimade-queryable",
-                    "x-optimade-support",
+
+            properties[name] = {"description": value.description or ""}
+
+            # Update schema with extension keys, provided they are not None
+            for key in (
+                "x-optimade-unit",
+                "x-optimade-queryable",
+                "x-optimade-support",
+            ):
+                if (
+                    value.json_schema_extra
+                    and value.json_schema_extra.get(key) is not None
                 ):
-                    if value.get(key) is not None:
-                        properties[name][key.replace("x-optimade-", "")] = value[key]
-                # All properties are sortable with the MongoDB backend.
-                # While the result for sorting lists may not be as expected, they are still sorted.
-                properties[name]["sortable"] = value.get("x-optimade-sortable", True)
-                # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
-                properties[name]["type"] = DataType.from_json_type(
-                    value.get("format", value.get("type"))
-                )
+                    properties[name][
+                        key.replace("x-optimade-", "")  # type: ignore[index]
+                    ] = value.json_schema_extra[key]
+
+            # All properties are sortable with the MongoDB backend.
+            # While the result for sorting lists may not be as expected, they are still sorted.
+            properties[name]["sortable"] = (
+                value.json_schema_extra.get("x-optimade-sortable", True)
+                if value.json_schema_extra
+                else True
+            )
+
+            # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
+            json_schema = TypeAdapter(annotation).json_schema(mode="validation")
+
+            properties[name]["type"] = DataType.from_json_type(
+                json_schema.get("format", json_schema.get("type"))
+            )
 
     # If specified, check the config for any additional well-described provider fields
     if entry_type:
@@ -132,5 +151,11 @@ def retrieve_queryable_properties(
             )
             properties[name] = {k: field[k] for k in field if k != "name"}
             properties[name]["sortable"] = field.get("sortable", True)
+
+    # Remove JSON fields mistaken as properties
+    non_property_fields = ["attributes", "relationships"]
+    for non_property_field in non_property_fields:
+        if non_property_field in properties:
+            del properties[non_property_field]
 
     return properties

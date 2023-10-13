@@ -1,12 +1,19 @@
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 import pytest
 
 from optimade.warnings import OptimadeWarning
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from requests import Response
+
+    from .utils import OptimadeTestClient
+
 
 @pytest.fixture(scope="session")
-def client():
+def client() -> "OptimadeTestClient":
     """Return TestClient for the regular OPTIMADE server"""
     from .utils import client_factory
 
@@ -14,7 +21,7 @@ def client():
 
 
 @pytest.fixture(scope="session")
-def index_client():
+def index_client() -> "OptimadeTestClient":
     """Return TestClient for the index OPTIMADE server"""
     from .utils import client_factory
 
@@ -22,7 +29,9 @@ def index_client():
 
 
 @pytest.fixture(scope="session", params=["regular"])
-def client_with_empty_extension_endpoint(request):
+def client_with_empty_extension_endpoint(
+    request: pytest.FixtureRequest,
+) -> "OptimadeTestClient":
     """Return TestClient for the regular OPTIMADE server with an additional
     empty test endpoint added at `/extensions/test_empty_body`.
     """
@@ -32,7 +41,7 @@ def client_with_empty_extension_endpoint(request):
 
 
 @pytest.fixture(scope="session", params=["regular", "index"])
-def both_clients(request):
+def both_clients(request: pytest.FixtureRequest) -> "OptimadeTestClient":
     """Return TestClient for both the regular and index OPTIMADE server"""
     from .utils import client_factory
 
@@ -40,7 +49,7 @@ def both_clients(request):
 
 
 @pytest.fixture(scope="session", params=["regular", "index"])
-def both_fake_remote_clients(request):
+def both_fake_remote_clients(request: pytest.FixtureRequest) -> "OptimadeTestClient":
     """Return TestClient for both the regular and index OPTIMADE server, with
     the additional option `raise_server_exceptions` set to `False`, to mimic a
     remote webserver.
@@ -52,7 +61,9 @@ def both_fake_remote_clients(request):
 
 
 @pytest.fixture
-def get_good_response(client, index_client):
+def get_good_response(
+    client: "OptimadeTestClient", index_client: "OptimadeTestClient"
+) -> "Callable[[str, Union[str, OptimadeTestClient], bool], Union[dict, Response]]":
     """Get response with some sanity checks, expecting '200 OK'"""
     import json
 

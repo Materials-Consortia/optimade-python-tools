@@ -32,12 +32,8 @@ def get_info(request: Request) -> IndexInfoResponse:
             schema=CONFIG.index_schema_url,
         ),
         data=IndexInfoResource(
-            id=IndexInfoResource.model_json_schema(mode="validation")["properties"][
-                "id"
-            ]["default"],
-            type=IndexInfoResource.model_json_schema(mode="validation")["properties"][
-                "type"
-            ]["default"],
+            id=IndexInfoResource.model_fields["id"].default,
+            type=IndexInfoResource.model_fields["type"].default,
             attributes=IndexInfoAttributes(
                 api_version=f"{__api_version__}",
                 available_api_versions=[
@@ -54,9 +50,7 @@ def get_info(request: Request) -> IndexInfoResponse:
             relationships={
                 "default": IndexRelationship(
                     data={
-                        "type": RelatedLinksResource.model_json_schema(
-                            mode="validation"
-                        )["properties"]["type"]["default"],
+                        "type": RelatedLinksResource.model_fields["type"].default,
                         "id": CONFIG.default_db,
                     }
                 )
