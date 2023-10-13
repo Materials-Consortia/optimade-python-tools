@@ -96,7 +96,7 @@ docs = [
     "mkdocs~=1.4",
     "mkdocs-awesome-pages-plugin~=2.8",
     "mkdocs-material~=9.0",
-    "mkdocstrings[python-legacy]~=0.20",
+    "mkdocstrings[python]~=0.20",
 ]
 
 testing = [
