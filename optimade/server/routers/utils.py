@@ -420,11 +420,13 @@ def get_partial_entry(
         )
 
     array = np.frombuffer(
-        results["attributes"]["data"],
-        dtype=getattr(np, results["attributes"]["dtype"]["name"]),
-    ).reshape(results["attributes"]["shape"])
+        results["attributes"]["data"],  # type: ignore[call-overload]
+        dtype=getattr(np, results["attributes"]["dtype"]["name"]),  # type: ignore[call-overload]
+    ).reshape(
+        results["attributes"]["shape"]  # type: ignore[call-overload]
+    )
     # slice array
-    property_ranges = results["attributes"]["property_ranges"]
+    property_ranges = results["attributes"]["property_ranges"]  # type: ignore[call-overload]
     slice_ind = [
         slice(
             0,
@@ -455,14 +457,14 @@ def get_partial_entry(
         "has_references": False,
     }  # Todo: add support for non_dense data
     if more_data_available:
-        next_link = ["PARTIAL-DATA-NEXT", [results["attributes"].pop("next")]]
+        next_link = ["PARTIAL-DATA-NEXT", [results["attributes"].pop("next")]]  # type: ignore[call-overload]
 
     if params.response_format == "json":
         for key in header:
-            results["attributes"][key] = header[key]
-        results["attributes"]["data"] = array.tolist()
+            results["attributes"][key] = header[key]  # type: ignore[call-overload]
+        results["attributes"]["data"] = array.tolist()  # type: ignore[call-overload]
         if more_data_available:
-            results["attributes"]["next"] = next_link
+            results["attributes"]["next"] = next_link  # type: ignore[call-overload]
         return dict(
             links=links,
             data=[results] if results else None,

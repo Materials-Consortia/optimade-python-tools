@@ -102,21 +102,24 @@ class GridFSCollection(MongoBaseCollection):
             kwargs["filter"] = {}
         return len(self.collection.find(**kwargs))
 
-    def insert(self, content: bytes, filename: str, metadata: dict = {}) -> None:
+    def insert(self, data: list) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
             No validation is performed on the incoming data.
 
         Arguments:
-            content: The file content to add to gridfs.
-            filename: The filename of the added content.
-            metadata: extra metadata to add to the gridfs entry.
+            data: a list of dictionaries. Each dictionary contains the data belonging to one file.
+                These dictionaries contain the fields:
+                    data: The file content to add to gridfs.
+                    filename: The filename of the added content.
+                    metadata: extra metadata to add to the gridfs entry.
         """
-        self.collection.put(content, filename=filename, metadata=metadata)
+        for entry in data:  # todo check whether I can insert multiple files in one go.
+            self.collection.put(**entry)
 
     def handle_query_params(
-        self, params: Union[SingleEntryQueryParams, PartialDataQueryParams]
+        self, params: Union[SingleEntryQueryParams, PartialDataQueryParams]  # type: ignore[override]
     ) -> Dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
@@ -373,7 +376,7 @@ class MongoCollection(MongoBaseCollection):
         self.collection.insert_many(data)
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]  # type: ignore[override]
     ) -> Dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
