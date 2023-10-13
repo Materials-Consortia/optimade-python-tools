@@ -401,7 +401,7 @@ class AddWarnings(BaseHTTPMiddleware):
             new_warning = Warnings(title=title, detail=detail)
 
         # Add new warning to self._warnings
-        self._warnings.append(new_warning.dict(exclude_unset=True))
+        self._warnings.append(new_warning.model_dump(exclude_unset=True))
 
         # Show warning message as normal in sys.stderr
         warnings._showwarnmsg_impl(  # type: ignore[attr-defined]

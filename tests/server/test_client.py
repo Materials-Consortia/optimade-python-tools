@@ -1,6 +1,4 @@
 """This module uses the reference test server to test the OPTIMADE client."""
-
-
 import json
 import warnings
 from functools import partial
@@ -480,7 +478,7 @@ def test_list_properties(
 
     results = cli.list_properties("structures")
     for database in results:
-        assert len(results[database]) == 22
+        assert len(results[database]) == 22, str(results[database])
 
     results = cli.search_property("structures", "site")
     for database in results:

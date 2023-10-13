@@ -112,7 +112,7 @@ def _pymatgen_species(
     Create list of {"symbol": "concentration"} per site for values to pymatgen species parameters.
     Remove vacancies, if they are present.
     """
-    if not species:
+    if species is None:
         # If species is missing, infer data from species_at_sites
         species = species_from_species_at_sites(species_at_sites)
 
@@ -147,7 +147,7 @@ def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
 
     Returns:
         An OPTIMADE `StructureResourceAttributes` model, which can be converted to a raw Python
-            dictionary with `.dict()` or to JSON with `.json()`.
+            dictionary with `.model_dump()` or to JSON with `.model_dump_json()`.
 
     """
 

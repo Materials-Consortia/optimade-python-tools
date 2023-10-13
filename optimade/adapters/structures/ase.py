@@ -92,7 +92,7 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
         )
 
     info = {}
-    for key in attributes.dict().keys():
+    for key in attributes.model_dump().keys():
         if key.startswith("_"):
             ase_key = key
             if key.startswith(f"_{EXTRA_FIELD_PREFIX}_"):
@@ -115,7 +115,7 @@ def from_ase_atoms(atoms: Atoms) -> StructureResourceAttributes:
 
     Returns:
         An OPTIMADE `StructureResourceAttributes` model, which can be converted to a raw Python
-            dictionary with `.dict()` or to JSON with `.json()`.
+            dictionary with `.model_dump()` or to JSON with `.model_dump_json()`.
 
     """
     if not isinstance(atoms, Atoms):

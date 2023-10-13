@@ -155,9 +155,7 @@ class BaseResourceMapper:
         """Returns the dictionary of attributes defined by the underlying entry resource class."""
         from optimade.server.schemas import retrieve_queryable_properties
 
-        return retrieve_queryable_properties(
-            cls.ENTRY_RESOURCE_CLASS.model_json_schema(mode="validation")
-        )
+        return retrieve_queryable_properties(cls.ENTRY_RESOURCE_CLASS)
 
     @classproperty
     @lru_cache(maxsize=NUM_ENTRY_TYPES)
@@ -166,12 +164,10 @@ class BaseResourceMapper:
         to the `type` property of the resource class.
 
         """
-        return (
-            cls.ENTRY_RESOURCE_CLASS.model_json_schema(mode="validation")
-            .get("properties", {})
-            .get("type", {})
-            .get("default", "")
-        )
+        endpoint = cls.ENTRY_RESOURCE_CLASS.model_fields["type"].default
+        if not endpoint and not isinstance(endpoint, str):
+            raise ValueError("Type not set for this entry type!")
+        return endpoint
 
     @classmethod
     @lru_cache(maxsize=NUM_ENTRY_TYPES)

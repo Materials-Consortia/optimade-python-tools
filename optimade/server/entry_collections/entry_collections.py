@@ -2,13 +2,25 @@ import enum
 import re
 import warnings
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type, Union
+from typing import (
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    Set,
+    Tuple,
+    Type,
+    Union,
+    get_args,
+)
 
 from lark import Transformer
+from typing_extensions import _AnnotatedAlias
 
 from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
-from optimade.models.entries import EntryResource
+from optimade.models import Attributes, EntryResource
 from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -174,7 +186,6 @@ class EntryCollection(ABC):
         bad_provider_fields = set()
         supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
         all_attributes = self.resource_mapper.ALL_ATTRIBUTES
-        print(all_attributes)
         for field in include_fields:
             if field not in all_attributes:
                 if field.startswith("_"):
@@ -282,20 +293,35 @@ class EntryCollection(ABC):
             Property names.
 
         """
+        annotation = self.resource_cls.model_fields["attributes"].annotation
+        for arg in get_args(annotation):
+            if arg not in (None, type(None)):
+                annotation = arg
+                break
 
-        schema = self.resource_cls.model_json_schema(mode="validation")
-        attributes = schema["properties"]["attributes"]
-        if "allOf" in attributes:
-            allOf = attributes.pop("allOf")
-            for dict_ in allOf:
-                attributes.update(dict_)
-        if "$ref" in attributes:
-            path = attributes["$ref"].split("/")[1:]
-            attributes = schema.copy()
-            while path:
-                next_key = path.pop(0)
-                attributes = attributes[next_key]
-        return set(attributes["properties"].keys())
+        if isinstance(annotation, _AnnotatedAlias):
+            annotation = get_args(annotation)[0]
+
+        if not issubclass(annotation, Attributes):
+            raise TypeError(
+                "resource class 'attributes' field must be a subclass of 'EntryResourceAttributes'"
+            )
+
+        return set(annotation.model_fields)
+
+        # schema = self.resource_cls.model_json_schema(mode="validation")
+        # attributes = schema["properties"]["attributes"]
+        # if "allOf" in attributes:
+        #     allOf = attributes.pop("allOf")
+        #     for dict_ in allOf:
+        #         attributes.update(dict_)
+        # if "$ref" in attributes:
+        #     path = attributes["$ref"].split("/")[1:]
+        #     attributes = schema.copy()
+        #     while path:
+        #         next_key = path.pop(0)
+        #         attributes = attributes[next_key]
+        # return set(attributes["properties"].keys())
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
