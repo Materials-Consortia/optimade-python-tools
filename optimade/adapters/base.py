@@ -156,7 +156,7 @@ class EntryAdapter:
 
         return cls(
             {
-                "attributes": cls._type_ingesters[format](data).dict(),
+                "attributes": cls._type_ingesters[format](data).model_dump(),
                 "id": "",
                 "type": "structures",
             }
@@ -170,7 +170,7 @@ class EntryAdapter:
         for res in starting_instances:
             nested_attributes = name.split(".")
             for nested_attribute in nested_attributes:
-                if nested_attribute in getattr(res, "__fields__", {}):
+                if nested_attribute in getattr(res, "model_fields", {}):
                     res = getattr(res, nested_attribute)
                 else:
                     res = None
