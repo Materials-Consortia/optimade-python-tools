@@ -1,7 +1,7 @@
 """Tests for optimade.server.schemas"""
 
 
-def test_schemas() -> None:
+def test_retrieve_queryable_properties() -> None:
     """Test that the default `ENTRY_INFO_SCHEMAS` contain
     all the required information about the OPTIMADE properties
     after dereferencing.
@@ -30,6 +30,9 @@ def test_schemas() -> None:
         # Check that all expected keys are present for OPTIMADE fields
         for key in ("type", "sortable", "queryable", "description"):
             assert all(key in properties[field] for field in properties)
+
+        # Check that all fields are queryable
+        assert all(properties[field]["queryable"] for field in properties)
 
 
 def test_provider_field_schemas() -> None:

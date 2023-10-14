@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Optional
 
 from pydantic import Field
 
@@ -20,3 +20,7 @@ SemanticVersion = Annotated[
         pattern=SEMVER_PATTERN, examples=["0.10.1", "1.0.0-rc.2", "1.2.3-rc.5+develop"]
     ),
 ]
+
+AnnotatedType = type(ChemicalSymbol)
+OptionalType = type(Optional[str])
+UnionType = type(str | int)

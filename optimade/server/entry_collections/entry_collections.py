@@ -5,11 +5,11 @@ from abc import ABC, abstractmethod
 from typing import Any, Iterable, Optional, Union, get_args
 
 from lark import Transformer
-from typing_extensions import _AnnotatedAlias
 
 from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
 from optimade.models import Attributes, EntryResource
+from optimade.models.types import AnnotatedType, OptionalType, UnionType
 from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -160,7 +160,7 @@ class EntryCollection(ABC):
         """
         criteria = self.handle_query_params(params)
         single_entry = isinstance(params, SingleEntryQueryParams)
-        response_fields = criteria.pop("fields")
+        response_fields: Set[str] = criteria.pop("fields")
 
         raw_results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry
@@ -171,10 +171,10 @@ class EntryCollection(ABC):
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
         )
 
-        bad_optimade_fields = set()
-        bad_provider_fields = set()
+        bad_optimade_fields: Set[str] = set()
+        bad_provider_fields: Set[str] = set()
         supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
-        all_attributes = self.resource_mapper.ALL_ATTRIBUTES
+        all_attributes: Set[str] = self.resource_mapper.ALL_ATTRIBUTES
         for field in include_fields:
             if field not in all_attributes:
                 if field.startswith("_"):
@@ -283,12 +283,13 @@ class EntryCollection(ABC):
 
         """
         annotation = self.resource_cls.model_fields["attributes"].annotation
-        for arg in get_args(annotation):
-            if arg not in (None, type(None)):
-                annotation = arg
-                break
+        if isinstance(annotation, (OptionalType, UnionType)):
+            for arg in get_args(annotation):
+                if arg not in (None, type(None)):
+                    annotation = arg
+                    break
 
-        if isinstance(annotation, _AnnotatedAlias):
+        if isinstance(annotation, AnnotatedType):
             annotation = get_args(annotation)[0]
 
         if not issubclass(annotation, Attributes):
@@ -297,20 +298,6 @@ class EntryCollection(ABC):
             )
 
         return set(annotation.model_fields)
-
-        # schema = self.resource_cls.model_json_schema(mode="validation")
-        # attributes = schema["properties"]["attributes"]
-        # if "allOf" in attributes:
-        #     allOf = attributes.pop("allOf")
-        #     for dict_ in allOf:
-        #         attributes.update(dict_)
-        # if "$ref" in attributes:
-        #     path = attributes["$ref"].split("/")[1:]
-        #     attributes = schema.copy()
-        #     while path:
-        #         next_key = path.pop(0)
-        #         attributes = attributes[next_key]
-        # return set(attributes["properties"].keys())
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
