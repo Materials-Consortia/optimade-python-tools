@@ -69,7 +69,6 @@ def StrictField(
     allowed_keys = [
         "pattern",
         "uniqueItems",
-        "nullable",
     ] + OPTIMADE_SCHEMA_EXTENSION_KEYS
     _banned = [k for k in kwargs if k not in set(_PYDANTIC_FIELD_KWARGS + allowed_keys)]
 
