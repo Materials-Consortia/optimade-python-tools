@@ -1,4 +1,4 @@
-from typing import Annotated, Optional
+from typing import Annotated, Optional, Union
 
 from pydantic import Field
 
@@ -23,4 +23,4 @@ SemanticVersion = Annotated[
 
 AnnotatedType = type(ChemicalSymbol)
 OptionalType = type(Optional[str])
-UnionType = type(str | int)
+UnionType = type(Union[str, int])
