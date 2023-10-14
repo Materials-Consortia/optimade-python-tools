@@ -67,7 +67,6 @@ server = [
     "uvicorn[standard]~=0.19",
     "fastapi~=0.103",
     "pyyaml~=6.0",
-    "typing-extensions~=4.8",
     "optimade[mongo]",
 ]
 

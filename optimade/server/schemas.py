@@ -1,7 +1,6 @@
 from typing import TYPE_CHECKING, Dict, Iterable, Optional, get_args
 
 from pydantic import BaseModel, TypeAdapter
-from typing_extensions import _AnnotatedAlias
 
 from optimade.models import (
     DataType,
@@ -10,6 +9,7 @@ from optimade.models import (
     ReferenceResource,
     StructureResource,
 )
+from optimade.models.types import AnnotatedType, OptionalType, UnionType
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Literal, Union
@@ -84,12 +84,13 @@ def retrieve_queryable_properties(
             # If the field is a Union, get the first non-None type (this includes
             # Optional[T])
             annotation = value.annotation
-            for arg in get_args(annotation):
-                if arg not in (None, type(None)):
-                    annotation = arg
-                    break
+            if isinstance(annotation, (OptionalType, UnionType)):
+                for arg in get_args(annotation):
+                    if arg not in (None, type(None)):
+                        annotation = arg
+                        break
 
-            if isinstance(annotation, _AnnotatedAlias):
+            if isinstance(annotation, AnnotatedType):
                 annotation = get_args(annotation)[0]
 
             # Ensure that the annotation is a builtin type

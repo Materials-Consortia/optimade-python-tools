@@ -121,6 +121,7 @@ def StrictField(
 
 def OptimadeField(
     default: "Any" = PydanticUndefined,
+    *,
     support: Optional[Union[str, SupportLevel]] = None,
     queryable: Optional[Union[str, SupportLevel]] = None,
     unit: Optional[str] = None,
