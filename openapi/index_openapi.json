@@ -1480,7 +1480,8 @@
               }
             ],
             "uniqueItems": true,
-            "title": "Included"
+            "title": "Included",
+            "description": "A list of unique included OPTIMADE entry resources."
           },
           "links": {
             "anyOf": [

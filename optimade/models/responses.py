@@ -1,7 +1,7 @@
 # pylint: disable=no-self-argument
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import Field, model_validator
+from pydantic import model_validator
 
 from optimade.models.baseinfo import BaseInfoResource
 from optimade.models.entries import EntryInfoResource, EntryResource
@@ -66,18 +66,24 @@ class InfoResponse(Success):
 
 
 class EntryResponseOne(Success):
-    data: Union[EntryResource, Dict[str, Any], None] = Field(None)  # type: ignore[assignment]
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(  # type: ignore[assignment]
-        None, uniqueItems=True
+    data: Union[EntryResource, Dict[str, Any], None] = None  # type: ignore[assignment]
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = StrictField(  # type: ignore[assignment]
+        None,
+        description="A list of unique included OPTIMADE entry resources.",
+        uniqueItems=True,
     )
 
 
 class EntryResponseMany(Success):
-    data: Union[List[EntryResource], List[Dict[str, Any]]] = Field(  # type: ignore[assignment]
-        ..., uniqueItems=True
+    data: Union[List[EntryResource], List[Dict[str, Any]]] = StrictField(  # type: ignore[assignment]
+        ...,
+        description="List of unique OPTIMADE entry resource objects.",
+        uniqueItems=True,
     )
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(  # type: ignore[assignment]
-        None, uniqueItems=True
+    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = StrictField(  # type: ignore[assignment]
+        None,
+        description="A list of unique included OPTIMADE entry resources.",
+        uniqueItems=True,
     )
 
 

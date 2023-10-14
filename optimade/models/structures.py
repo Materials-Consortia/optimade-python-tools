@@ -279,7 +279,7 @@ def structure_json_schema_extra(
 
     1. Constrained types in pydantic do not currently play nicely with
     "Required Optional" fields, i.e. fields must be specified but can be null.
-    The two contrained list fields, `dimension_types` and `lattice_vectors`,
+    The two constrained list fields, `dimension_types` and `lattice_vectors`,
     are OPTIMADE 'SHOULD' fields, which means that they are allowed to be null.
 
     2. All OPTIMADE 'SHOULD' fields are allowed to be null, so we manually set them
@@ -292,7 +292,8 @@ def structure_json_schema_extra(
     nullable_props = (
         prop
         for prop in schema["required"]
-        if schema["properties"][prop].get("x-optimade-support") == SupportLevel.SHOULD
+        if schema["properties"][prop].get("x-optimade-support")
+        == SupportLevel.SHOULD.value
     )
     for prop in nullable_props:
         schema["properties"][prop]["nullable"] = True
@@ -487,7 +488,7 @@ The proportion number MUST be omitted if it is 1.
         pattern=CHEMICAL_FORMULA_REGEXP,
     )
 
-    dimension_types: Optional[  # type: ignore[valid-type]
+    dimension_types: Optional[
         Annotated[List[Periodicity], Field(min_length=3, max_length=3)]
     ] = OptimadeField(
         None,
@@ -535,7 +536,7 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.MUST,
     )
 
-    lattice_vectors: Optional[  # type: ignore[valid-type]
+    lattice_vectors: Optional[
         Annotated[List[Vector3D_unknown], Field(min_length=3, max_length=3)]
     ] = OptimadeField(
         None,
@@ -563,7 +564,7 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.OPTIONAL,
     )
 
-    cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(  # type: ignore[valid-type]
+    cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(
         None,
         description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
