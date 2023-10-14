@@ -2,12 +2,11 @@
 import re
 import warnings
 from enum import Enum, IntEnum
-from typing import Annotated, Any, Optional, Union
+from typing import Annotated, Optional, Union
 
 from pydantic import (
     BaseModel,
     BeforeValidator,
-    ConfigDict,
     Field,
     ValidationInfo,
     field_validator,
@@ -272,37 +271,8 @@ CORRELATED_STRUCTURE_FIELDS = (
 )
 
 
-def structure_json_schema_extra(
-    schema: dict[str, Any], model: type["StructureResourceAttributes"]
-) -> None:
-    """Two things need to be added to the schema:
-
-    1. Constrained types in pydantic do not currently play nicely with
-    "Required Optional" fields, i.e. fields must be specified but can be null.
-    The two constrained list fields, `dimension_types` and `lattice_vectors`,
-    are OPTIMADE 'SHOULD' fields, which means that they are allowed to be null.
-
-    2. All OPTIMADE 'SHOULD' fields are allowed to be null, so we manually set them
-    to be `nullable` according to the OpenAPI definition.
-
-    """
-    schema["required"].insert(7, "dimension_types")
-    schema["required"].insert(9, "lattice_vectors")
-
-    nullable_props = (
-        prop
-        for prop in schema["required"]
-        if schema["properties"][prop].get("x-optimade-support")
-        == SupportLevel.SHOULD.value
-    )
-    for prop in nullable_props:
-        schema["properties"][prop]["nullable"] = True
-
-
 class StructureResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
-
-    model_config = ConfigDict(json_schema_extra=structure_json_schema_extra)
 
     elements: Optional[list[str]] = OptimadeField(
         None,
