@@ -141,7 +141,6 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 plugins = "pydantic.mypy"
 ignore_missing_imports = true
 follow_imports = "skip"
-check-untyped-defs = true
 
 [tool.pytest.ini_options]
 filterwarnings = [

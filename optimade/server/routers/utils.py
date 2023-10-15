@@ -10,13 +10,7 @@ from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
 from optimade.exceptions import BadRequest, InternalServerError
-from optimade.models import (
-    EntryResource,
-    EntryResponseMany,
-    EntryResponseOne,
-    ResponseMeta,
-    ToplevelLinks,
-)
+from optimade.models import EntryResource, ResponseMeta, ToplevelLinks
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -140,7 +134,7 @@ def get_included_relationships(
     results: Union[EntryResource, list[EntryResource], dict, list[dict]],
     ENTRY_COLLECTIONS: dict[str, EntryCollection],
     include_param: list[str],
-) -> list[Union[EntryResource, dict]]:
+) -> list[Union[EntryResource, dict[str, Any]]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
@@ -198,7 +192,8 @@ def get_included_relationships(
                         endpoint_includes[entry_type][ref["id"]] = ref
 
     included: dict[
-        str, Union[list[EntryResource], EntryResource, list[dict], dict]
+        str,
+        Union[list[EntryResource], EntryResource, list[dict[str, Any]], dict[str, Any]],
     ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
@@ -246,10 +241,9 @@ def get_base_url(
 
 def get_entries(
     collection: EntryCollection,
-    response: type[EntryResponseMany],  # noqa
     request: Request,
     params: EntryListingQueryParams,
-) -> dict:
+) -> dict[str, Any]:
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
@@ -285,10 +279,10 @@ def get_entries(
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)  # type: ignore[assignment]
 
-    return dict(
-        links=links,
-        data=results if results else [],
-        meta=meta_values(
+    return {
+        "links": links,
+        "data": results if results else [],
+        "meta": meta_values(
             url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
@@ -297,17 +291,16 @@ def get_entries(
             if not CONFIG.is_index
             else CONFIG.index_schema_url,
         ),
-        included=included,
-    )
+        "included": included,
+    }
 
 
 def get_single_entry(
     collection: EntryCollection,
     entry_id: str,
-    response: type[EntryResponseOne],
     request: Request,
     params: SingleEntryQueryParams,
-) -> dict:
+) -> dict[str, Any]:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
@@ -338,10 +331,10 @@ def get_single_entry(
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
 
-    return dict(
-        links=links,
-        data=results if results else None,
-        meta=meta_values(
+    return {
+        "links": links,
+        "data": results if results else None,
+        "meta": meta_values(
             url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
@@ -350,5 +343,5 @@ def get_single_entry(
             if not CONFIG.is_index
             else CONFIG.index_schema_url,
         ),
-        included=included,
-    )
+        "included": included,
+    }

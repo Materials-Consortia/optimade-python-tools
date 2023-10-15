@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, Request
 
@@ -25,17 +25,18 @@ references_coll = create_collection(
 
 @router.get(
     "/references",
-    response_model=ReferenceResponseMany if CONFIG.validate_api_response else dict,
+    response_model=ReferenceResponseMany
+    if CONFIG.validate_api_response
+    else dict[str, Any],
     response_model_exclude_unset=True,
     tags=["References"],
     responses=ERROR_RESPONSES,
 )
 def get_references(
-    request: Request, params: EntryListingQueryParams = Depends()
-) -> Any:
+    request: Request, params: Annotated[EntryListingQueryParams, Depends()]
+) -> dict[str, Any]:
     return get_entries(
         collection=references_coll,
-        response=ReferenceResponseMany,
         request=request,
         params=params,
     )
@@ -43,18 +44,21 @@ def get_references(
 
 @router.get(
     "/references/{entry_id:path}",
-    response_model=ReferenceResponseOne if CONFIG.validate_api_response else dict,
+    response_model=ReferenceResponseOne
+    if CONFIG.validate_api_response
+    else dict[str, Any],
     response_model_exclude_unset=True,
     tags=["References"],
     responses=ERROR_RESPONSES,
 )
 def get_single_reference(
-    request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
-) -> Any:
+    request: Request,
+    entry_id: str,
+    params: Annotated[SingleEntryQueryParams, Depends()],
+) -> dict[str, Any]:
     return get_single_entry(
         collection=references_coll,
         entry_id=entry_id,
-        response=ReferenceResponseOne,
         request=request,
         params=params,
     )

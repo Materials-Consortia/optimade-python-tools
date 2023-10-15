@@ -1,15 +1,14 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
-# pylint: disable=no-self-argument
 from datetime import datetime, timezone
 from typing import Annotated, Any, Optional, Union
 
-from pydantic import (  # pylint: disable=no-name-in-module
+from pydantic import (
     AnyUrl,
     BaseModel,
     BeforeValidator,
     ConfigDict,
+    TypeAdapter,
     model_validator,
-    typeAdapter,
 )
 
 from optimade.models.utils import StrictField
@@ -41,22 +40,29 @@ class Meta(BaseModel):
 class Link(BaseModel):
     """A link **MUST** be represented as either: a string containing the link's URL or a link object."""
 
-    href: AnyUrl = StrictField(..., description="a string containing the link’s URL.")
-    meta: Optional[Meta] = StrictField(
-        None,
-        description="a meta object containing non-standard meta-information about the link.",
-    )
+    href: Annotated[
+        AnyUrl, StrictField(description="a string containing the link's URL.")
+    ]
+    meta: Annotated[
+        Optional[Meta],
+        StrictField(
+            description="a meta object containing non-standard meta-information about the link.",
+        ),
+    ] = None
+
+
+JsonLinkType = Union[AnyUrl, Link]
 
 
 class JsonApi(BaseModel):
     """An object describing the server's implementation"""
 
-    version: str = StrictField(
-        default="1.0", description="Version of the json API used"
-    )
-    meta: Optional[Meta] = StrictField(
-        None, description="Non-standard meta information"
-    )
+    version: Annotated[
+        str, StrictField(description="Version of the json API used")
+    ] = "1.0"
+    meta: Annotated[
+        Optional[Meta], StrictField(description="Non-standard meta information")
+    ] = None
 
 
 class ToplevelLinks(BaseModel):
@@ -64,26 +70,26 @@ class ToplevelLinks(BaseModel):
 
     model_config = ConfigDict(extra="allow")
 
-    self: Optional[Union[AnyUrl, Link]] = StrictField(
-        None, description="A link to itself"
-    )
-    related: Optional[Union[AnyUrl, Link]] = StrictField(
-        None, description="A related resource link"
-    )
+    self: Annotated[
+        Optional[JsonLinkType], StrictField(description="A link to itself")
+    ] = None
+    related: Annotated[
+        Optional[JsonLinkType], StrictField(description="A related resource link")
+    ] = None
 
     # Pagination
-    first: Optional[Union[AnyUrl, Link]] = StrictField(
-        None, description="The first page of data"
-    )
-    last: Optional[Union[AnyUrl, Link]] = StrictField(
-        None, description="The last page of data"
-    )
-    prev: Optional[Union[AnyUrl, Link]] = StrictField(
-        None, description="The previous page of data"
-    )
-    next: Optional[Union[AnyUrl, Link]] = StrictField(
-        None, description="The next page of data"
-    )
+    first: Annotated[
+        Optional[JsonLinkType], StrictField(description="The first page of data")
+    ] = None
+    last: Annotated[
+        Optional[JsonLinkType], StrictField(description="The last page of data")
+    ] = None
+    prev: Annotated[
+        Optional[JsonLinkType], StrictField(description="The previous page of data")
+    ] = None
+    next: Annotated[
+        Optional[JsonLinkType], StrictField(description="The next page of data")
+    ] = None
 
     @model_validator(mode="after")
     def check_additional_keys_are_links(self) -> "ToplevelLinks":
@@ -96,7 +102,7 @@ class ToplevelLinks(BaseModel):
                 setattr(
                     self,
                     field,
-                    typeAdapter(Optional[Union[AnyUrl, Link]]).validate_python(value),
+                    TypeAdapter(Optional[JsonLinkType]).validate_python(value),
                 )
 
         return self
@@ -105,61 +111,81 @@ class ToplevelLinks(BaseModel):
 class ErrorLinks(BaseModel):
     """A Links object specific to Error objects"""
 
-    about: Optional[Union[AnyUrl, Link]] = StrictField(
-        None,
-        description="A link that leads to further details about this particular occurrence of the problem.",
-    )
+    about: Annotated[
+        Optional[JsonLinkType],
+        StrictField(
+            description="A link that leads to further details about this particular occurrence of the problem.",
+        ),
+    ] = None
 
 
 class ErrorSource(BaseModel):
     """an object containing references to the source of the error"""
 
-    pointer: Optional[str] = StrictField(
-        None,
-        description="a JSON Pointer [RFC6901] to the associated entity in the request document "
-        '[e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute].',
-    )
-    parameter: Optional[str] = StrictField(
-        None,
-        description="a string indicating which URI query parameter caused the error.",
-    )
+    pointer: Annotated[
+        Optional[str],
+        StrictField(
+            description="a JSON Pointer [RFC6901] to the associated entity in the request document "
+            '[e.g. "/data" for a primary data object, or "/data/attributes/title" for a specific attribute].',
+        ),
+    ] = None
+    parameter: Annotated[
+        Optional[str],
+        StrictField(
+            description="a string indicating which URI query parameter caused the error.",
+        ),
+    ] = None
 
 
 class Error(BaseModel):
     """An error response"""
 
-    id: Optional[str] = StrictField(
-        None,
-        description="A unique identifier for this particular occurrence of the problem.",
-    )
-    links: Optional[ErrorLinks] = StrictField(
-        None, description="A links object storing about"
-    )
-    status: Optional[Annotated[str, BeforeValidator(str)]] = StrictField(
-        None,
-        description="the HTTP status code applicable to this problem, expressed as a string value.",
-    )
-
-    code: Optional[str] = StrictField(
-        None,
-        description="an application-specific error code, expressed as a string value.",
-    )
-    title: Optional[str] = StrictField(
-        None,
-        description="A short, human-readable summary of the problem. "
-        "It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.",
-    )
-    detail: Optional[str] = StrictField(
-        None,
-        description="A human-readable explanation specific to this occurrence of the problem.",
-    )
-    source: Optional[ErrorSource] = StrictField(
-        None, description="An object containing references to the source of the error"
-    )
-    meta: Optional[Meta] = StrictField(
-        None,
-        description="a meta object containing non-standard meta-information about the error.",
-    )
+    id: Annotated[
+        Optional[str],
+        StrictField(
+            description="A unique identifier for this particular occurrence of the problem.",
+        ),
+    ] = None
+    links: Annotated[
+        Optional[ErrorLinks], StrictField(description="A links object storing about")
+    ] = None
+    status: Annotated[
+        Optional[Annotated[str, BeforeValidator(str)]],
+        StrictField(
+            description="the HTTP status code applicable to this problem, expressed as a string value.",
+        ),
+    ] = None
+    code: Annotated[
+        Optional[str],
+        StrictField(
+            description="an application-specific error code, expressed as a string value.",
+        ),
+    ] = None
+    title: Annotated[
+        Optional[str],
+        StrictField(
+            description="A short, human-readable summary of the problem. "
+            "It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.",
+        ),
+    ] = None
+    detail: Annotated[
+        Optional[str],
+        StrictField(
+            description="A human-readable explanation specific to this occurrence of the problem.",
+        ),
+    ] = None
+    source: Annotated[
+        Optional[ErrorSource],
+        StrictField(
+            description="An object containing references to the source of the error"
+        ),
+    ] = None
+    meta: Annotated[
+        Optional[Meta],
+        StrictField(
+            description="a meta object containing non-standard meta-information about the error.",
+        ),
+    ] = None
 
     def __hash__(self):
         return hash(self.model_dump_json())
@@ -193,8 +219,8 @@ class BaseResource(BaseModel):
 
     model_config = ConfigDict(json_schema_extra=resource_json_schema_extra)
 
-    id: str = StrictField(..., description="Resource ID")
-    type: str = StrictField(..., description="Resource type")
+    id: Annotated[str, StrictField(description="Resource ID")]
+    type: Annotated[str, StrictField(description="Resource type")]
 
 
 class RelationshipLinks(BaseModel):
@@ -204,17 +230,21 @@ class RelationshipLinks(BaseModel):
 
     """
 
-    self: Optional[Union[AnyUrl, Link]] = StrictField(
-        None,
-        description="""A link for the relationship itself (a 'relationship link').
+    self: Annotated[
+        Optional[JsonLinkType],
+        StrictField(
+            description="""A link for the relationship itself (a 'relationship link').
 This link allows the client to directly manipulate the relationship.
 When fetched successfully, this link returns the [linkage](https://jsonapi.org/format/1.0/#document-resource-object-linkage) for the related resources as its primary data.
 (See [Fetching Relationships](https://jsonapi.org/format/1.0/#fetching-relationships).)""",
-    )
-    related: Optional[Union[AnyUrl, Link]] = StrictField(
-        None,
-        description="A [related resource link](https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links).",
-    )
+        ),
+    ] = None
+    related: Annotated[
+        Optional[JsonLinkType],
+        StrictField(
+            description="A [related resource link](https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links).",
+        ),
+    ] = None
 
     @model_validator(mode="after")
     def either_self_or_related_must_be_specified(self) -> "RelationshipLinks":
@@ -226,19 +256,24 @@ When fetched successfully, this link returns the [linkage](https://jsonapi.org/f
 
 
 class Relationship(BaseModel):
-    """Representation references from the resource object in which it’s defined to other resource objects."""
+    """Representation references from the resource object in which it's defined to other resource objects."""
 
-    links: Optional[RelationshipLinks] = StrictField(
-        None,
-        description="a links object containing at least one of the following: self, related",
-    )
-    data: Optional[Union[BaseResource, list[BaseResource]]] = StrictField(
-        None, description="Resource linkage"
-    )
-    meta: Optional[Meta] = StrictField(
-        None,
-        description="a meta object that contains non-standard meta-information about the relationship.",
-    )
+    links: Annotated[
+        Optional[RelationshipLinks],
+        StrictField(
+            description="a links object containing at least one of the following: self, related",
+        ),
+    ] = None
+    data: Annotated[
+        Optional[Union[BaseResource, list[BaseResource]]],
+        StrictField(description="Resource linkage"),
+    ] = None
+    meta: Annotated[
+        Optional[Meta],
+        StrictField(
+            description="a meta object that contains non-standard meta-information about the relationship.",
+        ),
+    ] = None
 
     @model_validator(mode="after")
     def at_least_one_relationship_key_must_be_set(self) -> "Relationship":
@@ -271,10 +306,12 @@ class Relationships(BaseModel):
 class ResourceLinks(BaseModel):
     """A Resource Links object"""
 
-    self: Optional[Union[AnyUrl, Link]] = StrictField(
-        None,
-        description="A link that identifies the resource represented by the resource object.",
-    )
+    self: Annotated[
+        Optional[JsonLinkType],
+        StrictField(
+            description="A link that identifies the resource represented by the resource object.",
+        ),
+    ] = None
 
 
 class Attributes(BaseModel):
@@ -303,22 +340,31 @@ class Attributes(BaseModel):
 class Resource(BaseResource):
     """Resource objects appear in a JSON API document to represent resources."""
 
-    links: Optional[ResourceLinks] = StrictField(
-        None, description="a links object containing links related to the resource."
-    )
-    meta: Optional[Meta] = StrictField(
-        None,
-        description="a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.",
-    )
-    attributes: Optional[Attributes] = StrictField(
-        None,
-        description="an attributes object representing some of the resource’s data.",
-    )
-    relationships: Optional[Relationships] = StrictField(
-        None,
-        description="""[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)
+    links: Annotated[
+        Optional[ResourceLinks],
+        StrictField(
+            description="a links object containing links related to the resource."
+        ),
+    ] = None
+    meta: Annotated[
+        Optional[Meta],
+        StrictField(
+            description="a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.",
+        ),
+    ] = None
+    attributes: Annotated[
+        Optional[Attributes],
+        StrictField(
+            description="an attributes object representing some of the resource’s data.",
+        ),
+    ] = None
+    relationships: Annotated[
+        Optional[Relationships],
+        StrictField(
+            description="""[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)
 describing relationships between the resource and other JSON API resources.""",
-    )
+        ),
+    ] = None
 
 
 class Response(BaseModel):
@@ -331,25 +377,34 @@ class Response(BaseModel):
     microseconds, as filters may return unexpected results.
     """
 
-    data: Optional[Union[None, Resource, list[Resource]]] = StrictField(
-        None, description="Outputted Data", uniqueItems=True
-    )
-    meta: Optional[Meta] = StrictField(
-        None,
-        description="A meta object containing non-standard information related to the Success",
-    )
-    errors: Optional[list[Error]] = StrictField(
-        None, description="A list of unique errors", uniqueItems=True
-    )
-    included: Optional[list[Resource]] = StrictField(
-        None, description="A list of unique included resources", uniqueItems=True
-    )
-    links: Optional[ToplevelLinks] = StrictField(
-        None, description="Links associated with the primary data or errors"
-    )
-    jsonapi: Optional[JsonApi] = StrictField(
-        None, description="Information about the JSON API used"
-    )
+    data: Annotated[
+        Optional[Union[None, Resource, list[Resource]]],
+        StrictField(description="Outputted Data", uniqueItems=True),
+    ] = None
+    meta: Annotated[
+        Optional[Meta],
+        StrictField(
+            description="A meta object containing non-standard information related to the Success",
+        ),
+    ] = None
+    errors: Annotated[
+        Optional[list[Error]],
+        StrictField(description="A list of unique errors", uniqueItems=True),
+    ] = None
+    included: Annotated[
+        Optional[list[Resource]],
+        StrictField(
+            description="A list of unique included resources", uniqueItems=True
+        ),
+    ] = None
+    links: Annotated[
+        Optional[ToplevelLinks],
+        StrictField(description="Links associated with the primary data or errors"),
+    ] = None
+    jsonapi: Annotated[
+        Optional[JsonApi],
+        StrictField(description="Information about the JSON API used"),
+    ] = None
 
     @model_validator(mode="after")
     def either_data_meta_or_errors_must_be_set(self) -> "Response":

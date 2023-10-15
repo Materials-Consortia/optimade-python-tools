@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Iterable, Optional, get_args
+from typing import TYPE_CHECKING, Any, Iterable, Optional
 
 from pydantic import BaseModel, TypeAdapter
 
@@ -9,7 +9,7 @@ from optimade.models import (
     ReferenceResource,
     StructureResource,
 )
-from optimade.models.types import AnnotatedType, OptionalType, UnionType
+from optimade.models.types import NoneType, _get_origin_type
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Literal, Union
@@ -41,7 +41,7 @@ try:
     """
     from optimade.exceptions import POSSIBLE_ERRORS
 
-    ERROR_RESPONSES: Optional[dict[int, dict]] = {
+    ERROR_RESPONSES: Optional[dict[int, dict[str, Any]]] = {
         err.status_code: {"model": ErrorResponse, "description": err.title}
         for err in POSSIBLE_ERRORS
     }
@@ -80,26 +80,12 @@ def retrieve_queryable_properties(
 
             # If the field is another data model, "unpack" it by recursively calling
             # this function.
+            # But first, we need to "unpack" the annotation, getting in behind any
+            # Optional, Union, or Annotated types.
+            annotation = _get_origin_type(value.annotation)
 
-            # If the field is a Union, get the first non-None type (this includes
-            # Optional[T])
-            annotation = value.annotation
-            if isinstance(annotation, (OptionalType, UnionType)):
-                for arg in get_args(annotation):
-                    if arg not in (None, type(None)):
-                        annotation = arg
-                        break
-
-            if isinstance(annotation, AnnotatedType):
-                annotation = get_args(annotation)[0]
-
-            # Ensure that the annotation is a builtin type
-            annotation = getattr(annotation, "__origin__", annotation)
-
-            if annotation not in (None, type(None)) and issubclass(
-                annotation, BaseModel
-            ):
-                sub_queryable_properties = list(annotation.model_fields)
+            if annotation not in (None, NoneType) and issubclass(annotation, BaseModel):
+                sub_queryable_properties = list(annotation.model_fields)  # type: ignore[attr-defined]
                 properties.update(
                     retrieve_queryable_properties(annotation, sub_queryable_properties)
                 )

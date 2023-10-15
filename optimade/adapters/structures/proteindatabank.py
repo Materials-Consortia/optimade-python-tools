@@ -21,7 +21,6 @@ These conversion functions both rely on the [NumPy](https://numpy.org/) library.
 Warning:
     Currently, the PDBx/mmCIF conversion function is not parsing as a complete PDBx/mmCIF file.
 """
-
 try:
     import numpy as np
 except ImportError:

@@ -2,14 +2,14 @@ import enum
 import re
 import warnings
 from abc import ABC, abstractmethod
-from typing import Any, Iterable, Optional, Union, get_args
+from typing import Any, Iterable, Optional, Union
 
 from lark import Transformer
 
 from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
 from optimade.models import Attributes, EntryResource
-from optimade.models.types import AnnotatedType, OptionalType, UnionType
+from optimade.models.types import NoneType, _get_origin_type
 from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -127,7 +127,7 @@ class EntryCollection(ABC):
         """
 
     @abstractmethod
-    def count(self, **kwargs: Any) -> Union[int, None]:
+    def count(self, **kwargs: Any) -> Optional[int]:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
@@ -138,7 +138,13 @@ class EntryCollection(ABC):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> tuple[Union[None, dict, list[dict]], Optional[int], bool, set[str], set[str],]:
+    ) -> tuple[
+        Optional[Union[dict[str, Any], list[dict[str, Any]]]],
+        Optional[int],
+        bool,
+        set[str],
+        set[str],
+    ]:
         """
         Fetches results and indicates if more data is available.
 
@@ -160,7 +166,7 @@ class EntryCollection(ABC):
         """
         criteria = self.handle_query_params(params)
         single_entry = isinstance(params, SingleEntryQueryParams)
-        response_fields: Set[str] = criteria.pop("fields")
+        response_fields: set[str] = criteria.pop("fields")
 
         raw_results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry
@@ -171,10 +177,10 @@ class EntryCollection(ABC):
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
         )
 
-        bad_optimade_fields: Set[str] = set()
-        bad_provider_fields: Set[str] = set()
+        bad_optimade_fields: set[str] = set()
+        bad_provider_fields: set[str] = set()
         supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
-        all_attributes: Set[str] = self.resource_mapper.ALL_ATTRIBUTES
+        all_attributes: set[str] = self.resource_mapper.ALL_ATTRIBUTES
         for field in include_fields:
             if field not in all_attributes:
                 if field.startswith("_"):
@@ -196,13 +202,13 @@ class EntryCollection(ABC):
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
 
-        results: Union[None, list[dict], dict] = None
+        results: Optional[Union[list[dict[str, Any]], dict[str, Any]]] = None
 
         if raw_results:
             results = [self.resource_mapper.map_back(doc) for doc in raw_results]
 
             if single_entry:
-                results = results[0]  # type: ignore[assignment]
+                results = results[0]
 
                 if (
                     CONFIG.validate_api_response
@@ -282,22 +288,16 @@ class EntryCollection(ABC):
             Property names.
 
         """
-        annotation = self.resource_cls.model_fields["attributes"].annotation
-        if isinstance(annotation, (OptionalType, UnionType)):
-            for arg in get_args(annotation):
-                if arg not in (None, type(None)):
-                    annotation = arg
-                    break
+        annotation = _get_origin_type(
+            self.resource_cls.model_fields["attributes"].annotation
+        )
 
-        if isinstance(annotation, AnnotatedType):
-            annotation = get_args(annotation)[0]
-
-        if not issubclass(annotation, Attributes):
+        if annotation in (None, NoneType) or not issubclass(annotation, Attributes):
             raise TypeError(
                 "resource class 'attributes' field must be a subclass of 'EntryResourceAttributes'"
             )
 
-        return set(annotation.model_fields)
+        return set(annotation.model_fields)  # type: ignore[attr-defined]
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
@@ -467,7 +467,7 @@ class EntryCollection(ABC):
     def get_next_query_params(
         self,
         params: EntryListingQueryParams,
-        results: Union[None, dict, list[dict]],
+        results: Optional[Union[dict[str, Any], list[dict[str, Any]]]],
     ) -> dict[str, list[str]]:
         """Provides url query pagination parameters that will be used in the next
         link.

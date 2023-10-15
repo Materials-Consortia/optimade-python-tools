@@ -1,26 +1,35 @@
 """Test Reference adapter"""
+from typing import TYPE_CHECKING
+
 import pytest
 
-from optimade.adapters import Reference
-from optimade.models import ReferenceResource
+if TYPE_CHECKING:
+    from typing import Any, Union
+
+    from optimade.adapters.references import Reference
 
 
-def test_instantiate(RAW_REFERENCES):
+def test_instantiate(RAW_REFERENCES: "list[dict[str, Any]]") -> None:
     """Try instantiating Reference for all raw test references"""
+    from optimade.adapters.references import Reference
+    from optimade.models.references import ReferenceResource
+
     for reference in RAW_REFERENCES:
         new_Reference = Reference(reference)
         assert isinstance(new_Reference.entry, ReferenceResource)
 
 
-def test_setting_entry(caplog, RAW_REFERENCES):
+def test_setting_entry(RAW_REFERENCES: "list[dict[str, Any]]") -> None:
     """Make sure entry can only be set once"""
+    from optimade.adapters.references import Reference
+
     reference = Reference(RAW_REFERENCES[0])
-    reference.entry = RAW_REFERENCES[1]
-    assert "entry can only be set once and is already set." in caplog.text
+    with pytest.raises(AttributeError):
+        reference.entry = RAW_REFERENCES[1]
 
 
 @pytest.mark.skip("Currently, there are no conversion types available for references")
-def test_convert(reference):
+def test_convert(reference: "Reference") -> None:
     """Test convert() works
     Choose currently known entry type - must be updated if no longer available.
     """
@@ -40,15 +49,16 @@ def test_convert(reference):
     assert converted_reference == reference._converted[chosen_type]
 
 
-def test_convert_wrong_format(reference):
+def test_convert_wrong_format(reference: "Reference") -> None:
     """Test AttributeError is raised if format does not exist"""
-    nonexistant_format = 0
+    nonexistant_format: "Union[str, int]" = 0
     right_wrong_format_found = False
     while not right_wrong_format_found:
         if str(nonexistant_format) not in reference._type_converters:
             nonexistant_format = str(nonexistant_format)
             right_wrong_format_found = True
         else:
+            assert isinstance(nonexistant_format, int)
             nonexistant_format += 1
 
     with pytest.raises(
@@ -58,7 +68,7 @@ def test_convert_wrong_format(reference):
         reference.convert(nonexistant_format)
 
 
-def test_getattr_order(reference):
+def test_getattr_order(reference: "Reference") -> None:
     """The order of getting an attribute should be:
     1. `as_<entry type format>`
     2. `<entry type attribute>`

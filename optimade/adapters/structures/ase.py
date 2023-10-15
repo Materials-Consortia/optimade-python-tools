@@ -7,7 +7,6 @@ This conversion function relies on the ASE code.
 
 For more information on the ASE code see [their documentation](https://wiki.fysik.dtu.dk/ase/).
 """
-
 from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.utils import (
     elements_ratios_from_species_at_sites,

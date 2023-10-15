@@ -1,5 +1,5 @@
 # pylint: disable=no-self-argument
-from typing import Any, Optional, Union
+from typing import Annotated, Any, Optional, Union
 
 from pydantic import model_validator
 
@@ -31,14 +31,17 @@ __all__ = (
 class ErrorResponse(Response):
     """errors MUST be present and data MUST be skipped"""
 
-    meta: ResponseMeta = StrictField(
-        ..., description="A meta object containing non-standard information."
-    )
-    errors: list[OptimadeError] = StrictField(
-        ...,
-        description="A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.",
-        uniqueItems=True,
-    )
+    meta: Annotated[
+        ResponseMeta,
+        StrictField(description="A meta object containing non-standard information."),
+    ]
+    errors: Annotated[
+        list[OptimadeError],
+        StrictField(
+            description="A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.",
+            uniqueItems=True,
+        ),
+    ]
 
     @model_validator(mode="after")
     def data_must_be_skipped(self) -> "ErrorResponse":
@@ -48,76 +51,91 @@ class ErrorResponse(Response):
 
 
 class IndexInfoResponse(Success):
-    data: IndexInfoResource = StrictField(
-        ..., description="Index meta-database /info data."
-    )
+    data: Annotated[
+        IndexInfoResource, StrictField(description="Index meta-database /info data.")
+    ]
 
 
 class EntryInfoResponse(Success):
-    data: EntryInfoResource = StrictField(
-        ..., description="OPTIMADE information for an entry endpoint."
-    )
+    data: Annotated[
+        EntryInfoResource,
+        StrictField(description="OPTIMADE information for an entry endpoint."),
+    ]
 
 
 class InfoResponse(Success):
-    data: BaseInfoResource = StrictField(
-        ..., description="The implementations /info data."
-    )
+    data: Annotated[
+        BaseInfoResource, StrictField(description="The implementations /info data.")
+    ]
 
 
 class EntryResponseOne(Success):
-    data: Union[EntryResource, dict[str, Any], None] = None  # type: ignore[assignment]
-    included: Optional[Union[list[EntryResource], list[dict[str, Any]]]] = StrictField(  # type: ignore[assignment]
-        None,
-        description="A list of unique included OPTIMADE entry resources.",
-        uniqueItems=True,
-    )
+    data: Optional[Union[EntryResource, dict[str, Any]]] = None  # type: ignore[assignment]
+    included: Annotated[
+        Optional[Union[list[EntryResource], list[dict[str, Any]]]],
+        StrictField(
+            description="A list of unique included OPTIMADE entry resources.",
+            uniqueItems=True,
+        ),
+    ] = None  # type: ignore[assignment]
 
 
 class EntryResponseMany(Success):
-    data: Union[list[EntryResource], list[dict[str, Any]]] = StrictField(  # type: ignore[assignment]
-        ...,
-        description="List of unique OPTIMADE entry resource objects.",
-        uniqueItems=True,
-    )
-    included: Optional[Union[list[EntryResource], list[dict[str, Any]]]] = StrictField(  # type: ignore[assignment]
-        None,
-        description="A list of unique included OPTIMADE entry resources.",
-        uniqueItems=True,
-    )
+    data: Annotated[  # type: ignore[assignment]
+        Union[list[EntryResource], list[dict[str, Any]]],
+        StrictField(
+            description="List of unique OPTIMADE entry resource objects.",
+            uniqueItems=True,
+        ),
+    ]
+    included: Annotated[
+        Optional[Union[list[EntryResource], list[dict[str, Any]]]],
+        StrictField(
+            description="A list of unique included OPTIMADE entry resources.",
+            uniqueItems=True,
+        ),
+    ] = None  # type: ignore[assignment]
 
 
 class LinksResponse(EntryResponseMany):
-    data: Union[list[LinksResource], list[dict[str, Any]]] = StrictField(
-        ...,
-        description="List of unique OPTIMADE links resource objects.",
-        uniqueItems=True,
-    )
+    data: Annotated[
+        Union[list[LinksResource], list[dict[str, Any]]],
+        StrictField(
+            description="List of unique OPTIMADE links resource objects.",
+            uniqueItems=True,
+        ),
+    ]
 
 
 class StructureResponseOne(EntryResponseOne):
-    data: Union[StructureResource, dict[str, Any], None] = StrictField(
-        ..., description="A single structures entry resource."
-    )
+    data: Annotated[
+        Optional[Union[StructureResource, dict[str, Any]]],
+        StrictField(description="A single structures entry resource."),
+    ]
 
 
 class StructureResponseMany(EntryResponseMany):
-    data: Union[list[StructureResource], list[dict[str, Any]]] = StrictField(
-        ...,
-        description="List of unique OPTIMADE structures entry resource objects.",
-        uniqueItems=True,
-    )
+    data: Annotated[
+        Union[list[StructureResource], list[dict[str, Any]]],
+        StrictField(
+            description="List of unique OPTIMADE structures entry resource objects.",
+            uniqueItems=True,
+        ),
+    ]
 
 
 class ReferenceResponseOne(EntryResponseOne):
-    data: Union[ReferenceResource, dict[str, Any], None] = StrictField(
-        ..., description="A single references entry resource."
-    )
+    data: Annotated[
+        Optional[Union[ReferenceResource, dict[str, Any]]],
+        StrictField(description="A single references entry resource."),
+    ]
 
 
 class ReferenceResponseMany(EntryResponseMany):
-    data: Union[list[ReferenceResource], list[dict[str, Any]]] = StrictField(
-        ...,
-        description="List of unique OPTIMADE references entry resource objects.",
-        uniqueItems=True,
-    )
+    data: Annotated[
+        Union[list[ReferenceResource], list[dict[str, Any]]],
+        StrictField(
+            description="List of unique OPTIMADE references entry resource objects.",
+            uniqueItems=True,
+        ),
+    ]
