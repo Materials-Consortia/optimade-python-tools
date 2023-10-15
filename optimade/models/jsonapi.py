@@ -1,7 +1,7 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
 # pylint: disable=no-self-argument
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Optional, Union
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyUrl,
@@ -168,7 +168,7 @@ class BaseResource(BaseModel):
 
     class Config:
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["BaseResource"]) -> None:
+        def schema_extra(schema: dict[str, Any], model: type["BaseResource"]) -> None:
             """Ensure `id` and `type` are the first two entries in the list required properties.
 
             Note:
@@ -227,7 +227,7 @@ class Relationship(BaseModel):
         None,
         description="a links object containing at least one of the following: self, related",
     )
-    data: Optional[Union[BaseResource, List[BaseResource]]] = StrictField(
+    data: Optional[Union[BaseResource, list[BaseResource]]] = StrictField(
         None, description="Resource linkage"
     )
     meta: Optional[Meta] = StrictField(
@@ -323,17 +323,17 @@ describing relationships between the resource and other JSON API resources.""",
 class Response(BaseModel):
     """A top-level response"""
 
-    data: Optional[Union[None, Resource, List[Resource]]] = StrictField(
+    data: Optional[Union[None, Resource, list[Resource]]] = StrictField(
         None, description="Outputted Data", uniqueItems=True
     )
     meta: Optional[Meta] = StrictField(
         None,
         description="A meta object containing non-standard information related to the Success",
     )
-    errors: Optional[List[Error]] = StrictField(
+    errors: Optional[list[Error]] = StrictField(
         None, description="A list of unique errors", uniqueItems=True
     )
-    included: Optional[List[Resource]] = StrictField(
+    included: Optional[list[Resource]] = StrictField(
         None, description="A list of unique included resources", uniqueItems=True
     )
     links: Optional[ToplevelLinks] = StrictField(

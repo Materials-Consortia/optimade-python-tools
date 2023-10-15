@@ -21,7 +21,6 @@ These conversion functions both rely on the [NumPy](https://numpy.org/) library.
 Warning:
     Currently, the PDBx/mmCIF conversion function is not parsing as a complete PDBx/mmCIF file.
 """
-from typing import Dict
 
 try:
     import numpy as np
@@ -164,7 +163,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     else:
         sites = attributes.cartesian_site_positions
 
-    species: Dict[str, OptimadeStructureSpecies] = {
+    species: dict[str, OptimadeStructureSpecies] = {
         species.name: species for species in attributes.species  # type: ignore[union-attr]
     }
 
@@ -240,7 +239,7 @@ def get_pdb(  # pylint: disable=too-many-locals
 
     pdb += "MODEL     1\n"
 
-    species: Dict[str, OptimadeStructureSpecies] = {
+    species: dict[str, OptimadeStructureSpecies] = {
         species.name: species
         for species in attributes.species  # type:ignore[union-attr]
     }

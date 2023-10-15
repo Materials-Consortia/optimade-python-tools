@@ -1,5 +1,4 @@
 import abc
-from typing import Tuple
 
 import pytest
 from lark import Tree
@@ -11,7 +10,7 @@ from optimade.filterparser import LarkParser
 class BaseTestFilterParser(abc.ABC):
     """Base class for parsing different versions of the grammar using `LarkParser`."""
 
-    version: Tuple[int, int, int]
+    version: tuple[int, int, int]
     variant: str = "default"
 
     @pytest.fixture(autouse=True)

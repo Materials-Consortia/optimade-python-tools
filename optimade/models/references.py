@@ -1,5 +1,5 @@
 # pylint: disable=line-too-long,no-self-argument
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import AnyUrl, BaseModel, validator  # pylint: disable=no-name-in-module
 
@@ -42,14 +42,14 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
 
     """
 
-    authors: Optional[List[Person]] = OptimadeField(
+    authors: Optional[list[Person]] = OptimadeField(
         None,
         description="List of person objects containing the authors of the reference.",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
 
-    editors: Optional[List[Person]] = OptimadeField(
+    editors: Optional[list[Person]] = OptimadeField(
         None,
         description="List of person objects containing the editors of the reference.",
         support=SupportLevel.OPTIONAL,
