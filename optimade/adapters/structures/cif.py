@@ -16,7 +16,6 @@ Note:
 
 This conversion function relies on the [NumPy](https://numpy.org/) library.
 """
-
 from optimade.adapters.structures.utils import (
     cell_to_cellpar,
     fractional_coordinates,

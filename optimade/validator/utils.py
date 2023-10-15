@@ -11,14 +11,14 @@ used by the validator. The two main features being:
    themselves.
 
 """
-
 import dataclasses
 import json
 import sys
 import time
 import traceback as tb
 import urllib.parse
-from typing import Any, Callable, Optional
+from collections.abc import Callable
+from typing import Any, Optional
 
 import requests
 from pydantic import Field, ValidationError

@@ -163,7 +163,7 @@ def unit_vector(x: Vector3D) -> Vector3D:
 
 def cellpar_to_cell(
     cellpar: list[float],
-    ab_normal: tuple[float, float, float] = (0.0, 0.0, 1.0),
+    ab_normal: tuple[int, int, int] = (0, 0, 1),
     a_direction: Optional[tuple[int, int, int]] = None,
 ) -> list[Vector3D]:
     """Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.
