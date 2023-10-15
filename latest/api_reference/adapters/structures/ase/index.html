@@ -2777,7 +2777,7 @@ to an ASE <code>Atoms</code> object.</p>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">species</span><span class="p">:</span>
         <span class="n">species</span> <span class="o">=</span> <span class="n">species_from_species_at_sites</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">species_at_sites</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
 
-    <span class="n">optimade_species</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">species</span><span class="p">}</span>
+    <span class="n">optimade_species</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">species</span><span class="p">}</span>
 
     <span class="c1"># Since we&#39;ve made sure there are no species with more than 1 chemical symbol,</span>
     <span class="c1"># asking for index 0 will always work.</span>

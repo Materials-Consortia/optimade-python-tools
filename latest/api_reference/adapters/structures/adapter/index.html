@@ -2619,13 +2619,13 @@ and properties.</p>
   <tbody>
       <tr>
         <td><code>ENTRY_RESOURCE</code></td>
-        <td><code>Type[optimade.models.structures.StructureResource]</code></td>
+        <td><code>type</code></td>
         <td><p>This adapter stores entry resources as
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResource"><code>StructureResource</code></a>s.</p></td>
       </tr>
       <tr>
         <td><code>_type_converters</code></td>
-        <td><code>Dict[str, Callable]</code></td>
+        <td><code>dict</code></td>
         <td><p>Dictionary of valid conversion types for entry.</p>
 <p>Currently available types:</p>
 <ul>
@@ -2640,7 +2640,7 @@ and properties.</p>
       </tr>
       <tr>
         <td><code>_type_ingesters</code></td>
-        <td><code>Dict[str, Callable]</code></td>
+        <td><code>dict</code></td>
         <td><p>Dictionary of valid ingesters.</p></td>
       </tr>
       <tr>
@@ -2690,8 +2690,8 @@ model.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">StructureResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">StructureResource</span>
-    <span class="n">_type_converters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">StructureResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">StructureResource</span>
+    <span class="n">_type_converters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;aiida_structuredata&quot;</span><span class="p">:</span> <span class="n">get_aiida_structure_data</span><span class="p">,</span>
         <span class="s2">&quot;ase&quot;</span><span class="p">:</span> <span class="n">get_ase_atoms</span><span class="p">,</span>
         <span class="s2">&quot;cif&quot;</span><span class="p">:</span> <span class="n">get_cif</span><span class="p">,</span>
@@ -2701,12 +2701,12 @@ model.</p></td>
         <span class="s2">&quot;jarvis&quot;</span><span class="p">:</span> <span class="n">get_jarvis_atoms</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">_type_ingesters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">_type_ingesters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;pymatgen&quot;</span><span class="p">:</span> <span class="n">from_pymatgen</span><span class="p">,</span>
         <span class="s2">&quot;ase&quot;</span><span class="p">:</span> <span class="n">from_ase_atoms</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">_type_ingesters_by_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">_type_ingesters_by_type</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;pymatgen&quot;</span><span class="p">:</span> <span class="n">PymatgenStructure</span><span class="p">,</span>
         <span class="s2">&quot;ase&quot;</span><span class="p">:</span> <span class="n">ASEAtoms</span><span class="p">,</span>
     <span class="p">}</span>

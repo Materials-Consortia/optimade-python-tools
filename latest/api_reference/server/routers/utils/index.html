@@ -2749,10 +2749,10 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
           <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_entries</span><span class="p">(</span>
     <span class="n">collection</span><span class="p">:</span> <span class="n">EntryCollection</span><span class="p">,</span>
-    <span class="n">response</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResponseMany</span><span class="p">],</span>  <span class="c1"># noqa</span>
+    <span class="n">response</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResponseMany</span><span class="p">],</span>  <span class="c1"># noqa</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generalized /{entry} endpoint getter&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">optimade.server.routers</span> <span class="kn">import</span> <span class="n">ENTRY_COLLECTIONS</span>
 
@@ -2838,20 +2838,20 @@ to include them in the response.</p>
   <tbody>
       <tr>
         <td><code>results</code></td>
-        <td><code>Union[optimade.models.entries.EntryResource, List[optimade.models.entries.EntryResource], Dict, List[Dict]]</code></td>
+        <td><code>Union[optimade.models.entries.EntryResource, list[optimade.models.entries.EntryResource], dict, list[dict]]</code></td>
         <td><p>list of returned documents.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>ENTRY_COLLECTIONS</code></td>
-        <td><code>Dict[str, optimade.server.entry_collections.entry_collections.EntryCollection]</code></td>
+        <td><code>dict</code></td>
         <td><p>dictionary containing collections to query, with key
 based on endpoint type.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>include_param</code></td>
-        <td><code>List[str]</code></td>
+        <td><code>list</code></td>
         <td><p>list of queried related resources that should be included in
 <code>included</code>.</p></td>
         <td><em>required</em></td>
@@ -2868,7 +2868,7 @@ based on endpoint type.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>List[Union[optimade.models.entries.EntryResource, Dict]]</code></td>
+      <td><code>list</code></td>
       <td><p>Dictionary with the same keys as ENTRY_COLLECTIONS, each containing the list
     of resource objects for that entry type.</p></td>
     </tr>
@@ -2877,10 +2877,10 @@ based on endpoint type.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_included_relationships</span><span class="p">(</span>
-    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
-    <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryCollection</span><span class="p">],</span>
-    <span class="n">include_param</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]]:</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span>
+    <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryCollection</span><span class="p">],</span>
+    <span class="n">include_param</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Filters the included relationships and makes the appropriate compound request</span>
 <span class="sd">    to include them in the response.</span>
 
@@ -2908,7 +2908,7 @@ based on endpoint type.</p></td>
                 <span class="sa">f</span><span class="s2">&quot;Known relationship types: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ENTRY_COLLECTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-    <span class="n">endpoint_includes</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">endpoint_includes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
         <span class="c1"># convert list of references into dict by ID to only included unique IDs</span>
         <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2937,12 +2937,12 @@ based on endpoint type.</p></td>
                     <span class="k">if</span> <span class="n">ref</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]:</span>
                         <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">ref</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ref</span>
 
-    <span class="n">included</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
-        <span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]</span>
+    <span class="n">included</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">dict</span><span class="p">]</span>
     <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">:</span>
         <span class="n">compound_filter</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="p">[</span><span class="s1">&#39;id=&quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ref_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">ref_id</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]]</span>
+            <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;id=&quot;</span><span class="si">{</span><span class="n">ref_id</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">for</span> <span class="n">ref_id</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]]</span>
         <span class="p">)</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">EntryListingQueryParams</span><span class="p">(</span>
             <span class="nb">filter</span><span class="o">=</span><span class="n">compound_filter</span><span class="p">,</span>
@@ -2999,13 +2999,13 @@ This is due to all other top-level fields are REQUIRED in the response.</p>
   <tbody>
       <tr>
         <td><code>exclude_fields</code></td>
-        <td><code>Set[str]</code></td>
+        <td><code>set</code></td>
         <td><p>Fields under <code>attributes</code> to be excluded from the response.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>include_fields</code></td>
-        <td><code>Set[str]</code></td>
+        <td><code>set</code></td>
         <td><p>Fields under <code>attributes</code> that were requested that should be
 set to null if missing in the entry.</p></td>
         <td><em>required</em></td>
@@ -3022,7 +3022,7 @@ set to null if missing in the entry.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>List[Dict[str, Any]]</code></td>
+      <td><code>list</code></td>
       <td><p>List of resulting resources as dictionaries after pruning according to
 the <code>response_fields</code> OPTIMADE URL query parameter.</p></td>
     </tr>
@@ -3031,10 +3031,10 @@ the <code>response_fields</code> OPTIMADE URL query parameter.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">handle_response_fields</span><span class="p">(</span>
-    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">Dict</span><span class="p">],</span>
-    <span class="n">exclude_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-    <span class="n">include_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">dict</span><span class="p">],</span>
+    <span class="n">exclude_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">include_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle query parameter `response_fields`.</span>
 
 <span class="sd">    It is assumed that all fields are under `attributes`.</span>

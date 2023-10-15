@@ -2830,12 +2830,12 @@ trees into Elasticsearch queries.</p>
         <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span> <span class="s2">&quot;gte&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">_quantity_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">ElasticsearchQuantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">ElasticsearchQuantity</span>
+    <span class="n">_quantity_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">ElasticsearchQuantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">ElasticsearchQuantity</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
-        <span class="n">quantities</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
+        <span class="n">quantities</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">quantities</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">quantities</span> <span class="o">=</span> <span class="n">quantities</span>
@@ -2876,7 +2876,7 @@ trees into Elasticsearch queries.</p>
                 <span class="k">return</span> <span class="n">quantity</span>
 
         <span class="k">if</span> <span class="n">nested</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nested</span><span class="o">.</span><span class="n">backend_field</span><span class="p">,</span> <span class="n">quantity</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nested</span><span class="o">.</span><span class="n">backend_field</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">quantity</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># type: ignore[union-attr]</span>
 
         <span class="k">return</span> <span class="n">quantity</span><span class="o">.</span><span class="n">backend_field</span>  <span class="c1"># type: ignore[union-attr, return-value]</span>
 

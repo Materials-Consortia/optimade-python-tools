@@ -2735,7 +2735,7 @@ Client        </code>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
-        <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_CONN_TIMEOUT</span><span class="p">,</span>
         <span class="n">read_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_READ_TIMEOUT</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2897,7 +2897,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
       </tr>
       <tr>
         <td><code>headers</code></td>
-        <td><code>Optional[Dict[str, str]]</code></td>
+        <td><code>Optional[dict[str, str]]</code></td>
         <td><p>Dictionary of additional headers to add to every request.</p></td>
         <td><code>None</code></td>
       </tr>
@@ -2921,7 +2921,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
-    <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_CONN_TIMEOUT</span><span class="p">,</span>
     <span class="n">read_timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_READ_TIMEOUT</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3330,7 +3330,7 @@ to the docstring for <code>wrapper(...)</code> below.</p>
   <tbody>
       <tr>
         <td><code>test_fn</code></td>
-        <td><code>Callable[..., Tuple[Any, str]]</code></td>
+        <td><code>Callable[..., tuple[Any, str]]</code></td>
         <td><p>Any function that returns an object and a message to
 print upon success. The function should raise a <code>ResponseError</code>,
 <code>ValidationError</code> or a <code>ManualValidationError</code> if the test
@@ -3342,7 +3342,7 @@ that the test was not appropriate and should be ignored.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>optimade/validator/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_case</span><span class="p">(</span><span class="n">test_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_case</span><span class="p">(</span><span class="n">test_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper for test case functions, which pretty-prints any errors</span>
 <span class="sd">    depending on verbosity level, collates the number and severity of</span>
 <span class="sd">    test failures, returns the response and summary string to the caller.</span>

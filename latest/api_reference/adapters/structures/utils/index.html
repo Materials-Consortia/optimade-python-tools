@@ -2696,7 +2696,7 @@
   <tbody>
       <tr>
         <td><code>cell</code></td>
-        <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
+        <td><code>tuple</code></td>
         <td><p>A Cartesian 3x3 cell. This equates to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
         <td><em>required</em></td>
@@ -2719,7 +2719,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>List[float]</code></td>
+      <td><code>list</code></td>
       <td><p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p></td>
     </tr>
   </tbody>
@@ -2727,8 +2727,8 @@
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cell_to_cellpar</span><span class="p">(</span>
-    <span class="n">cell</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">radians</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="n">cell</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">radians</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the cell parameters `[a, b, c, alpha, beta, gamma]`.</span>
 
 <span class="sd">    Angles are in degrees unless `radian=True` is used.</span>
@@ -2823,20 +2823,20 @@ plane.</p>
   <tbody>
       <tr>
         <td><code>cellpar</code></td>
-        <td><code>List[float]</code></td>
+        <td><code>list</code></td>
         <td><p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p>
 <p><strong>Note</strong>: The angles must be given in degrees.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>ab_normal</code></td>
-        <td><code>Tuple[int, int, int]</code></td>
+        <td><code>tuple</code></td>
         <td><p>Unit vector normal to the ab-plane.</p></td>
         <td><code>(0, 0, 1)</code></td>
       </tr>
       <tr>
         <td><code>a_direction</code></td>
-        <td><code>Optional[Tuple[int, int, int]]</code></td>
+        <td><code>Optional[tuple[int, int, int]]</code></td>
         <td><p>Unit vector defining the a-direction (default: <code>(1, 0, 0)</code>).</p></td>
         <td><code>None</code></td>
       </tr>
@@ -2852,7 +2852,7 @@ plane.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>List[types.ConstrainedListValue]</code></td>
+      <td><code>list</code></td>
       <td><p>A Cartesian 3x3 cell.</p>
 <p>This should equate to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
@@ -2862,10 +2862,10 @@ plane.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cellpar_to_cell</span><span class="p">(</span>
-    <span class="n">cellpar</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-    <span class="n">ab_normal</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">a_direction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]:</span>
+    <span class="n">cellpar</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">ab_normal</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">a_direction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.</span>
 
 <span class="sd">    Angles must be in degrees.</span>
@@ -2998,7 +2998,7 @@ to sites wholly occupied by the given elements, e.g., not arbitrary species labe
 
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">elements_ratios_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">elements_ratios_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the OPTIMADE `elements_ratios` field from `species_at_sites` in the case where `species_at_sites` refers</span>
 <span class="sd">    to sites wholly occupied by the given elements, e.g., not arbitrary species labels or with partial/mixed occupancy.</span>
 
@@ -3046,14 +3046,14 @@ to sites wholly occupied by the given elements, e.g., not arbitrary species labe
   <tbody>
       <tr>
         <td><code>cell</code></td>
-        <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
+        <td><code>tuple</code></td>
         <td><p>A Cartesian 3x3 cell. This equates to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>cartesian_positions</code></td>
-        <td><code>List[types.ConstrainedListValue]</code></td>
+        <td><code>list</code></td>
         <td><p>A list of cartesian atomic positions. This equates to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.cartesian_site_positions"><code>cartesian_site_positions</code></a>
 attribute.</p></td>
@@ -3071,7 +3071,7 @@ attribute.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>List[types.ConstrainedListValue]</code></td>
+      <td><code>list</code></td>
       <td><p>A list of fractional coordinates for the atomic positions.</p></td>
     </tr>
   </tbody>
@@ -3079,8 +3079,8 @@ attribute.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">fractional_coordinates</span><span class="p">(</span>
-    <span class="n">cell</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">cartesian_positions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]:</span>
+    <span class="n">cell</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">cartesian_positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns fractional coordinates and wraps coordinates to `[0,1[`.</span>
 
 <span class="sd">    Note:</span>
@@ -3151,7 +3151,7 @@ attribute.</p></td>
   <tbody>
       <tr>
         <td><code>lattice_vectors</code></td>
-        <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
+        <td><code>tuple</code></td>
         <td><p>A 3x3 cartesian cell. This is the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a>
 attribute.</p></td>
@@ -3185,7 +3185,7 @@ values.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pad_cell</span><span class="p">(</span>
-    <span class="n">lattice_vectors</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span>
+    <span class="n">lattice_vectors</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span>
     <span class="n">padding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>  <span class="c1"># Setting this properly makes MkDocs fail.</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Turn any `null`/`None` values into a `float` in given `tuple` of</span>
@@ -3247,7 +3247,7 @@ For more info, see <a href="https://www.wwpdb.org/documentation/file-format-cont
   <tbody>
       <tr>
         <td><code>cell</code></td>
-        <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
+        <td><code>tuple</code></td>
         <td><p>A Cartesian 3x3 cell. This equates to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p></td>
         <td><em>required</em></td>
@@ -3264,7 +3264,7 @@ For more info, see <a href="https://www.wwpdb.org/documentation/file-format-cont
   </thead>
   <tbody>
     <tr>
-      <td><code>Tuple[types.ConstrainedListValue, types.ConstrainedListValue, types.ConstrainedListValue]</code></td>
+      <td><code>tuple</code></td>
       <td><p>A scaled 3x3 cell.</p></td>
     </tr>
   </tbody>
@@ -3272,8 +3272,8 @@ For more info, see <a href="https://www.wwpdb.org/documentation/file-format-cont
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">scaled_cell</span><span class="p">(</span>
-    <span class="n">cell</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">]:</span>
+    <span class="n">cell</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).</span>
 <span class="sd">    This 3x3 matrix can be used to calculate the fractional coordinates from the cartesian_site_positions.</span>
 
@@ -3341,7 +3341,7 @@ the chemical symbol.</p>
   <tbody>
       <tr>
         <td><code>species_at_sites</code></td>
-        <td><code>List[str]</code></td>
+        <td><code>list</code></td>
         <td><p>The list found under the species_at_sites field.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -3357,7 +3357,7 @@ the chemical symbol.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>List[optimade.models.structures.Species]</code></td>
+      <td><code>list</code></td>
       <td><p>An OPTIMADE species list.</p></td>
     </tr>
   </tbody>
@@ -3365,8 +3365,8 @@ the chemical symbol.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">species_from_species_at_sites</span><span class="p">(</span>
-    <span class="n">species_at_sites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">OptimadeStructureSpecies</span><span class="p">]:</span>
+    <span class="n">species_at_sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">OptimadeStructureSpecies</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;When a list of species dictionaries is not provided, this function</span>
 <span class="sd">    can be used to infer the species from the provided species_at_sites.</span>
 

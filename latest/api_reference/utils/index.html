@@ -2631,19 +2631,19 @@ with OPTIMADE providers that can be used in server or client code.</p>
   <tbody>
       <tr>
         <td><code>include_providers</code></td>
-        <td><code>Optional[Container[str]]</code></td>
+        <td><code>Optional[collections.abc.Container[str]]</code></td>
         <td><p>A set/container of provider IDs to include child databases for.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>exclude_providers</code></td>
-        <td><code>Optional[Container[str]]</code></td>
+        <td><code>Optional[collections.abc.Container[str]]</code></td>
         <td><p>A set/container of provider IDs to exclude child databases for.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>exclude_databases</code></td>
-        <td><code>Optional[Container[str]]</code></td>
+        <td><code>Optional[collections.abc.Container[str]]</code></td>
         <td><p>A set/container of specific database URLs to exclude.</p></td>
         <td><code>None</code></td>
       </tr>
@@ -2659,7 +2659,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>Iterable[str]</code></td>
+      <td><code>Iterable</code></td>
       <td><p>A generator of child database links that obey the given parameters.</p></td>
     </tr>
   </tbody>
@@ -2751,7 +2751,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>List[optimade.models.links.LinksResource]</code></td>
+      <td><code>list</code></td>
       <td><p>A list of the valid links entries from this provider that
 have <code>link_type</code> <code>"child"</code>.</p></td>
     </tr>
@@ -2777,7 +2777,7 @@ invalid, or the request otherwise fails.</p></td>
           <summary>Source code in <code>optimade/utils.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_child_database_links</span><span class="p">(</span>
     <span class="n">provider</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;For a provider, return a list of available child databases.</span>
 
 <span class="sd">    Arguments:</span>

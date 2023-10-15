@@ -2690,7 +2690,7 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
 
     <span class="n">pdb</span> <span class="o">+=</span> <span class="s2">&quot;MODEL     1</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-    <span class="n">species</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">species</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span>
         <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>  <span class="c1"># type:ignore[union-attr]</span>
     <span class="p">}</span>
@@ -2908,7 +2908,7 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
     <span class="k">else</span><span class="p">:</span>
         <span class="n">sites</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span>
 
-    <span class="n">species</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">species</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span> <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>  <span class="c1"># type: ignore[union-attr]</span>
     <span class="p">}</span>
 

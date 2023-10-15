@@ -3105,18 +3105,18 @@ EntryInfoResource            (<span title="pydantic.main.BaseModel">BaseModel</s
         <details class="quote">
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryInfoResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">formats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">formats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of output formats available for this type of entry.&quot;</span>
     <span class="p">)</span>
 
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Description of the entry.&quot;</span><span class="p">)</span>
 
-    <span class="n">properties</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">properties</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dictionary describing queryable properties for this entry type, where each key is a property name.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">output_fields_by_format</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">output_fields_by_format</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -3160,7 +3160,7 @@ EntryInfoResource            (<span title="pydantic.main.BaseModel">BaseModel</s
 
 
 <h3 id="optimade.models.entries.EntryInfoResource.formats" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -3183,7 +3183,7 @@ EntryInfoResource            (<span title="pydantic.main.BaseModel">BaseModel</s
 
 
 <h3 id="optimade.models.entries.EntryInfoResource.output_fields_by_format" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">output_fields_by_format</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">output_fields_by_format</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -3206,7 +3206,7 @@ EntryInfoResource            (<span title="pydantic.main.BaseModel">BaseModel</s
 
 
 <h3 id="optimade.models.entries.EntryInfoResource.properties" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">properties</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">EntryInfoProperty</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">properties</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>

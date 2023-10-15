@@ -2831,7 +2831,7 @@ to handle some specific edge-cases for MongoDB.</p>
   <tbody>
       <tr>
         <td><code>operator_map</code></td>
-        <td><code>Dict[str, Optional[str]]</code></td>
+        <td><code>dict</code></td>
         <td><p>A map from comparison operators
 to the mongoDB specific versions.</p></td>
       </tr>
@@ -2843,7 +2843,7 @@ logical inverse.</p></td>
       </tr>
       <tr>
         <td><code>mapper</code></td>
-        <td><code>Optional[Type[optimade.server.mappers.entries.BaseResourceMapper]]</code></td>
+        <td><code>Optional[type[optimade.server.mappers.entries.BaseResourceMapper]]</code></td>
         <td><p>A resource mapper object that defines the
 expected fields and acts as a container for
 various field-related configuration.</p></td>
@@ -2890,7 +2890,7 @@ various field-related configuration.</p></td>
         <span class="s2">&quot;$nin&quot;</span><span class="p">:</span> <span class="s2">&quot;$in&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to post-process the nested dictionary of the parsed query.&quot;&quot;&quot;</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_relationship_filtering</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_length_operators</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -3063,7 +3063,7 @@ various field-related configuration.</p></td>
         <span class="c1"># property_zip_addon: &quot;:&quot; property (&quot;:&quot; property)*</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_recursive_expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_recursive_expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function for parsing `expression_phrase`. Recursively sorts out</span>
 <span class="sd">        the correct precedence for `$not`, `$and` and `$or`.</span>
 
@@ -3076,7 +3076,7 @@ various field-related configuration.</p></td>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">handle_not_and</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+        <span class="k">def</span> <span class="nf">handle_not_and</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Handle the case of `~(A &amp; B) -&gt; (~A | ~B)`.</span>
 
 <span class="sd">            We have to check for the special case in which the &quot;and&quot; was created</span>
@@ -3105,7 +3105,7 @@ various field-related configuration.</p></td>
                 <span class="p">]</span>
             <span class="p">}</span>
 
-        <span class="k">def</span> <span class="nf">handle_not_or</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+        <span class="k">def</span> <span class="nf">handle_not_or</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Handle the case of ~(A | B) -&gt; (~A &amp; ~B).</span>
 
 <span class="sd">            !!! note</span>
@@ -3653,7 +3653,7 @@ various field-related configuration.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Used to post-process the nested dictionary of the parsed query.&quot;&quot;&quot;</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_relationship_filtering</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_length_operators</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -3996,7 +3996,7 @@ another, the following functions could be used:</p>
 
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recursive_postprocessing</span><span class="p">(</span><span class="n">filter_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">],</span> <span class="n">condition</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">recursive_postprocessing</span><span class="p">(</span><span class="n">filter_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">condition</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively descend into the query, checking each dictionary</span>
 <span class="sd">    (contained in a list, or as an entry in another dictionary) for</span>
 <span class="sd">    the condition passed. If the condition is true, apply the</span>

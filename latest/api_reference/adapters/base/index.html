@@ -2698,22 +2698,22 @@ EntryAdapter        </code>
   <tbody>
       <tr>
         <td><code>ENTRY_RESOURCE</code></td>
-        <td><code>Type[optimade.models.entries.EntryResource]</code></td>
+        <td><code>type</code></td>
         <td><p>Entry resource to store entry as.</p></td>
       </tr>
       <tr>
         <td><code>_type_converters</code></td>
-        <td><code>Dict[str, Callable]</code></td>
+        <td><code>dict</code></td>
         <td><p>Dictionary of valid conversion types for entry.</p></td>
       </tr>
       <tr>
         <td><code>_type_ingesters</code></td>
-        <td><code>Dict[str, Callable]</code></td>
+        <td><code>dict</code></td>
         <td><p>Dictionary of valid ingestion types mapped to ingestion functions.</p></td>
       </tr>
       <tr>
         <td><code>_type_ingesters_by_type</code></td>
-        <td><code>Dict[str, Type]</code></td>
+        <td><code>dict</code></td>
         <td><p>Dictionary mapping the keys of <code>_type_ingesters</code> to data
 types that can be ingested.</p></td>
       </tr>
@@ -2746,10 +2746,10 @@ types that can be ingested.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryResource</span>
-    <span class="n">_type_converters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">_type_ingesters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">_type_ingesters_by_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryResource</span>
+    <span class="n">_type_converters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_type_ingesters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">_type_ingesters_by_type</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2757,7 +2757,7 @@ types that can be ingested.</p></td>
 <span class="sd">            entry (dict): A JSON OPTIMADE single resource entry.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">=</span> <span class="n">entry</span>  <span class="c1"># type: ignore[assignment]</span>
 
@@ -2868,7 +2868,7 @@ types that can be ingested.</p></td>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_model_attributes</span><span class="p">(</span>
-        <span class="n">starting_instances</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="n">starting_instances</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper method for retrieving the OPTIMADE model&#39;s attribute, supporting &quot;.&quot;-nested attributes&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">starting_instances</span><span class="p">:</span>
@@ -3248,7 +3248,7 @@ See above for the description of the order in which an attribute is tested for v
 <span class="sd">        entry (dict): A JSON OPTIMADE single resource entry.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">=</span> <span class="n">entry</span>  <span class="c1"># type: ignore[assignment]</span>
 

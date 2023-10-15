@@ -2756,7 +2756,7 @@ information on it's middleware implementation.</p>
 
 
 <h2 id="optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">starlette</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">BaseHTTPMiddleware</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">:</span> <span class="n">Iterable</span></code>
 
 
 <a href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2906,12 +2906,12 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_warnings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Warnings</span><span class="p">]</span>
+    <span class="n">_warnings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Warnings</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">showwarning</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="ne">Warning</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-        <span class="n">category</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
+        <span class="n">category</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
         <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">lineno</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3210,7 +3210,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
       </tr>
       <tr>
         <td><code>category</code></td>
-        <td><code>Type[Warning]</code></td>
+        <td><code>type</code></td>
         <td><p><code>Warning</code> type being warned about. This amounts to <code>type(message)</code>.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -3245,7 +3245,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">showwarning</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="ne">Warning</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-    <span class="n">category</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
+    <span class="n">category</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">lineno</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3742,7 +3742,7 @@ HandleApiHint            (<span title="starlette.middleware.base.BaseHTTPMiddlew
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle `api_hint` query parameter.&quot;&quot;&quot;</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
 
 <span class="sd">        There are several scenarios that can play out, when handling the `api_hint`</span>
@@ -3959,7 +3959,7 @@ supported major version will be returned and tried for the request.</p>
   <tbody>
       <tr>
         <td><code>api_hint</code></td>
-        <td><code>List[str]</code></td>
+        <td><code>list</code></td>
         <td><p>The urllib-parsed query parameter value for <code>api_hint</code>.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -3999,7 +3999,7 @@ supported major version of the implementation.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/middleware.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
 
 <span class="sd">    There are several scenarios that can play out, when handling the `api_hint`</span>

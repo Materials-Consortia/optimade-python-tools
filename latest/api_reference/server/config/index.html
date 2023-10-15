@@ -3613,7 +3613,7 @@ can be easily extended for new config file types.</p>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Which database backend to use out of the supported backends.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Host settings to pass through to the `Elasticsearch` class.&quot;</span>
     <span class="p">)</span>
 
@@ -3684,9 +3684,9 @@ can be easily extended for new config file types.</p>
         <span class="p">),</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;General information about the provider of this OPTIMADE implementation&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">provider_fields</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+    <span class="n">provider_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
         <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span>
-        <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]],</span>
+        <span class="nb">list</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]],</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="p">{},</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
@@ -3694,15 +3694,15 @@ can be easily extended for new config file types.</p>
             <span class="s2">&quot;broken down by endpoint.&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">aliases</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+    <span class="n">aliases</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="p">{},</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
             <span class="s2">&quot;A mapping between field names in the database with their corresponding OPTIMADE field&quot;</span>
             <span class="s2">&quot; names, broken down by endpoint.&quot;</span>
         <span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">length_aliases</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
-        <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="n">length_aliases</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
+        <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="p">{},</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
@@ -3814,7 +3814,7 @@ can be easily extended for new config file types.</p>
             <span class="n">init_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
             <span class="n">env_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
             <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            **Priority of config settings sources**:</span>
 
@@ -3855,7 +3855,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.aliases" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">aliases</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;links&#39;</span><span class="p">,</span> <span class="s1">&#39;references&#39;</span><span class="p">,</span> <span class="s1">&#39;structures&#39;</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">aliases</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -3987,7 +3987,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.elastic_hosts" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -4141,7 +4141,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.length_aliases" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">length_aliases</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;links&#39;</span><span class="p">,</span> <span class="s1">&#39;references&#39;</span><span class="p">,</span> <span class="s1">&#39;structures&#39;</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">length_aliases</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -4362,7 +4362,7 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
 
 
 <h3 id="optimade.server.config.ServerConfig.provider_fields" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">provider_fields</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;links&#39;</span><span class="p">,</span> <span class="s1">&#39;references&#39;</span><span class="p">,</span> <span class="s1">&#39;structures&#39;</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]]]</span></code>
+<code class="highlight language-python"><span class="n">provider_fields</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -4575,7 +4575,7 @@ config.</p>
         <span class="n">init_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
         <span class="n">env_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
         <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        **Priority of config settings sources**:</span>
 
@@ -4707,7 +4707,7 @@ config.</p>
     <span class="n">init_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
     <span class="n">env_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
     <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">SettingsSourceCallable</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SettingsSourceCallable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    **Priority of config settings sources**:</span>
 
@@ -5010,14 +5010,14 @@ this function loads ServerConfig settings from a configuration file.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>Dict[str, Any]</code></td>
+      <td><code>dict</code></td>
       <td><p>Dictionary of settings as read from a file.</p></td>
     </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>optimade/server/config.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">config_file_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">BaseSettings</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">config_file_settings</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">BaseSettings</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration file settings source.</span>
 
 <span class="sd">    Based on the example in the</span>

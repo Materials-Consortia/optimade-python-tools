@@ -3080,13 +3080,13 @@ parts of the grammar in a backend non-specific way.</p>
   <tbody>
       <tr>
         <td><code>operator_map</code></td>
-        <td><code>Dict[str, Optional[str]]</code></td>
+        <td><code>dict</code></td>
         <td><p>A map from comparison operators
 to their backend-specific versions.</p></td>
       </tr>
       <tr>
         <td><code>mapper</code></td>
-        <td><code>Optional[Type[optimade.server.mappers.entries.BaseResourceMapper]]</code></td>
+        <td><code>Optional[type[optimade.server.mappers.entries.BaseResourceMapper]]</code></td>
         <td><p>A resource mapper object that defines the
 expected fields and acts as a container for
 various field-related configuration.</p></td>
@@ -3108,8 +3108,8 @@ various field-related configuration.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">operator_map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">operator_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -3129,11 +3129,11 @@ various field-related configuration.</p></td>
         <span class="s2">&quot;!=&quot;</span><span class="p">:</span> <span class="s2">&quot;!=&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">_quantity_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">Quantity</span>
+    <span class="n">_quantity_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">Quantity</span>
     <span class="n">_quantities</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>  <span class="c1"># pylint: disable=super-init-not-called</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
 <span class="sd">        resource mapper for use when post-processing.</span>
@@ -3142,7 +3142,7 @@ various field-related configuration.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="o">=</span> <span class="n">mapper</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">backend_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">backend_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;A mapping between backend field names (aliases) and the corresponding</span>
 <span class="sd">        [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3151,7 +3151,7 @@ various field-related configuration.</p></td>
         <span class="p">}</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">quantities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">quantities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;A mapping from the OPTIMADE field name to the corresponding</span>
 <span class="sd">        [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3161,10 +3161,10 @@ various field-related configuration.</p></td>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantities</span>
 
     <span class="nd">@quantities</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">quantities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">quantities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_quantities</span> <span class="o">=</span> <span class="n">quantities</span>
 
-    <span class="k">def</span> <span class="nf">_build_quantities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_build_quantities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a dictionary of field names mapped to</span>
 <span class="sd">        [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects from the</span>
 <span class="sd">        fields registered by the mapper.</span>
@@ -3402,7 +3402,7 @@ various field-related configuration.</p></td>
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.backend_mapping" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">backend_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">filtertransformers</span><span class="o">.</span><span class="n">base_transformer</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">backend_mapping</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-property"><code>property</code></small>
@@ -3428,7 +3428,7 @@ various field-related configuration.</p></td>
 
 
 <h3 id="optimade.filtertransformers.base_transformer.BaseTransformer.quantities" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">quantities</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">filtertransformers</span><span class="o">.</span><span class="n">base_transformer</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">quantities</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-property"><code>property</code></small>
@@ -3503,7 +3503,7 @@ resource mapper for use when post-processing.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>  <span class="c1"># pylint: disable=super-init-not-called</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
 <span class="sd">    resource mapper for use when post-processing.</span>

@@ -2643,7 +2643,7 @@ BaseQueryParams            (<span title="abc.ABC">ABC</span>)
   <tbody>
       <tr>
         <td><code>unsupported_params</code></td>
-        <td><code>List[str]</code></td>
+        <td><code>list</code></td>
         <td><p>Any string parameter listed here will raise a warning when passed to
 the check_params methods. Useful for disabling optional OPTIMADE query parameters that
 are not implemented by the server, e.g., cursor-based pagination.</p></td>
@@ -2662,7 +2662,7 @@ are not implemented by the server, e.g., cursor-based pagination.</p></td>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">unsupported_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">unsupported_params</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">check_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_params</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;This method checks whether all the query parameters that are specified</span>
@@ -2779,7 +2779,7 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
   <tbody>
       <tr>
         <td><code>query_params</code></td>
-        <td><code>Iterable[str]</code></td>
+        <td><code>Iterable</code></td>
         <td><p>An iterable of the request's string query parameters.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -3107,7 +3107,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># The reference server implementation only supports offset/number-based pagination</span>
-    <span class="n">unsupported_params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">unsupported_params</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;page_cursor&quot;</span><span class="p">,</span>
         <span class="s2">&quot;page_below&quot;</span><span class="p">,</span>
     <span class="p">]</span>

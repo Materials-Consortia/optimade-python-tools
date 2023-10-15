@@ -3015,18 +3015,18 @@ BaseInfoAttributes            (<span title="pydantic.main.BaseModel">BaseModel</
 <span class="s2">The version number string MUST NOT be prefixed by, e.g., &quot;v&quot;.</span>
 <span class="s2">Examples: `1.0.0`, `1.0.0-rc.2`.&quot;&quot;&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">available_api_versions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AvailableApiVersion</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">available_api_versions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AvailableApiVersion</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of dictionaries of available API versions at other base URLs&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">formats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">formats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of available output formats.&quot;</span>
     <span class="p">)</span>
-    <span class="n">available_endpoints</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">available_endpoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of available endpoints (i.e., the string to be appended to the versioned base URL).&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">entry_types_by_format</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">entry_types_by_format</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Available entry endpoints as a function of output formats.&quot;</span>
     <span class="p">)</span>
     <span class="n">is_index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -3089,7 +3089,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.available_api_versions" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">available_api_versions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">baseinfo</span><span class="o">.</span><span class="n">AvailableApiVersion</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">available_api_versions</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -3112,7 +3112,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.available_endpoints" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">available_endpoints</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">available_endpoints</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -3135,7 +3135,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.entry_types_by_format" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">entry_types_by_format</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">entry_types_by_format</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -3158,7 +3158,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.formats" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>

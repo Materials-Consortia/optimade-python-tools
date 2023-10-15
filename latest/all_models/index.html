@@ -6802,18 +6802,18 @@ BaseInfoAttributes            (<span title="pydantic.main.BaseModel">BaseModel</
 <span class="s2">The version number string MUST NOT be prefixed by, e.g., &quot;v&quot;.</span>
 <span class="s2">Examples: `1.0.0`, `1.0.0-rc.2`.&quot;&quot;&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">available_api_versions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AvailableApiVersion</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">available_api_versions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AvailableApiVersion</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of dictionaries of available API versions at other base URLs&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">formats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">formats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of available output formats.&quot;</span>
     <span class="p">)</span>
-    <span class="n">available_endpoints</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">available_endpoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of available endpoints (i.e., the string to be appended to the versioned base URL).&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">entry_types_by_format</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">entry_types_by_format</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Available entry endpoints as a function of output formats.&quot;</span>
     <span class="p">)</span>
     <span class="n">is_index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -6876,7 +6876,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
 
 
 <h4 id="optimade.models.baseinfo.BaseInfoAttributes.available_api_versions" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">available_api_versions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">baseinfo</span><span class="o">.</span><span class="n">AvailableApiVersion</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">available_api_versions</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -6899,7 +6899,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
 
 
 <h4 id="optimade.models.baseinfo.BaseInfoAttributes.available_endpoints" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">available_endpoints</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">available_endpoints</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -6922,7 +6922,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
 
 
 <h4 id="optimade.models.baseinfo.BaseInfoAttributes.entry_types_by_format" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">entry_types_by_format</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">entry_types_by_format</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -6945,7 +6945,7 @@ Examples: <code>1.0.0</code>, <code>1.0.0-rc.2</code>.</p>
 
 
 <h4 id="optimade.models.baseinfo.BaseInfoAttributes.formats" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -7226,18 +7226,18 @@ EntryInfoResource            (<span title="pydantic.main.BaseModel">BaseModel</s
         <details class="quote">
           <summary>Source code in <code>optimade/models/entries.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">EntryInfoResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">formats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">formats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of output formats available for this type of entry.&quot;</span>
     <span class="p">)</span>
 
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Description of the entry.&quot;</span><span class="p">)</span>
 
-    <span class="n">properties</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">properties</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dictionary describing queryable properties for this entry type, where each key is a property name.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">output_fields_by_format</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">output_fields_by_format</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
@@ -7281,7 +7281,7 @@ EntryInfoResource            (<span title="pydantic.main.BaseModel">BaseModel</s
 
 
 <h4 id="optimade.models.entries.EntryInfoResource.formats" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -7304,7 +7304,7 @@ EntryInfoResource            (<span title="pydantic.main.BaseModel">BaseModel</s
 
 
 <h4 id="optimade.models.entries.EntryInfoResource.output_fields_by_format" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">output_fields_by_format</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">output_fields_by_format</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -7327,7 +7327,7 @@ EntryInfoResource            (<span title="pydantic.main.BaseModel">BaseModel</s
 
 
 <h4 id="optimade.models.entries.EntryInfoResource.properties" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">properties</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">EntryInfoProperty</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">properties</span><span class="p">:</span> <span class="nb">dict</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -7907,7 +7907,7 @@ IndexInfoResource            (<a class="autorefs autorefs-internal" title="optim
 
     <span class="n">attributes</span><span class="p">:</span> <span class="n">IndexInfoAttributes</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
     <span class="n">relationships</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
-        <span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">DefaultRelationship</span><span class="p">,</span> <span class="n">IndexRelationship</span><span class="p">]</span>
+        <span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="n">DefaultRelationship</span><span class="p">,</span> <span class="n">IndexRelationship</span><span class="p">]</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>  <span class="c1"># type: ignore[assignment]</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Relationships&quot;</span><span class="p">,</span>
@@ -8182,7 +8182,7 @@ BaseResource            (<span title="pydantic.main.BaseModel">BaseModel</span>)
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="nd">@staticmethod</span>
-        <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
 <span class="sd">            Note:</span>
@@ -8279,7 +8279,7 @@ Config        </code>
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
 <span class="sd">        Note:</span>
@@ -8338,7 +8338,7 @@ for all sub-models of <code>BaseResource</code>.</p>
         <details class="quote">
           <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;BaseResource&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ensure `id` and `type` are the first two entries in the list required properties.</span>
 
 <span class="sd">    Note:</span>
@@ -9137,7 +9137,7 @@ Relationship            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a links object containing at least one of the following: self, related&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">BaseResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseResource</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">BaseResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseResource</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Resource linkage&quot;</span>
     <span class="p">)</span>
     <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -9172,7 +9172,7 @@ Relationship            (<span title="pydantic.main.BaseModel">BaseModel</span>)
 
 
 <h4 id="optimade.models.jsonapi.Relationship.data" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">]]</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -9697,17 +9697,17 @@ Response            (<span title="pydantic.main.BaseModel">BaseModel</span>)
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Response</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A top-level response&quot;&quot;&quot;</span>
 
-    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Resource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Resource</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Resource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Outputted Data&quot;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
     <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A meta object containing non-standard information related to the Success&quot;</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Error</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of unique errors&quot;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
-    <span class="n">included</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Resource</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">included</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of unique included resources&quot;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
     <span class="n">links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ToplevelLinks</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
@@ -9758,7 +9758,7 @@ Response            (<span title="pydantic.main.BaseModel">BaseModel</span>)
 
 
 <h4 id="optimade.models.jsonapi.Response.data" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NoneType</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">NoneType</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">]]</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -9780,7 +9780,7 @@ Response            (<span title="pydantic.main.BaseModel">BaseModel</span>)
 
 
 <h4 id="optimade.models.jsonapi.Response.errors" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Error</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -9802,7 +9802,7 @@ Response            (<span title="pydantic.main.BaseModel">BaseModel</span>)
 
 
 <h4 id="optimade.models.jsonapi.Response.included" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Resource</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -10919,7 +10919,7 @@ DataType            (<span title="enum.Enum">Enum</span>)
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE data types (enum values) as a (sorted) list&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">cls</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">cls</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_python_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">python_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]):</span>
@@ -11549,7 +11549,7 @@ Relationship            (<a class="autorefs autorefs-internal" title="optimade.m
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource.&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-        <span class="n">Union</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]]</span>
+        <span class="n">Union</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]]</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Resource linkage&quot;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
         </details>
@@ -11658,7 +11658,7 @@ database-provider-specific prefix.</p>
         <span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;a dictionary describing the server implementation&quot;</span>
     <span class="p">)</span>
 
-    <span class="n">warnings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Warnings</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">warnings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Warnings</span><span class="p">]]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list of warning resource objects representing non-critical errors or warnings.</span>
 <span class="s2">A warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `&quot;warning&quot;`.</span>
@@ -11934,7 +11934,7 @@ Hence, if the <code>meta</code> field of the JSON API links object is provided a
 
 
 <h4 id="optimade.models.optimade_json.ResponseMeta.warnings" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">warnings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">optimade_json</span><span class="o">.</span><span class="n">Warnings</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">warnings</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -12212,7 +12212,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
     <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
         <span class="nd">@staticmethod</span>
-        <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">            * Ensure `type` is in the list required properties and in the correct place.</span>
@@ -12284,7 +12284,7 @@ Config        </code>
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">        * Ensure `type` is in the list required properties and in the correct place.</span>
@@ -12347,7 +12347,7 @@ Config        </code>
         <details class="quote">
           <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">    * Ensure `type` is in the list required properties and in the correct place.</span>
@@ -12709,14 +12709,14 @@ ReferenceResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">authors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Person</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">authors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of person objects containing the authors of the reference.&quot;</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">editors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Person</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">editors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of person objects containing the editors of the reference.&quot;</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -12951,7 +12951,7 @@ ReferenceResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
 
 <h4 id="optimade.models.references.ReferenceResourceAttributes.authors" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">authors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">Person</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">authors</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -13105,7 +13105,7 @@ ReferenceResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
 
 <h4 id="optimade.models.references.ReferenceResourceAttributes.editors" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">editors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">Person</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">editors</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -13554,7 +13554,7 @@ ErrorResponse            (<a class="autorefs autorefs-internal" title="optimade.
     <span class="n">meta</span><span class="p">:</span> <span class="n">ResponseMeta</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A meta object containing non-standard information.&quot;</span>
     <span class="p">)</span>
-    <span class="n">errors</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
+    <span class="n">errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">]</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.&quot;</span><span class="p">,</span>
         <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -13683,7 +13683,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">sites_in_groups</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">sites_in_groups</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Index of the sites (0-based) that belong to each group for each assembly.</span>
 
@@ -13694,7 +13694,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">group_probabilities</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">group_probabilities</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Statistical probability of each group. It MUST have the same length as `sites_in_groups`.</span>
 <span class="s2">It SHOULD sum to one.</span>
@@ -13740,7 +13740,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
 
 
 <h4 id="optimade.models.structures.Assembly.group_probabilities" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">group_probabilities</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">group_probabilities</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -13766,7 +13766,7 @@ The possible reasons for the values not to sum to one are the same as already sp
 
 
 <h4 id="optimade.models.structures.Assembly.sites_in_groups" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">sites_in_groups</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">sites_in_groups</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -13923,7 +13923,7 @@ hydrogens might represent a methyl group, -CH3).</p>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">chemical_symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">chemical_symbols</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:</span>
 
@@ -13936,7 +13936,7 @@ hydrogens might represent a methyl group, -CH3).</p>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">concentration</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">concentration</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;MUST be a list of floats, with same length as `chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species. The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:</span>
 
@@ -13948,7 +13948,7 @@ hydrogens might represent a methyl group, -CH3).</p>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If present MUST be a list of floats expressed in a.m.u.</span>
 <span class="s2">Elements denoting vacancies MUST have masses equal to 0.&quot;&quot;&quot;</span><span class="p">,</span>
@@ -13966,14 +13966,14 @@ hydrogens might represent a methyl group, -CH3).</p>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">attached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">attached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or &quot;X&quot; for a non-chemical element.&quot;&quot;&quot;</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">nattached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">nattached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.&quot;&quot;&quot;</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -14052,7 +14052,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 
 
 <h4 id="optimade.models.structures.Species.attached" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">attached</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">attached</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -14074,7 +14074,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 
 
 <h4 id="optimade.models.structures.Species.chemical_symbols" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">chemical_symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">chemical_symbols</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -14103,7 +14103,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 
 
 <h4 id="optimade.models.structures.Species.concentration" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">concentration</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">concentration</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -14131,7 +14131,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 
 
 <h4 id="optimade.models.structures.Species.mass" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mass</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">mass</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -14177,7 +14177,7 @@ Elements denoting vacancies MUST have masses equal to 0.</p>
 
 
 <h4 id="optimade.models.structures.Species.nattached" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">nattached</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">nattached</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -14370,7 +14370,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions.&quot;&quot;&quot;</span>
 
-    <span class="n">elements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">elements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The chemical symbols of the different elements present in the structure.</span>
 
@@ -14418,7 +14418,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">elements_ratios</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">elements_ratios</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Relative proportions of different elements in the structure.</span>
 
@@ -14630,7 +14630,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>  <span class="c1"># type: ignore[valid-type]</span>
+    <span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>  <span class="c1"># type: ignore[valid-type]</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Cartesian positions of each site in the structure.</span>
 <span class="s2">A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.</span>
@@ -14671,7 +14671,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">species</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Species</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">species</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Species</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list describing the species of the sites of this structure.</span>
 <span class="s2">Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).</span>
@@ -14740,7 +14740,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">species_at_sites</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">species_at_sites</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).</span>
 <span class="s2">The properties of the species are found in the property `species`.</span>
@@ -14764,7 +14764,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">assemblies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Assembly</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">assemblies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Assembly</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A description of groups of sites that are statistically correlated.</span>
 
@@ -14872,7 +14872,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">structure_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">StructureFeatures</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">structure_features</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">StructureFeatures</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Structure Features&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list of strings that flag which special features are used by the structure.</span>
@@ -15068,7 +15068,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
             <span class="k">return</span> <span class="n">v</span>
 
         <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
-            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;A lattice vector MUST be either all `null` or all numbers (vector: </span><span class="si">{</span><span class="n">vector</span><span class="si">}</span><span class="s2">, all vectors: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">)&quot;</span>
                 <span class="p">)</span>
@@ -15127,7 +15127,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;structure_features&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">validate_structure_features</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="k">if</span> <span class="p">[</span><span class="n">StructureFeatures</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">))]</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">[</span><span class="n">StructureFeatures</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)]</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;structure_features MUST be sorted alphabetically, given value: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
@@ -15214,7 +15214,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
 
 <h4 id="optimade.models.structures.StructureResourceAttributes.assemblies" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">assemblies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">Assembly</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">assemblies</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -15364,7 +15364,7 @@ However, the presence or absence of sites 0 and 1 is not correlated with the pre
 
 
 <h4 id="optimade.models.structures.StructureResourceAttributes.cartesian_site_positions" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">ConstrainedListValue</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -15675,7 +15675,7 @@ Note: the elements in this list each refer to the direction of the corresponding
 
 
 <h4 id="optimade.models.structures.StructureResourceAttributes.elements" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">elements</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -15729,7 +15729,7 @@ Note: the elements in this list each refer to the direction of the corresponding
 
 
 <h4 id="optimade.models.structures.StructureResourceAttributes.elements_ratios" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">elements_ratios</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">elements_ratios</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -15979,7 +15979,7 @@ Note: the elements in this list each refer to the direction of the corresponding
 
 
 <h4 id="optimade.models.structures.StructureResourceAttributes.species" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">species</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">Species</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">species</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -16087,7 +16087,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
 
 
 <h4 id="optimade.models.structures.StructureResourceAttributes.species_at_sites" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">species_at_sites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">species_at_sites</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -16136,7 +16136,7 @@ The properties of the species are found in the property <code>species</code>.</p
 
 
 <h4 id="optimade.models.structures.StructureResourceAttributes.structure_features" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">structure_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">StructureFeatures</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">structure_features</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -16900,7 +16900,7 @@ of this field.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>&lt;cyfunction Field at 0x7f75bf72e8e0&gt;</code></td>
+      <td><code>&lt;cyfunction Field at 0x7f197bf62810&gt;</code></td>
       <td><p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" href="../api_reference/models/utils/#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p></td>
     </tr>
   </tbody>

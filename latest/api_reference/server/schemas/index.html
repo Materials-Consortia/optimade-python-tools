@@ -2578,7 +2578,7 @@
 
 
 <h2 id="optimade.server.schemas.ENTRY_INFO_SCHEMAS" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Dict</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">:</span> <span class="nb">dict</span></code>
 
 
 <a href="#optimade.server.schemas.ENTRY_INFO_SCHEMAS" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -2630,7 +2630,7 @@ OPTIMADE-queryable properties of that model.</p>
       </tr>
       <tr>
         <td><code>queryable_properties</code></td>
-        <td><code>Optional[Iterable[str]]</code></td>
+        <td><code>Optional[collections.abc.Iterable[str]]</code></td>
         <td><p>The list of properties to find in the schema.</p></td>
         <td><code>None</code></td>
       </tr>

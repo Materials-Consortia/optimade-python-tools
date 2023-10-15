@@ -3648,7 +3648,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">sites_in_groups</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">sites_in_groups</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Index of the sites (0-based) that belong to each group for each assembly.</span>
 
@@ -3659,7 +3659,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">group_probabilities</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">group_probabilities</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Statistical probability of each group. It MUST have the same length as `sites_in_groups`.</span>
 <span class="s2">It SHOULD sum to one.</span>
@@ -3705,7 +3705,7 @@ Assembly            (<span title="pydantic.main.BaseModel">BaseModel</span>)
 
 
 <h3 id="optimade.models.structures.Assembly.group_probabilities" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">group_probabilities</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">group_probabilities</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -3731,7 +3731,7 @@ The possible reasons for the values not to sum to one are the same as already sp
 
 
 <h3 id="optimade.models.structures.Assembly.sites_in_groups" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">sites_in_groups</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span></code>
+<code class="highlight language-python"><span class="n">sites_in_groups</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -3990,7 +3990,7 @@ hydrogens might represent a methyl group, -CH3).</p>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">chemical_symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">chemical_symbols</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:</span>
 
@@ -4003,7 +4003,7 @@ hydrogens might represent a methyl group, -CH3).</p>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">concentration</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">concentration</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;MUST be a list of floats, with same length as `chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species. The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:</span>
 
@@ -4015,7 +4015,7 @@ hydrogens might represent a methyl group, -CH3).</p>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">mass</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If present MUST be a list of floats expressed in a.m.u.</span>
 <span class="s2">Elements denoting vacancies MUST have masses equal to 0.&quot;&quot;&quot;</span><span class="p">,</span>
@@ -4033,14 +4033,14 @@ hydrogens might represent a methyl group, -CH3).</p>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">attached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">attached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or &quot;X&quot; for a non-chemical element.&quot;&quot;&quot;</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">nattached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">nattached</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.&quot;&quot;&quot;</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4119,7 +4119,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 
 
 <h3 id="optimade.models.structures.Species.attached" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">attached</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">attached</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -4141,7 +4141,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 
 
 <h3 id="optimade.models.structures.Species.chemical_symbols" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">chemical_symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">chemical_symbols</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -4170,7 +4170,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 
 
 <h3 id="optimade.models.structures.Species.concentration" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">concentration</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">concentration</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -4198,7 +4198,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 
 
 <h3 id="optimade.models.structures.Species.mass" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mass</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">mass</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -4244,7 +4244,7 @@ Elements denoting vacancies MUST have masses equal to 0.</p>
 
 
 <h3 id="optimade.models.structures.Species.nattached" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">nattached</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">nattached</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -4657,7 +4657,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
           <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">StructureResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions.&quot;&quot;&quot;</span>
 
-    <span class="n">elements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">elements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The chemical symbols of the different elements present in the structure.</span>
 
@@ -4705,7 +4705,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">elements_ratios</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">elements_ratios</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Relative proportions of different elements in the structure.</span>
 
@@ -4917,7 +4917,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>  <span class="c1"># type: ignore[valid-type]</span>
+    <span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>  <span class="c1"># type: ignore[valid-type]</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Cartesian positions of each site in the structure.</span>
 <span class="s2">A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.</span>
@@ -4958,7 +4958,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">species</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Species</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">species</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Species</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list describing the species of the sites of this structure.</span>
 <span class="s2">Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).</span>
@@ -5027,7 +5027,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">species_at_sites</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">species_at_sites</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).</span>
 <span class="s2">The properties of the species are found in the property `species`.</span>
@@ -5051,7 +5051,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">assemblies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Assembly</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">assemblies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Assembly</span><span class="p">]]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A description of groups of sites that are statistically correlated.</span>
 
@@ -5159,7 +5159,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">structure_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">StructureFeatures</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
+    <span class="n">structure_features</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">StructureFeatures</span><span class="p">]</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
         <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Structure Features&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A list of strings that flag which special features are used by the structure.</span>
@@ -5355,7 +5355,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
             <span class="k">return</span> <span class="n">v</span>
 
         <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
-            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">&quot;A lattice vector MUST be either all `null` or all numbers (vector: </span><span class="si">{</span><span class="n">vector</span><span class="si">}</span><span class="s2">, all vectors: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">)&quot;</span>
                 <span class="p">)</span>
@@ -5414,7 +5414,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
     <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;structure_features&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">validate_structure_features</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="k">if</span> <span class="p">[</span><span class="n">StructureFeatures</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">))]</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">[</span><span class="n">StructureFeatures</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)]</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;structure_features MUST be sorted alphabetically, given value: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
@@ -5501,7 +5501,7 @@ StructureResourceAttributes            (<a class="autorefs autorefs-internal" ti
 
 
 <h3 id="optimade.models.structures.StructureResourceAttributes.assemblies" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">assemblies</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">Assembly</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">assemblies</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -5651,7 +5651,7 @@ However, the presence or absence of sites 0 and 1 is not correlated with the pre
 
 
 <h3 id="optimade.models.structures.StructureResourceAttributes.cartesian_site_positions" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">ConstrainedListValue</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">cartesian_site_positions</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -5962,7 +5962,7 @@ Note: the elements in this list each refer to the direction of the corresponding
 
 
 <h3 id="optimade.models.structures.StructureResourceAttributes.elements" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">elements</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">elements</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -6016,7 +6016,7 @@ Note: the elements in this list each refer to the direction of the corresponding
 
 
 <h3 id="optimade.models.structures.StructureResourceAttributes.elements_ratios" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">elements_ratios</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">elements_ratios</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -6266,7 +6266,7 @@ Note: the elements in this list each refer to the direction of the corresponding
 
 
 <h3 id="optimade.models.structures.StructureResourceAttributes.species" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">species</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">Species</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">species</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -6374,7 +6374,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
 
 
 <h3 id="optimade.models.structures.StructureResourceAttributes.species_at_sites" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">species_at_sites</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">species_at_sites</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -6423,7 +6423,7 @@ The properties of the species are found in the property <code>species</code>.</p
 
 
 <h3 id="optimade.models.structures.StructureResourceAttributes.structure_features" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">structure_features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">optimade</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">StructureFeatures</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">structure_features</span><span class="p">:</span> <span class="nb">list</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-pydantic-field"><code>pydantic-field</code></small>
@@ -6865,7 +6865,7 @@ to be <code>nullable</code> according to the OpenAPI definition.</p>
         <span class="k">return</span> <span class="n">v</span>
 
     <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
-        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">vector</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;A lattice vector MUST be either all `null` or all numbers (vector: </span><span class="si">{</span><span class="n">vector</span><span class="si">}</span><span class="s2">, all vectors: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
@@ -7100,7 +7100,7 @@ to be <code>nullable</code> according to the OpenAPI definition.</p>
           <summary>Source code in <code>optimade/models/structures.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;structure_features&quot;</span><span class="p">,</span> <span class="n">always</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">validate_structure_features</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-    <span class="k">if</span> <span class="p">[</span><span class="n">StructureFeatures</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">))]</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">[</span><span class="n">StructureFeatures</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">v</span><span class="p">)]</span> <span class="o">!=</span> <span class="n">v</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;structure_features MUST be sorted alphabetically, given value: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>

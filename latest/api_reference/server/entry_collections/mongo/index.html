@@ -2659,8 +2659,8 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">resource_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
-        <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
+        <span class="n">resource_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
+        <span class="n">resource_mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
         <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
@@ -2712,7 +2712,7 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
             <span class="k">except</span> <span class="n">ExecutionTimeout</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">        Warning:</span>
@@ -2726,7 +2726,7 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 
     <span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">        that can be used by MongoDB.</span>
 
@@ -2763,8 +2763,8 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="k">return</span> <span class="n">criteria</span>
 
     <span class="k">def</span> <span class="nf">_run_db_query</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
 
 <span class="sd">        Arguments:</span>
@@ -2861,13 +2861,13 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
       </tr>
       <tr>
         <td><code>resource_cls</code></td>
-        <td><code>Type[optimade.models.entries.EntryResource]</code></td>
+        <td><code>type</code></td>
         <td><p>The type of entry resource that is stored by the collection.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>resource_mapper</code></td>
-        <td><code>Type[optimade.server.mappers.entries.BaseResourceMapper]</code></td>
+        <td><code>type</code></td>
         <td><p>A resource mapper object that handles aliases and
 format changes between deserialization and response.</p></td>
         <td><em>required</em></td>
@@ -2885,8 +2885,8 @@ format changes between deserialization and response.</p></td>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">resource_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
-    <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
+    <span class="n">resource_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
+    <span class="n">resource_mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
     <span class="n">database</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
@@ -3053,7 +3053,7 @@ or response format.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>Dict[str, Any]</code></td>
+      <td><code>dict</code></td>
       <td><p>A dictionary representation of the query parameters.</p></td>
     </tr>
   </tbody>
@@ -3062,7 +3062,7 @@ or response format.</p></td>
           <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">    that can be used by MongoDB.</span>
 
@@ -3136,7 +3136,7 @@ or response format.</p></td>
   <tbody>
       <tr>
         <td><code>data</code></td>
-        <td><code>List[optimade.models.entries.EntryResource]</code></td>
+        <td><code>list</code></td>
         <td><p>The entry resource objects to add to the database.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -3144,7 +3144,7 @@ or response format.</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">    Warning:</span>

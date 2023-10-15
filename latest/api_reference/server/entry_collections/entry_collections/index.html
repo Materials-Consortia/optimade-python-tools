@@ -2787,8 +2787,8 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">resource_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
-        <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
+        <span class="n">resource_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
+        <span class="n">resource_mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
         <span class="n">transformer</span><span class="p">:</span> <span class="n">Transformer</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the collection for the given parameters.</span>
@@ -2814,14 +2814,14 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">[])</span>
         <span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_all_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_all_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">        Arguments:</span>
@@ -2841,7 +2841,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
     <span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fetches results and indicates if more data is available.</span>
 
@@ -2899,7 +2899,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
                 <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unrecognised OPTIMADE field(s) in requested `response_fields`: </span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">.&quot;</span>
             <span class="p">)</span>
 
-        <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">raw_results</span><span class="p">:</span>
             <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">]</span>
@@ -2928,8 +2928,8 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_run_db_query</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
 
 <span class="sd">        Arguments:</span>
@@ -2943,7 +2943,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 <span class="sd">        &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">all_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">all_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the set of all fields handled in this collection,</span>
 <span class="sd">        from attribute fields in the schema, provider fields and top-level OPTIMADE fields.</span>
 
@@ -2970,7 +2970,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_fields</span>
 
-    <span class="k">def</span> <span class="nf">get_attribute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_attribute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the set of attribute fields</span>
 
 <span class="sd">        Return only the _first-level_ attribute fields from the schema of the resource class,</span>
@@ -3002,7 +3002,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
     <span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">        that can be used by the specific backend.</span>
 
@@ -3108,7 +3108,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
         <span class="k">return</span> <span class="n">cursor_kwargs</span>
 
-    <span class="k">def</span> <span class="nf">parse_sort_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">parse_sort_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles any sort parameters passed to the collection,</span>
 <span class="sd">        resolving aliases and dealing with any invalid fields.</span>
 
@@ -3120,7 +3120,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 <span class="sd">            sort direction encoded as 1 (ascending) or -1 (descending).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sort_spec</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sort_spec</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">sort_params</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
             <span class="n">sort_dir</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
@@ -3168,8 +3168,8 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
     <span class="k">def</span> <span class="nf">get_next_query_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
-        <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Provides url query pagination parameters that will be used in the next</span>
 <span class="sd">        link.</span>
 
@@ -3181,7 +3181,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 <span class="sd">            A dictionary with the necessary query parameters.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">results</span><span class="p">:</span>
             <span class="c1"># If a user passed a particular pagination mechanism, keep using it</span>
             <span class="c1"># Otherwise, use the default pagination mechanism of the collection</span>
@@ -3218,7 +3218,7 @@ EntryCollection            (<span title="abc.ABC">ABC</span>)
 
 
 <h3 id="optimade.server.entry_collections.entry_collections.EntryCollection.all_fields" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">all_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+<code class="highlight language-python"><span class="n">all_fields</span><span class="p">:</span> <span class="nb">set</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-property"><code>property</code></small>
@@ -3244,7 +3244,7 @@ This means the set is created the first time the property is requested and then 
   </thead>
   <tbody>
     <tr>
-      <td><code>Set[str]</code></td>
+      <td><code>set</code></td>
       <td><p>All fields handled in this collection.</p></td>
     </tr>
   </tbody>
@@ -3333,8 +3333,8 @@ interpret the filter.</p></td>
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">resource_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
-    <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
+    <span class="n">resource_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
+    <span class="n">resource_mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
     <span class="n">transformer</span><span class="p">:</span> <span class="n">Transformer</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the collection for the given parameters.</span>
@@ -3360,7 +3360,7 @@ interpret the filter.</p></td>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">[])</span>
     <span class="p">]</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_all_fields</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_all_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
@@ -3509,7 +3509,7 @@ for more information.</p>
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetches results and indicates if more data is available.</span>
 
@@ -3567,7 +3567,7 @@ for more information.</p>
             <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unrecognised OPTIMADE field(s) in requested `response_fields`: </span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
 
-    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">raw_results</span><span class="p">:</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">]</span>
@@ -3633,14 +3633,14 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
   </thead>
   <tbody>
     <tr>
-      <td><code>Set[str]</code></td>
+      <td><code>set</code></td>
       <td><p>Property names.</p></td>
     </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_attribute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_attribute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the set of attribute fields</span>
 
 <span class="sd">    Return only the _first-level_ attribute fields from the schema of the resource class,</span>
@@ -3705,7 +3705,7 @@ link.</p>
   <tbody>
       <tr>
         <td><code>results</code></td>
-        <td><code>Union[NoneType, Dict, List[Dict]]</code></td>
+        <td><code>Union[NoneType, dict, list[dict]]</code></td>
         <td><p>The results produced by find.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -3727,7 +3727,7 @@ link.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>Dict[str, List[str]]</code></td>
+      <td><code>dict</code></td>
       <td><p>A dictionary with the necessary query parameters.</p></td>
     </tr>
   </tbody>
@@ -3737,8 +3737,8 @@ link.</p>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_next_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
-    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides url query pagination parameters that will be used in the next</span>
 <span class="sd">    link.</span>
 
@@ -3750,7 +3750,7 @@ link.</p>
 <span class="sd">        A dictionary with the necessary query parameters.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">query</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">results</span><span class="p">:</span>
         <span class="c1"># If a user passed a particular pagination mechanism, keep using it</span>
         <span class="c1"># Otherwise, use the default pagination mechanism of the collection</span>
@@ -3847,7 +3847,7 @@ or response format.</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>Dict[str, Any]</code></td>
+      <td><code>dict</code></td>
       <td><p>A dictionary representation of the query parameters.</p></td>
     </tr>
   </tbody>
@@ -3856,7 +3856,7 @@ or response format.</p></td>
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">    that can be used by the specific backend.</span>
 
@@ -3996,7 +3996,7 @@ or response format.</p></td>
   <tbody>
       <tr>
         <td><code>data</code></td>
-        <td><code>List[optimade.models.entries.EntryResource]</code></td>
+        <td><code>list</code></td>
         <td><p>The entry resource objects to add to the database.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -4005,7 +4005,7 @@ or response format.</p></td>
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="nd">@abstractmethod</span>
-<span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
 
 <span class="sd">    Arguments:</span>
@@ -4060,7 +4060,7 @@ resolving aliases and dealing with any invalid fields.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>Iterable[Tuple[str, int]]</code></td>
+      <td><code>Iterable</code></td>
       <td><p>A list of tuples containing the aliased field name and
 sort direction encoded as 1 (ascending) or -1 (descending).</p></td>
     </tr>
@@ -4068,7 +4068,7 @@ sort direction encoded as 1 (ascending) or -1 (descending).</p></td>
 </table>
         <details class="quote">
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_sort_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">parse_sort_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles any sort parameters passed to the collection,</span>
 <span class="sd">    resolving aliases and dealing with any invalid fields.</span>
 
@@ -4080,7 +4080,7 @@ sort direction encoded as 1 (ascending) or -1 (descending).</p></td>
 <span class="sd">        sort direction encoded as 1 (ascending) or -1 (descending).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sort_spec</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sort_spec</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">sort_params</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
         <span class="n">sort_dir</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
@@ -4234,13 +4234,13 @@ PaginationMechanism            (<span title="enum.Enum">Enum</span>)
       </tr>
       <tr>
         <td><code>resource_cls</code></td>
-        <td><code>Type[optimade.models.entries.EntryResource]</code></td>
+        <td><code>type</code></td>
         <td><p>The type of entry resource to be stored within the collection.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>resource_mapper</code></td>
-        <td><code>Type[optimade.server.mappers.entries.BaseResourceMapper]</code></td>
+        <td><code>type</code></td>
         <td><p>The associated resource mapper for that entry resource type.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -4265,8 +4265,8 @@ PaginationMechanism            (<span title="enum.Enum">Enum</span>)
           <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">create_collection</span><span class="p">(</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">resource_cls</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
-    <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
+    <span class="n">resource_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
+    <span class="n">resource_mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;EntryCollection&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an `EntryCollection` of the configured type, depending on the value of</span>
 <span class="sd">    `CONFIG.database_backend`.</span>
