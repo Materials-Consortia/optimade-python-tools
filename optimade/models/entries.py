@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Annotated, Any, Literal, Optional, Union
+from typing import Annotated, Any, ClassVar, Literal, Optional, Union
 
-from pydantic import BaseModel, PrivateAttr, field_validator
+from pydantic import BaseModel, field_validator
 
 from optimade.models.jsonapi import Attributes, Relationships, Resource
 from optimade.models.optimade_json import (
@@ -21,7 +21,7 @@ __all__ = (
 
 
 class TypedRelationship(Relationship):
-    _req_type: Annotated[str, PrivateAttr()]
+    _req_type: ClassVar[str]
 
     @field_validator("data", mode="after")
     @classmethod
@@ -33,20 +33,18 @@ class TypedRelationship(Relationship):
             # https://jsonapi.org/format/1.0/#document-resource-object-linkage
             raise ValueError("`data` key in a relationship must always store a list.")
 
-        if hasattr(cls, "_req_type") and any(
-            obj.type != cls._req_type.get_default() for obj in data  # type: ignore[attr-defined]
-        ):
+        if any(obj.type != cls._req_type for obj in data):
             raise ValueError("Object stored in relationship data has wrong type")
 
         return data
 
 
 class ReferenceRelationship(TypedRelationship):
-    _req_type: Annotated[Literal["references"], PrivateAttr()] = "references"
+    _req_type: ClassVar[Literal["references"]] = "references"
 
 
 class StructureRelationship(TypedRelationship):
-    _req_type: Annotated[Literal["structures"], PrivateAttr()] = "structures"
+    _req_type: ClassVar[Literal["structures"]] = "structures"
 
 
 class EntryRelationships(Relationships):
