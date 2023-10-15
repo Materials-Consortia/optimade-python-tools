@@ -178,13 +178,13 @@ def _get(
         "base_urls": base_url,
         "use_async": use_async,
         "max_results_per_provider": max_results_per_provider,
-        "include_providers": set(_.strip() for _ in include_providers.split(","))
+        "include_providers": {_.strip() for _ in include_providers.split(",")}
         if include_providers
         else None,
-        "exclude_providers": set(_.strip() for _ in exclude_providers.split(","))
+        "exclude_providers": {_.strip() for _ in exclude_providers.split(",")}
         if exclude_providers
         else None,
-        "exclude_databases": set(_.strip() for _ in exclude_databases.split(","))
+        "exclude_databases": {_.strip() for _ in exclude_databases.split(",")}
         if exclude_databases
         else None,
         "silent": silent,

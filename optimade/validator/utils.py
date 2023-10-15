@@ -17,8 +17,7 @@ import sys
 import time
 import traceback as tb
 import urllib.parse
-from collections.abc import Callable
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 import requests
 from pydantic import Field, ValidationError

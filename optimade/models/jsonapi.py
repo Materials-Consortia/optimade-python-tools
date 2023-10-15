@@ -368,14 +368,7 @@ describing relationships between the resource and other JSON API resources.""",
 
 
 class Response(BaseModel):
-    """A top-level response.
-
-    The specification mandates that datetimes must be encoded following
-    [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support
-    fractional seconds, thus they must be stripped in the response. This can
-    cause issues when the underlying database contains fields that do include
-    microseconds, as filters may return unexpected results.
-    """
+    """A top-level response."""
 
     data: Annotated[
         Optional[Union[None, Resource, list[Resource]]],
@@ -424,3 +417,9 @@ class Response(BaseModel):
             )
         }
     )
+    """The specification mandates that datetimes must be encoded following
+    [RFC3339](https://tools.ietf.org/html/rfc3339), which does not support
+    fractional seconds, thus they must be stripped in the response. This can
+    cause issues when the underlying database contains fields that do include
+    microseconds, as filters may return unexpected results.
+    """

@@ -2,7 +2,8 @@ import enum
 import re
 import warnings
 from abc import ABC, abstractmethod
-from typing import Any, Iterable, Optional, Union
+from collections.abc import Iterable
+from typing import Any, Optional, Union
 
 from lark import Transformer
 

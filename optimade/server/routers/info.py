@@ -95,7 +95,6 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
             description=getattr(schema, "__doc__", "Entry Resources"),
             properties=properties,
             output_fields_by_format=output_fields_by_format,
-            # schema=CONFIG.schema_url,  # I think this should be removed?
         )
 
     return EntryInfoResponse(

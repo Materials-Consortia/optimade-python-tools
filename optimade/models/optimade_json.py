@@ -10,7 +10,7 @@ from optimade.models.types import SemanticVersion
 from optimade.models.utils import StrictField
 
 __all__ = (
-    "Datatype",
+    "DataType",
     "ResponseMetaQuery",
     "Provider",
     "ImplementationMaintainer",
@@ -25,7 +25,7 @@ __all__ = (
 )
 
 
-class Datatype(Enum):
+class DataType(Enum):
     """Optimade Data types
 
     See the section "Data types" in the OPTIMADE API specification for more information.
@@ -48,7 +48,7 @@ class Datatype(Enum):
     @classmethod
     def from_python_type(
         cls, python_type: Union[type, str, object]
-    ) -> Optional["Datatype"]:
+    ) -> Optional["DataType"]:
         """Get OPTIMADE data type from a Python type"""
         mapping = {
             "bool": cls.BOOLEAN,
@@ -91,7 +91,7 @@ class Datatype(Enum):
         return mapping.get(python_type, None)
 
     @classmethod
-    def from_json_type(cls, json_type: str) -> Optional["Datatype"]:
+    def from_json_type(cls, json_type: str) -> Optional["DataType"]:
         """Get OPTIMADE data type from a named JSON type"""
         mapping = {
             "string": cls.STRING,
