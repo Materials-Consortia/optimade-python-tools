@@ -26,10 +26,10 @@ jobs:
       with:
         submodules: true
 
-    - name: Set up Python 3.10
+    - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.9'
         cache: 'pip'
         cache-dependency-path: |
           requirements*.txt
@@ -56,10 +56,10 @@ jobs:
       with:
         submodules: true
 
-    - name: Set up Python 3.10
+    - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.9'
         cache: 'pip'
         cache-dependency-path: |
           requirements*.txt
@@ -227,27 +227,27 @@ jobs:
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
     - name: Run tests for validator only to assess coverage (mongomock)
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == 3.9
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
     - name: Run tests for validator only to assess coverage (Elasticsearch)
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == 3.9
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
         OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
 
     - name: Run tests for validator only to assess coverage (MongoDB)
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == 3.9
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
         OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
 
     - name: Run the OPTIMADE Client CLI
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == 3.9
       run: |
         coverage run --append --source optimade optimade/client/cli.py \
            --filter 'nsites = 1' \
@@ -275,7 +275,7 @@ jobs:
         coverage xml
 
     - name: Upload coverage to Codecov
-      if: matrix.python-version == '3.10' && github.repository == 'Materials-Consortia/optimade-python-tools'
+      if: matrix.python-version == '3.9' && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v3
       with:
         name: project
@@ -283,7 +283,7 @@ jobs:
         flags: project
 
     - name: Upload validator coverage to Codecov
-      if: matrix.python-version == '3.10' && github.repository == 'Materials-Consortia/optimade-python-tools'
+      if: matrix.python-version == '3.9' && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v3
       with:
         name: validator
@@ -300,7 +300,7 @@ jobs:
 
     - uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.9'
         cache: 'pip'
         cache-dependency-path: |
           requirements*.txt
@@ -330,10 +330,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Python 3.10
+    - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.9'
         cache: 'pip'
         cache-dependency-path: |
           requirements*.txt

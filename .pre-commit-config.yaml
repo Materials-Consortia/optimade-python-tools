@@ -1,5 +1,5 @@
 default_language_version:
-  python: python3.10
+  python: python3.9
 
 repos:
   - repo: https://github.com/ambv/black
@@ -22,6 +22,12 @@ repos:
       files: ^requirements.*\.txt$
     - id: trailing-whitespace
       args: [--markdown-linebreak-ext=md]
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.0
+    hooks:
+    - id: pyupgrade
+      args: ["--py39-plus"]
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: 'v0.0.291'
