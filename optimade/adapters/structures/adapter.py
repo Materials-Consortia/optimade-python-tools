@@ -1,4 +1,4 @@
-from collections.abc import Callable
+from typing import Callable
 
 from optimade.adapters.base import EntryAdapter
 from optimade.models import StructureResource

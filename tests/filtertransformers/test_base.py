@@ -2,7 +2,7 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from typing import Callable
 
     from optimade.server.mappers import BaseResourceMapper
 

@@ -5,7 +5,7 @@ import pytest
 from optimade.warnings import OptimadeWarning
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from typing import Callable
 
     from requests import Response
 
