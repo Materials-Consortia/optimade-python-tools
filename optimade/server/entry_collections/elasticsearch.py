@@ -124,7 +124,7 @@ class ElasticCollection(EntryCollection):
 
         def get_id(item):
             if self.name == "links":
-                id_ = "{}-{}".format(item["id"], item["type"])
+                id_ = f"{item['id']}-{item['type']}"
             elif "id" in item:
                 id_ = item["id"]
             elif "_id" in item:
