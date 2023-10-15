@@ -98,18 +98,18 @@ def test_as_type_with_validator(
 
 
 def test_query_value_formatting() -> None:
-    from optimade.models.optimade_json import DataType
+    from optimade.models.optimade_json import Datatype
 
     format_value_fn = ImplementationValidator._format_test_value
 
-    assert format_value_fn(["Ag", "Ba", "Ca"], DataType.LIST, "HAS") == '"Ag"'
+    assert format_value_fn(["Ag", "Ba", "Ca"], Datatype.LIST, "HAS") == '"Ag"'
     assert (
-        format_value_fn(["Ag", "Ba", "Ca"], DataType.LIST, "HAS ANY")
+        format_value_fn(["Ag", "Ba", "Ca"], Datatype.LIST, "HAS ANY")
         == '"Ag","Ba","Ca"'
     )
-    assert format_value_fn([6, 1, 4], DataType.LIST, "HAS ALL") == "1,4,6"
-    assert format_value_fn("test value", DataType.STRING, "CONTAINS") == '"test value"'
-    assert format_value_fn(5, DataType.INTEGER, "=") == 5
+    assert format_value_fn([6, 1, 4], Datatype.LIST, "HAS ALL") == "1,4,6"
+    assert format_value_fn("test value", Datatype.STRING, "CONTAINS") == '"test value"'
+    assert format_value_fn(5, Datatype.INTEGER, "=") == 5
 
 
 @pytest.mark.parametrize("server", ["regular", "index"])

@@ -1013,7 +1013,7 @@ The properties of the species are found in the property `species`.
             return value
 
         for vector in value:
-            if None in vector and any((isinstance(_, float) for _ in vector)):
+            if None in vector and any(isinstance(_, float) for _ in vector):
                 raise ValueError(
                     "A lattice vector MUST be either all `null` or all numbers "
                     f"(vector: {vector}, all vectors: {value})"
@@ -1080,7 +1080,7 @@ The properties of the species are found in the property `species`.
     def validate_structure_features(self) -> "StructureResourceAttributes":
         if [
             StructureFeatures(value)
-            for value in sorted((_.value for _ in self.structure_features))
+            for value in sorted(_.value for _ in self.structure_features)
         ] != self.structure_features:
             raise ValueError(
                 "structure_features MUST be sorted alphabetically, structure_features: "

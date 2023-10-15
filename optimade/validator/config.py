@@ -14,7 +14,7 @@ from pydantic import Field
 from pydantic_settings import BaseSettings
 
 from optimade.models import (
-    DataType,
+    Datatype,
     IndexInfoResponse,
     InfoResponse,
     StructureFeatures,
@@ -71,27 +71,27 @@ inclusive_ops = ("=", "<=", ">=")
 substring_operators = ("CONTAINS", "STARTS WITH", "STARTS", "ENDS WITH", "ENDS")
 
 _INCLUSIVE_OPERATORS = {
-    DataType.STRING: inclusive_ops + substring_operators,
+    Datatype.STRING: inclusive_ops + substring_operators,
     # N.B. "=" and "<=" are disabled due to issue with microseconds stored in database vs API response (see Materials-Consortia/optimade-python-tools/#606)
     # ">=" is fine as all microsecond trimming will round times down
-    DataType.TIMESTAMP: (
+    Datatype.TIMESTAMP: (
         # "=",
         # "<=",
         ">=",
     ),
-    DataType.INTEGER: inclusive_ops,
-    DataType.FLOAT: (),
-    DataType.LIST: ("HAS", "HAS ALL", "HAS ANY", "LENGTH"),
+    Datatype.INTEGER: inclusive_ops,
+    Datatype.FLOAT: (),
+    Datatype.LIST: ("HAS", "HAS ALL", "HAS ANY", "LENGTH"),
 }
 
 exclusive_ops = ("!=", "<", ">")
 
 _EXCLUSIVE_OPERATORS = {
-    DataType.STRING: exclusive_ops,
-    DataType.TIMESTAMP: (),
-    DataType.FLOAT: (),
-    DataType.INTEGER: exclusive_ops,
-    DataType.LIST: (),
+    Datatype.STRING: exclusive_ops,
+    Datatype.TIMESTAMP: (),
+    Datatype.FLOAT: (),
+    Datatype.INTEGER: exclusive_ops,
+    Datatype.LIST: (),
 }
 
 
@@ -151,18 +151,18 @@ class ValidatorConfig(BaseSettings):
         ),
     )
 
-    inclusive_operators: dict[DataType, set[str]] = Field(
+    inclusive_operators: dict[Datatype, set[str]] = Field(
         _INCLUSIVE_OPERATORS,
         description=(
-            "Dictionary mapping OPTIMADE `DataType`s to a list of operators that are 'inclusive', "
+            "Dictionary mapping OPTIMADE `Datatype`s to a list of operators that are 'inclusive', "
             "i.e. those that should return entries with the matching value from the filter."
         ),
     )
 
-    exclusive_operators: dict[DataType, set[str]] = Field(
+    exclusive_operators: dict[Datatype, set[str]] = Field(
         _EXCLUSIVE_OPERATORS,
         description=(
-            "Dictionary mapping OPTIMADE `DataType`s to a list of operators that are 'exclusive', "
+            "Dictionary mapping OPTIMADE `Datatype`s to a list of operators that are 'exclusive', "
             "i.e. those that should not return entries with the matching value from the filter."
         ),
     )

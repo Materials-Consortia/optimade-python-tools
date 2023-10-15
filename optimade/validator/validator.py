@@ -17,7 +17,7 @@ from typing import Any, Literal, Optional, Union
 
 import requests
 
-from optimade.models import DataType, EntryInfoResponse, SupportLevel
+from optimade.models import Datatype, EntryInfoResponse, SupportLevel
 from optimade.validator.config import VALIDATOR_CONFIG as CONF
 from optimade.validator.utils import (
     DEFAULT_CONN_TIMEOUT,
@@ -590,7 +590,7 @@ class ImplementationValidator:
     def _construct_queries_for_property(
         self,
         prop: str,
-        prop_type: DataType,
+        prop_type: Datatype,
         sortable: bool,
         endp: str,
         chosen_entry: dict[str, Any],
@@ -662,7 +662,7 @@ class ImplementationValidator:
         )
 
     @staticmethod
-    def _format_test_value(test_value: Any, prop_type: DataType, operator: str) -> str:
+    def _format_test_value(test_value: Any, prop_type: Datatype, operator: str) -> str:
         """Formats the test value as a string according to the type of the property.
 
         Parameters:
@@ -674,7 +674,7 @@ class ImplementationValidator:
             The value formatted as a string to use in an OPTIMADE filter.
 
         """
-        if prop_type == DataType.LIST:
+        if prop_type == Datatype.LIST:
             if operator in ("HAS ALL", "HAS ANY"):
                 _vals = sorted(set(test_value))
                 if isinstance(test_value[0], str):
@@ -690,7 +690,7 @@ class ImplementationValidator:
                 else:
                     _test_value = test_value[0]
 
-        elif prop_type in (DataType.STRING, DataType.TIMESTAMP):
+        elif prop_type in (Datatype.STRING, Datatype.TIMESTAMP):
             _test_value = f'"{test_value}"'
 
         else:
@@ -701,7 +701,7 @@ class ImplementationValidator:
     def _construct_single_property_filters(
         self,
         prop: str,
-        prop_type: DataType,
+        prop_type: Datatype,
         sortable: bool,
         endp: str,
         chosen_entry: dict[str, Any],
@@ -755,7 +755,7 @@ class ImplementationValidator:
             raise ResponseError(msg)
 
         using_fallback = False
-        if prop_type == DataType.LIST:
+        if prop_type == Datatype.LIST:
             if not test_value:
                 test_value = CONF.enum_fallback_values.get(endp, {}).get(prop)
                 using_fallback = True
@@ -779,7 +779,7 @@ class ImplementationValidator:
             except ValueError:
                 pass
 
-        if prop_type in (DataType.DICTIONARY,):
+        if prop_type in (Datatype.DICTIONARY,):
             msg = f"Not testing queries on field {prop} of type {prop_type}."
             self._log.warning(msg)
             return None, msg
@@ -875,10 +875,10 @@ class ImplementationValidator:
 
             # Numeric and string comparisons must work both ways...
             if prop_type in (
-                DataType.STRING,
-                DataType.INTEGER,
-                DataType.FLOAT,
-                DataType.TIMESTAMP,
+                Datatype.STRING,
+                Datatype.INTEGER,
+                Datatype.FLOAT,
+                Datatype.TIMESTAMP,
             ) and operator not in (
                 "CONTAINS",
                 "STARTS",
@@ -893,7 +893,7 @@ class ImplementationValidator:
                     reversed_operator = operator.replace(">", "<")
 
                 # Don't try to reverse string comparison as it is ill-defined
-                if prop_type == DataType.STRING and any(
+                if prop_type == Datatype.STRING and any(
                     comp in operator for comp in ("<", ">")
                 ):
                     continue

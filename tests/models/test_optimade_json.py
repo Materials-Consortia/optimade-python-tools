@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from optimade.models import DataType, Provider
+from optimade.models import Datatype, Provider
 
 
 def test_convert_python_types():
@@ -9,13 +9,13 @@ def test_convert_python_types():
     from datetime import datetime
 
     expected_data_type = [
-        DataType.STRING,
-        DataType.INTEGER,
-        DataType.FLOAT,
-        DataType.LIST,
-        DataType.DICTIONARY,
-        DataType.UNKNOWN,
-        DataType.TIMESTAMP,
+        Datatype.STRING,
+        Datatype.INTEGER,
+        Datatype.FLOAT,
+        Datatype.LIST,
+        Datatype.DICTIONARY,
+        Datatype.UNKNOWN,
+        Datatype.TIMESTAMP,
     ]
 
     python_types_as_strings = [
@@ -47,33 +47,33 @@ def test_convert_python_types():
     ]:
         for index, python_type in enumerate(list_of_python_types):
             assert isinstance(
-                DataType.from_python_type(python_type), DataType
+                Datatype.from_python_type(python_type), Datatype
             ), f"python_type: {python_type}"
-            assert DataType.from_python_type(python_type) == expected_data_type[index]
+            assert Datatype.from_python_type(python_type) == expected_data_type[index]
 
 
 def test_convert_json_types():
     """Convert various JSON and OpenAPI types to OPTIMADE Data types"""
     json_types = [
-        ("string", DataType.STRING),
-        ("integer", DataType.INTEGER),
-        ("number", DataType.FLOAT),
-        ("array", DataType.LIST),
-        ("object", DataType.DICTIONARY),
-        ("null", DataType.UNKNOWN),
+        ("string", Datatype.STRING),
+        ("integer", Datatype.INTEGER),
+        ("number", Datatype.FLOAT),
+        ("array", Datatype.LIST),
+        ("object", Datatype.DICTIONARY),
+        ("null", Datatype.UNKNOWN),
     ]
     openapi_formats = [
-        ("date-time", DataType.TIMESTAMP),
-        ("email", DataType.STRING),
-        ("uri", DataType.STRING),
+        ("date-time", Datatype.TIMESTAMP),
+        ("email", Datatype.STRING),
+        ("uri", Datatype.STRING),
     ]
 
     for list_of_schema_types in [json_types, openapi_formats]:
         for schema_type, optimade_type in list_of_schema_types:
             assert isinstance(
-                DataType.from_json_type(schema_type), DataType
+                Datatype.from_json_type(schema_type), Datatype
             ), f"json_type: {schema_type}"
-            assert DataType.from_json_type(schema_type) == optimade_type
+            assert Datatype.from_json_type(schema_type) == optimade_type
 
 
 def test_get_values():
@@ -88,7 +88,7 @@ def test_get_values():
         "timestamp",
         "unknown",
     ]
-    assert DataType.get_values() == sorted_data_types
+    assert Datatype.get_values() == sorted_data_types
 
 
 @pytest.mark.parametrize(

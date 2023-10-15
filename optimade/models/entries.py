@@ -6,7 +6,7 @@ from pydantic import BaseModel, field_validator
 from optimade.models.jsonapi import Attributes, Relationships, Resource
 from optimade.models.optimade_json import (
     BaseRelationshipResource,
-    DataType,
+    Datatype,
     Relationship,
 )
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
@@ -203,7 +203,7 @@ If the entry listing endpoint supports sorting, this key MUST be present for sor
     ] = None
 
     type: Annotated[
-        Optional[DataType],
+        Optional[Datatype],
         StrictField(
             title="Type",
             description="""The type of the property's value.

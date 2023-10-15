@@ -230,7 +230,7 @@ def _minor_deformities() -> "Generator[dict[str, Any], None, None]":
     """Generate minor deformities from correlated structure fields"""
     from optimade.models.structures import CORRELATED_STRUCTURE_FIELDS
 
-    return ({f: None} for f in set(f for _ in CORRELATED_STRUCTURE_FIELDS for f in _))
+    return ({f: None} for f in {f for _ in CORRELATED_STRUCTURE_FIELDS for f in _})
 
 
 @pytest.mark.parametrize("deformity", _minor_deformities())

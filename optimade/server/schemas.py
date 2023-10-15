@@ -1,9 +1,10 @@
-from typing import TYPE_CHECKING, Any, Iterable, Optional
+from collections.abc import Iterable
+from typing import TYPE_CHECKING, Any, Optional
 
 from pydantic import BaseModel, TypeAdapter
 
 from optimade.models import (
-    DataType,
+    Datatype,
     EntryResource,
     ErrorResponse,
     ReferenceResource,
@@ -20,7 +21,7 @@ if TYPE_CHECKING:  # pragma: no cover
         str,
         dict[
             Literal["description", "unit", "queryable", "support", "sortable", "type"],
-            Optional[Union[str, SupportLevel, bool, DataType]],
+            Optional[Union[str, SupportLevel, bool, Datatype]],
         ],
     ]
 
@@ -117,7 +118,7 @@ def retrieve_queryable_properties(
             # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
             json_schema = TypeAdapter(annotation).json_schema(mode="validation")
 
-            properties[name]["type"] = DataType.from_json_type(
+            properties[name]["type"] = Datatype.from_json_type(
                 json_schema.get("format", json_schema.get("type"))
             )
 

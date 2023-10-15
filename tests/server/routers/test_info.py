@@ -1,4 +1,4 @@
-from optimade.models import DataType, EntryInfoResponse, IndexInfoResponse, InfoResponse
+from optimade.models import Datatype, EntryInfoResponse, IndexInfoResponse, InfoResponse
 
 from ..utils import IndexEndpointTests, RegularEndpointTests
 
@@ -43,7 +43,7 @@ class TestInfoStructuresEndpoint(RegularEndpointTests):
         for data_type in types:
             if data_type is None:
                 continue
-            assert isinstance(DataType(data_type), DataType)
+            assert isinstance(Datatype(data_type), Datatype)
 
     def test_info_structures_sortable(self):
         """Check the sortable key is present for all properties"""
@@ -130,7 +130,7 @@ class TestInfoReferencesEndpoint(RegularEndpointTests):
         for data_type in types:
             if data_type is None:
                 continue
-            assert isinstance(DataType(data_type), DataType)
+            assert isinstance(Datatype(data_type), Datatype)
 
 
 class TestIndexInfoEndpoint(IndexEndpointTests):
