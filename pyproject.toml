@@ -117,6 +117,10 @@ dev = [
    "optimade[docs,testing,client,http-client]"
 ]
 
+http_client = [
+   "optimade[http-client]"
+]
+
 all = ["optimade[dev,elastic,aiida,ase,pymatgen,jarvis,http-client,client]"]
 
 
