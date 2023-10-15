@@ -180,7 +180,7 @@ def check_response(get_good_response):
                 for key in warn:
                     assert response["meta"]["warnings"][ind][key] == warn[key]
         else:
-            assert "warnings" not in response["meta"]
+            assert "warnings" not in response["meta"], response["meta"]["warnings"]
 
         return response
 
