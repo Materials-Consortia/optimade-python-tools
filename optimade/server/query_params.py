@@ -234,7 +234,7 @@ class EntryListingQueryParams(BaseQueryParams):
                 description="RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
                 # ge=1,  # This constraint is only 'RECOMMENDED' in the specification, so should not be included here or in the OpenAPI schema
             ),
-        ] = 1,
+        ] = None,  # type: ignore[assignment]
         page_cursor: Annotated[
             int,
             Query(
@@ -247,13 +247,13 @@ class EntryListingQueryParams(BaseQueryParams):
             Query(
                 description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
             ),
-        ] = "",
+        ] = None,  # type: ignore[assignment]
         page_below: Annotated[
             str,
             Query(
                 description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
             ),
-        ] = "",
+        ] = None,  # type: ignore[assignment]
         include: Annotated[
             str,
             Query(

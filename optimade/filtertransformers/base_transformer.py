@@ -7,13 +7,16 @@ for turning filters parsed by lark into backend-specific queries.
 
 import abc
 import warnings
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 from lark import Transformer, Tree, v_args
 
 from optimade.exceptions import BadRequest
 from optimade.server.mappers import BaseResourceMapper
 from optimade.warnings import UnknownProviderProperty
+
+if TYPE_CHECKING:  # pragma: no cover
+    from typing import Union
 
 __all__ = (
     "BaseTransformer",
@@ -285,6 +288,9 @@ class BaseTransformer(Transformer, abc.ABC):
     @v_args(inline=True)
     def number(self, number):
         """number: SIGNED_INT | SIGNED_FLOAT"""
+        if TYPE_CHECKING:  # pragma: no cover
+            type_: Union[type[int], type[float]]
+
         if number.type == "SIGNED_INT":
             type_ = int
         elif number.type == "SIGNED_FLOAT":

@@ -20,7 +20,7 @@ if TYPE_CHECKING:  # pragma: no cover
         str,
         dict[
             Literal["description", "unit", "queryable", "support", "sortable", "type"],
-            Optional[Union[str, SupportLevel, bool]],
+            Optional[Union[str, SupportLevel, bool, DataType]],
         ],
     ]
 
