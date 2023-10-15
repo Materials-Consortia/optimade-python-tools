@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Type, Union
+from typing import TYPE_CHECKING, Dict, Optional, Type, Union
 
 from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
@@ -330,7 +330,7 @@ class ElasticTransformer(BaseTransformer):
     @v_args(inline=True)
     def constant_first_comparison(self, value, op, quantity):
         # constant_first_comparison: constant OPERATOR ( non_string_value | ...not_implemented_string )
-        if not isinstance(quantity, Quantity):
+        if not isinstance(quantity, ElasticsearchQuantity):
             raise TypeError("Only quantities can be compared to constant values.")
 
         return self._query_op(quantity, self._reversed_operator_map[op], value)
@@ -461,6 +461,9 @@ class ElasticTransformer(BaseTransformer):
     @v_args(inline=True)
     def number(self, number):
         # number: SIGNED_INT | SIGNED_FLOAT
+        if TYPE_CHECKING:  # pragma: no cover
+            type_: Union[type[int], type[float]]
+
         if number.type == "SIGNED_INT":
             type_ = int
         elif number.type == "SIGNED_FLOAT":

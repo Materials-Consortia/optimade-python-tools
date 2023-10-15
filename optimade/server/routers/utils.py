@@ -197,7 +197,7 @@ def get_included_relationships(
 
     included: Dict[
         str,
-        Union[List[EntryResource], EntryResource, List[Dict[str, Any]], Dict[str, Any]],
+        Union[List[EntryResource], List[Dict[str, Any]]],
     ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
@@ -216,7 +216,7 @@ def get_included_relationships(
         ref_results, _, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
         if ref_results is None:
             ref_results = []
-        included[entry_type] = ref_results
+        included[entry_type] = ref_results  # type: ignore[assignment]
 
     # flatten dict by endpoint to list
     return [obj for endp in included.values() for obj in endp]

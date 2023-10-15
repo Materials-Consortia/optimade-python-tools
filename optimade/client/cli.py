@@ -1,11 +1,23 @@
 import json
 import pathlib
 import sys
+from typing import TYPE_CHECKING
 
 import click
 import rich
 
 from optimade.client.client import OptimadeClient
+
+if TYPE_CHECKING:  # pragma: no cover
+    from typing import Union
+
+    from optimade.client.utils import QueryResults
+
+    ClientResult = Union[
+        dict[str, list[str]],
+        dict[str, dict[str, dict[str, int]]],
+        dict[str, dict[str, dict[str, QueryResults]]],
+    ]
 
 __all__ = ("_get",)
 
@@ -162,21 +174,21 @@ def _get(
                 f"Desired output file {output_file} already exists, not overwriting."
             )
 
-    args = dict(
-        base_urls=base_url,
-        use_async=use_async,
-        max_results_per_provider=max_results_per_provider,
-        include_providers=set(_.strip() for _ in include_providers.split(","))
+    args = {
+        "base_urls": base_url,
+        "use_async": use_async,
+        "max_results_per_provider": max_results_per_provider,
+        "include_providers": set(_.strip() for _ in include_providers.split(","))
         if include_providers
         else None,
-        exclude_providers=set(_.strip() for _ in exclude_providers.split(","))
+        "exclude_providers": set(_.strip() for _ in exclude_providers.split(","))
         if exclude_providers
         else None,
-        exclude_databases=set(_.strip() for _ in exclude_databases.split(","))
+        "exclude_databases": set(_.strip() for _ in exclude_databases.split(","))
         if exclude_databases
         else None,
-        silent=silent,
-    )
+        "silent": silent,
+    }
 
     # Only set http timeout if its not null to avoid overwriting or duplicating the
     # default value set on the OptimadeClient class
@@ -190,6 +202,9 @@ def _get(
     if response_fields:
         response_fields = response_fields.split(",")
     try:
+        if TYPE_CHECKING:  # pragma: no cover
+            results: ClientResult
+
         if count:
             for f in filter:
                 client.count(f, endpoint=endpoint)
