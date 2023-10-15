@@ -7,8 +7,6 @@ This conversion function relies on the ASE code.
 
 For more information on the ASE code see [their documentation](https://wiki.fysik.dtu.dk/ase/).
 """
-from typing import Dict
-
 from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.utils import (
     elements_ratios_from_species_at_sites,
@@ -66,7 +64,7 @@ def get_ase_atoms(optimade_structure: OptimadeStructure) -> Atoms:
     if not species:
         species = species_from_species_at_sites(attributes.species_at_sites)  # type: ignore[arg-type]
 
-    optimade_species: Dict[str, OptimadeStructureSpecies] = {_.name: _ for _ in species}
+    optimade_species: dict[str, OptimadeStructureSpecies] = {_.name: _ for _ in species}
 
     # Since we've made sure there are no species with more than 1 chemical symbol,
     # asking for index 0 will always work.

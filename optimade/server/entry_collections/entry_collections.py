@@ -4,15 +4,9 @@ import warnings
 from abc import ABC, abstractmethod
 from typing import (
     Any,
-    Dict,
     Iterable,
-    List,
     Optional,
-    Set,
-    Tuple,
-    Type,
     Union,
-    get_args,
 )
 
 from lark import Transformer
@@ -20,7 +14,7 @@ from lark import Transformer
 from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
 from optimade.models import Attributes, EntryResource
-from optimade.models.types import AnnotatedType, OptionalType, UnionType
+from optimade.models.types import NoneType, _get_origin_type
 from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -33,8 +27,8 @@ from optimade.warnings import (
 
 def create_collection(
     name: str,
-    resource_cls: Type[EntryResource],
-    resource_mapper: Type[BaseResourceMapper],
+    resource_cls: type[EntryResource],
+    resource_mapper: type[BaseResourceMapper],
 ) -> "EntryCollection":
     """Create an `EntryCollection` of the configured type, depending on the value of
     `CONFIG.database_backend`.
@@ -95,8 +89,8 @@ class EntryCollection(ABC):
 
     def __init__(
         self,
-        resource_cls: Type[EntryResource],
-        resource_mapper: Type[BaseResourceMapper],
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         transformer: Transformer,
     ):
         """Initialize the collection for the given parameters.
@@ -122,14 +116,14 @@ class EntryCollection(ABC):
             for field in CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         ]
 
-        self._all_fields: Set[str] = set()
+        self._all_fields: set[str] = set()
 
     @abstractmethod
     def __len__(self) -> int:
         """Returns the total number of entries in the collection."""
 
     @abstractmethod
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource]) -> None:
         """Add the given entries to the underlying database.
 
         Arguments:
@@ -138,7 +132,7 @@ class EntryCollection(ABC):
         """
 
     @abstractmethod
-    def count(self, **kwargs: Any) -> Union[int, None]:
+    def count(self, **kwargs: Any) -> Optional[int]:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
@@ -149,7 +143,13 @@ class EntryCollection(ABC):
 
     def find(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[Union[None, Dict, List[Dict]], Optional[int], bool, Set[str], Set[str],]:
+    ) -> tuple[
+        Optional[Union[dict[str, Any], list[dict[str, Any]]]],
+        Optional[int],
+        bool,
+        set[str],
+        set[str],
+    ]:
         """
         Fetches results and indicates if more data is available.
 
@@ -171,7 +171,7 @@ class EntryCollection(ABC):
         """
         criteria = self.handle_query_params(params)
         single_entry = isinstance(params, SingleEntryQueryParams)
-        response_fields: Set[str] = criteria.pop("fields")
+        response_fields: set[str] = criteria.pop("fields")
 
         raw_results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry
@@ -182,10 +182,10 @@ class EntryCollection(ABC):
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
         )
 
-        bad_optimade_fields: Set[str] = set()
-        bad_provider_fields: Set[str] = set()
+        bad_optimade_fields: set[str] = set()
+        bad_provider_fields: set[str] = set()
         supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
-        all_attributes: Set[str] = self.resource_mapper.ALL_ATTRIBUTES
+        all_attributes: set[str] = self.resource_mapper.ALL_ATTRIBUTES
         for field in include_fields:
             if field not in all_attributes:
                 if field.startswith("_"):
@@ -207,13 +207,13 @@ class EntryCollection(ABC):
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
 
-        results: Union[None, List[Dict], Dict] = None
+        results: Optional[Union[list[dict[str, Any]], dict[str, Any]]] = None
 
         if raw_results:
             results = [self.resource_mapper.map_back(doc) for doc in raw_results]
 
             if single_entry:
-                results = results[0]  # type: ignore[assignment]
+                results = results[0]
 
                 if (
                     CONFIG.validate_api_response
@@ -236,8 +236,8 @@ class EntryCollection(ABC):
 
     @abstractmethod
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], Optional[int], bool]:
+        self, criteria: dict[str, Any], single_entry: bool = False
+    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -251,7 +251,7 @@ class EntryCollection(ABC):
         """
 
     @property
-    def all_fields(self) -> Set[str]:
+    def all_fields(self) -> set[str]:
         """Get the set of all fields handled in this collection,
         from attribute fields in the schema, provider fields and top-level OPTIMADE fields.
 
@@ -278,7 +278,7 @@ class EntryCollection(ABC):
 
         return self._all_fields
 
-    def get_attribute_fields(self) -> Set[str]:
+    def get_attribute_fields(self) -> set[str]:
         """Get the set of attribute fields
 
         Return only the _first-level_ attribute fields from the schema of the resource class,
@@ -293,26 +293,20 @@ class EntryCollection(ABC):
             Property names.
 
         """
-        annotation = self.resource_cls.model_fields["attributes"].annotation
-        if isinstance(annotation, (OptionalType, UnionType)):
-            for arg in get_args(annotation):
-                if arg not in (None, type(None)):
-                    annotation = arg
-                    break
+        annotation = _get_origin_type(
+            self.resource_cls.model_fields["attributes"].annotation
+        )
 
-        if isinstance(annotation, AnnotatedType):
-            annotation = get_args(annotation)[0]
-
-        if not issubclass(annotation, Attributes):
+        if annotation in (None, NoneType) or not issubclass(annotation, Attributes):
             raise TypeError(
                 "resource class 'attributes' field must be a subclass of 'EntryResourceAttributes'"
             )
 
-        return set(annotation.model_fields)
+        return set(annotation.model_fields)  # type: ignore[attr-defined]
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
 
@@ -418,7 +412,7 @@ class EntryCollection(ABC):
 
         return cursor_kwargs
 
-    def parse_sort_params(self, sort_params: str) -> Iterable[Tuple[str, int]]:
+    def parse_sort_params(self, sort_params: str) -> Iterable[tuple[str, int]]:
         """Handles any sort parameters passed to the collection,
         resolving aliases and dealing with any invalid fields.
 
@@ -430,7 +424,7 @@ class EntryCollection(ABC):
             sort direction encoded as 1 (ascending) or -1 (descending).
 
         """
-        sort_spec: List[Tuple[str, int]] = []
+        sort_spec: list[tuple[str, int]] = []
         for field in sort_params.split(","):
             sort_dir = 1
             if field.startswith("-"):
@@ -478,8 +472,8 @@ class EntryCollection(ABC):
     def get_next_query_params(
         self,
         params: EntryListingQueryParams,
-        results: Union[None, Dict, List[Dict]],
-    ) -> Dict[str, List[str]]:
+        results: Optional[Union[dict[str, Any], list[dict[str, Any]]]],
+    ) -> dict[str, list[str]]:
         """Provides url query pagination parameters that will be used in the next
         link.
 
@@ -491,7 +485,7 @@ class EntryCollection(ABC):
             A dictionary with the necessary query parameters.
 
         """
-        query: Dict[str, List[str]] = dict()
+        query: dict[str, list[str]] = dict()
         if isinstance(results, list) and results:
             # If a user passed a particular pagination mechanism, keep using it
             # Otherwise, use the default pagination mechanism of the collection

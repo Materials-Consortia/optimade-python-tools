@@ -5,12 +5,13 @@ import re
 import warnings
 from enum import Enum
 from functools import reduce
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from pydantic import Field
-
-# from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
+
+if TYPE_CHECKING:  # pragma: no cover
+    from collections.abc import Generator
 
 _PYDANTIC_FIELD_KWARGS = list(inspect.signature(Field).parameters.keys())
 
@@ -88,7 +89,7 @@ def StrictField(
         kwargs["description"] = description
 
     # OPTIMADE schema extensions
-    json_schema_extra: Dict[str, Any] = kwargs.pop("json_schema_extra", {})
+    json_schema_extra: dict[str, Any] = kwargs.pop("json_schema_extra", {})
 
     # Go through all JSON Schema keys and add them to the json_schema_extra.
     for key in allowed_keys:
@@ -146,10 +147,12 @@ def OptimadeField(
     # Collect non-null keyword arguments to add to the Field schema
     if unit is not None:
         kwargs["unit"] = unit
+
     if queryable is not None:
         if isinstance(queryable, str):
             queryable = SupportLevel(queryable.lower())
         kwargs["queryable"] = queryable
+
     if support is not None:
         if isinstance(support, str):
             support = SupportLevel(support.lower())
@@ -158,15 +161,15 @@ def OptimadeField(
     return StrictField(default, **kwargs)
 
 
-def anonymous_element_generator():
+def anonymous_element_generator() -> "Generator[str, None, None]":
     """Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme."""
     from string import ascii_lowercase
 
     for size in itertools.count(1):
-        for s in itertools.product(ascii_lowercase, repeat=size):
-            s = list(s)
-            s[0] = s[0].upper()
-            yield "".join(s)
+        for tuple_strings in itertools.product(ascii_lowercase, repeat=size):
+            list_strings = list(tuple_strings)
+            list_strings[0] = list_strings[0].upper()
+            yield "".join(list_strings)
 
 
 def _reduce_or_anonymize_formula(
@@ -175,9 +178,7 @@ def _reduce_or_anonymize_formula(
     """Takes an input formula, reduces it and either alphabetizes or anonymizes it."""
     import sys
 
-    numbers: List[int] = [
-        int(n.strip() or 1) for n in re.split(r"[A-Z][a-z]*", formula)[1:]
-    ]
+    numbers = [int(n.strip() or 1) for n in re.split(r"[A-Z][a-z]*", formula)[1:]]
     # Need to remove leading 1 from split and convert to ints
 
     species = re.findall("[A-Z][a-z]*", formula)

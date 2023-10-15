@@ -3,14 +3,12 @@ import itertools
 from typing import TYPE_CHECKING
 
 import pytest
-from pydantic import ValidationError
 
-from optimade.models.structures import CORRELATED_STRUCTURE_FIELDS, StructureResource
 from optimade.warnings import MissingExpectedField
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
-    from typing import Any, Dict, List, Optional, Tuple
+    from collections.abc import Callable, Generator
+    from typing import Any, Optional
 
     from optimade.server.mappers import BaseResourceMapper
 
@@ -18,11 +16,13 @@ MAPPER = "StructureMapper"
 
 
 @pytest.mark.filterwarnings("ignore", category=MissingExpectedField)
-def test_good_structure_with_missing_data(good_structure: "Dict[str, Any]") -> None:
+def test_good_structure_with_missing_data(good_structure: "dict[str, Any]") -> None:
     """Check deserialization of well-formed structure used
     as example data with all combinations of null values
     in non-mandatory fields.
     """
+    from optimade.models.structures import StructureResource
+
     structure = {field: good_structure[field] for field in good_structure}
 
     # Have to include `assemblies` here, although it is only optional,
@@ -45,10 +45,14 @@ def test_good_structure_with_missing_data(good_structure: "Dict[str, Any]") -> N
 
 
 def test_more_good_structures(
-    good_structures: "List[Dict[str, Any]]",
+    good_structures: "list[dict[str, Any]]",
     mapper: "Callable[[str], BaseResourceMapper]",
 ) -> None:
     """Check well-formed structures with specific edge-cases"""
+    from pydantic import ValidationError
+
+    from optimade.models.structures import StructureResource
+
     for index, structure in enumerate(good_structures):
         try:
             StructureResource(**mapper(MAPPER).map_back(structure))
@@ -61,7 +65,7 @@ def test_more_good_structures(
 
 
 def test_bad_structures(
-    bad_structures: "List[Dict[str, Any]]",
+    bad_structures: "list[dict[str, Any]]",
     mapper: "Callable[[str], BaseResourceMapper]",
 ) -> None:
     """Check badly formed structures.
@@ -71,6 +75,10 @@ def test_bad_structures(
     https://docs.pydantic.dev/latest/concepts/validators/#handling-errors-in-validators
     for more information.
     """
+    from pydantic import ValidationError
+
+    from optimade.models.structures import StructureResource
+
     with pytest.warns(MissingExpectedField):
         for index, structure in enumerate(bad_structures):
             # This is for helping devs finding any errors that may occur
@@ -196,13 +204,17 @@ deformities = (
 
 @pytest.mark.parametrize("deformity", deformities)
 def test_structure_fatal_deformities(
-    good_structure: "Dict[str, Any]", deformity: "Optional[Tuple[Dict[str, str], str]]"
+    good_structure: "dict[str, Any]", deformity: "Optional[tuple[dict[str, str], str]]"
 ) -> None:
     """Make specific checks upon performing single invalidating deformations
     of the data of a good structure.
 
     """
     import re
+
+    from pydantic import ValidationError
+
+    from optimade.models.structures import StructureResource
 
     if deformity is None:
         StructureResource(**good_structure)
@@ -214,18 +226,22 @@ def test_structure_fatal_deformities(
         StructureResource(**good_structure)
 
 
-minor_deformities = (
-    {f: None} for f in set(f for _ in CORRELATED_STRUCTURE_FIELDS for f in _)
-)
+def _minor_deformities() -> "Generator[dict[str, Any], None, None]":
+    """Generate minor deformities from correlated structure fields"""
+    from optimade.models.structures import CORRELATED_STRUCTURE_FIELDS
+
+    return ({f: None} for f in set(f for _ in CORRELATED_STRUCTURE_FIELDS for f in _))
 
 
-@pytest.mark.parametrize("deformity", minor_deformities)
+@pytest.mark.parametrize("deformity", _minor_deformities())
 def test_structure_minor_deformities(
-    good_structure: "Dict[str, Any]", deformity: "Optional[Tuple[Dict[str, str], str]]"
+    good_structure: "dict[str, Any]", deformity: "Optional[dict[str, Any]]"
 ) -> None:
     """Make specific checks upon performing single minor invalidations
     of the data of a good structure that should emit warnings.
     """
+    from optimade.models.structures import StructureResource
+
     if deformity is None:
         StructureResource(**good_structure)
     else:

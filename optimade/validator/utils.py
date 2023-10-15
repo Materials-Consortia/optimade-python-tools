@@ -11,14 +11,14 @@ used by the validator. The two main features being:
    themselves.
 
 """
-
 import dataclasses
 import json
 import sys
 import time
 import traceback as tb
 import urllib.parse
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from collections.abc import Callable
+from typing import Any, Optional
 
 import requests
 from pydantic import Field, ValidationError
@@ -80,11 +80,11 @@ class ValidatorResults:
     internal_failure_count: int = 0
     optional_success_count: int = 0
     optional_failure_count: int = 0
-    failure_messages: List[Tuple[str, str]] = dataclasses.field(default_factory=list)
-    internal_failure_messages: List[Tuple[str, str]] = dataclasses.field(
+    failure_messages: list[tuple[str, str]] = dataclasses.field(default_factory=list)
+    internal_failure_messages: list[tuple[str, str]] = dataclasses.field(
         default_factory=list
     )
-    optional_failure_messages: List[Tuple[str, str]] = dataclasses.field(
+    optional_failure_messages: list[tuple[str, str]] = dataclasses.field(
         default_factory=list
     )
     verbosity: int = 0
@@ -146,7 +146,7 @@ class ValidatorResults:
             self.optional_failure_count += 1
             self.optional_failure_messages.append((summary, message))
 
-        pprint_types: Dict[str, Tuple[Callable, Callable]] = {
+        pprint_types: dict[str, tuple[Callable, Callable]] = {
             "internal": (print_notify, print_warning),
             "optional": (print, print),
         }
@@ -168,7 +168,7 @@ class Client:  # pragma: no cover
         self,
         base_url: str,
         max_retries: int = 5,
-        headers: Optional[Dict[str, str]] = None,
+        headers: Optional[dict[str, str]] = None,
         timeout: Optional[float] = DEFAULT_CONN_TIMEOUT,
         read_timeout: Optional[float] = DEFAULT_READ_TIMEOUT,
     ) -> None:
@@ -267,7 +267,7 @@ class Client:  # pragma: no cover
             raise ResponseError(message)
 
 
-def test_case(test_fn: Callable[..., Tuple[Any, str]]):
+def test_case(test_fn: Callable[..., tuple[Any, str]]):
     """Wrapper for test case functions, which pretty-prints any errors
     depending on verbosity level, collates the number and severity of
     test failures, returns the response and summary string to the caller.
@@ -404,19 +404,19 @@ def test_case(test_fn: Callable[..., Tuple[Any, str]]):
 
 class ValidatorLinksResponse(Success):
     meta: ResponseMeta = Field(...)
-    data: List[LinksResource] = Field(...)
+    data: list[LinksResource] = Field(...)
 
 
 class ValidatorEntryResponseOne(Success):
     meta: ResponseMeta = Field(...)
     data: EntryResource = Field(...)
-    included: Optional[List[Dict[str, Any]]] = Field(None)  # type: ignore[assignment]
+    included: Optional[list[dict[str, Any]]] = Field(None)  # type: ignore[assignment]
 
 
 class ValidatorEntryResponseMany(Success):
     meta: ResponseMeta = Field(...)
-    data: List[EntryResource] = Field(...)
-    included: Optional[List[Dict[str, Any]]] = Field(None)  # type: ignore[assignment]
+    data: list[EntryResource] = Field(...)
+    included: Optional[list[dict[str, Any]]] = Field(None)  # type: ignore[assignment]
 
 
 class ValidatorReferenceResponseOne(ValidatorEntryResponseOne):
@@ -424,7 +424,7 @@ class ValidatorReferenceResponseOne(ValidatorEntryResponseOne):
 
 
 class ValidatorReferenceResponseMany(ValidatorEntryResponseMany):
-    data: List[ReferenceResource] = Field(...)
+    data: list[ReferenceResource] = Field(...)
 
 
 class ValidatorStructureResponseOne(ValidatorEntryResponseOne):
@@ -432,4 +432,4 @@ class ValidatorStructureResponseOne(ValidatorEntryResponseOne):
 
 
 class ValidatorStructureResponseMany(ValidatorEntryResponseMany):
-    data: List[StructureResource] = Field(...)
+    data: list[StructureResource] = Field(...)

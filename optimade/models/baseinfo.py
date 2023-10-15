@@ -1,6 +1,6 @@
 # pylint: disable=no-self-argument,no-name-in-module
 import re
-from typing import Dict, List, Literal, Optional
+from typing import Annotated, Literal, Optional
 
 from pydantic import (
     AnyHttpUrl,
@@ -22,20 +22,24 @@ VERSIONED_BASE_URL_PATTERN = r"^.+/v[0-1](\.[0-9]+)*/?$"
 class AvailableApiVersion(BaseModel):
     """A JSON object containing information about an available API version"""
 
-    url: AnyHttpUrl = StrictField(
-        ...,
-        description="A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
-        json_schema_extra={
-            "pattern": VERSIONED_BASE_URL_PATTERN,
-        },
-    )
+    url: Annotated[
+        AnyHttpUrl,
+        StrictField(
+            description="A string specifying a versioned base URL that MUST adhere to the rules in section Base URL",
+            json_schema_extra={
+                "pattern": VERSIONED_BASE_URL_PATTERN,
+            },
+        ),
+    ]
 
-    version: SemanticVersion = StrictField(
-        ...,
-        description="""A string containing the full version number of the API served at that versioned base URL.
+    version: Annotated[
+        SemanticVersion,
+        StrictField(
+            description="""A string containing the full version number of the API served at that versioned base URL.
 The version number string MUST NOT be prefixed by, e.g., 'v'.
 Examples: `1.0.0`, `1.0.0-rc.2`.""",
-    )
+        ),
+    ]
 
     @field_validator("url", mode="after")
     @classmethod
@@ -73,32 +77,43 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
 class BaseInfoAttributes(BaseModel):
     """Attributes for Base URL Info endpoint"""
 
-    api_version: SemanticVersion = StrictField(
-        ...,
-        description="""Presently used full version of the OPTIMADE API.
+    api_version: Annotated[
+        SemanticVersion,
+        StrictField(
+            description="""Presently used full version of the OPTIMADE API.
 The version number string MUST NOT be prefixed by, e.g., "v".
 Examples: `1.0.0`, `1.0.0-rc.2`.""",
-    )
-    available_api_versions: List[AvailableApiVersion] = StrictField(
-        ...,
-        description="A list of dictionaries of available API versions at other base URLs",
-    )
-    formats: List[str] = StrictField(
-        default=["json"], description="List of available output formats."
-    )
-    available_endpoints: List[str] = StrictField(
-        ...,
-        description="List of available endpoints (i.e., the string to be appended to the versioned base URL).",
-    )
-    entry_types_by_format: Dict[str, List[str]] = StrictField(
-        ..., description="Available entry endpoints as a function of output formats."
-    )
-    is_index: Optional[bool] = StrictField(
-        default=False,
-        description="If true, this is an index meta-database base URL (see section Index Meta-Database). "
-        "If this member is not provided, the client MUST assume this is not an index meta-database base URL "
-        "(i.e., the default is for `is_index` to be `false`).",
-    )
+        ),
+    ]
+    available_api_versions: Annotated[
+        list[AvailableApiVersion],
+        StrictField(
+            description="A list of dictionaries of available API versions at other base URLs",
+        ),
+    ]
+    formats: Annotated[
+        list[str], StrictField(description="List of available output formats.")
+    ] = ["json"]
+    available_endpoints: Annotated[
+        list[str],
+        StrictField(
+            description="List of available endpoints (i.e., the string to be appended to the versioned base URL).",
+        ),
+    ]
+    entry_types_by_format: Annotated[
+        dict[str, list[str]],
+        StrictField(
+            description="Available entry endpoints as a function of output formats."
+        ),
+    ]
+    is_index: Annotated[
+        Optional[bool],
+        StrictField(
+            description="If true, this is an index meta-database base URL (see section Index Meta-Database). "
+            "If this member is not provided, the client MUST assume this is not an index meta-database base URL "
+            "(i.e., the default is for `is_index` to be `false`).",
+        ),
+    ] = False
 
     @model_validator(mode="after")
     def formats_and_endpoints_must_be_valid(self) -> "BaseInfoAttributes":

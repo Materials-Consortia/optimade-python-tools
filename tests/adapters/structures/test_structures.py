@@ -1,9 +1,7 @@
 """Test Structure adapter"""
+from typing import TYPE_CHECKING
 
 import pytest
-
-from optimade.adapters import Structure
-from optimade.models import StructureResource
 
 try:
     import aiida  # noqa: F401
@@ -16,22 +14,32 @@ except ImportError:
 else:
     all_modules_found = True
 
+if TYPE_CHECKING:
+    from typing import Any, Union
 
-def test_instantiate(RAW_STRUCTURES):
+    from optimade.adapters.structures import Structure
+
+
+def test_instantiate(RAW_STRUCTURES: "list[dict[str, Any]]") -> None:
     """Try instantiating Structure for all raw test structures"""
+    from optimade.adapters.structures import Structure
+    from optimade.models.structures import StructureResource
+
     for structure in RAW_STRUCTURES:
         new_Structure = Structure(structure)
         assert isinstance(new_Structure.entry, StructureResource)
 
 
-def test_setting_entry(caplog, RAW_STRUCTURES):
+def test_setting_entry(RAW_STRUCTURES: "list[dict[str, Any]]") -> None:
     """Make sure entry can only be set once"""
+    from optimade.adapters.structures import Structure
+
     structure = Structure(RAW_STRUCTURES[0])
-    structure.entry = RAW_STRUCTURES[1]
-    assert "entry can only be set once and is already set." in caplog.text
+    with pytest.raises(AttributeError):
+        structure.entry = RAW_STRUCTURES[1]
 
 
-def test_convert(structure):
+def test_convert(structure: "Structure") -> None:
     """Test convert() works
     Choose currently known entry type - must be updated if no longer available.
     """
@@ -52,15 +60,16 @@ def test_convert(structure):
     assert converted_structure == structure._converted[chosen_type]
 
 
-def test_convert_wrong_format(structure):
+def test_convert_wrong_format(structure: "Structure") -> None:
     """Test AttributeError is raised if format does not exist"""
-    nonexistant_format = 0
+    nonexistant_format: "Union[int, str]" = 0
     right_wrong_format_found = False
     while not right_wrong_format_found:
         if str(nonexistant_format) not in structure._type_converters:
             nonexistant_format = str(nonexistant_format)
             right_wrong_format_found = True
         else:
+            assert isinstance(nonexistant_format, int)
             nonexistant_format += 1
 
     with pytest.raises(
@@ -70,7 +79,7 @@ def test_convert_wrong_format(structure):
         structure.convert(nonexistant_format)
 
 
-def test_getattr_order(structure):
+def test_getattr_order(structure: "Structure") -> None:
     """The order of getting an attribute should be:
     1. `as_<entry type format>`
     2. `<entry type attribute>`
@@ -101,7 +110,7 @@ def test_getattr_order(structure):
     reason="This test checks what happens if a conversion-dependent module cannot be found. "
     "All could be found, i.e., it has no meaning.",
 )
-def test_no_module_conversion(structure):
+def test_no_module_conversion(structure: "Structure") -> None:
     """Make sure a warnings is raised and None is returned for conversions with non-existing modules"""
     import importlib
 
@@ -134,8 +143,13 @@ def test_no_module_conversion(structure):
             assert converted_structure is None
 
 
-def test_common_converters(raw_structure, RAW_STRUCTURES):
+def test_common_converters(
+    raw_structure: "dict[str, Any]", RAW_STRUCTURES: "list[dict[str, Any]]"
+) -> None:
     """Test common converters"""
+    from optimade.adapters.structures import Structure
+    from optimade.models.structures import StructureResource
+
     structure = Structure(raw_structure)
 
     assert structure.as_json == StructureResource(**raw_structure).model_dump_json()
@@ -150,7 +164,10 @@ def test_common_converters(raw_structure, RAW_STRUCTURES):
         assert raw_structure_property_set.issubset(resource_property_set)
 
 
-def compare_lossy_conversion(structure_attributes, reconverted_structure_attributes):
+def compare_lossy_conversion(
+    structure_attributes: "dict[str, Any]",
+    reconverted_structure_attributes: "dict[str, Any]",
+) -> None:
     """Compare two structures, allowing for some loss of information and mapping of prefixed keys."""
 
     try:
@@ -161,7 +178,7 @@ def compare_lossy_conversion(structure_attributes, reconverted_structure_attribu
                 "numpy not found, some cases of conversion tests will be skipped"
             )
         )
-        np = None
+        np = None  # type: ignore[assignment]
 
     lossy_keys = (
         "chemical_formula_descriptive",
@@ -198,11 +215,25 @@ def compare_lossy_conversion(structure_attributes, reconverted_structure_attribu
                 assert reconverted_structure_attributes[k] == structure_attributes[k]
 
 
+def _get_formats() -> "list[str]":
+    """Get all available formats"""
+    from optimade.adapters.structures import Structure
+
+    return [
+        k for k in Structure._type_ingesters.keys() if k in Structure._type_converters
+    ]
+
+
 @pytest.mark.parametrize(
     "format",
-    [k for k in Structure._type_ingesters.keys() if k in Structure._type_converters],
+    _get_formats(),
 )
-def test_two_way_conversion(RAW_STRUCTURES, format):
+def test_two_way_conversion(
+    RAW_STRUCTURES: "list[dict[str, Any]]", format: str
+) -> None:
+    """Test two-way conversion"""
+    from optimade.adapters.structures import Structure
+
     for structure in RAW_STRUCTURES:
         new_structure = Structure(structure)
         converted_structure = new_structure.convert(format)
@@ -218,9 +249,14 @@ def test_two_way_conversion(RAW_STRUCTURES, format):
 
 @pytest.mark.parametrize(
     "format",
-    [k for k in Structure._type_ingesters.keys() if k in Structure._type_converters],
+    _get_formats(),
 )
-def test_two_way_conversion_with_implicit_type(RAW_STRUCTURES, format):
+def test_two_way_conversion_with_implicit_type(
+    RAW_STRUCTURES: "list[dict[str, Any]]", format: str
+) -> None:
+    """Test two-way conversion with implicit type"""
+    from optimade.adapters.structures import Structure
+
     for structure in RAW_STRUCTURES:
         new_structure = Structure(structure)
         converted_structure = new_structure.convert(format)

@@ -1,7 +1,6 @@
-from enum import Enum
-from typing import Dict, Literal, Union
+from typing import Annotated, Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource
 from optimade.models.jsonapi import BaseResource
@@ -15,19 +14,15 @@ __all__ = (
 )
 
 
-class DefaultRelationship(Enum):
-    """Enumeration of key(s) for relationship dictionary in IndexInfoResource"""
-
-    DEFAULT = "default"
-
-
 class IndexInfoAttributes(BaseInfoAttributes):
     """Attributes for Base URL Info endpoint for an Index Meta-Database"""
 
-    is_index: bool = StrictField(
-        True,
-        description="This must be `true` since this is an index meta-database (see section Index Meta-Database).",
-    )
+    is_index: Annotated[
+        bool,
+        StrictField(
+            description="This must be `true` since this is an index meta-database (see section Index Meta-Database).",
+        ),
+    ] = True
 
 
 class RelatedLinksResource(BaseResource):
@@ -39,22 +34,24 @@ class RelatedLinksResource(BaseResource):
 class IndexRelationship(BaseModel):
     """Index Meta-Database relationship"""
 
-    data: Union[None, RelatedLinksResource] = StrictField(
-        ...,
-        description="""[JSON API resource linkage](http://jsonapi.org/format/1.0/#document-links).
+    data: Annotated[
+        Optional[RelatedLinksResource],
+        StrictField(
+            description="""[JSON API resource linkage](http://jsonapi.org/format/1.0/#document-links).
 It MUST be either `null` or contain a single Links identifier object with the fields `id` and `type`""",
-    )
+        ),
+    ]
 
 
 class IndexInfoResource(BaseInfoResource):
     """Index Meta-Database Base URL Info endpoint resource"""
 
-    attributes: IndexInfoAttributes = Field(...)
-    relationships: Union[
-        None, Dict[DefaultRelationship, IndexRelationship]
-    ] = StrictField(  # type: ignore[assignment]
-        ...,
-        title="Relationships",
-        description="""Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their 'default' OPTIMADE API database.
+    attributes: IndexInfoAttributes
+    relationships: Annotated[  # type: ignore[assignment]
+        Optional[dict[Literal["default"], IndexRelationship]],
+        StrictField(
+            title="Relationships",
+            description="""Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their 'default' OPTIMADE API database.
 A client SHOULD present this database as the first choice when an end-user chooses this provider.""",
-    )
+        ),
+    ]

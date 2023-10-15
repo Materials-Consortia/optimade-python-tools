@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Annotated, Any, Dict
 
 from fastapi import APIRouter, Depends, Request
 
@@ -26,7 +26,7 @@ links_coll = create_collection(
     tags=["Links"],
     responses=ERROR_RESPONSES,
 )
-def get_links(request: Request, params: EntryListingQueryParams = Depends()) -> Any:
-    return get_entries(
-        collection=links_coll, response=LinksResponse, request=request, params=params
-    )
+def get_links(
+    request: Request, params: Annotated[EntryListingQueryParams, Depends()]
+) -> Dict[str, Any]:
+    return get_entries(collection=links_coll, request=request, params=params)

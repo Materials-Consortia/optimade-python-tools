@@ -1,13 +1,12 @@
-# pylint: disable=no-self-argument
 import json
 import os
 import warnings
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, Type, Union
+from typing import Annotated, Any, Literal, Optional, Union
 
 import yaml
-from pydantic import (  # pylint: disable=no-name-in-module
+from pydantic import (
     AnyHttpUrl,
     Field,
     field_validator,
@@ -87,7 +86,7 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
 
     def get_field_value(
         self, field: FieldInfo, field_name: str
-    ) -> Tuple[Any, str, bool]:
+    ) -> tuple[Any, str, bool]:
         """Must be defined according to parent abstract class.
 
         It does not make sense to use it for this class, since 'extra' is set to
@@ -96,7 +95,7 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
         """
         raise NotImplementedError
 
-    def parse_config_file(self) -> Dict[str, Any]:
+    def parse_config_file(self) -> dict[str, Any]:
         """Parse the config file and return a dictionary of its content."""
         encoding = self.config.get("env_file_encoding")
         config_file = Path(os.getenv("OPTIMADE_CONFIG_FILE", DEFAULT_CONFIG_FILE_PATH))
@@ -142,7 +141,7 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
 
         return parsed_config_file
 
-    def __call__(self) -> Dict[str, Any]:
+    def __call__(self) -> dict[str, Any]:
         return self.parse_config_file()
 
 
@@ -158,212 +157,262 @@ class ServerConfig(BaseSettings):
         case_sensitive=False,
     )
 
-    debug: bool = Field(
-        False,
-        description="Turns on Debug Mode for the OPTIMADE Server implementation",
-    )
-
-    insert_test_data: bool = Field(
-        True,
-        description=(
-            "Insert test data into each collection on server initialisation. If true, "
-            "the configured backend will be populated with test data on server start. "
-            "Should be disabled for production usage."
+    debug: Annotated[
+        bool,
+        Field(
+            description="Turns on Debug Mode for the OPTIMADE Server implementation",
         ),
-    )
+    ] = False
 
-    use_real_mongo: Optional[bool] = Field(
-        None, description="DEPRECATED: force usage of MongoDB over any other backend."
-    )
-
-    database_backend: SupportedBackend = Field(
-        SupportedBackend.MONGOMOCK,
-        description="Which database backend to use out of the supported backends.",
-    )
-
-    elastic_hosts: Optional[Union[str, List[str], Dict, List[Dict]]] = Field(
-        None, description="Host settings to pass through to the `Elasticsearch` class."
-    )
-
-    mongo_count_timeout: int = Field(
-        5,
-        description=(
-            "Number of seconds to allow MongoDB to perform a full database count "
-            "before falling back to `null`. This operation can require a full COLLSCAN"
-            " for empty queries which can be prohibitively slow if the database does "
-            "not fit into the active set, hence a timeout can drastically speed-up "
-            "response times."
-        ),
-    )
-
-    mongo_database: str = Field(
-        "optimade", description="Mongo database for collection data"
-    )
-    mongo_uri: str = Field("localhost:27017", description="URI for the Mongo server")
-    links_collection: str = Field(
-        "links", description="Mongo collection name for /links endpoint resources"
-    )
-    references_collection: str = Field(
-        "references",
-        description="Mongo collection name for /references endpoint resources",
-    )
-    structures_collection: str = Field(
-        "structures",
-        description="Mongo collection name for /structures endpoint resources",
-    )
-    page_limit: int = Field(20, description="Default number of resources per page")
-    page_limit_max: int = Field(
-        500, description="Max allowed number of resources per page"
-    )
-    default_db: str = Field(
-        "test_server",
-        description=(
-            "ID of /links endpoint resource for the chosen default OPTIMADE "
-            "implementation (only relevant for the index meta-database)"
-        ),
-    )
-    root_path: Optional[str] = Field(
-        None,
-        description=(
-            "Sets the FastAPI app `root_path` parameter. This can be used to serve the"
-            " API under a path prefix behind a proxy or as a sub-application of "
-            "another FastAPI app. See "
-            "https://fastapi.tiangolo.com/advanced/sub-applications/#technical-details-root_path"
-            " for details."
-        ),
-    )
-    base_url: Optional[str] = Field(
-        None, description="Base URL for this implementation"
-    )
-    implementation: Implementation = Field(
-        Implementation(
-            name="OPTIMADE Python Tools",
-            version=__version__,
-            source_url="https://github.com/Materials-Consortia/optimade-python-tools",
-            maintainer={"email": "dev@optimade.org"},
-            issue_tracker=(
-                "https://github.com/Materials-Consortia/optimade-python-tools/issues"
-            ),
-            homepage="https://optimade.org/optimade-python-tools",
-        ),
-        description="Introspective information about this OPTIMADE implementation",
-    )
-    index_base_url: Optional[AnyHttpUrl] = Field(
-        None,
-        description=(
-            "An optional link to the base URL for the index meta-database of the "
-            "provider."
-        ),
-    )
-    provider: Provider = Field(
-        Provider(
-            prefix="exmpl",
-            name="Example provider",
+    insert_test_data: Annotated[
+        bool,
+        Field(
             description=(
-                "Provider used for examples, not to be assigned to a real database"
+                "Insert test data into each collection on server initialisation. If true, "
+                "the configured backend will be populated with test data on server start. "
+                "Should be disabled for production usage."
             ),
-            homepage="https://example.com",
         ),
-        description=(
-            "General information about the provider of this OPTIMADE implementation"
-        ),
-    )
-    provider_fields: Dict[
-        Literal["links", "references", "structures"],
-        List[Union[str, Dict[Literal["name", "type", "unit", "description"], str]]],
-    ] = Field(
-        {},
-        description=(
-            "A list of additional fields to be served with the provider's prefix "
-            "attached, broken down by endpoint."
-        ),
-    )
-    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
-        {},
-        description=(
-            "A mapping between field names in the database with their corresponding "
-            "OPTIMADE field names, broken down by endpoint."
-        ),
-    )
-    length_aliases: Dict[
-        Literal["links", "references", "structures"], Dict[str, str]
-    ] = Field(
-        {},
-        description=(
-            "A mapping between a list property (or otherwise) and an integer property "
-            "that defines the length of that list, for example elements -> nelements. "
-            "The standard aliases are applied first, so this dictionary must refer to "
-            "the API fields, not the database fields."
-        ),
-    )
-    index_links_path: Path = Field(
-        Path(__file__).parent.joinpath("index_links.json"),
-        description=(
-            "Absolute path to a JSON file containing the MongoDB collecton of links "
-            "entries (documents) to serve under the /links endpoint of the index "
-            "meta-database. NB! As suggested in the previous sentence, these will "
-            "only be served when using a MongoDB-based backend."
-        ),
-    )
+    ] = True
 
-    is_index: Optional[bool] = Field(
-        False,
-        description=(
-            "A runtime setting to dynamically switch between index meta-database and "
-            "normal OPTIMADE servers. Used for switching behaviour of e.g., "
-            "`meta->optimade_schema` values in the response. Any provided value may "
-            "be overridden when used with the reference server implementation."
-        ),
-    )
+    use_real_mongo: Annotated[
+        Optional[bool],
+        Field(description="DEPRECATED: force usage of MongoDB over any other backend."),
+    ] = None
 
-    schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
-        f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade.json",
-        description=(
-            "A URL that will be provided in the `meta->schema` field for every response"
+    database_backend: Annotated[
+        SupportedBackend,
+        Field(
+            description="Which database backend to use out of the supported backends.",
         ),
-    )
+    ] = SupportedBackend.MONGOMOCK
 
-    custom_landing_page: Optional[Union[str, Path]] = Field(
-        None,
-        description=(
-            "The location of a custom landing page (Jinja template) to use for the API."
+    elastic_hosts: Annotated[
+        Optional[Union[str, list[str], dict[str, Any], list[dict[str, Any]]]],
+        Field(
+            description="Host settings to pass through to the `Elasticsearch` class."
         ),
-    )
+    ] = None
 
-    index_schema_url: Optional[Union[str, AnyHttpUrl]] = Field(
-        f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade_index.json",
-        description=(
-            "A URL that will be provided in the `meta->schema` field for every "
-            "response from the index meta-database."
+    mongo_count_timeout: Annotated[
+        int,
+        Field(
+            description=(
+                "Number of seconds to allow MongoDB to perform a full database count "
+                "before falling back to `null`. This operation can require a full COLLSCAN"
+                " for empty queries which can be prohibitively slow if the database does "
+                "not fit into the active set, hence a timeout can drastically speed-up "
+                "response times."
+            ),
         ),
-    )
+    ] = 5
 
-    log_level: LogLevel = Field(
-        LogLevel.INFO, description="Logging level for the OPTIMADE server."
-    )
-    log_dir: Path = Field(
-        Path("/var/log/optimade/"),
-        description="Folder in which log files will be saved.",
-    )
-    validate_query_parameters: Optional[bool] = Field(
-        True,
-        description=(
-            "If True, the server will check whether the query parameters given in the "
-            "request are correct."
+    mongo_database: Annotated[
+        str, Field(description="Mongo database for collection data")
+    ] = "optimade"
+    mongo_uri: Annotated[
+        str, Field(description="URI for the Mongo server")
+    ] = "localhost:27017"
+    links_collection: Annotated[
+        str, Field(description="Mongo collection name for /links endpoint resources")
+    ] = "links"
+    references_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for /references endpoint resources",
         ),
+    ] = "references"
+    structures_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for /structures endpoint resources",
+        ),
+    ] = "structures"
+    page_limit: Annotated[
+        int, Field(description="Default number of resources per page")
+    ] = 20
+    page_limit_max: Annotated[
+        int, Field(description="Max allowed number of resources per page")
+    ] = 500
+    default_db: Annotated[
+        str,
+        Field(
+            description=(
+                "ID of /links endpoint resource for the chosen default OPTIMADE "
+                "implementation (only relevant for the index meta-database)"
+            ),
+        ),
+    ] = "test_server"
+    root_path: Annotated[
+        Optional[str],
+        Field(
+            description=(
+                "Sets the FastAPI app `root_path` parameter. This can be used to serve the"
+                " API under a path prefix behind a proxy or as a sub-application of "
+                "another FastAPI app. See "
+                "https://fastapi.tiangolo.com/advanced/sub-applications/#technical-details-root_path"
+                " for details."
+            ),
+        ),
+    ] = None
+    base_url: Annotated[
+        Optional[str], Field(description="Base URL for this implementation")
+    ] = None
+    implementation: Annotated[
+        Implementation,
+        Field(
+            description="Introspective information about this OPTIMADE implementation",
+        ),
+    ] = Implementation(
+        name="OPTIMADE Python Tools",
+        version=__version__,
+        source_url="https://github.com/Materials-Consortia/optimade-python-tools",
+        maintainer={"email": "dev@optimade.org"},
+        issue_tracker=(
+            "https://github.com/Materials-Consortia/optimade-python-tools/issues"
+        ),
+        homepage="https://optimade.org/optimade-python-tools",
     )
+    index_base_url: Annotated[
+        Optional[AnyHttpUrl],
+        Field(
+            description=(
+                "An optional link to the base URL for the index meta-database of the "
+                "provider."
+            ),
+        ),
+    ] = None
+    provider: Annotated[
+        Provider,
+        Field(
+            description=(
+                "General information about the provider of this OPTIMADE implementation"
+            ),
+        ),
+    ] = Provider(
+        prefix="exmpl",
+        name="Example provider",
+        description=(
+            "Provider used for examples, not to be assigned to a real database"
+        ),
+        homepage="https://example.com",
+    )
+    provider_fields: Annotated[
+        dict[
+            Literal["links", "references", "structures"],
+            list[Union[str, dict[Literal["name", "type", "unit", "description"], str]]],
+        ],
+        Field(
+            description=(
+                "A list of additional fields to be served with the provider's prefix "
+                "attached, broken down by endpoint."
+            ),
+        ),
+    ] = {}
+    aliases: Annotated[
+        dict[Literal["links", "references", "structures"], dict[str, str]],
+        Field(
+            description=(
+                "A mapping between field names in the database with their corresponding "
+                "OPTIMADE field names, broken down by endpoint."
+            ),
+        ),
+    ] = {}
+    length_aliases: Annotated[
+        dict[Literal["links", "references", "structures"], dict[str, str]],
+        Field(
+            description=(
+                "A mapping between a list property (or otherwise) and an integer property "
+                "that defines the length of that list, for example elements -> nelements. "
+                "The standard aliases are applied first, so this dictionary must refer to "
+                "the API fields, not the database fields."
+            ),
+        ),
+    ] = {}
+    index_links_path: Annotated[
+        Path,
+        Field(
+            description=(
+                "Absolute path to a JSON file containing the MongoDB collecton of links "
+                "entries (documents) to serve under the /links endpoint of the index "
+                "meta-database. NB! As suggested in the previous sentence, these will "
+                "only be served when using a MongoDB-based backend."
+            ),
+        ),
+    ] = Path(__file__).parent.joinpath("index_links.json")
 
-    validate_api_response: Optional[bool] = Field(
-        True,
-        description=(
-            "If False, data from the database will not undergo validation before being"
-            " emitted by the API, and only the mapping of aliases will occur."
+    is_index: Annotated[
+        Optional[bool],
+        Field(
+            description=(
+                "A runtime setting to dynamically switch between index meta-database and "
+                "normal OPTIMADE servers. Used for switching behaviour of e.g., "
+                "`meta->optimade_schema` values in the response. Any provided value may "
+                "be overridden when used with the reference server implementation."
+            ),
         ),
-    )
+    ] = False
+
+    schema_url: Annotated[
+        Optional[Union[str, AnyHttpUrl]],
+        Field(
+            description=(
+                "A URL that will be provided in the `meta->schema` field for every response"
+            ),
+        ),
+    ] = f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade.json"
+
+    custom_landing_page: Annotated[
+        Optional[Union[str, Path]],
+        Field(
+            description=(
+                "The location of a custom landing page (Jinja template) to use for the API."
+            ),
+        ),
+    ] = None
+
+    index_schema_url: Annotated[
+        Optional[Union[str, AnyHttpUrl]],
+        Field(
+            description=(
+                "A URL that will be provided in the `meta->schema` field for every "
+                "response from the index meta-database."
+            ),
+        ),
+    ] = f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade_index.json"
+
+    log_level: Annotated[
+        LogLevel, Field(description="Logging level for the OPTIMADE server.")
+    ] = LogLevel.INFO
+    log_dir: Annotated[
+        Path,
+        Field(
+            description="Folder in which log files will be saved.",
+        ),
+    ] = Path("/var/log/optimade/")
+    validate_query_parameters: Annotated[
+        Optional[bool],
+        Field(
+            description=(
+                "If True, the server will check whether the query parameters given in the "
+                "request are correct."
+            ),
+        ),
+    ] = True
+
+    validate_api_response: Annotated[
+        Optional[bool],
+        Field(
+            description=(
+                "If False, data from the database will not undergo validation before being"
+                " emitted by the API, and only the mapping of aliases will occur."
+            ),
+        ),
+    ] = True
 
     @field_validator("implementation", mode="before")
     @classmethod
-    def set_implementation_version(cls, value: Any) -> Dict[str, Any]:
+    def set_implementation_version(cls, value: Any) -> dict[str, Any]:
         """Set defaults and modify bypassed value(s)"""
         if not isinstance(value, dict):
             if isinstance(value, Implementation):
@@ -406,12 +455,12 @@ class ServerConfig(BaseSettings):
     @classmethod
     def settings_customise_sources(
         cls,
-        settings_cls: Type[BaseSettings],
+        settings_cls: type[BaseSettings],
         init_settings: PydanticBaseSettingsSource,
         env_settings: PydanticBaseSettingsSource,
         dotenv_settings: PydanticBaseSettingsSource,
         file_secret_settings: PydanticBaseSettingsSource,
-    ) -> Tuple[PydanticBaseSettingsSource, ...]:
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
         """
         **Priority of config settings sources**:
 

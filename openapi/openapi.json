@@ -303,6 +303,7 @@
             "schema": {
               "type": "integer",
               "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
+              "default": 1,
               "title": "Page Number"
             },
             "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`."
@@ -327,6 +328,7 @@
             "schema": {
               "type": "string",
               "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
+              "default": "",
               "title": "Page Above"
             },
             "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`."
@@ -338,6 +340,7 @@
             "schema": {
               "type": "string",
               "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
+              "default": "",
               "title": "Page Below"
             },
             "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED."
@@ -556,6 +559,7 @@
             "schema": {
               "type": "integer",
               "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
+              "default": 1,
               "title": "Page Number"
             },
             "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`."
@@ -580,6 +584,7 @@
             "schema": {
               "type": "string",
               "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
+              "default": "",
               "title": "Page Above"
             },
             "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`."
@@ -591,6 +596,7 @@
             "schema": {
               "type": "string",
               "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
+              "default": "",
               "title": "Page Below"
             },
             "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED."
@@ -974,6 +980,7 @@
             "schema": {
               "type": "integer",
               "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
+              "default": 1,
               "title": "Page Number"
             },
             "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`."
@@ -998,6 +1005,7 @@
             "schema": {
               "type": "string",
               "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
+              "default": "",
               "title": "Page Above"
             },
             "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`."
@@ -1009,6 +1017,7 @@
             "schema": {
               "type": "string",
               "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
+              "default": "",
               "title": "Page Below"
             },
             "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED."
@@ -2360,7 +2369,7 @@
             "minLength": 1,
             "format": "uri",
             "title": "Href",
-            "description": "a string containing the link\u2019s URL."
+            "description": "a string containing the link's URL."
           },
           "meta": {
             "anyOf": [
@@ -2402,7 +2411,7 @@
             "x-optimade-support": "must"
           },
           "type": {
-            "type": "string",
+            "const": "links",
             "pattern": "^links$",
             "title": "Type",
             "description": "These objects are described in detail in the section Links Endpoint",
@@ -2908,7 +2917,7 @@
             "x-optimade-support": "must"
           },
           "type": {
-            "type": "string",
+            "const": "references",
             "pattern": "^references$",
             "title": "Type",
             "description": "The name of the type of an entry.\n- **Type**: string.\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type <type> and ID <id> MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n- **Example**: `\"structures\"`",
@@ -4043,7 +4052,7 @@
             "x-optimade-support": "must"
           },
           "type": {
-            "type": "string",
+            "const": "structures",
             "pattern": "^structures$",
             "title": "Type",
             "description": "The name of the type of an entry.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response.\n    - MUST be an existing entry type.\n    - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.\n\n- **Examples**:\n    - `\"structures\"`",
@@ -4788,7 +4797,7 @@
             "description": "a meta object containing non-standard meta-information about the error."
           },
           "type": {
-            "type": "string",
+            "const": "warning",
             "pattern": "^warning$",
             "title": "Type",
             "description": "Warnings must be of type \"warning\"",

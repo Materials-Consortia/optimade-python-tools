@@ -19,11 +19,11 @@ resources can be converted to for [`ReferenceResource`][optimade.models.referenc
 and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
 """
 import re
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from collections.abc import Callable
+from typing import Any, Optional, Union
 
-from pydantic import BaseModel  # pylint: disable=no-name-in-module
+from pydantic import BaseModel
 
-from optimade.adapters.logger import LOGGER
 from optimade.models.entries import EntryResource
 
 
@@ -42,27 +42,26 @@ class EntryAdapter:
 
     """
 
-    ENTRY_RESOURCE: Type[EntryResource] = EntryResource
-    _type_converters: Dict[str, Callable] = {}
-    _type_ingesters: Dict[str, Callable] = {}
-    _type_ingesters_by_type: Dict[str, Type] = {}
+    ENTRY_RESOURCE: type[EntryResource] = EntryResource
+    _type_converters: dict[str, Callable] = {}
+    _type_ingesters: dict[str, Callable] = {}
+    _type_ingesters_by_type: dict[str, type] = {}
 
-    def __init__(self, entry: dict) -> None:
+    def __init__(self, entry: dict[str, Any]) -> None:
         """
         Parameters:
             entry (dict): A JSON OPTIMADE single resource entry.
         """
-        self._entry: Optional[EntryResource] = None
-        self._converted: Dict[str, Any] = {}
+        self._converted: dict[str, Any] = {}
 
-        self.entry: EntryResource = entry  # type: ignore[assignment]
+        self._entry = self.ENTRY_RESOURCE(**entry)
 
         # Note that these return also the default values for otherwise non-provided properties.
         self._common_converters = {
             # Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson
-            "json": self.entry.model_dump_json,  # type: ignore[attr-defined]
+            "json": self.entry.model_dump_json,
             # Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict
-            "dict": self.entry.model_dump,  # type: ignore[attr-defined]
+            "dict": self.entry.model_dump,
         }
 
     @property
@@ -73,22 +72,7 @@ class EntryAdapter:
             The entry resource.
 
         """
-        return self._entry  # type: ignore[return-value]
-
-    @entry.setter
-    def entry(self, value: dict) -> None:
-        """Set OPTIMADE entry.
-
-        If already set, print that this can _only_ be set once.
-
-        Parameters:
-            value (dict): Raw entry to wrap in the relevant pydantic model represented by `ENTRY_RESOURCE`.
-
-        """
-        if self._entry is None:
-            self._entry = self.ENTRY_RESOURCE(**value)
-        else:
-            LOGGER.warning("entry can only be set once and is already set.")
+        return self._entry
 
     def convert(self, format: str) -> Any:
         """Convert OPTIMADE entry to desired format.
@@ -108,8 +92,8 @@ class EntryAdapter:
             and format not in self._common_converters
         ):
             raise AttributeError(
-                f"Non-valid entry type to convert to: {format}\n"
-                f"Valid entry types: {tuple(self._type_converters.keys()) + tuple(self._common_converters.keys())}"
+                f"Non-valid entry type to convert to: {format}\nValid entry types: "
+                f"{tuple(self._type_converters.keys()) + tuple(self._common_converters.keys())}"
             )
 
         if self._converted.get(format, None) is None:
@@ -164,7 +148,7 @@ class EntryAdapter:
 
     @staticmethod
     def _get_model_attributes(
-        starting_instances: Union[Tuple[BaseModel, ...], List[BaseModel]], name: str
+        starting_instances: Union[tuple[BaseModel, ...], list[BaseModel]], name: str
     ) -> Any:
         """Helper method for retrieving the OPTIMADE model's attribute, supporting "."-nested attributes"""
         for res in starting_instances:

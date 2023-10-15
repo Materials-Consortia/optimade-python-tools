@@ -201,6 +201,7 @@
             "schema": {
               "type": "integer",
               "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
+              "default": 1,
               "title": "Page Number"
             },
             "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`."
@@ -225,6 +226,7 @@
             "schema": {
               "type": "string",
               "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
+              "default": "",
               "title": "Page Above"
             },
             "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`."
@@ -236,6 +238,7 @@
             "schema": {
               "type": "string",
               "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
+              "default": "",
               "title": "Page Below"
             },
             "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED."
@@ -470,11 +473,6 @@
         ],
         "title": "BaseRelationshipResource",
         "description": "Minimum requirements to represent a relationship resource"
-      },
-      "DefaultRelationship": {
-        "const": "default",
-        "title": "DefaultRelationship",
-        "description": "Enumeration of key(s) for relationship dictionary in IndexInfoResource"
       },
       "EntryRelationships": {
         "properties": {
@@ -1224,7 +1222,7 @@
             "minLength": 1,
             "format": "uri",
             "title": "Href",
-            "description": "a string containing the link\u2019s URL."
+            "description": "a string containing the link's URL."
           },
           "meta": {
             "anyOf": [
@@ -1266,7 +1264,7 @@
             "x-optimade-support": "must"
           },
           "type": {
-            "type": "string",
+            "const": "links",
             "pattern": "^links$",
             "title": "Type",
             "description": "These objects are described in detail in the section Links Endpoint",
@@ -2268,7 +2266,7 @@
             "description": "a meta object containing non-standard meta-information about the error."
           },
           "type": {
-            "type": "string",
+            "const": "warning",
             "pattern": "^warning$",
             "title": "Type",
             "description": "Warnings must be of type \"warning\"",
