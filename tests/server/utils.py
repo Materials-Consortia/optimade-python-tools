@@ -1,7 +1,8 @@
 import json
 import re
 import warnings
-from typing import Iterable, Optional, Type, Union
+from collections.abc import Iterable
+from typing import Optional, Union
 from urllib.parse import urlparse
 
 import httpx
@@ -31,7 +32,7 @@ class OptimadeTestClient(TestClient):
         root_path: str = "",
         version: str = "",
     ) -> None:
-        super(OptimadeTestClient, self).__init__(
+        super().__init__(
             app=app,
             base_url=base_url,
             raise_server_exceptions=raise_server_exceptions,
@@ -64,7 +65,7 @@ class OptimadeTestClient(TestClient):
             while url.startswith("/"):
                 url = url[1:]
             url = f"{self.version}/{url}"
-        return super(OptimadeTestClient, self).request(
+        return super().request(
             method=method,
             url=url,
             **kwargs,
@@ -75,7 +76,7 @@ class BaseEndpointTests:
     """Base class for common tests of endpoints"""
 
     request_str: Optional[str] = None
-    response_cls: Optional[Type[jsonapi.Response]] = None
+    response_cls: Optional[type[jsonapi.Response]] = None
 
     response: Optional[httpx.Response] = None
     json_response: Optional[dict] = None
@@ -223,7 +224,7 @@ class NoJsonEndpointTests:
     """A simplified mixin class for tests on non-JSON endpoints."""
 
     request_str: Optional[str] = None
-    response_cls: Optional[Type] = None
+    response_cls: Optional[type] = None
 
     response: Optional[httpx.Response] = None
 
