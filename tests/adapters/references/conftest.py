@@ -10,9 +10,7 @@ from optimade.adapters.references import Reference
 @pytest.fixture
 def RAW_REFERENCES():
     """Read and return raw_references.json"""
-    with open(
-        Path(__file__).parent.joinpath("raw_test_references.json"), "r"
-    ) as raw_data:
+    with open(Path(__file__).parent.joinpath("raw_test_references.json")) as raw_data:
         return json.load(raw_data)
 
 

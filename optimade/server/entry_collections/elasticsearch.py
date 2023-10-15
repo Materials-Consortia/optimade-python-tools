@@ -1,6 +1,7 @@
 import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
+from typing import Any, Optional
 
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
 from optimade.models import EntryResource
@@ -24,8 +25,8 @@ class ElasticCollection(EntryCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: Type[EntryResource],
-        resource_mapper: Type[BaseResourceMapper],
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         client: Optional["Elasticsearch"] = None,
     ):
         """Initialize the ElasticCollection for the given parameters.
@@ -78,7 +79,7 @@ class ElasticCollection(EntryCollection):
         LOGGER.debug(f"Created Elastic index for {self.name!r} with parameters {body}")
 
     @property
-    def predefined_index(self) -> Dict[str, Any]:
+    def predefined_index(self) -> dict[str, Any]:
         """Loads and returns the default pre-defined index."""
         with open(Path(__file__).parent.joinpath("elastic_indexes.json")) as f:
             index = json.load(f)
@@ -86,8 +87,8 @@ class ElasticCollection(EntryCollection):
 
     @staticmethod
     def create_elastic_index_from_mapper(
-        resource_mapper: Type[BaseResourceMapper], fields: Iterable[str]
-    ) -> Dict[str, Any]:
+        resource_mapper: type[BaseResourceMapper], fields: Iterable[str]
+    ) -> dict[str, Any]:
         """Create a fallback elastic index based on a resource mapper.
 
         Arguments:
@@ -110,7 +111,7 @@ class ElasticCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return Search(using=self.client, index=self.name).execute().hits.total.value
 
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource]) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
@@ -123,7 +124,7 @@ class ElasticCollection(EntryCollection):
 
         def get_id(item):
             if self.name == "links":
-                id_ = "%s-%s" % (item["id"], item["type"])
+                id_ = "{}-{}".format(item["id"], item["type"])
             elif "id" in item:
                 id_ = item["id"]
             elif "_id" in item:
@@ -148,8 +149,8 @@ class ElasticCollection(EntryCollection):
         )
 
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry=False
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+        self, criteria: dict[str, Any], single_entry=False
+    ) -> tuple[list[dict[str, Any]], int, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:

@@ -5,7 +5,7 @@ import json
 import warnings
 from functools import partial
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Optional
 
 import httpx
 import pytest
@@ -337,7 +337,7 @@ def test_command_line_client_write_to_file(
     assert 'Performing query structures/?filter=elements HAS "Ag"' in captured.err
     assert not captured.out
     assert Path(test_filename).is_file()
-    with open(test_filename, "r") as f:
+    with open(test_filename) as f:
         results = json.load(f)
     for url in TEST_URLS:
         assert len(results["structures"]['elements HAS "Ag"'][url]["data"]) == 11
@@ -360,9 +360,9 @@ def test_strict_async(async_http_client, http_client, use_async):
 
 @pytest.mark.parametrize("use_async", [True, False])
 def test_client_global_data_callback(async_http_client, http_client, use_async):
-    container: Dict[str, str] = {}
+    container: dict[str, str] = {}
 
-    def global_database_callback(_: str, results: Dict):
+    def global_database_callback(_: str, results: dict):
         """A test callback that creates a flat dictionary of results via global state"""
 
         for structure in results["data"]:
@@ -386,7 +386,7 @@ def test_client_global_data_callback(async_http_client, http_client, use_async):
 
 @pytest.mark.parametrize("use_async", [True, False])
 def test_client_page_skip_callback(async_http_client, http_client, use_async):
-    def page_skip_callback(_: str, results: Dict) -> Optional[Dict]:
+    def page_skip_callback(_: str, results: dict) -> Optional[dict]:
         """A test callback that skips to the final page of results."""
         if len(results["data"]) > 16:
             return {"next": f"{TEST_URL}/structures?page_offset=16"}
@@ -407,10 +407,10 @@ def test_client_page_skip_callback(async_http_client, http_client, use_async):
 
 @pytest.mark.parametrize("use_async", [True, False])
 def test_client_mutable_data_callback(async_http_client, http_client, use_async):
-    container: Dict[str, str] = {}
+    container: dict[str, str] = {}
 
     def mutable_database_callback(
-        _: str, results: Dict, db: Optional[Dict[str, str]] = None
+        _: str, results: dict, db: Optional[dict[str, str]] = None
     ) -> None:
         """A test callback that creates a flat dictionary of results via mutable args."""
 
@@ -436,7 +436,7 @@ def test_client_mutable_data_callback(async_http_client, http_client, use_async)
 def test_client_asynchronous_write_callback(
     async_http_client, http_client, use_async, tmp_path
 ):
-    def write_to_file(_: str, results: Dict):
+    def write_to_file(_: str, results: dict):
         """A test callback that creates a flat dictionary of results via global state"""
 
         with open(tmp_path / "formulae.csv", "a") as f:
@@ -458,7 +458,7 @@ def test_client_asynchronous_write_callback(
 
     cli.get(response_fields=["chemical_formula_reduced"])
 
-    with open(tmp_path / "formulae.csv", "r") as f:
+    with open(tmp_path / "formulae.csv") as f:
         lines = f.readlines()
 
     assert len(lines) == 17 * len(TEST_URLS) + 1

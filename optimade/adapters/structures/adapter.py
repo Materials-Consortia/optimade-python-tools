@@ -1,4 +1,4 @@
-from typing import Callable, Dict, Type
+from typing import Callable
 
 from optimade.adapters.base import EntryAdapter
 from optimade.models import StructureResource
@@ -44,8 +44,8 @@ class Structure(EntryAdapter):
 
     """
 
-    ENTRY_RESOURCE: Type[StructureResource] = StructureResource
-    _type_converters: Dict[str, Callable] = {
+    ENTRY_RESOURCE: type[StructureResource] = StructureResource
+    _type_converters: dict[str, Callable] = {
         "aiida_structuredata": get_aiida_structure_data,
         "ase": get_ase_atoms,
         "cif": get_cif,
@@ -55,12 +55,12 @@ class Structure(EntryAdapter):
         "jarvis": get_jarvis_atoms,
     }
 
-    _type_ingesters: Dict[str, Callable] = {
+    _type_ingesters: dict[str, Callable] = {
         "pymatgen": from_pymatgen,
         "ase": from_ase_atoms,
     }
 
-    _type_ingesters_by_type: Dict[str, Type] = {
+    _type_ingesters_by_type: dict[str, type] = {
         "pymatgen": PymatgenStructure,
         "ase": ASEAtoms,
     }

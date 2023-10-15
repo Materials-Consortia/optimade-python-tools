@@ -33,7 +33,7 @@ def test_default_config_path(top_dir):
 
     org_env_var = os.getenv("OPTIMADE_CONFIG_FILE")
 
-    with open(top_dir.joinpath("tests/test_config.json"), "r") as config_file:
+    with open(top_dir.joinpath("tests/test_config.json")) as config_file:
         config = json.load(config_file)
 
     different_base_url = "http://something_you_will_never_think_of.com"

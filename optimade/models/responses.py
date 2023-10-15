@@ -1,5 +1,5 @@
 # pylint: disable=no-self-argument
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 
 from pydantic import Field, root_validator
 
@@ -34,7 +34,7 @@ class ErrorResponse(Response):
     meta: ResponseMeta = StrictField(
         ..., description="A meta object containing non-standard information."
     )
-    errors: List[OptimadeError] = StrictField(
+    errors: list[OptimadeError] = StrictField(
         ...,
         description="A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.",
         uniqueItems=True,
@@ -66,23 +66,23 @@ class InfoResponse(Success):
 
 
 class EntryResponseOne(Success):
-    data: Union[EntryResource, Dict[str, Any], None] = Field(...)  # type: ignore[assignment]
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(  # type: ignore[assignment]
+    data: Union[EntryResource, dict[str, Any], None] = Field(...)  # type: ignore[assignment]
+    included: Optional[Union[list[EntryResource], list[dict[str, Any]]]] = Field(  # type: ignore[assignment]
         None, uniqueItems=True
     )
 
 
 class EntryResponseMany(Success):
-    data: Union[List[EntryResource], List[Dict[str, Any]]] = Field(  # type: ignore[assignment]
+    data: Union[list[EntryResource], list[dict[str, Any]]] = Field(  # type: ignore[assignment]
         ..., uniqueItems=True
     )
-    included: Optional[Union[List[EntryResource], List[Dict[str, Any]]]] = Field(  # type: ignore[assignment]
+    included: Optional[Union[list[EntryResource], list[dict[str, Any]]]] = Field(  # type: ignore[assignment]
         None, uniqueItems=True
     )
 
 
 class LinksResponse(EntryResponseMany):
-    data: Union[List[LinksResource], List[Dict[str, Any]]] = StrictField(
+    data: Union[list[LinksResource], list[dict[str, Any]]] = StrictField(
         ...,
         description="List of unique OPTIMADE links resource objects.",
         uniqueItems=True,
@@ -90,13 +90,13 @@ class LinksResponse(EntryResponseMany):
 
 
 class StructureResponseOne(EntryResponseOne):
-    data: Union[StructureResource, Dict[str, Any], None] = StrictField(
+    data: Union[StructureResource, dict[str, Any], None] = StrictField(
         ..., description="A single structures entry resource."
     )
 
 
 class StructureResponseMany(EntryResponseMany):
-    data: Union[List[StructureResource], List[Dict[str, Any]]] = StrictField(
+    data: Union[list[StructureResource], list[dict[str, Any]]] = StrictField(
         ...,
         description="List of unique OPTIMADE structures entry resource objects.",
         uniqueItems=True,
@@ -104,13 +104,13 @@ class StructureResponseMany(EntryResponseMany):
 
 
 class ReferenceResponseOne(EntryResponseOne):
-    data: Union[ReferenceResource, Dict[str, Any], None] = StrictField(
+    data: Union[ReferenceResource, dict[str, Any], None] = StrictField(
         ..., description="A single references entry resource."
     )
 
 
 class ReferenceResponseMany(EntryResponseMany):
-    data: Union[List[ReferenceResource], List[Dict[str, Any]]] = StrictField(
+    data: Union[list[ReferenceResource], list[dict[str, Any]]] = StrictField(
         ...,
         description="List of unique OPTIMADE references entry resource objects.",
         uniqueItems=True,

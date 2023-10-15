@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Any, Dict, Optional, Tuple, Type
+from typing import Any, Optional
 
 __all__ = (
     "OptimadeHTTPException",
@@ -34,7 +34,7 @@ class OptimadeHTTPException(Exception, ABC):
     status_code: int
     title: str
     detail: Optional[str] = None
-    headers: Optional[Dict[str, Any]] = None
+    headers: Optional[dict[str, Any]] = None
 
     def __init__(
         self, detail: Optional[str] = None, headers: Optional[dict] = None
@@ -104,7 +104,7 @@ class NotImplementedResponse(OptimadeHTTPException):
 
 
 """A tuple of the possible errors that can be returned by an OPTIMADE API."""
-POSSIBLE_ERRORS: Tuple[Type[OptimadeHTTPException], ...] = (
+POSSIBLE_ERRORS: tuple[type[OptimadeHTTPException], ...] = (
     BadRequest,
     Forbidden,
     NotFound,

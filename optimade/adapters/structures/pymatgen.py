@@ -7,7 +7,7 @@ This conversion function relies on the [pymatgen](https://github.com/materialspr
 
 For more information on the pymatgen code see [their documentation](https://pymatgen.org).
 """
-from typing import Dict, List, Optional, Union
+from typing import Optional, Union
 
 from optimade.adapters.structures.utils import (
     species_from_species_at_sites,
@@ -105,9 +105,9 @@ def _get_molecule(optimade_structure: OptimadeStructure) -> Molecule:
 
 def _pymatgen_species(
     nsites: int,
-    species: Optional[List[OptimadeStructureSpecies]],
-    species_at_sites: List[str],
-) -> List[Dict[str, float]]:
+    species: Optional[list[OptimadeStructureSpecies]],
+    species_at_sites: list[str],
+) -> list[dict[str, float]]:
     """
     Create list of {"symbol": "concentration"} per site for values to pymatgen species parameters.
     Remove vacancies, if they are present.

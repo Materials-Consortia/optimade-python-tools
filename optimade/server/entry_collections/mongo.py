@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Optional, Union
 
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
@@ -38,8 +38,8 @@ class MongoCollection(EntryCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: Type[EntryResource],
-        resource_mapper: Type[BaseResourceMapper],
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         database: str = CONFIG.mongo_database,
     ):
         """Initialize the MongoCollection for the given parameters.
@@ -91,7 +91,7 @@ class MongoCollection(EntryCollection):
             except ExecutionTimeout:
                 return None
 
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource]) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
@@ -105,7 +105,7 @@ class MongoCollection(EntryCollection):
 
     def handle_query_params(
         self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
 
@@ -142,8 +142,8 @@ class MongoCollection(EntryCollection):
         return criteria
 
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], Optional[int], bool]:
+        self, criteria: dict[str, Any], single_entry: bool = False
+    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
