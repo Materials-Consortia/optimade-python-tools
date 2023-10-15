@@ -7,7 +7,7 @@ for turning filters parsed by lark into backend-specific queries.
 
 import abc
 import warnings
-from typing import Any, Dict, Optional, Type
+from typing import Any, Optional
 
 from lark import Transformer, Tree, v_args
 
@@ -79,8 +79,8 @@ class BaseTransformer(Transformer, abc.ABC):
 
     """
 
-    mapper: Optional[Type[BaseResourceMapper]] = None
-    operator_map: Dict[str, Optional[str]] = {
+    mapper: Optional[type[BaseResourceMapper]] = None
+    operator_map: dict[str, Optional[str]] = {
         "<": None,
         "<=": None,
         ">": None,
@@ -100,11 +100,11 @@ class BaseTransformer(Transformer, abc.ABC):
         "!=": "!=",
     }
 
-    _quantity_type: Type[Quantity] = Quantity
+    _quantity_type: type[Quantity] = Quantity
     _quantities = None
 
     def __init__(
-        self, mapper: Optional[Type[BaseResourceMapper]] = None
+        self, mapper: Optional[type[BaseResourceMapper]] = None
     ):  # pylint: disable=super-init-not-called
         """Initialise the transformer object, optionally loading in a
         resource mapper for use when post-processing.
@@ -113,7 +113,7 @@ class BaseTransformer(Transformer, abc.ABC):
         self.mapper = mapper
 
     @property
-    def backend_mapping(self) -> Dict[str, Quantity]:
+    def backend_mapping(self) -> dict[str, Quantity]:
         """A mapping between backend field names (aliases) and the corresponding
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] object.
         """
@@ -122,7 +122,7 @@ class BaseTransformer(Transformer, abc.ABC):
         }
 
     @property
-    def quantities(self) -> Dict[str, Quantity]:
+    def quantities(self) -> dict[str, Quantity]:
         """A mapping from the OPTIMADE field name to the corresponding
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects.
         """
@@ -132,10 +132,10 @@ class BaseTransformer(Transformer, abc.ABC):
         return self._quantities
 
     @quantities.setter
-    def quantities(self, quantities: Dict[str, Quantity]) -> None:
+    def quantities(self, quantities: dict[str, Quantity]) -> None:
         self._quantities = quantities
 
-    def _build_quantities(self) -> Dict[str, Quantity]:
+    def _build_quantities(self) -> dict[str, Quantity]:
         """Creates a dictionary of field names mapped to
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects from the
         fields registered by the mapper.

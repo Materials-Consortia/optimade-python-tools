@@ -5,7 +5,7 @@ import re
 import warnings
 from enum import Enum
 from functools import reduce
-from typing import TYPE_CHECKING, List, Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from pydantic import Field
 from pydantic.fields import FieldInfo
@@ -237,7 +237,7 @@ def _reduce_or_anonymize_formula(
     import re
     import sys
 
-    numbers: List[int] = [
+    numbers: list[int] = [
         int(n.strip() or 1) for n in re.split(r"[A-Z][a-z]*", formula)[1:]
     ]
     # Need to remove leading 1 from split and convert to ints
