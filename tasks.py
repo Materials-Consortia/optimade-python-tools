@@ -3,7 +3,7 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Union
 
 from invoke import task
 from jsondiff import diff
@@ -15,7 +15,9 @@ if TYPE_CHECKING:
 TOP_DIR = Path(__file__).parent.resolve()
 
 
-def update_file(filename: str, sub_line: tuple[str, str], strip: Optional[str] = None):
+def update_file(
+    filename: Union[Path, str], sub_line: tuple[str, str], strip: Optional[str] = None
+):
     """Utility function for tasks to read, update, and write files"""
     with open(filename) as handle:
         lines = [
@@ -273,7 +275,7 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
         # Check if there have been any changes.
         # List changes if yes.
         if TYPE_CHECKING:
-            context: "Context" = context
+            context: "Context" = context  # type: ignore[no-redef]
 
         # NOTE: grep returns an exit code of 1 if it doesn't find anything
         # (which will be good in this case).

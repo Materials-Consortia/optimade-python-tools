@@ -178,7 +178,7 @@ def compare_lossy_conversion(
                 "numpy not found, some cases of conversion tests will be skipped"
             )
         )
-        np = None  # type: ignore[assignment]
+        np = None
 
     lossy_keys = (
         "chemical_formula_descriptive",

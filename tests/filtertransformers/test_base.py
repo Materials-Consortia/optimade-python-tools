@@ -13,7 +13,7 @@ def test_quantity_builder(mapper: "Callable[[str], type[BaseResourceMapper]]") -
     class DummyTransformer(BaseTransformer):
         pass
 
-    class AwkwardMapper(mapper("StructureMapper")):  # type: ignore[misc]
+    class AwkwardMapper(mapper("StructureMapper")):
         ALIASES = (("elements", "my_elements"), ("nelements", "nelem"))
         LENGTH_ALIASES = (
             ("chemsys", "nelements"),

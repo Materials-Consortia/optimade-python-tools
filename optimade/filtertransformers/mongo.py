@@ -121,7 +121,7 @@ class MongoTransformer(BaseTransformer):
                 is not None
             ):
                 size_query = {
-                    self.backend_mapping[
+                    self.backend_mapping[  # type: ignore[union-attr]
                         quantity
                     ].length_quantity.backend_field: query.pop("$size")
                 }

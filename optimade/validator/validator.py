@@ -13,7 +13,7 @@ import random
 import re
 import sys
 import urllib.parse
-from typing import Any, Optional, Union
+from typing import Any, Literal, Optional, Union
 
 import requests
 
@@ -953,7 +953,9 @@ class ImplementationValidator:
 
         return True, f"{prop} passed filter tests"
 
-    def _test_info_or_links_endpoint(self, request_str: str) -> Union[bool, dict]:
+    def _test_info_or_links_endpoint(
+        self, request_str: str
+    ) -> Union[Literal[False], dict]:
         """Requests an info or links endpoint and attempts to deserialize
         the response.
 
