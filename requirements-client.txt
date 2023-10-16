@@ -4,4 +4,4 @@ emmet_core==0.68.0
 jarvis-tools==2023.9.20
 mp-api==0.36.1
 numpy>=1.20
-pymatgen==2023.10.4
+pymatgen==2023.10.11
