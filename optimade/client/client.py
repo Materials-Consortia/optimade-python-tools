@@ -10,18 +10,8 @@ import functools
 import json
 import time
 from collections import defaultdict
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Iterable,
-    List,
-    Optional,
-    Set,
-    Tuple,
-    Type,
-    Union,
-)
+from collections.abc import Iterable
+from typing import Any, Callable, Optional, Union
 from urllib.parse import urlparse
 
 # External deps that are only used in the client code
@@ -70,12 +60,12 @@ class OptimadeClient:
     base_urls: Union[str, Iterable[str]]
     """A list (or any iterable) of OPTIMADE base URLs to query."""
 
-    all_results: Dict[str, Dict[str, Dict[str, QueryResults]]] = defaultdict(dict)
+    all_results: dict[str, dict[str, dict[str, QueryResults]]] = defaultdict(dict)
     """A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
     the results from each base URL for that particular filter.
     """
 
-    count_results: Dict[str, Dict[str, Dict[str, int]]] = defaultdict(dict)
+    count_results: dict[str, dict[str, dict[str, int]]] = defaultdict(dict)
     """A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
     the number of results from each base URL for that particular filter.
     """
@@ -85,12 +75,12 @@ class OptimadeClient:
     download all.
     """
 
-    property_lists: Dict[str, Dict[str, List[str]]] = defaultdict(dict)
+    property_lists: dict[str, dict[str, list[str]]] = defaultdict(dict)
     """A dictionary containing list of properties served by each database,
     broken down by entry type, then database.
     """
 
-    headers: Dict = {"User-Agent": f"optimade-python-tools/{__version__}"}
+    headers: dict = {"User-Agent": f"optimade-python-tools/{__version__}"}
     """Additional HTTP headers."""
 
     http_timeout: httpx.Timeout = httpx.Timeout(10.0, read=1000.0)
@@ -102,7 +92,7 @@ class OptimadeClient:
     use_async: bool
     """Whether or not to make all requests asynchronously using asyncio."""
 
-    callbacks: Optional[List[Callable[[str, Dict], Union[None, Dict]]]] = None
+    callbacks: Optional[list[Callable[[str, dict], Union[None, dict]]]] = None
     """A list of callbacks to execute after each successful request, used
     to e.g., write to a file, add results to a database or perform additional
     filtering.
@@ -121,13 +111,13 @@ class OptimadeClient:
     silent: bool
     """Whether to disable progress bar printing."""
 
-    _excluded_providers: Optional[Set[str]] = None
+    _excluded_providers: Optional[set[str]] = None
     """A set of providers IDs excluded from future queries."""
 
-    _included_providers: Optional[Set[str]] = None
+    _included_providers: Optional[set[str]] = None
     """A set of providers IDs included from future queries."""
 
-    _excluded_databases: Optional[Set[str]] = None
+    _excluded_databases: Optional[set[str]] = None
     """A set of child database URLs excluded from future queries."""
 
     __current_endpoint: Optional[str] = None
@@ -135,7 +125,7 @@ class OptimadeClient:
     chosen endpoint. Should be reset to `None` outside of all `get()` calls."""
 
     _http_client: Optional[
-        Union[Type[httpx.AsyncClient], Type[requests.Session]]
+        Union[type[httpx.AsyncClient], type[requests.Session]]
     ] = None
     """Override the HTTP client class, primarily used for testing."""
 
@@ -148,18 +138,18 @@ class OptimadeClient:
         self,
         base_urls: Optional[Union[str, Iterable[str]]] = None,
         max_results_per_provider: int = 1000,
-        headers: Optional[Dict] = None,
+        headers: Optional[dict] = None,
         http_timeout: Optional[Union[httpx.Timeout, float]] = None,
         max_attempts: int = 5,
         use_async: bool = True,
         silent: bool = False,
-        exclude_providers: Optional[List[str]] = None,
-        include_providers: Optional[List[str]] = None,
-        exclude_databases: Optional[List[str]] = None,
+        exclude_providers: Optional[list[str]] = None,
+        include_providers: Optional[list[str]] = None,
+        exclude_databases: Optional[list[str]] = None,
         http_client: Optional[
-            Union[Type[httpx.AsyncClient], Type[requests.Session]]
+            Union[type[httpx.AsyncClient], type[requests.Session]]
         ] = None,
-        callbacks: Optional[List[Callable[[str, Dict], Union[None, Dict]]]] = None,
+        callbacks: Optional[list[Callable[[str, dict], Union[None, dict]]]] = None,
     ):
         """Create the OPTIMADE client object.
 
@@ -284,9 +274,9 @@ class OptimadeClient:
         self,
         filter: Optional[str] = None,
         endpoint: Optional[str] = None,
-        response_fields: Optional[List[str]] = None,
+        response_fields: Optional[list[str]] = None,
         sort: Optional[str] = None,
-    ) -> Dict[str, Dict[str, Dict[str, Dict]]]:
+    ) -> dict[str, dict[str, dict[str, dict]]]:
         """Gets the results from the endpoint and filter across the
         defined OPTIMADE APIs.
 
@@ -338,11 +328,11 @@ class OptimadeClient:
                 sort=sort,
             )
             self.all_results[endpoint][filter] = results
-            return {endpoint: {filter: {k: results[k].dict() for k in results}}}
+            return {endpoint: {filter: {k: results[k].asdict() for k in results}}}
 
     def count(
         self, filter: Optional[str] = None, endpoint: Optional[str] = None
-    ) -> Dict[str, Dict[str, Dict[str, Optional[int]]]]:
+    ) -> dict[str, dict[str, dict[str, Optional[int]]]]:
         """Counts the number of results for the filter, requiring
         only 1 request per provider by making use of the `meta->data_returned`
         key.
@@ -405,7 +395,7 @@ class OptimadeClient:
     def list_properties(
         self,
         entry_type: str,
-    ) -> Dict[str, List[str]]:
+    ) -> dict[str, list[str]]:
         """Returns the list of properties reported at `/info/<entry_type>`
         for the given entry type, for each database.
 
@@ -437,7 +427,7 @@ class OptimadeClient:
             )
         return self.property_lists[entry_type]
 
-    def search_property(self, query: str, entry_type: str) -> Dict[str, List[str]]:
+    def search_property(self, query: str, entry_type: str) -> dict[str, list[str]]:
         """Searches for the query substring within the listed properties
         served by each database.
 
@@ -453,7 +443,7 @@ class OptimadeClient:
         if not self.property_lists:
             self.list_properties(entry_type=entry_type)
 
-        matching_properties: Dict[str, Dict[str, List[str]]] = {
+        matching_properties: dict[str, dict[str, list[str]]] = {
             entry_type: defaultdict(list)
         }
         if entry_type in self.property_lists:
@@ -469,9 +459,9 @@ class OptimadeClient:
         endpoint: str,
         page_limit: Optional[int],
         paginate: bool,
-        response_fields: Optional[List[str]],
+        response_fields: Optional[list[str]],
         sort: Optional[str],
-    ) -> Dict[str, QueryResults]:
+    ) -> dict[str, QueryResults]:
         """Executes the queries over the base URLs either asynchronously or
         serially, depending on the `self.use_async` setting.
 
@@ -535,11 +525,11 @@ class OptimadeClient:
         endpoint: str,
         filter: str,
         base_url: str,
-        response_fields: Optional[List[str]] = None,
+        response_fields: Optional[list[str]] = None,
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
         paginate: bool = True,
-    ) -> Dict[str, QueryResults]:
+    ) -> dict[str, QueryResults]:
         """Executes the query synchronously on one API.
 
         Parameters:
@@ -582,11 +572,11 @@ class OptimadeClient:
         self,
         endpoint: str,
         filter: str,
-        response_fields: Optional[List[str]] = None,
+        response_fields: Optional[list[str]] = None,
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
         paginate: bool = True,
-    ) -> Dict[str, QueryResults]:
+    ) -> dict[str, QueryResults]:
         """Executes the query asynchronously across all defined APIs.
 
         Parameters:
@@ -626,10 +616,10 @@ class OptimadeClient:
         endpoint: str,
         filter: str,
         page_limit: Optional[int] = None,
-        response_fields: Optional[List[str]] = None,
+        response_fields: Optional[list[str]] = None,
         sort: Optional[str] = None,
         paginate: bool = True,
-    ) -> Dict[str, QueryResults]:
+    ) -> dict[str, QueryResults]:
         """Executes the query synchronously across all defined APIs.
 
         Parameters:
@@ -670,11 +660,11 @@ class OptimadeClient:
         endpoint: str,
         filter: str,
         base_url: str,
-        response_fields: Optional[List[str]] = None,
+        response_fields: Optional[list[str]] = None,
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
         paginate: bool = True,
-    ) -> Dict[str, QueryResults]:
+    ) -> dict[str, QueryResults]:
         """Executes the query asynchronously on one API.
 
         !!! note
@@ -725,11 +715,11 @@ class OptimadeClient:
         endpoint: str,
         filter: str,
         base_url: str,
-        response_fields: Optional[List[str]] = None,
+        response_fields: Optional[list[str]] = None,
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
         paginate: bool = True,
-    ) -> Dict[str, QueryResults]:
+    ) -> dict[str, QueryResults]:
         """See [`OptimadeClient.get_one_async`][optimade.client.OptimadeClient.get_one_async]."""
         next_url, _task = self._setup(
             endpoint=endpoint,
@@ -785,9 +775,9 @@ class OptimadeClient:
         base_url: str,
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
-        response_fields: Optional[List[str]] = None,
+        response_fields: Optional[list[str]] = None,
         paginate: bool = True,
-    ) -> Dict[str, QueryResults]:
+    ) -> dict[str, QueryResults]:
         """See [`OptimadeClient.get_one`][optimade.client.OptimadeClient.get_one]."""
         next_url, _task = self._setup(
             endpoint=endpoint,
@@ -846,9 +836,9 @@ class OptimadeClient:
         base_url: str,
         filter: str,
         page_limit: Optional[int],
-        response_fields: Optional[List[str]],
+        response_fields: Optional[list[str]],
         sort: Optional[str],
-    ) -> Tuple[str, TaskID]:
+    ) -> tuple[str, TaskID]:
         """Constructs the first query URL and creates the progress bar task.
 
         Returns:
@@ -876,7 +866,7 @@ class OptimadeClient:
         endpoint: Optional[str] = "structures",
         version: Optional[str] = None,
         filter: Optional[str] = None,
-        response_fields: Optional[List[str]] = None,
+        response_fields: Optional[list[str]] = None,
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
     ) -> str:
@@ -957,7 +947,7 @@ class OptimadeClient:
 
     def _handle_response(
         self, response: Union[httpx.Response, requests.Response], _task: TaskID
-    ) -> Tuple[Dict[str, Any], str]:
+    ) -> tuple[dict[str, Any], str]:
         """Handle the response from the server.
 
         Parameters:
@@ -1036,8 +1026,8 @@ class OptimadeClient:
             )
 
     def _execute_callbacks(
-        self, results: Dict, response: Union[httpx.Response, requests.Response]
-    ) -> Union[None, Dict]:
+        self, results: dict, response: Union[httpx.Response, requests.Response]
+    ) -> Union[None, dict]:
         """Execute any callbacks registered with the client.
 
         Parameters:

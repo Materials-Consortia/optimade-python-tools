@@ -19,7 +19,7 @@ resources can be converted to for [`ReferenceResource`][optimade.models.referenc
 and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
 """
 import re
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Optional, Union
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
@@ -42,10 +42,10 @@ class EntryAdapter:
 
     """
 
-    ENTRY_RESOURCE: Type[EntryResource] = EntryResource
-    _type_converters: Dict[str, Callable] = {}
-    _type_ingesters: Dict[str, Callable] = {}
-    _type_ingesters_by_type: Dict[str, Type] = {}
+    ENTRY_RESOURCE: type[EntryResource] = EntryResource
+    _type_converters: dict[str, Callable] = {}
+    _type_ingesters: dict[str, Callable] = {}
+    _type_ingesters_by_type: dict[str, type] = {}
 
     def __init__(self, entry: dict) -> None:
         """
@@ -53,7 +53,7 @@ class EntryAdapter:
             entry (dict): A JSON OPTIMADE single resource entry.
         """
         self._entry: Optional[EntryResource] = None
-        self._converted: Dict[str, Any] = {}
+        self._converted: dict[str, Any] = {}
 
         self.entry: EntryResource = entry  # type: ignore[assignment]
 
@@ -164,7 +164,7 @@ class EntryAdapter:
 
     @staticmethod
     def _get_model_attributes(
-        starting_instances: Union[Tuple[BaseModel, ...], List[BaseModel]], name: str
+        starting_instances: Union[tuple[BaseModel, ...], list[BaseModel]], name: str
     ) -> Any:
         """Helper method for retrieving the OPTIMADE model's attribute, supporting "."-nested attributes"""
         for res in starting_instances:

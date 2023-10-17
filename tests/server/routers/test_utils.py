@@ -1,5 +1,6 @@
 """Tests specifically for optimade.servers.routers.utils."""
-from typing import Mapping, Optional, Tuple, Union
+from collections.abc import Mapping
+from typing import Optional, Union
 from unittest import mock
 
 import pytest
@@ -8,7 +9,7 @@ from requests.exceptions import ConnectionError
 
 def mocked_providers_list_response(
     url: Union[str, bytes] = "",
-    param: Optional[Union[Mapping[str, str], Tuple[str, str]]] = None,
+    param: Optional[Union[Mapping[str, str], tuple[str, str]]] = None,
     **kwargs,
 ):
     """This function will be used to mock requests.get

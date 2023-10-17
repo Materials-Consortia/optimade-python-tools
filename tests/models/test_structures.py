@@ -194,7 +194,7 @@ def test_structure_fatal_deformities(good_structure, deformity):
 
 
 minor_deformities = (
-    {f: None} for f in set(f for _ in CORRELATED_STRUCTURE_FIELDS for f in _)
+    {f: None} for f in {f for _ in CORRELATED_STRUCTURE_FIELDS for f in _}
 )
 
 

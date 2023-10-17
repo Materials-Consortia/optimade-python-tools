@@ -4,7 +4,8 @@ with OPTIMADE providers that can be used in server or client code.
 """
 
 import json
-from typing import Container, Iterable, List, Optional
+from collections.abc import Container, Iterable
+from typing import Optional
 
 from pydantic import ValidationError
 
@@ -102,7 +103,7 @@ def get_providers(add_mongo_id: bool = False) -> list:
 
 def get_child_database_links(
     provider: LinksResource, obey_aggregate: bool = True
-) -> List[LinksResource]:
+) -> list[LinksResource]:
     """For a provider, return a list of available child databases.
 
     Arguments:
