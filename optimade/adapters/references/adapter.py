@@ -1,5 +1,3 @@
-from typing import Type
-
 from optimade.adapters.base import EntryAdapter
 from optimade.models import ReferenceResource
 
@@ -21,4 +19,4 @@ class Reference(EntryAdapter):
 
     """
 
-    ENTRY_RESOURCE: Type[ReferenceResource] = ReferenceResource
+    ENTRY_RESOURCE: type[ReferenceResource] = ReferenceResource

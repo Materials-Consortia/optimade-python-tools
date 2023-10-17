@@ -2,7 +2,7 @@
 import re
 import warnings
 from enum import Enum, IntEnum
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 from pydantic import BaseModel, conlist, root_validator, validator
 
@@ -84,7 +84,7 @@ class Species(BaseModel):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    chemical_symbols: List[str] = OptimadeField(
+    chemical_symbols: list[str] = OptimadeField(
         ...,
         description="""MUST be a list of strings of all chemical elements composing this species. Each item of the list MUST be one of the following:
 
@@ -97,7 +97,7 @@ If any one entry in the `species` list has a `chemical_symbols` list that is lon
         queryable=SupportLevel.OPTIONAL,
     )
 
-    concentration: List[float] = OptimadeField(
+    concentration: list[float] = OptimadeField(
         ...,
         description="""MUST be a list of floats, with same length as `chemical_symbols`. The numbers represent the relative concentration of the corresponding chemical symbol in this species. The numbers SHOULD sum to one. Cases in which the numbers do not sum to one typically fall only in the following two categories:
 
@@ -109,7 +109,7 @@ Note that concentrations are uncorrelated between different site (even of the sa
         queryable=SupportLevel.OPTIONAL,
     )
 
-    mass: Optional[List[float]] = OptimadeField(
+    mass: Optional[list[float]] = OptimadeField(
         None,
         description="""If present MUST be a list of floats expressed in a.m.u.
 Elements denoting vacancies MUST have masses equal to 0.""",
@@ -127,14 +127,14 @@ Note: With regards to "source database", we refer to the immediate source being 
         queryable=SupportLevel.OPTIONAL,
     )
 
-    attached: Optional[List[str]] = OptimadeField(
+    attached: Optional[list[str]] = OptimadeField(
         None,
         description="""If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or "X" for a non-chemical element.""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
 
-    nattached: Optional[List[int]] = OptimadeField(
+    nattached: Optional[list[int]] = OptimadeField(
         None,
         description="""If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.""",
         support=SupportLevel.OPTIONAL,
@@ -210,7 +210,7 @@ class Assembly(BaseModel):
 
     """
 
-    sites_in_groups: List[List[int]] = OptimadeField(
+    sites_in_groups: list[list[int]] = OptimadeField(
         ...,
         description="""Index of the sites (0-based) that belong to each group for each assembly.
 
@@ -221,7 +221,7 @@ class Assembly(BaseModel):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    group_probabilities: List[float] = OptimadeField(
+    group_probabilities: list[float] = OptimadeField(
         ...,
         description="""Statistical probability of each group. It MUST have the same length as `sites_in_groups`.
 It SHOULD sum to one.
@@ -263,7 +263,7 @@ CORRELATED_STRUCTURE_FIELDS = (
 class StructureResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
-    elements: Optional[List[str]] = OptimadeField(
+    elements: Optional[list[str]] = OptimadeField(
         ...,
         description="""The chemical symbols of the different elements present in the structure.
 
@@ -311,7 +311,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.MUST,
     )
 
-    elements_ratios: Optional[List[float]] = OptimadeField(
+    elements_ratios: Optional[list[float]] = OptimadeField(
         ...,
         description="""Relative proportions of different elements in the structure.
 
@@ -523,7 +523,7 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.OPTIONAL,
     )
 
-    cartesian_site_positions: Optional[List[Vector3D]] = OptimadeField(  # type: ignore[valid-type]
+    cartesian_site_positions: Optional[list[Vector3D]] = OptimadeField(  # type: ignore[valid-type]
         ...,
         description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
@@ -564,7 +564,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
         support=SupportLevel.SHOULD,
     )
 
-    species: Optional[List[Species]] = OptimadeField(
+    species: Optional[list[Species]] = OptimadeField(
         ...,
         description="""A list describing the species of the sites of this structure.
 Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).
@@ -633,7 +633,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
         queryable=SupportLevel.OPTIONAL,
     )
 
-    species_at_sites: Optional[List[str]] = OptimadeField(
+    species_at_sites: Optional[list[str]] = OptimadeField(
         ...,
         description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).
 The properties of the species are found in the property `species`.
@@ -657,7 +657,7 @@ The properties of the species are found in the property `species`.
         queryable=SupportLevel.OPTIONAL,
     )
 
-    assemblies: Optional[List[Assembly]] = OptimadeField(
+    assemblies: Optional[list[Assembly]] = OptimadeField(
         None,
         description="""A description of groups of sites that are statistically correlated.
 
@@ -765,7 +765,7 @@ The properties of the species are found in the property `species`.
         queryable=SupportLevel.OPTIONAL,
     )
 
-    structure_features: List[StructureFeatures] = OptimadeField(
+    structure_features: list[StructureFeatures] = OptimadeField(
         ...,
         title="Structure Features",
         description="""A list of strings that flag which special features are used by the structure.
@@ -961,7 +961,7 @@ The properties of the species are found in the property `species`.
             return v
 
         for vector in v:
-            if None in vector and any((isinstance(_, float) for _ in vector)):
+            if None in vector and any(isinstance(_, float) for _ in vector):
                 raise ValueError(
                     f"A lattice vector MUST be either all `null` or all numbers (vector: {vector}, all vectors: {v})"
                 )
@@ -1020,7 +1020,7 @@ The properties of the species are found in the property `species`.
 
     @validator("structure_features", always=True)
     def validate_structure_features(cls, v, values):
-        if [StructureFeatures(value) for value in sorted((_.value for _ in v))] != v:
+        if [StructureFeatures(value) for value in sorted(_.value for _ in v)] != v:
             raise ValueError(
                 f"structure_features MUST be sorted alphabetically, given value: {v}"
             )

@@ -2,7 +2,8 @@ import enum
 import re
 import warnings
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type, Union
+from collections.abc import Iterable
+from typing import Any, Optional, Union
 
 from lark import Transformer
 
@@ -28,8 +29,8 @@ from optimade.warnings import (
 
 def create_collection(
     name: str,
-    resource_cls: Type[EntryResource],
-    resource_mapper: Type[BaseResourceMapper],
+    resource_cls: type[EntryResource],
+    resource_mapper: type[BaseResourceMapper],
 ) -> "EntryCollection":
     """Create an `EntryCollection` of the configured type, depending on the value of
     `CONFIG.database_backend`.
@@ -101,8 +102,8 @@ class EntryCollection(ABC):
 
     def __init__(
         self,
-        resource_cls: Type[EntryResource],
-        resource_mapper: Type[BaseResourceMapper],
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         transformer: Transformer,
     ):
         """Initialize the collection for the given parameters.
@@ -128,14 +129,14 @@ class EntryCollection(ABC):
             for field in CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         ]
 
-        self._all_fields: Set[str] = set()
+        self._all_fields: set[str] = set()
 
     @abstractmethod
     def __len__(self) -> int:
         """Returns the total number of entries in the collection."""
 
     @abstractmethod
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource]) -> None:
         """Add the given entries to the underlying database.
 
         Arguments:
@@ -158,7 +159,7 @@ class EntryCollection(ABC):
         params: Union[
             EntryListingQueryParams, SingleEntryQueryParams, PartialDataQueryParams
         ],
-    ) -> Tuple[Union[None, Dict, List[Dict]], Optional[int], bool, Set[str], Set[str]]:
+    ) -> tuple[Union[None, dict, list[dict]], Optional[int], bool, set[str], set[str]]:
         """
         Fetches results and indicates if more data is available.
 
@@ -224,7 +225,7 @@ class EntryCollection(ABC):
         else:
             include_fields = set()
 
-        results: Union[None, List[Dict], Dict] = None
+        results: Union[None, list[dict], dict] = None
 
         if raw_results:
             results = [self.resource_mapper.map_back(doc) for doc in raw_results]
@@ -252,8 +253,8 @@ class EntryCollection(ABC):
 
     @abstractmethod
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], Optional[int], bool]:
+        self, criteria: dict[str, Any], single_entry: bool = False
+    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -267,7 +268,7 @@ class EntryCollection(ABC):
         """
 
     @property
-    def all_fields(self) -> Set[str]:
+    def all_fields(self) -> set[str]:
         """Get the set of all fields handled in this collection,
         from attribute fields in the schema, provider fields and top-level OPTIMADE fields.
 
@@ -294,7 +295,7 @@ class EntryCollection(ABC):
 
         return self._all_fields
 
-    def get_attribute_fields(self) -> Set[str]:
+    def get_attribute_fields(self) -> set[str]:
         """Get the set of attribute fields
 
         Return only the _first-level_ attribute fields from the schema of the resource class,
@@ -329,7 +330,7 @@ class EntryCollection(ABC):
         params: Union[
             EntryListingQueryParams, SingleEntryQueryParams, PartialDataQueryParams
         ],
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
 
@@ -434,7 +435,7 @@ class EntryCollection(ABC):
 
         return cursor_kwargs
 
-    def parse_sort_params(self, sort_params: str) -> Iterable[Tuple[str, int]]:
+    def parse_sort_params(self, sort_params: str) -> Iterable[tuple[str, int]]:
         """Handles any sort parameters passed to the collection,
         resolving aliases and dealing with any invalid fields.
 
@@ -446,7 +447,7 @@ class EntryCollection(ABC):
             sort direction encoded as 1 (ascending) or -1 (descending).
 
         """
-        sort_spec: List[Tuple[str, int]] = []
+        sort_spec: list[tuple[str, int]] = []
         for field in sort_params.split(","):
             sort_dir = 1
             if field.startswith("-"):
@@ -494,8 +495,8 @@ class EntryCollection(ABC):
     def get_next_query_params(
         self,
         params: EntryListingQueryParams,
-        results: Union[None, Dict, List[Dict]],
-    ) -> Dict[str, List[str]]:
+        results: Union[None, dict, list[dict]],
+    ) -> dict[str, list[str]]:
         """Provides url query pagination parameters that will be used in the next
         link.
 
@@ -507,7 +508,7 @@ class EntryCollection(ABC):
             A dictionary with the necessary query parameters.
 
         """
-        query: Dict[str, List[str]] = dict()
+        query: dict[str, list[str]] = dict()
         if isinstance(results, list) and results:
             # If a user passed a particular pagination mechanism, keep using it
             # Otherwise, use the default pagination mechanism of the collection

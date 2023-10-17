@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Iterable, List
+from collections.abc import Iterable
 from warnings import warn
 
 from fastapi import Query
@@ -21,7 +21,7 @@ class BaseQueryParams(ABC):
 
     """
 
-    unsupported_params: List[str] = []
+    unsupported_params: list[str] = []
 
     def check_params(self, query_params: Iterable[str]) -> None:
         """This method checks whether all the query parameters that are specified
@@ -173,7 +173,7 @@ class EntryListingQueryParams(BaseQueryParams):
     """
 
     # The reference server implementation only supports offset/number-based pagination
-    unsupported_params: List[str] = [
+    unsupported_params: list[str] = [
         "page_cursor",
         "page_below",
     ]

@@ -3,7 +3,7 @@ import io
 import re
 import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set, Type, Union
+from typing import Any, Optional, Union
 
 import numpy as np
 from fastapi import Request, Response
@@ -98,10 +98,10 @@ def meta_values(
 
 
 def handle_response_fields(
-    results: Union[List[EntryResource], EntryResource, List[Dict], Dict],
-    exclude_fields: Set[str],
-    include_fields: Set[str],
-) -> List[Dict[str, Any]]:
+    results: Union[list[EntryResource], EntryResource, list[dict], dict],
+    exclude_fields: set[str],
+    include_fields: set[str],
+) -> list[dict[str, Any]]:
     """Handle query parameter `response_fields`.
 
     It is assumed that all fields are under `attributes`.
@@ -151,10 +151,10 @@ def handle_response_fields(
 
 
 def get_included_relationships(
-    results: Union[EntryResource, List[EntryResource], Dict, List[Dict]],
-    ENTRY_COLLECTIONS: Dict[str, EntryCollection],
-    include_param: List[str],
-) -> List[Union[EntryResource, Dict]]:
+    results: Union[EntryResource, list[EntryResource], dict, list[dict]],
+    ENTRY_COLLECTIONS: dict[str, EntryCollection],
+    include_param: list[str],
+) -> list[Union[EntryResource, dict]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
@@ -182,7 +182,7 @@ def get_included_relationships(
                 f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
             )
 
-    endpoint_includes: Dict[Any, Dict] = defaultdict(dict)
+    endpoint_includes: dict[Any, dict] = defaultdict(dict)
     for doc in results:
         # convert list of references into dict by ID to only included unique IDs
         if doc is None:
@@ -211,12 +211,12 @@ def get_included_relationships(
                     if ref["id"] not in endpoint_includes[entry_type]:
                         endpoint_includes[entry_type][ref["id"]] = ref
 
-    included: Dict[
-        str, Union[List[EntryResource], EntryResource, List[Dict], Dict]
+    included: dict[
+        str, Union[list[EntryResource], EntryResource, list[dict], dict]
     ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
-            ['id="{}"'.format(ref_id) for ref_id in endpoint_includes[entry_type]]
+            [f'id="{ref_id}"' for ref_id in endpoint_includes[entry_type]]
         )
         params = EntryListingQueryParams(
             filter=compound_filter,
@@ -284,10 +284,10 @@ def generate_links_partial_data(
 
 def get_entries(
     collection: EntryCollection,
-    response: Type[EntryResponseMany],  # noqa
+    response: type[EntryResponseMany],  # noqa
     request: Request,
     params: EntryListingQueryParams,
-) -> Dict:
+) -> dict:
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
@@ -343,10 +343,10 @@ def get_entries(
 def get_single_entry(
     collection: EntryCollection,
     entry_id: str,
-    response: Type[EntryResponseOne],
+    response: type[EntryResponseOne],
     request: Request,
     params: SingleEntryQueryParams,
-) -> Dict:
+) -> dict:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
@@ -399,7 +399,7 @@ def get_partial_entry(
     entry_id: str,
     request: Request,
     params: Union[PartialDataQueryParams],
-) -> Dict:
+) -> dict:
     # from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)

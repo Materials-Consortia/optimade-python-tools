@@ -1,7 +1,6 @@
 import json
 from pathlib import Path
 from random import choice
-from typing import List
 
 import pytest
 
@@ -9,18 +8,16 @@ from optimade.adapters.structures import Structure
 
 
 @pytest.fixture
-def RAW_STRUCTURES() -> List[dict]:
+def RAW_STRUCTURES() -> list[dict]:
     """Read and return raw_structures.json"""
-    with open(
-        Path(__file__).parent.joinpath("raw_test_structures.json"), "r"
-    ) as raw_data:
+    with open(Path(__file__).parent.joinpath("raw_test_structures.json")) as raw_data:
         return json.load(raw_data)
 
 
 @pytest.fixture
-def SPECIAL_SPECIES_STRUCTURES() -> List[dict]:
+def SPECIAL_SPECIES_STRUCTURES() -> list[dict]:
     """Read and return special_species.json"""
-    with open(Path(__file__).parent.joinpath("special_species.json"), "r") as raw_data:
+    with open(Path(__file__).parent.joinpath("special_species.json")) as raw_data:
         return json.load(raw_data)
 
 
@@ -37,7 +34,7 @@ def structure(raw_structure) -> Structure:
 
 
 @pytest.fixture
-def structures(RAW_STRUCTURES) -> List[Structure]:
+def structures(RAW_STRUCTURES) -> list[Structure]:
     """Create and return list of adapters.Structure"""
     return [Structure(_) for _ in RAW_STRUCTURES]
 

@@ -1,6 +1,6 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Optional
 
 from pydantic import AnyUrl, BaseModel, root_validator, validator
 
@@ -124,12 +124,12 @@ class PartialDataLink(BaseModel):
 class EntryMetadata(Meta):
     """Contains the metadata for the attributes of an entry"""
 
-    property_metadata: Dict = StrictField(
+    property_metadata: dict = StrictField(
         None,
         description="""An object containing per-entry and per-property metadata. The keys are the names of the fields in attributes for which metadata is available. The values belonging to these keys are dictionaries containing the relevant metadata fields. See also [Metadata properties](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#metadata-properties)""",
     )
 
-    partial_data_links: Dict[str, list[PartialDataLink]] = StrictField(
+    partial_data_links: dict[str, list[PartialDataLink]] = StrictField(
         None,
         description="""A dictionary, where the keys are the names of the properties in the attributes field for which the value is too large to be shared by default.
         For each property one or more links are provided from which the value of the attribute can be retrieved.""",
@@ -302,18 +302,18 @@ E.g., for the entry resource `structures`, the `species` property is defined as 
 
 
 class EntryInfoResource(BaseModel):
-    formats: List[str] = StrictField(
+    formats: list[str] = StrictField(
         ..., description="List of output formats available for this type of entry."
     )
 
     description: str = StrictField(..., description="Description of the entry.")
 
-    properties: Dict[str, EntryInfoProperty] = StrictField(
+    properties: dict[str, EntryInfoProperty] = StrictField(
         ...,
         description="A dictionary describing queryable properties for this entry type, where each key is a property name.",
     )
 
-    output_fields_by_format: Dict[str, List[str]] = StrictField(
+    output_fields_by_format: dict[str, list[str]] = StrictField(
         ...,
         description="Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.",
     )
