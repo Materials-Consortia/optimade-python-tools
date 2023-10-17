@@ -1,4 +1,5 @@
-from typing import Callable, Dict, Iterable, Optional
+from collections.abc import Iterable
+from typing import Callable, Optional
 
 from optimade.models import (  # type: ignore[attr-defined]
     DataType,
@@ -10,7 +11,7 @@ from optimade.models import (  # type: ignore[attr-defined]
 
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
 
-ENTRY_INFO_SCHEMAS: Dict[str, Callable[[], Dict]] = {
+ENTRY_INFO_SCHEMAS: dict[str, Callable[[], dict]] = {
     "structures": StructureResource.schema,
     "references": ReferenceResource.schema,
     "trajectories": TrajectoryResource.schema,
@@ -26,7 +27,7 @@ try:
     """
     from optimade.exceptions import POSSIBLE_ERRORS
 
-    ERROR_RESPONSES: Optional[Dict[int, Dict]] = {
+    ERROR_RESPONSES: Optional[dict[int, dict]] = {
         err.status_code: {"model": ErrorResponse, "description": err.title}
         for err in POSSIBLE_ERRORS
     }

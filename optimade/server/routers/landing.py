@@ -13,7 +13,7 @@ from optimade.server.routers import ENTRY_COLLECTIONS
 from optimade.server.routers.utils import get_base_url, meta_values
 
 
-@lru_cache()
+@lru_cache
 def render_landing_page(url: str) -> HTMLResponse:
     """Render and cache the landing page.
 

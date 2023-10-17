@@ -7,7 +7,7 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.
 import copy
 import itertools
 import warnings
-from typing import Any, Dict, List, Union
+from typing import Any, Union
 
 from lark import Token, v_args
 
@@ -56,7 +56,7 @@ class MongoTransformer(BaseTransformer):
         "$nin": "$in",
     }
 
-    def postprocess(self, query: Dict[str, Any]):
+    def postprocess(self, query: dict[str, Any]):
         """Used to post-process the nested dictionary of the parsed query."""
         query = self._apply_relationship_filtering(query)
         query = self._apply_length_operators(query)
@@ -229,7 +229,7 @@ class MongoTransformer(BaseTransformer):
         # property_zip_addon: ":" property (":" property)*
         raise NotImplementedError("Correlated list queries are not supported.")
 
-    def _recursive_expression_phrase(self, arg: List) -> Dict[str, Any]:
+    def _recursive_expression_phrase(self, arg: list) -> dict[str, Any]:
         """Helper function for parsing `expression_phrase`. Recursively sorts out
         the correct precedence for `$not`, `$and` and `$or`.
 
@@ -242,7 +242,7 @@ class MongoTransformer(BaseTransformer):
 
         """
 
-        def handle_not_and(arg: Dict[str, List]) -> Dict[str, List]:
+        def handle_not_and(arg: dict[str, list]) -> dict[str, list]:
             """Handle the case of `~(A & B) -> (~A | ~B)`.
 
             We have to check for the special case in which the "and" was created
@@ -271,7 +271,7 @@ class MongoTransformer(BaseTransformer):
                 ]
             }
 
-        def handle_not_or(arg: Dict[str, List]) -> Dict[str, List]:
+        def handle_not_or(arg: dict[str, list]) -> dict[str, list]:
             """Handle the case of ~(A | B) -> (~A & ~B).
 
             !!! note
@@ -569,7 +569,7 @@ class MongoTransformer(BaseTransformer):
         )
 
 
-def recursive_postprocessing(filter_: Union[Dict, List], condition, replacement):
+def recursive_postprocessing(filter_: Union[dict, list], condition, replacement):
     """Recursively descend into the query, checking each dictionary
     (contained in a list, or as an entry in another dictionary) for
     the condition passed. If the condition is true, apply the

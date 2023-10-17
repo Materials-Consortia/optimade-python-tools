@@ -2,7 +2,7 @@
 import warnings
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Literal, Optional, Union
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,
@@ -79,7 +79,7 @@ class SupportedResponseFormats(Enum):
     JSONL = "jsonlines"
 
 
-def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
+def config_file_settings(settings: BaseSettings) -> dict[str, Any]:
     """Configuration file settings source.
 
     Based on the example in the
@@ -165,7 +165,7 @@ class ServerConfig(BaseSettings):
         description="Which database backend to use out of the supported backends.",
     )
 
-    elastic_hosts: Optional[Union[str, List[str], Dict, List[Dict]]] = Field(
+    elastic_hosts: Optional[Union[str, list[str], dict, list[dict]]] = Field(
         None, description="Host settings to pass through to the `Elasticsearch` class."
     )
 
@@ -244,9 +244,9 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         ),
         description="General information about the provider of this OPTIMADE implementation",
     )
-    provider_fields: Dict[
+    provider_fields: dict[
         Literal["links", "references", "structures", "trajectories"],
-        List[Union[str, Dict[Literal["name", "type", "unit", "description"], str]]],
+        list[Union[str, dict[Literal["name", "type", "unit", "description"], str]]],
     ] = Field(
         {},
         description=(
@@ -254,11 +254,11 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             "broken down by endpoint."
         ),
     )
-    supported_prefixes: List[str] = Field(
+    supported_prefixes: list[str] = Field(
         [], description="A list of all the prefixes that are supported by this server."
     )
-    aliases: Dict[
-        Literal["links", "references", "structures", "trajectories"], Dict[str, str]
+    aliases: dict[
+        Literal["links", "references", "structures", "trajectories"], dict[str, str]
     ] = Field(
         {},
         description=(
@@ -266,8 +266,8 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             " names, broken down by endpoint."
         ),
     )
-    length_aliases: Dict[
-        Literal["links", "references", "structures", "trajectories"], Dict[str, str]
+    length_aliases: dict[
+        Literal["links", "references", "structures", "trajectories"], dict[str, str]
     ] = Field(
         {},
         description=(
@@ -333,12 +333,12 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         description="""If False, data from the database will not undergo validation before being emitted by the API, and
         only the mapping of aliases will occur.""",
     )
-    partial_data_formats: List[SupportedResponseFormats] = Field(
+    partial_data_formats: list[SupportedResponseFormats] = Field(
         ["json", "jsonlines"],
         description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
     )
-    max_response_size: Dict[SupportedResponseFormats, int] = Field(
-        {"json": 10, "jsonlines": 10},
+    max_response_size: dict[SupportedResponseFormats, int] = Field(
+        {"json": 10, "jsonlines": 40},
         description="""This dictionary contains the approximate maximum size for a trajectory response in megabytes for the different response_formats. The keys indicate the response_format and the values the maximum size.""",
     )
 
@@ -393,7 +393,7 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             init_settings: SettingsSourceCallable,
             env_settings: SettingsSourceCallable,
             file_secret_settings: SettingsSourceCallable,
-        ) -> Tuple[SettingsSourceCallable, ...]:
+        ) -> tuple[SettingsSourceCallable, ...]:
             """
             **Priority of config settings sources**:
 

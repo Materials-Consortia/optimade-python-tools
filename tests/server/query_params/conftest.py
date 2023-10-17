@@ -12,13 +12,13 @@ def structures():
 @pytest.fixture
 def check_include_response(get_good_response):
     """Fixture to check "good" `include` response"""
-    from typing import List, Optional, Set, Union
+    from typing import Optional, Union
 
     def inner(
         request: str,
-        expected_included_types: Union[List, Set],
-        expected_included_resources: Union[List, Set],
-        expected_relationship_types: Optional[Union[List, Set]] = None,
+        expected_included_types: Union[list, set],
+        expected_included_resources: Union[list, set],
+        expected_relationship_types: Optional[Union[list, set]] = None,
         server: str = "regular",
     ):
         response = get_good_response(request, server)

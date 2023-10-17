@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Type, Union
+from typing import Optional, Union
 
 from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
@@ -97,12 +97,12 @@ class ElasticTransformer(BaseTransformer):
         ">=": "gte",
     }
 
-    _quantity_type: Type[ElasticsearchQuantity] = ElasticsearchQuantity
+    _quantity_type: type[ElasticsearchQuantity] = ElasticsearchQuantity
 
     def __init__(
         self,
-        mapper: Type[BaseResourceMapper],
-        quantities: Optional[Dict[str, Quantity]] = None,
+        mapper: type[BaseResourceMapper],
+        quantities: Optional[dict[str, Quantity]] = None,
     ):
         if quantities is not None:
             self.quantities = quantities
@@ -143,7 +143,7 @@ class ElasticTransformer(BaseTransformer):
                 return quantity
 
         if nested is not None:
-            return "%s.%s" % (nested.backend_field, quantity.name)  # type: ignore[union-attr]
+            return f"{nested.backend_field}.{quantity.name}"  # type: ignore[union-attr]
 
         return quantity.backend_field  # type: ignore[union-attr, return-value]
 

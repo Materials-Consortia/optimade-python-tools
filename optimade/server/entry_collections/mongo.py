@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Optional, Union
 
 from optimade.exceptions import BadRequest
 from optimade.filtertransformers.mongo import MongoTransformer
@@ -52,8 +52,8 @@ class GridFSCollection(MongoBaseCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: Type[EntryResource],
-        resource_mapper: Type[BaseResourceMapper],
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         database: str = CONFIG.mongo_database,
     ):
         """Initialize the GridFSCollection for the given parameters.
@@ -102,22 +102,25 @@ class GridFSCollection(MongoBaseCollection):
             kwargs["filter"] = {}
         return len(self.collection.find(**kwargs))
 
-    def insert(self, content: bytes, filename: str, metadata: dict = {}) -> None:
+    def insert(self, data: list) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
             No validation is performed on the incoming data.
 
         Arguments:
-            content: The file content to add to gridfs.
-            filename: The filename of the added content.
-            metadata: extra metadata to add to the gridfs entry.
+            data: a list of dictionaries. Each dictionary contains the data belonging to one file.
+                These dictionaries contain the fields:
+                    data: The file content to add to gridfs.
+                    filename: The filename of the added content.
+                    metadata: extra metadata to add to the gridfs entry.
         """
-        self.collection.put(content, filename=filename, metadata=metadata)
+        for entry in data:  # todo check whether I can insert multiple files in one go.
+            self.collection.put(**entry)
 
     def handle_query_params(
-        self, params: Union[SingleEntryQueryParams, PartialDataQueryParams]
-    ) -> Dict[str, Any]:
+        self, params: Union[SingleEntryQueryParams, PartialDataQueryParams]  # type: ignore[override]
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
 
@@ -175,9 +178,9 @@ class GridFSCollection(MongoBaseCollection):
     # todo test if it is more efficient to use the get method of gridfs
     def _run_db_query(
         self,
-        criteria: Dict[str, Any],
+        criteria: dict[str, Any],
         single_entry: bool = False,
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+    ) -> tuple[list[dict[str, Any]], int, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -279,7 +282,7 @@ class GridFSCollection(MongoBaseCollection):
 
     def parse_property_ranges(
         self, property_range_str: str, attribute_slice_obj: list, dim_names: list
-    ) -> List[dict]:
+    ) -> list[dict]:
         property_range_dict = {}
         if property_range_str:
             ranges = [dimrange.split(":") for dimrange in property_range_str.split(",")]
@@ -312,8 +315,8 @@ class MongoCollection(MongoBaseCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: Type[EntryResource],
-        resource_mapper: Type[BaseResourceMapper],
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         database: str = CONFIG.mongo_database,
     ):
         """Initialize the MongoCollection for the given parameters.
@@ -365,7 +368,7 @@ class MongoCollection(MongoBaseCollection):
             except ExecutionTimeout:
                 return None
 
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource]) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
@@ -378,8 +381,8 @@ class MongoCollection(MongoBaseCollection):
         self.collection.insert_many(data)
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Dict[str, Any]:
+        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]  # type: ignore[override]
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
 
@@ -416,8 +419,8 @@ class MongoCollection(MongoBaseCollection):
         return criteria
 
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], Optional[int], bool]:
+        self, criteria: dict[str, Any], single_entry: bool = False
+    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:

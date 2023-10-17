@@ -31,7 +31,7 @@ def test_convert_python_types():
 
     test_none = None
     python_types_as_objects = [
-        str("Test"),
+        "Test",
         42,
         42.42,
         ["Test", 42],

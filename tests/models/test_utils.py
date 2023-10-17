@@ -1,4 +1,4 @@
-from typing import Callable, List
+from typing import Callable
 
 import pytest
 from pydantic import BaseModel, Field, ValidationError
@@ -46,7 +46,7 @@ def test_compatible_strict_optimade_field() -> None:
 
     class CorrectModelWithStrictField(BaseModel):
         # check that unit and uniqueItems are passed through
-        good_field: List[str] = StrictField(
+        good_field: list[str] = StrictField(
             ...,
             support=SupportLevel.MUST,
             queryable=SupportLevel.OPTIONAL,
@@ -58,7 +58,7 @@ def test_compatible_strict_optimade_field() -> None:
         )
 
     class CorrectModelWithOptimadeField(BaseModel):
-        good_field: List[str] = OptimadeField(
+        good_field: list[str] = OptimadeField(
             ...,
             # Only difference here is that OptimadeField allows case-insensitive
             # strings to be passed instead of support levels directly
