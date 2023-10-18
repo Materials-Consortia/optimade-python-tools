@@ -11,7 +11,6 @@ from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
-from optimade.adapters.jsonl import to_jsonl
 from optimade.exceptions import BadRequest, InternalServerError, NotFound
 from optimade.models import (  # type: ignore[attr-defined]
     EntryResource,  # type: ignore[attr-defined]
@@ -37,6 +36,7 @@ __all__ = (
     "get_base_url",
     "get_entries",
     "get_single_entry",
+    "get_partial_entry",
     "mongo_id_for_database",
     "get_providers",
     "PROVIDER_LIST_URLS",
@@ -268,18 +268,20 @@ def generate_links_partial_data(
         if entry.get("meta", {}) and entry["meta"].get("partial_data_links", {}):
             for property in entry["meta"]["partial_data_links"]:
                 for response_format in CONFIG.partial_data_formats:
-                    entry["meta"]["partial_data_links"][property].append(
-                        {
-                            "format": str(response_format.value),
-                            "link": get_base_url(parsed_url_request)
-                            + "/partial_data/"
-                            + entry["id"]
-                            + "?response_fields="
-                            + property
-                            + "&response_format="
-                            + str(response_format.value),
-                        }
-                    )
+                    link = {
+                        "format": str(response_format.value),
+                        "link": get_base_url(parsed_url_request)
+                        + "/partial_data/"
+                        + entry["id"]
+                        + "?response_fields="
+                        + property
+                        + "&response_format="
+                        + str(response_format.value),
+                    }
+                    if isinstance(entry["meta"]["partial_data_links"][property], list):
+                        entry["meta"]["partial_data_links"][property].append(link)
+                    else:
+                        entry["meta"]["partial_data_links"][property] = [link]
 
 
 def get_entries(
@@ -399,8 +401,9 @@ def get_partial_entry(
     entry_id: str,
     request: Request,
     params: Union[PartialDataQueryParams],
-) -> dict:
+) -> Union[dict, Response]:
     # from optimade.server.routers import ENTRY_COLLECTIONS
+    from optimade.adapters.jsonl import to_jsonl
 
     params.check_params(request.query_params)
     params.filter = f'parent_id="{entry_id}"'
@@ -443,16 +446,23 @@ def get_partial_entry(
     if fields or include_fields:
         results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
 
-    # todo make the implementation of these formats more universal. i.e. allow them for other endpoint as well,
-
-    sliceobj = []
-    for i in array.shape:
-        sliceobj.append({"start": 1, "stop": i, "step": 1})
+    slice_obj = []
+    for i, size in enumerate(array.shape):
+        slice_obj.append(
+            {
+                "start": property_ranges[i]["start"],
+                "stop": min(
+                    size * property_ranges[i]["step"] + property_ranges[i]["start"] - 1,
+                    property_ranges[i]["stop"],
+                ),
+                "step": property_ranges[i]["step"],
+            }
+        )
     header = {
         "optimade-partial-data": {"format": "1.2.0"},
         "layout": "dense",
         "property_name": params.response_fields,
-        "returned_ranges": sliceobj,
+        "returned_ranges": slice_obj,
         # "entry": {"id": entry_id, "type": None}, #Todo add type information to metadata entry
         "has_references": False,
     }  # Todo: add support for non_dense data
@@ -480,7 +490,7 @@ def get_partial_entry(
             # included=included,
         )
 
-    jsonl_content = [header, array.tolist()]
+    jsonl_content = [header] + [array[i].tolist() for i in range(array.shape[0])]
     if more_data_available:
         jsonl_content.append(next_link)
     return Response(

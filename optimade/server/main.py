@@ -95,7 +95,7 @@ if CONFIG.insert_test_data:
                         slice_obj = [
                             {"start": 1, "stop": i, "step": 1} for i in numpy_meta[0]
                         ]
-                        metadata["sliceobj"] = slice_obj
+                        metadata["slice_obj"] = slice_obj
                     if "dtype" not in metadata:
                         metadata["dtype"] = {
                             "name": numpy_meta[2].name,

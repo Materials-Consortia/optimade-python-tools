@@ -195,9 +195,11 @@ class GridFSCollection(MongoBaseCollection):
 
         # TODO handle case where the type does not have a fixed width. For example strings or dictionaries.
         response_format = criteria.pop("response_format")
-        max_return_size = CONFIG.max_response_size[
-            SupportedResponseFormats(response_format)
-        ]  # todo adjust for different output formats(take into account that the number of numbers to read is larger for a text based output format than for a binary format.
+        max_return_size = (
+            CONFIG.max_response_size[SupportedResponseFormats(response_format)]
+            * 1024
+            * 1024
+        )  # todo adjust for different output formats(take into account that the number of numbers to read is larger for a text based output format than for a binary format.
         results = []
         filterdict = criteria.pop("filter", {})
 
@@ -215,19 +217,20 @@ class GridFSCollection(MongoBaseCollection):
             metadata = file_obj.metadata
             property_ranges = self.parse_property_ranges(
                 criteria.pop("property_ranges", None),
-                metadata["sliceobj"],
+                metadata["slice_obj"],
                 metadata["dim_names"],
             )
             item_size = metadata["dtype"]["itemsize"]
             dim_sizes = [
-                (i["stop"] - i["start"] + 1) // i["step"] for i in metadata["sliceobj"]
+                (i["stop"] - i["start"] + 1) // i["step"] for i in metadata["slice_obj"]
             ]
             top_stepsize = 1
             for i in dim_sizes[1:]:
                 top_stepsize *= i
             offset = (property_ranges[0]["start"] - 1) * item_size * top_stepsize
+            np_header = file_obj.readline()
             file_obj.seek(
-                offset
+                offset + len(np_header)
             )  # set the correct starting point fo the read from the gridfs file system.
             if (max_return_size / item_size) < (
                 1 + property_ranges[0]["stop"] - property_ranges[0]["start"]
@@ -241,11 +244,13 @@ class GridFSCollection(MongoBaseCollection):
                 shape = [n_outer] + dim_sizes[1:]
             else:
                 read_size = (
+                    (1 + property_ranges[0]["stop"] - property_ranges[0]["start"])
+                    * top_stepsize
+                    * item_size
+                )
+                shape = [
                     1 + property_ranges[0]["stop"] - property_ranges[0]["start"]
-                ) * top_stepsize
-                shape = (
-                    1 + property_ranges[0]["stop"] - property_ranges[0]["start"]
-                ) + dim_sizes[1:]
+                ] + dim_sizes[1:]
 
             values = file_obj.read(read_size)
             entry = {
@@ -276,7 +281,7 @@ class GridFSCollection(MongoBaseCollection):
         return results, nresults, more_data_available
 
     def parse_property_ranges(
-        self, property_range_str: str, attribute_sliceobj: list, dim_names: list
+        self, property_range_str: str, attribute_slice_obj: list, dim_names: list
     ) -> list[dict]:
         property_range_dict = {}
         if property_range_str:
@@ -286,17 +291,17 @@ class GridFSCollection(MongoBaseCollection):
                 property_range_dict[subrange[0]] = {
                     "start": int(subrange[1])
                     if subrange[1]
-                    else attribute_sliceobj[dim_names.index(subrange[0])]["start"],
+                    else attribute_slice_obj[dim_names.index(subrange[0])]["start"],
                     "stop": int(subrange[2])
                     if subrange[2]
-                    else attribute_sliceobj[dim_names.index(subrange[0])]["stop"],
+                    else attribute_slice_obj[dim_names.index(subrange[0])]["stop"],
                     "step": int(subrange[3])
                     if subrange[3]
-                    else attribute_sliceobj[dim_names.index(subrange[0])]["step"],
+                    else attribute_slice_obj[dim_names.index(subrange[0])]["step"],
                 }
         for i, dim in enumerate(dim_names):
             if dim not in property_range_dict:
-                property_range_dict[dim] = attribute_sliceobj[i]
+                property_range_dict[dim] = attribute_slice_obj[i]
 
         return [property_range_dict[dim] for dim in dim_names]
 

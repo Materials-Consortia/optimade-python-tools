@@ -332,7 +332,7 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
     )
     max_response_size: dict[SupportedResponseFormats, int] = Field(
-        {"json": 10, "jsonlines": 40},
+        {"json": 10, "jsonlines": 10},
         description="""This dictionary contains the approximate maximum size for a trajectory response in megabytes for the different response_formats. The keys indicate the response_format and the values the maximum size.""",
     )
 
