@@ -55,10 +55,10 @@ class TrajectoryResourceAttributes(EntryResourceAttributes, StructureAttributes)
     )
 
     @validator("reference_frames", each_item=True)
-    def validate_chemical_symbols(cls, reference_frame):
+    def validate_reference_frames(cls, reference_frame):
         if reference_frame < 0:
             raise ValueError(
-                f"All values in reference_frames have to positive in tegers. {reference_frame} is not a positive integer."
+                f"All values in reference_frames have to positive integers. {reference_frame} is not a positive integer."
             )
         return reference_frame
 
