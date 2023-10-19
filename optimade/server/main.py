@@ -100,6 +100,7 @@ if CONFIG.insert_test_data:
                             "name": numpy_meta[2].name,
                             "itemsize": numpy_meta[2].itemsize,
                         }
+                f.seek(0)
                 partial_data_coll.insert([{"data": f, "filename": filename, "metadata": metadata}])  # type: ignore[list-item] # Todo : Perhaps this can be reduced to a single insert statement.
 
     def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
