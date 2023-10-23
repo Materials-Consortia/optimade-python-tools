@@ -184,25 +184,25 @@ jobs:
         pip install -r requirements-http-client.txt
 
     - name: Run non-server tests
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
+      run: pytest -rs -vvv --durations=0 --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
 
     - name: Install latest server dependencies
       run: pip install -r requirements-server.txt
 
     - name: Run server tests (using `mongomock`)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      run: pytest -rs -vvv --durations=0 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
     - name: Run server tests with no API validation (using `mongomock`)
       run:
-        pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+        pytest -rs -vvv --durations=0 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
         OPTIMADE_VALIDATE_API_RESPONSE: false
 
     - name: Run server tests (using a real MongoDB)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      run: pytest -rs -vvv --durations=0 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
 
