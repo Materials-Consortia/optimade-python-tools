@@ -1,6 +1,7 @@
 import warnings
+from collections.abc import Iterable
 from functools import lru_cache
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type, Union
+from typing import Any, Optional, Union
 
 from optimade.models.entries import EntryResource
 
@@ -65,19 +66,25 @@ class BaseResourceMapper:
     except (ImportError, ModuleNotFoundError):
         PROVIDERS = {}
 
-    KNOWN_PROVIDER_PREFIXES: Set[str] = set(
+    KNOWN_PROVIDER_PREFIXES: set[str] = {
         prov["id"] for prov in PROVIDERS.get("data", [])
-    )
-    ALIASES: Tuple[Tuple[str, str], ...] = ()
-    LENGTH_ALIASES: Tuple[Tuple[str, str], ...] = ()
-    PROVIDER_FIELDS: Tuple[str, ...] = ()
-    ENTRY_RESOURCE_CLASS: Type[EntryResource] = EntryResource
-    RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures"}
-    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {"id", "type", "relationships", "links"}
+    }
+    ALIASES: tuple[tuple[str, str], ...] = ()
+    LENGTH_ALIASES: tuple[tuple[str, str], ...] = ()
+    PROVIDER_FIELDS: tuple[str, ...] = ()
+    ENTRY_RESOURCE_CLASS: type[EntryResource] = EntryResource
+    RELATIONSHIP_ENTRY_TYPES: set[str] = {"references", "structures"}
+    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set[str] = {
+        "id",
+        "type",
+        "relationships",
+        "links",
+        "meta",
+    }
 
     @classmethod
     @lru_cache(maxsize=NUM_ENTRY_TYPES)
-    def all_aliases(cls) -> Iterable[Tuple[str, str]]:
+    def all_aliases(cls) -> Iterable[tuple[str, str]]:
         """Returns all of the associated aliases for this entry type,
         including those defined by the server config. The first member
         of each tuple is the OPTIMADE-compliant field name, the second
@@ -116,22 +123,14 @@ class BaseResourceMapper:
 
     @classproperty
     @lru_cache(maxsize=1)
-    def SUPPORTED_PREFIXES(cls) -> Set[str]:
-        """A set of prefixes handled by this entry type.
-
-        !!! note
-            This implementation only includes the provider prefix,
-            but in the future this property may be extended to include other
-            namespaces (for serving fields from, e.g., other providers or
-            domain-specific terms).
-
-        """
+    def SUPPORTED_PREFIXES(cls) -> set[str]:
+        """A set of prefixes handled by this entry type."""
         from optimade.server.config import CONFIG
 
-        return {CONFIG.provider.prefix}
+        return set(CONFIG.supported_prefixes)
 
     @classproperty
-    def ALL_ATTRIBUTES(cls) -> Set[str]:
+    def ALL_ATTRIBUTES(cls) -> set[str]:
         """Returns all attributes served by this entry."""
         from optimade.server.config import CONFIG
 
@@ -147,11 +146,11 @@ class BaseResourceMapper:
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, ())
                 if isinstance(field, dict)
             )
-            .union(set(cls.get_optimade_field(field) for field in cls.PROVIDER_FIELDS))
+            .union({cls.get_optimade_field(field) for field in cls.PROVIDER_FIELDS})
         )
 
     @classproperty
-    def ENTRY_RESOURCE_ATTRIBUTES(cls) -> Dict[str, Any]:
+    def ENTRY_RESOURCE_ATTRIBUTES(cls) -> dict[str, Any]:
         """Returns the dictionary of attributes defined by the underlying entry resource class."""
         from optimade.server.schemas import retrieve_queryable_properties
 
@@ -173,7 +172,7 @@ class BaseResourceMapper:
 
     @classmethod
     @lru_cache(maxsize=NUM_ENTRY_TYPES)
-    def all_length_aliases(cls) -> Tuple[Tuple[str, str], ...]:
+    def all_length_aliases(cls) -> tuple[tuple[str, str], ...]:
         """Returns all of the associated length aliases for this class,
         including those defined by the server config.
 
@@ -368,7 +367,7 @@ class BaseResourceMapper:
     @classmethod
     def deserialize(
         cls, results: Union[dict, Iterable[dict]]
-    ) -> Union[List[EntryResource], EntryResource]:
+    ) -> Union[list[EntryResource], EntryResource]:
         """Converts the raw database entries for this class into serialized models,
         mapping the data along the way.
 
@@ -377,3 +376,38 @@ class BaseResourceMapper:
             return cls.ENTRY_RESOURCE_CLASS(**cls.map_back(results))
 
         return [cls.ENTRY_RESOURCE_CLASS(**cls.map_back(doc)) for doc in results]
+
+    @staticmethod
+    def starts_with_supported_prefix(field: str) -> tuple[bool, Union[str, None]]:
+        """Tests whether the supplied field has a field that is supported by this server.
+        Parameters:
+            field: The field/string for which it should be checked that it starts with a supported prefix.
+
+        Returns:
+            A boolean which is true if the field/string starts with a supported prefix.
+            A string, containing the prefix if the field has a prefix otherwise it returns 'None'.
+        """
+
+        prefix = None
+        if field.startswith("_"):
+            prefix = field.split("_")[1]
+            if prefix in BaseResourceMapper.SUPPORTED_PREFIXES:
+                return True, prefix
+        return False, prefix
+
+    @classmethod
+    def check_starts_with_supported_prefix(cls, field: str, message: str = "") -> None:
+        """Raises a value error if the field does not start with a supported prefix.
+        Parameters:
+            field: The field/string for which it should be checked that it starts with a supported prefix.
+            message: An additional error message that will be appended to the default error message.
+        Returns:
+            Raises a value error when the field has no valid prefix.
+        """
+
+        prefixed, prefix = cls.starts_with_supported_prefix(field)
+        if not prefixed:
+            raise ValueError(
+                f"The field {field} either has no prefix or the prefix {prefix} is not supported by this server."
+                + message
+            )

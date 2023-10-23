@@ -1,5 +1,6 @@
 import traceback
-from typing import Callable, Iterable, List, Optional, Tuple, Type, Union
+from collections.abc import Iterable
+from typing import Callable, Optional, Union
 
 from fastapi import Request
 from fastapi.encoders import jsonable_encoder
@@ -18,7 +19,7 @@ def general_exception(
     request: Request,
     exc: Exception,
     status_code: int = 500,  # A status_code in `exc` will take precedence
-    errors: Optional[List[OptimadeError]] = None,
+    errors: Optional[list[OptimadeError]] = None,
 ) -> JSONAPIResponse:
     """Handle an exception
 
@@ -221,8 +222,8 @@ def general_exception_handler(request: Request, exc: Exception) -> JSONAPIRespon
 
 
 OPTIMADE_EXCEPTIONS: Iterable[
-    Tuple[
-        Type[Exception],
+    tuple[
+        type[Exception],
         Callable[[Request, Exception], JSONAPIResponse],
     ]
 ] = [
@@ -230,7 +231,7 @@ OPTIMADE_EXCEPTIONS: Iterable[
     (OptimadeHTTPException, http_exception_handler),
     (RequestValidationError, request_validation_exception_handler),
     (ValidationError, validation_exception_handler),
-    (VisitError, grammar_not_implemented_handler),
+    (VisitError, grammar_not_implemented_handler),  # type: ignore[list-item] # not entirely sure why this entry triggers mypy
     (NotImplementedError, not_implemented_handler),  # type: ignore[list-item] # not entirely sure why this entry triggers mypy
     (Exception, general_exception_handler),
 ]

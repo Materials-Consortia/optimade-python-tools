@@ -10,6 +10,18 @@ data_paths = {
     "providers": "providers.json",
 }
 
+data_files = [
+    (
+        "mpf_551:cartesian_site_positions.npy",
+        "numpy",
+        {
+            "endpoint": "structures",
+            "parent_id": "mpf_551",
+            "property_name": "cartesian_site_positions",
+            "dim_names": ["dim_sites", "dim_cartesian_dimensions"],
+        },
+    )
+]
 
 for var, path in data_paths.items():
     try:

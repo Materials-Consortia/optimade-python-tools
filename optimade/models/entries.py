@@ -1,10 +1,10 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Optional
 
-from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
+from pydantic import AnyUrl, BaseModel, root_validator, validator
 
-from optimade.models.jsonapi import Attributes, Relationships, Resource
+from optimade.models.jsonapi import Attributes, Meta, Relationships, Resource
 from optimade.models.optimade_json import DataType, Relationship
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 
@@ -100,6 +100,77 @@ class EntryResourceAttributes(Attributes):
         return value
 
 
+class PartialDataLink(BaseModel):
+    link: AnyUrl = OptimadeField(
+        ...,
+        description="String. A JSON API link that points to a location from which the omitted data can be fetched. There is no requirement on the syntax or format for the link URL.",
+    )
+    format: str = OptimadeField(
+        ...,
+        description='String. The name of the format provided via this link. For one of the objects this format field SHOULD have the value "jsonlines", which refers to the format in OPTIMADE JSON lines partial data format.',
+    )
+
+    @validator("format")
+    def check_if_format_is_supported(cls, value):
+        from optimade.server.config import CONFIG
+
+        if value not in [form.value for form in CONFIG.partial_data_formats]:
+            raise ValueError(
+                f"The format {value} is not one of the enabled_formats{CONFIG.partial_data_formats}."
+            )
+        return value
+
+
+class EntryMetadata(Meta):
+    """Contains the metadata for the attributes of an entry"""
+
+    property_metadata: dict = StrictField(
+        None,
+        description="""An object containing per-entry and per-property metadata. The keys are the names of the fields in attributes for which metadata is available. The values belonging to these keys are dictionaries containing the relevant metadata fields. See also [Metadata properties](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#metadata-properties)""",
+    )
+
+    partial_data_links: dict[str, list[PartialDataLink]] = StrictField(
+        None,
+        description="""A dictionary, where the keys are the names of the properties in the attributes field for which the value is too large to be shared by default.
+        For each property one or more links are provided from which the value of the attribute can be retrieved.""",
+    )
+
+    @validator("property_metadata")
+    def check_property_metadata_subfields(cls, property_metadata):
+        from optimade.server.mappers.entries import (
+            BaseResourceMapper,
+        )
+
+        if property_metadata:
+            for field in property_metadata:
+                if attribute_meta_dict := property_metadata.get(field):
+                    for subfield in attribute_meta_dict:
+                        BaseResourceMapper.check_starts_with_supported_prefix(
+                            subfield,
+                            "Currently no OPTIMADE fields have been defined for the per attribute metadata, thus only database and domain specific fields are allowed",
+                        )
+        return property_metadata
+
+    @validator("partial_data_links")
+    def check_partial_data_links_subfields(cls, partial_data_links):
+        from optimade.server.mappers.entries import (
+            BaseResourceMapper,
+        )
+
+        if partial_data_links:
+            for field in partial_data_links:
+                if attribute_partial_data_link := partial_data_links.get(field):
+                    for subdict in attribute_partial_data_link:
+                        for subfield in subdict.__dict__:
+                            if subfield in ("link", "format"):
+                                continue
+                            BaseResourceMapper.check_starts_with_supported_prefix(
+                                subfield,
+                                "The only OPTIMADE fields defined under the 'partial_data_links' field are 'format'and ĺinks' all other database and domain specific fields must have a database/domain specific prefix.",
+                            )
+        return partial_data_links
+
+
 class EntryResource(Resource):
     """The base model for an entry resource."""
 
@@ -147,11 +218,58 @@ class EntryResource(Resource):
 Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
     )
 
+    meta: Optional[EntryMetadata] = StrictField(
+        None,
+        description="""A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata.""",
+    )
+
     relationships: Optional[EntryRelationships] = StrictField(
         None,
         description="""A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).
 The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.""",
     )
+
+    @root_validator(pre=True)
+    def check_meta(cls, values):
+        """Validator to check whether meta field has been formatted correctly."""
+        from optimade.server.mappers.entries import (
+            BaseResourceMapper,
+        )
+
+        meta = values.get("meta")
+        if not meta:
+            return values
+
+        # todo the code for property_metadata and partial_data_links is very similar so it should be possible to reduce the size of the code here.
+        if property_metadata := meta.pop("property_metadata", None):
+            # check that all the fields under property metadata are in attributes
+            attributes = values.get("attributes", {})
+            for subfield in property_metadata:
+                if subfield not in attributes:
+                    raise ValueError(
+                        f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
+                    )
+
+        if partial_data_links := meta.pop("partial_data_links", None):
+            # check that all the fields under property metadata are in attributes
+            attributes = values.get("attributes", {})
+            for subfield in partial_data_links:
+                if subfield not in attributes:
+                    raise ValueError(
+                        f"The keys under the field `partial_data_links` need to match with the field names in attributes. The field {subfield} is however not in attributes."
+                    )
+
+        # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
+        for field in meta:
+            BaseResourceMapper.check_starts_with_supported_prefix(
+                field,
+                'Currently no OPTIMADE fields other than "property_metadata" have been defined for the per entry "meta" field, thus only database and domain specific fields are allowed.',
+            )
+
+        values["meta"]["property_metadata"] = property_metadata
+        values["meta"]["partial_data_links"] = partial_data_links
+
+        return values
 
 
 class EntryInfoProperty(BaseModel):
@@ -184,18 +302,18 @@ E.g., for the entry resource `structures`, the `species` property is defined as 
 
 
 class EntryInfoResource(BaseModel):
-    formats: List[str] = StrictField(
+    formats: list[str] = StrictField(
         ..., description="List of output formats available for this type of entry."
     )
 
     description: str = StrictField(..., description="Description of the entry.")
 
-    properties: Dict[str, EntryInfoProperty] = StrictField(
+    properties: dict[str, EntryInfoProperty] = StrictField(
         ...,
         description="A dictionary describing queryable properties for this entry type, where each key is a property name.",
     )
 
-    output_fields_by_format: Dict[str, List[str]] = StrictField(
+    output_fields_by_format: dict[str, list[str]] = StrictField(
         ...,
         description="Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.",
     )

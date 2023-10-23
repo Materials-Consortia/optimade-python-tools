@@ -12,13 +12,13 @@ def structures():
 @pytest.fixture
 def check_include_response(get_good_response):
     """Fixture to check "good" `include` response"""
-    from typing import List, Optional, Set, Union
+    from typing import Optional, Union
 
     def inner(
         request: str,
-        expected_included_types: Union[List, Set],
-        expected_included_resources: Union[List, Set],
-        expected_relationship_types: Optional[Union[List, Set]] = None,
+        expected_included_types: Union[list, set],
+        expected_included_resources: Union[list, set],
+        expected_relationship_types: Optional[Union[list, set]] = None,
         server: str = "regular",
     ):
         response = get_good_response(request, server)
@@ -78,11 +78,13 @@ def check_required_fields_response(get_good_response):
 
         response = get_good_response(request, server)
         expected_fields.add("attributes")
-
+        expected_fields.discard("meta")
         response_fields = set()
         for entry in response["data"]:
             response_fields.update(set(entry.keys()))
             response_fields.update(set(entry["attributes"].keys()))
+            # As "meta" is an optional field the response may or may not have it, so we remove it here to prevent problems in the assert below.
+            response_fields.discard("meta")
         assert sorted(expected_fields) == sorted(response_fields)
 
     return inner

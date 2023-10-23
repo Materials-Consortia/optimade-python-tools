@@ -1,6 +1,6 @@
 # pylint: disable=no-self-argument,no-name-in-module
 import re
-from typing import Dict, List, Optional
+from typing import Optional
 
 from pydantic import AnyHttpUrl, BaseModel, Field, root_validator, validator
 
@@ -64,18 +64,18 @@ class BaseInfoAttributes(BaseModel):
 The version number string MUST NOT be prefixed by, e.g., "v".
 Examples: `1.0.0`, `1.0.0-rc.2`.""",
     )
-    available_api_versions: List[AvailableApiVersion] = StrictField(
+    available_api_versions: list[AvailableApiVersion] = StrictField(
         ...,
         description="A list of dictionaries of available API versions at other base URLs",
     )
-    formats: List[str] = StrictField(
+    formats: list[str] = StrictField(
         default=["json"], description="List of available output formats."
     )
-    available_endpoints: List[str] = StrictField(
+    available_endpoints: list[str] = StrictField(
         ...,
         description="List of available endpoints (i.e., the string to be appended to the versioned base URL).",
     )
-    entry_types_by_format: Dict[str, List[str]] = StrictField(
+    entry_types_by_format: dict[str, list[str]] = StrictField(
         ..., description="Available entry endpoints as a function of output formats."
     )
     is_index: Optional[bool] = StrictField(

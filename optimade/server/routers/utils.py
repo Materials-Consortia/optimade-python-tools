@@ -1,25 +1,31 @@
 # pylint: disable=import-outside-toplevel,too-many-locals
+import io
 import re
 import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set, Type, Union
+from typing import Any, Optional, Union
 
-from fastapi import Request
+import numpy as np
+from fastapi import Request, Response
 from fastapi.responses import JSONResponse
 from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
-from optimade.exceptions import BadRequest, InternalServerError
-from optimade.models import (
-    EntryResource,
+from optimade.exceptions import BadRequest, InternalServerError, NotFound
+from optimade.models import (  # type: ignore[attr-defined]
+    EntryResource,  # type: ignore[attr-defined]
     EntryResponseMany,
     EntryResponseOne,
-    ResponseMeta,
-    ToplevelLinks,
+    ResponseMeta,  # type: ignore[attr-defined]
+    ToplevelLinks,  # type: ignore[attr-defined]
 )
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.query_params import (
+    EntryListingQueryParams,
+    PartialDataQueryParams,
+    SingleEntryQueryParams,
+)
 from optimade.utils import PROVIDER_LIST_URLS, get_providers, mongo_id_for_database
 
 __all__ = (
@@ -30,6 +36,7 @@ __all__ = (
     "get_base_url",
     "get_entries",
     "get_single_entry",
+    "get_partial_entry",
     "mongo_id_for_database",
     "get_providers",
     "PROVIDER_LIST_URLS",
@@ -62,7 +69,7 @@ def meta_values(
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
-    from optimade.models import ResponseMetaQuery
+    from optimade.models import ResponseMetaQuery  # type: ignore[attr-defined]
 
     if isinstance(url, str):
         url = urllib.parse.urlparse(url)
@@ -91,10 +98,10 @@ def meta_values(
 
 
 def handle_response_fields(
-    results: Union[List[EntryResource], EntryResource, List[Dict], Dict],
-    exclude_fields: Set[str],
-    include_fields: Set[str],
-) -> List[Dict[str, Any]]:
+    results: Union[list[EntryResource], EntryResource, list[dict], dict],
+    exclude_fields: set[str],
+    include_fields: set[str],
+) -> list[dict[str, Any]]:
     """Handle query parameter `response_fields`.
 
     It is assumed that all fields are under `attributes`.
@@ -125,6 +132,13 @@ def handle_response_fields(
         for field in exclude_fields:
             if field in new_entry["attributes"]:
                 del new_entry["attributes"][field]
+            if new_entry.get("meta") and (
+                property_meta_data_fields := new_entry.get("meta").get(  # type: ignore[union-attr]
+                    "property_metadata"
+                )
+            ):
+                if field in property_meta_data_fields:
+                    del new_entry["meta"]["property_metadata"][field]
 
         # Include missing fields that were requested in `response_fields`
         for field in include_fields:
@@ -137,10 +151,10 @@ def handle_response_fields(
 
 
 def get_included_relationships(
-    results: Union[EntryResource, List[EntryResource], Dict, List[Dict]],
-    ENTRY_COLLECTIONS: Dict[str, EntryCollection],
-    include_param: List[str],
-) -> List[Union[EntryResource, Dict]]:
+    results: Union[EntryResource, list[EntryResource], dict, list[dict]],
+    ENTRY_COLLECTIONS: dict[str, EntryCollection],
+    include_param: list[str],
+) -> list[Union[EntryResource, dict]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
@@ -168,7 +182,7 @@ def get_included_relationships(
                 f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
             )
 
-    endpoint_includes: Dict[Any, Dict] = defaultdict(dict)
+    endpoint_includes: dict[Any, dict] = defaultdict(dict)
     for doc in results:
         # convert list of references into dict by ID to only included unique IDs
         if doc is None:
@@ -197,12 +211,12 @@ def get_included_relationships(
                     if ref["id"] not in endpoint_includes[entry_type]:
                         endpoint_includes[entry_type][ref["id"]] = ref
 
-    included: Dict[
-        str, Union[List[EntryResource], EntryResource, List[Dict], Dict]
+    included: dict[
+        str, Union[list[EntryResource], EntryResource, list[dict], dict]
     ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
-            ['id="{}"'.format(ref_id) for ref_id in endpoint_includes[entry_type]]
+            [f'id="{ref_id}"' for ref_id in endpoint_includes[entry_type]]
         )
         params = EntryListingQueryParams(
             filter=compound_filter,
@@ -244,12 +258,38 @@ def get_base_url(
     )
 
 
+def generate_links_partial_data(
+    results,
+    parsed_url_request: Union[
+        urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str
+    ],
+):
+    for entry in results:
+        if entry.get("meta", {}) and entry["meta"].get("partial_data_links", {}):
+            for property in entry["meta"]["partial_data_links"]:
+                for response_format in CONFIG.partial_data_formats:
+                    link = {
+                        "format": str(response_format.value),
+                        "link": get_base_url(parsed_url_request)
+                        + "/partial_data/"
+                        + entry["id"]
+                        + "?response_fields="
+                        + property
+                        + "&response_format="
+                        + str(response_format.value),
+                    }
+                    if isinstance(entry["meta"]["partial_data_links"][property], list):
+                        entry["meta"]["partial_data_links"][property].append(link)
+                    else:
+                        entry["meta"]["partial_data_links"][property] = [link]
+
+
 def get_entries(
     collection: EntryCollection,
-    response: Type[EntryResponseMany],  # noqa
+    response: type[EntryResponseMany],  # noqa
     request: Request,
     params: EntryListingQueryParams,
-) -> Dict:
+) -> dict:
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
@@ -268,6 +308,7 @@ def get_entries(
 
     included = []
     if results is not None:
+        generate_links_partial_data(results, request.url)
         included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     if more_data_available:
@@ -304,10 +345,10 @@ def get_entries(
 def get_single_entry(
     collection: EntryCollection,
     entry_id: str,
-    response: Type[EntryResponseOne],
+    response: type[EntryResponseOne],
     request: Request,
     params: SingleEntryQueryParams,
-) -> Dict:
+) -> dict:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
@@ -332,6 +373,7 @@ def get_single_entry(
     included = []
     if results is not None:
         included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+        generate_links_partial_data([results], request.url)
 
     links = ToplevelLinks(next=None)
 
@@ -352,3 +394,116 @@ def get_single_entry(
         ),
         included=included,
     )
+
+
+def get_partial_entry(
+    collection: EntryCollection,
+    entry_id: str,
+    request: Request,
+    params: Union[PartialDataQueryParams],
+) -> Union[dict, Response]:
+    # from optimade.server.routers import ENTRY_COLLECTIONS
+    from optimade.adapters.jsonl import to_jsonl
+
+    params.check_params(request.query_params)
+    params.filter = f'parent_id="{entry_id}"'
+    (
+        results,
+        data_returned,
+        more_data_available,
+        fields,
+        include_fields,
+    ) = collection.find(params)
+
+    links = ToplevelLinks(next=None)
+
+    if results is None:
+        raise NotFound(
+            detail=f"No data available for the combination of entry {entry_id} and property {params.response_fields}",
+        )
+
+    array = np.frombuffer(
+        results["attributes"]["data"],  # type: ignore[call-overload]
+        dtype=getattr(np, results["attributes"]["dtype"]["name"]),  # type: ignore[call-overload]
+    ).reshape(
+        results["attributes"]["shape"]  # type: ignore[call-overload]
+    )
+    # slice array
+    property_ranges = results["attributes"]["property_ranges"]  # type: ignore[call-overload]
+    slice_ind = [
+        slice(
+            0,
+            1 + property_ranges[0]["stop"] - property_ranges[0]["start"],
+            property_ranges[0]["step"],
+        )
+    ]
+    for dim_range in property_ranges[1:]:
+        slice_ind.append(
+            slice(dim_range["start"] - 1, dim_range["stop"], dim_range["step"])
+        )
+    array = array[tuple(slice_ind)]
+
+    if fields or include_fields:
+        results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
+
+    slice_obj = []
+    for i, size in enumerate(array.shape):
+        slice_obj.append(
+            {
+                "start": property_ranges[i]["start"],
+                "stop": min(
+                    size * property_ranges[i]["step"] + property_ranges[i]["start"] - 1,
+                    property_ranges[i]["stop"],
+                ),
+                "step": property_ranges[i]["step"],
+            }
+        )
+    header = {
+        "optimade-partial-data": {"format": "1.2.0"},
+        "layout": "dense",
+        "property_name": params.response_fields,
+        "returned_ranges": slice_obj,
+        # "entry": {"id": entry_id, "type": None}, #Todo add type information to metadata entry
+        "has_references": False,
+    }  # Todo: add support for non_dense data
+    if more_data_available:
+        next_link = ["PARTIAL-DATA-NEXT", [results["attributes"].pop("next")]]  # type: ignore[call-overload]
+
+    if params.response_format == "json":
+        for key in header:
+            results["attributes"][key] = header[key]  # type: ignore[call-overload]
+        results["attributes"]["data"] = array.tolist()  # type: ignore[call-overload]
+        if more_data_available:
+            results["attributes"]["next"] = next_link  # type: ignore[call-overload]
+        return dict(
+            links=links,
+            data=[results] if results else None,
+            meta=meta_values(
+                url=request.url,
+                data_returned=data_returned,
+                data_available=len(collection),
+                more_data_available=more_data_available,
+                schema=CONFIG.schema_url
+                if not CONFIG.is_index
+                else CONFIG.index_schema_url,
+            ),
+            # included=included,
+        )
+
+    jsonl_content = [header] + [array[i].tolist() for i in range(array.shape[0])]
+    if more_data_available:
+        jsonl_content.append(next_link)
+    return Response(
+        content=to_jsonl(jsonl_content),
+        media_type="application/jsonlines",
+        headers={
+            "Content-disposition": f"attachment; filename={entry_id + ':' + params.response_fields}.jsonl"
+        },
+    )
+
+
+def convert_data_to_str(results):
+    values = results["attributes"]["data"]
+    if isinstance(values, bytes):
+        results["attributes"]["data"] = np.array2string(np.load(io.BytesIO(values)))
+    return results

@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 
 from fastapi import APIRouter, Depends, Request
 
@@ -10,8 +10,15 @@ from optimade.models import (
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import create_collection
 from optimade.server.mappers import StructureMapper
-from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.routers.utils import get_entries, get_single_entry
+from optimade.server.query_params import (
+    EntryListingQueryParams,
+    SingleEntryQueryParams,
+)
+from optimade.server.routers.utils import (
+    get_entries,
+    get_partial_entry,
+    get_single_entry,
+)
 from optimade.server.schemas import ERROR_RESPONSES
 
 router = APIRouter(redirect_slashes=True)
@@ -25,7 +32,7 @@ structures_coll = create_collection(
 
 @router.get(
     "/structures",
-    response_model=StructureResponseMany if CONFIG.validate_api_response else Dict,
+    response_model=StructureResponseMany if CONFIG.validate_api_response else dict,
     response_model_exclude_unset=True,
     tags=["Structures"],
     responses=ERROR_RESPONSES,
@@ -43,14 +50,26 @@ def get_structures(
 
 @router.get(
     "/structures/{entry_id:path}",
-    response_model=StructureResponseOne if CONFIG.validate_api_response else Dict,
+    response_model=StructureResponseOne if CONFIG.validate_api_response else dict,
     response_model_exclude_unset=True,
     tags=["Structures"],
     responses=ERROR_RESPONSES,
 )
 def get_single_structure(
-    request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
+    request: Request,
+    entry_id: str,
+    params: SingleEntryQueryParams = Depends(),
 ) -> Any:
+    if params.property_ranges is not None:  # todo add test for this
+        from optimade.server.routers.partial_data import partial_data_coll
+
+        return get_partial_entry(
+            collection=partial_data_coll,
+            entry_id=entry_id,
+            request=request,
+            params=params,  # type: ignore[arg-type]
+        )
+
     return get_single_entry(
         collection=structures_coll,
         entry_id=entry_id,

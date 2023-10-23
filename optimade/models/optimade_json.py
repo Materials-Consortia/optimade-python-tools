@@ -2,7 +2,7 @@
 # pylint: disable=no-self-argument,no-name-in-module
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Type, Union
+from typing import Any, Optional, Union
 
 from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, root_validator
 
@@ -43,7 +43,7 @@ class DataType(Enum):
     @classmethod
     def get_values(cls):
         """Get OPTIMADE data types (enum values) as a (sorted) list"""
-        return sorted((_.value for _ in cls))
+        return sorted(_.value for _ in cls)
 
     @classmethod
     def from_python_type(cls, python_type: Union[type, str, object]):
@@ -156,7 +156,7 @@ class Warnings(OptimadeError):
 
     class Config:
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["Warnings"]) -> None:
+        def schema_extra(schema: dict[str, Any], model: type["Warnings"]) -> None:
             """Update OpenAPI JSON schema model for `Warning`.
 
             * Ensure `type` is in the list required properties and in the correct place.
@@ -317,7 +317,7 @@ Hence, if the `meta` field of the JSON API links object is provided and contains
         None, description="a dictionary describing the server implementation"
     )
 
-    warnings: Optional[List[Warnings]] = StrictField(
+    warnings: Optional[list[Warnings]] = StrictField(
         None,
         description="""A list of warning resource objects representing non-critical errors or warnings.
 A warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `"warning"`.
@@ -372,5 +372,5 @@ class Relationship(jsonapi.Relationship):
     """Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."""
 
     data: Optional[
-        Union[BaseRelationshipResource, List[BaseRelationshipResource]]
+        Union[BaseRelationshipResource, list[BaseRelationshipResource]]
     ] = StrictField(None, description="Resource linkage", uniqueItems=True)

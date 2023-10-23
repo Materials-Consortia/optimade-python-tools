@@ -25,6 +25,7 @@ from optimade.server.routers import (
     info,
     landing,
     links,
+    partial_data,
     references,
     structures,
     versions,
@@ -49,7 +50,6 @@ app = FastAPI(
     title="OPTIMADE API",
     description=(
         f"""The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.
-
 This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{__version__}) v{__version__}."""
     ),
     version=__api_version__,
@@ -67,6 +67,41 @@ if CONFIG.insert_test_data:
     import optimade.server.data as data
     from optimade.server.routers import ENTRY_COLLECTIONS
     from optimade.server.routers.utils import get_providers
+
+    # Todo Do we need to check a file is not already stored in gridfs?
+    # Load test data from files into gridfs
+
+    if CONFIG.database_backend.value in ("mongomock", "mongodb"):
+        from pathlib import Path
+
+        import numpy
+
+        from optimade.server.routers.partial_data import partial_data_coll
+
+        # todo create seperate function for storing data files in gridfs
+        # read_array_header function originally from https://stackoverflow.com/a/64226659 by https://stackoverflow.com/users/982257/iguananaut
+        def read_array_header(fobj):
+            version = numpy.lib.format.read_magic(fobj)
+            func_name = "read_array_header_" + "_".join(str(v) for v in version)
+            func = getattr(numpy.lib.format, func_name)
+            return func(fobj)
+
+        for filename, filetype, metadata in getattr(data, "data_files", []):
+            with open(Path(__file__).parent / "data" / filename, "rb") as f:
+                if filetype == "numpy":
+                    numpy_meta = read_array_header(f)
+                    if "slice_obj" not in metadata:
+                        slice_obj = [
+                            {"start": 1, "stop": i, "step": 1} for i in numpy_meta[0]
+                        ]
+                        metadata["slice_obj"] = slice_obj
+                    if "dtype" not in metadata:
+                        metadata["dtype"] = {
+                            "name": numpy_meta[2].name,
+                            "itemsize": numpy_meta[2].itemsize,
+                        }
+                f.seek(0)
+                partial_data_coll.insert([{"data": f, "filename": filename, "metadata": metadata}])  # type: ignore[list-item] # Todo : Perhaps this can be reduced to a single insert statement.
 
     def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
         LOGGER.debug("Loading test %s...", endpoint_name)
@@ -103,13 +138,13 @@ for exception, handler in OPTIMADE_EXCEPTIONS:
     app.add_exception_handler(exception, handler)
 
 # Add various endpoints to unversioned URL
-for endpoint in (info, links, references, structures, landing, versions):
+for endpoint in (info, links, references, structures, landing, versions, partial_data):
     app.include_router(endpoint.router)
 
 
 def add_major_version_base_url(app: FastAPI):
     """Add mandatory vMajor endpoints, i.e. all except versions."""
-    for endpoint in (info, links, references, structures, landing):
+    for endpoint in (info, links, references, structures, landing, partial_data):
         app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES["major"])
 
 
@@ -121,7 +156,7 @@ def add_optional_versioned_base_urls(app: FastAPI):
     ```
     """
     for version in ("minor", "patch"):
-        for endpoint in (info, links, references, structures, landing):
+        for endpoint in (info, links, references, structures, landing, partial_data):
             app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES[version])
 
 

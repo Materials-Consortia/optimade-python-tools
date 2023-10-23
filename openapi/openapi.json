@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "OPTIMADE API",
-    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.3) v0.25.3.",
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.3) v0.25.3.",
     "version": "1.1.0"
   },
   "paths": {
@@ -784,6 +784,17 @@
             },
             "name": "api_hint",
             "in": "query"
+          },
+          {
+            "description": "A list of lists which contains a range for each dimension of the property.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Property Ranges",
+              "description": "A list of lists which contains a range for each dimension of the property."
+            },
+            "name": "property_ranges",
+            "in": "query"
           }
         ],
         "responses": {
@@ -1202,6 +1213,17 @@
             },
             "name": "api_hint",
             "in": "query"
+          },
+          {
+            "description": "A list of lists which contains a range for each dimension of the property.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Property Ranges",
+              "description": "A list of lists which contains a range for each dimension of the property."
+            },
+            "name": "property_ranges",
+            "in": "query"
           }
         ],
         "responses": {
@@ -1303,6 +1325,183 @@
               "text/csv; header=present": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/partial_data/{entry_id}": {
+      "get": {
+        "tags": [
+          "partial_data"
+        ],
+        "summary": "Get Partial Data",
+        "operationId": "get_partial_data_partial_data__entry_id__get",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Entry Id"
+            },
+            "name": "entry_id",
+            "in": "path"
+          },
+          {
+            "description": "The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Response Format",
+              "description": "The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
+              "default": "jsonlines"
+            },
+            "name": "response_format",
+            "in": "query"
+          },
+          {
+            "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "email",
+              "title": "Email Address",
+              "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
+              "default": ""
+            },
+            "name": "email_address",
+            "in": "query"
+          },
+          {
+            "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "(v[0-9]+(\\.[0-9]+)?)?",
+              "title": "Api Hint",
+              "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+              "default": ""
+            },
+            "name": "api_hint",
+            "in": "query"
+          },
+          {
+            "description": "A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+              "title": "Response Fields",
+              "description": "A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
+              "default": ""
+            },
+            "name": "response_fields",
+            "in": "query"
+          },
+          {
+            "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Filter",
+              "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
+              "default": ""
+            },
+            "name": "filter",
+            "in": "query"
+          },
+          {
+            "description": "A list of lists which contains a range for each dimension of the property.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Property Ranges",
+              "description": "A list of lists which contains a range for each dimension of the property.",
+              "default": ""
+            },
+            "name": "property_ranges",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "title": "Response Get Partial Data Partial Data  Entry Id  Get"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Not Implemented",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "553": {
+            "description": "Version Not Supported",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -1717,6 +1916,29 @@
         "title": "EntryInfoResponse",
         "description": "errors are not allowed"
       },
+      "EntryMetadata": {
+        "properties": {
+          "property_metadata": {
+            "type": "object",
+            "title": "Property Metadata",
+            "description": "An object containing per-entry and per-property metadata. The keys are the names of the fields in attributes for which metadata is available. The values belonging to these keys are dictionaries containing the relevant metadata fields. See also [Metadata properties](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#metadata-properties)"
+          },
+          "partial_data_links": {
+            "additionalProperties": {
+              "items": {
+                "$ref": "#/components/schemas/PartialDataLink"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Partial Data Links",
+            "description": "A dictionary, where the keys are the names of the properties in the attributes field for which the value is too large to be shared by default.\n        For each property one or more links are provided from which the value of the attribute can be retrieved."
+          }
+        },
+        "type": "object",
+        "title": "EntryMetadata",
+        "description": "Contains the metadata for the attributes of an entry"
+      },
       "EntryRelationships": {
         "properties": {
           "references": {
@@ -1770,11 +1992,11 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/Meta"
+                "$ref": "#/components/schemas/EntryMetadata"
               }
             ],
             "title": "Meta",
-            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "allOf": [
@@ -2238,11 +2460,11 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/Meta"
+                "$ref": "#/components/schemas/EntryMetadata"
               }
             ],
             "title": "Meta",
-            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "allOf": [
@@ -2502,6 +2724,29 @@
         "title": "OptimadeError",
         "description": "detail MUST be present"
       },
+      "PartialDataLink": {
+        "properties": {
+          "link": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1,
+            "format": "uri",
+            "title": "Link",
+            "description": "String. A JSON API link that points to a location from which the omitted data can be fetched. There is no requirement on the syntax or format for the link URL."
+          },
+          "format": {
+            "type": "string",
+            "title": "Format",
+            "description": "String. The name of the format provided via this link. For one of the objects this format field SHOULD have the value \"jsonlines\", which refers to the format in OPTIMADE JSON lines partial data format."
+          }
+        },
+        "type": "object",
+        "required": [
+          "link",
+          "format"
+        ],
+        "title": "PartialDataLink"
+      },
       "Periodicity": {
         "type": "integer",
         "enum": [
@@ -2656,11 +2901,11 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/Meta"
+                "$ref": "#/components/schemas/EntryMetadata"
               }
             ],
             "title": "Meta",
-            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "$ref": "#/components/schemas/ReferenceResourceAttributes"
@@ -3462,11 +3707,11 @@
           "meta": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/Meta"
+                "$ref": "#/components/schemas/EntryMetadata"
               }
             ],
             "title": "Meta",
-            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "$ref": "#/components/schemas/StructureResourceAttributes"

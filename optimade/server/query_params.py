@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Iterable, List
+from collections.abc import Iterable
 from warnings import warn
 
 from fastapi import Query
@@ -7,7 +7,7 @@ from pydantic import EmailStr  # pylint: disable=no-name-in-module
 
 from optimade.exceptions import BadRequest
 from optimade.server.config import CONFIG
-from optimade.server.mappers import BaseResourceMapper
+from optimade.server.mappers import BaseResourceMapper  # type: ignore[attr-defined]
 from optimade.warnings import QueryParamNotUsed, UnknownProviderQueryParameter
 
 
@@ -21,7 +21,7 @@ class BaseQueryParams(ABC):
 
     """
 
-    unsupported_params: List[str] = []
+    unsupported_params: list[str] = []
 
     def check_params(self, query_params: Iterable[str]) -> None:
         """This method checks whether all the query parameters that are specified
@@ -173,7 +173,7 @@ class EntryListingQueryParams(BaseQueryParams):
     """
 
     # The reference server implementation only supports offset/number-based pagination
-    unsupported_params: List[str] = [
+    unsupported_params: list[str] = [
         "page_cursor",
         "page_below",
     ]
@@ -324,9 +324,79 @@ class SingleEntryQueryParams(BaseQueryParams):
             description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
             pattern=r"(v[0-9]+(\.[0-9]+)?)?",
         ),
+        property_ranges: str = Query(
+            None,
+            description="A list of lists which contains a range for each dimension of the property.",
+        ),
     ):
         self.response_format = response_format
         self.email_address = email_address
         self.response_fields = response_fields
         self.include = include
         self.api_hint = api_hint
+        self.property_ranges = property_ranges
+
+
+class PartialDataQueryParams(BaseQueryParams):
+    """
+    Common query params for single entry endpoints.
+
+    Attributes:
+        response_format (str): The output format requested (see section Response Format).
+            Defaults to the format string 'json', which specifies the standard output format described in this specification.
+
+            **Example**: `http://example.com/v1/structures?response_format=xml`
+
+        email_address (EmailStr): An email address of the user making the request.
+            The email SHOULD be that of a person and not an automatic system.
+
+            **Example**: `http://example.com/v1/structures?email_address=user@example.com`
+
+        response_fields (str): A comma-delimited set of fields to be provided in the output.
+            If provided, these fields MUST be returned along with the REQUIRED fields.
+            Other OPTIONAL fields MUST NOT be returned when this parameter is present.
+
+            **Example**: `http://example.com/v1/structures?response_fields=last_modified,nsites`
+
+        api_hint (str): If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`,
+            where MAJOR is a major version and MINOR is a minor version of the API.
+            For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.
+
+    """
+
+    def __init__(
+        self,
+        *,
+        response_format: str = Query(
+            "jsonlines",
+            description="The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
+        ),
+        email_address: EmailStr = Query(
+            "",
+            description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
+        ),
+        api_hint: str = Query(
+            "",
+            description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+            pattern=r"(v[0-9]+(\.[0-9]+)?)?",
+        ),
+        response_fields: str = Query(
+            "",
+            description="A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
+            pattern=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+        ),
+        filter: str = Query(  # pylint: disable=redefined-builtin
+            "",
+            description="A filter string, in the format described in section API Filtering Format Specification of the specification.",
+        ),
+        property_ranges: str = Query(
+            "",
+            description="A list of lists which contains a range for each dimension of the property.",
+        ),
+    ):
+        self.filter = filter
+        self.response_format = response_format
+        self.email_address = email_address
+        self.response_fields = response_fields
+        self.api_hint = api_hint
+        self.property_ranges = property_ranges

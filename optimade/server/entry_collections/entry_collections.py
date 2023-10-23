@@ -2,16 +2,24 @@ import enum
 import re
 import warnings
 from abc import ABC, abstractmethod
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type, Union
+from collections.abc import Iterable
+from typing import Any, Optional, Union
 
 from lark import Transformer
 
 from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
 from optimade.models.entries import EntryResource
-from optimade.server.config import CONFIG, SupportedBackend
-from optimade.server.mappers import BaseResourceMapper
-from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.config import CONFIG, SupportedBackend, SupportedResponseFormats
+from optimade.server.mappers import (  # type: ignore[attr-defined]
+    BaseResourceMapper,
+    PartialDataMapper,
+)
+from optimade.server.query_params import (
+    EntryListingQueryParams,
+    PartialDataQueryParams,
+    SingleEntryQueryParams,
+)
 from optimade.warnings import (
     FieldValueNotRecognized,
     QueryParamNotUsed,
@@ -21,8 +29,8 @@ from optimade.warnings import (
 
 def create_collection(
     name: str,
-    resource_cls: Type[EntryResource],
-    resource_mapper: Type[BaseResourceMapper],
+    resource_cls: type[EntryResource],
+    resource_mapper: type[BaseResourceMapper],
 ) -> "EntryCollection":
     """Create an `EntryCollection` of the configured type, depending on the value of
     `CONFIG.database_backend`.
@@ -40,6 +48,17 @@ def create_collection(
         SupportedBackend.MONGODB,
         SupportedBackend.MONGOMOCK,
     ):
+        from optimade.models import PartialDataResource
+
+        if resource_cls is PartialDataResource:
+            from optimade.server.entry_collections.mongo import GridFSCollection
+
+            return GridFSCollection(
+                name=name,
+                resource_cls=resource_cls,
+                resource_mapper=resource_mapper,
+            )
+
         from optimade.server.entry_collections.mongo import MongoCollection
 
         return MongoCollection(
@@ -83,8 +102,8 @@ class EntryCollection(ABC):
 
     def __init__(
         self,
-        resource_cls: Type[EntryResource],
-        resource_mapper: Type[BaseResourceMapper],
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         transformer: Transformer,
     ):
         """Initialize the collection for the given parameters.
@@ -110,14 +129,14 @@ class EntryCollection(ABC):
             for field in CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         ]
 
-        self._all_fields: Set[str] = set()
+        self._all_fields: set[str] = set()
 
     @abstractmethod
     def __len__(self) -> int:
         """Returns the total number of entries in the collection."""
 
     @abstractmethod
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource]) -> None:
         """Add the given entries to the underlying database.
 
         Arguments:
@@ -136,8 +155,11 @@ class EntryCollection(ABC):
         """
 
     def find(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[Union[None, Dict, List[Dict]], Optional[int], bool, Set[str], Set[str],]:
+        self,
+        params: Union[
+            EntryListingQueryParams, SingleEntryQueryParams, PartialDataQueryParams
+        ],
+    ) -> tuple[Union[None, dict, list[dict]], Optional[int], bool, set[str], set[str]]:
         """
         Fetches results and indicates if more data is available.
 
@@ -158,7 +180,9 @@ class EntryCollection(ABC):
 
         """
         criteria = self.handle_query_params(params)
-        single_entry = isinstance(params, SingleEntryQueryParams)
+        single_entry = isinstance(
+            params, (SingleEntryQueryParams, PartialDataQueryParams)
+        )
         response_fields = criteria.pop("fields")
 
         raw_results, data_returned, more_data_available = self._run_db_query(
@@ -166,40 +190,45 @@ class EntryCollection(ABC):
         )
 
         exclude_fields = self.all_fields - response_fields
-        include_fields = (
-            response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
-        )
 
-        bad_optimade_fields = set()
-        bad_provider_fields = set()
         supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
         all_attributes = self.resource_mapper.ALL_ATTRIBUTES
-        for field in include_fields:
-            if field not in all_attributes:
-                if field.startswith("_"):
-                    if any(
-                        field.startswith(f"_{prefix}_") for prefix in supported_prefixes
-                    ):
-                        bad_provider_fields.add(field)
-                else:
-                    bad_optimade_fields.add(field)
 
-        if bad_provider_fields:
-            warnings.warn(
-                message=f"Unrecognised field(s) for this provider requested in `response_fields`: {bad_provider_fields}.",
-                category=UnknownProviderProperty,
+        if not self.resource_mapper == PartialDataMapper:
+            include_fields = (
+                response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
             )
+            bad_optimade_fields = set()
+            bad_provider_fields = set()
 
-        if bad_optimade_fields:
-            raise BadRequest(
-                detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
-            )
+            for field in include_fields:
+                if field not in all_attributes:
+                    if field.startswith("_"):
+                        if any(
+                            field.startswith(f"_{prefix}_")
+                            for prefix in supported_prefixes
+                        ):
+                            bad_provider_fields.add(field)
+                    else:
+                        bad_optimade_fields.add(field)
 
-        results: Union[None, List[Dict], Dict] = None
+            if bad_provider_fields:
+                warnings.warn(
+                    message=f"Unrecognised field(s) for this provider requested in `response_fields`: {bad_provider_fields}.",
+                    category=UnknownProviderProperty,
+                )
+
+            if bad_optimade_fields:
+                raise BadRequest(
+                    detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
+                )
+        else:
+            include_fields = set()
+
+        results: Union[None, list[dict], dict] = None
 
         if raw_results:
             results = [self.resource_mapper.map_back(doc) for doc in raw_results]
-
             if single_entry:
                 results = results[0]  # type: ignore[assignment]
 
@@ -224,8 +253,8 @@ class EntryCollection(ABC):
 
     @abstractmethod
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], Optional[int], bool]:
+        self, criteria: dict[str, Any], single_entry: bool = False
+    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -239,7 +268,7 @@ class EntryCollection(ABC):
         """
 
     @property
-    def all_fields(self) -> Set[str]:
+    def all_fields(self) -> set[str]:
         """Get the set of all fields handled in this collection,
         from attribute fields in the schema, provider fields and top-level OPTIMADE fields.
 
@@ -266,7 +295,7 @@ class EntryCollection(ABC):
 
         return self._all_fields
 
-    def get_attribute_fields(self) -> Set[str]:
+    def get_attribute_fields(self) -> set[str]:
         """Get the set of attribute fields
 
         Return only the _first-level_ attribute fields from the schema of the resource class,
@@ -297,8 +326,11 @@ class EntryCollection(ABC):
         return set(attributes["properties"].keys())
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Dict[str, Any]:
+        self,
+        params: Union[
+            EntryListingQueryParams, SingleEntryQueryParams, PartialDataQueryParams
+        ],
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
 
@@ -329,12 +361,11 @@ class EntryCollection(ABC):
             cursor_kwargs["filter"] = {}
 
         # response_format
-        if (
-            getattr(params, "response_format", False)
-            and params.response_format != "json"
+        if getattr(params, "response_format", False) and params.response_format not in (
+            x.value for x in SupportedResponseFormats
         ):
             raise BadRequest(
-                detail=f"Response format {params.response_format} is not supported, please use response_format='json'"
+                detail=f"Response format {params.response_format} is not supported, please use one of the supported response formats: {', '.join((x.value for x in SupportedResponseFormats))}"
             )
 
         # page_limit
@@ -404,7 +435,7 @@ class EntryCollection(ABC):
 
         return cursor_kwargs
 
-    def parse_sort_params(self, sort_params: str) -> Iterable[Tuple[str, int]]:
+    def parse_sort_params(self, sort_params: str) -> Iterable[tuple[str, int]]:
         """Handles any sort parameters passed to the collection,
         resolving aliases and dealing with any invalid fields.
 
@@ -416,7 +447,7 @@ class EntryCollection(ABC):
             sort direction encoded as 1 (ascending) or -1 (descending).
 
         """
-        sort_spec: List[Tuple[str, int]] = []
+        sort_spec: list[tuple[str, int]] = []
         for field in sort_params.split(","):
             sort_dir = 1
             if field.startswith("-"):
@@ -464,8 +495,8 @@ class EntryCollection(ABC):
     def get_next_query_params(
         self,
         params: EntryListingQueryParams,
-        results: Union[None, Dict, List[Dict]],
-    ) -> Dict[str, List[str]]:
+        results: Union[None, dict, list[dict]],
+    ) -> dict[str, list[str]]:
         """Provides url query pagination parameters that will be used in the next
         link.
 
@@ -477,7 +508,7 @@ class EntryCollection(ABC):
             A dictionary with the necessary query parameters.
 
         """
-        query: Dict[str, List[str]] = dict()
+        query: dict[str, list[str]] = dict()
         if isinstance(results, list) and results:
             # If a user passed a particular pagination mechanism, keep using it
             # Otherwise, use the default pagination mechanism of the collection

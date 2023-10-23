@@ -2,7 +2,7 @@
 import warnings
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Literal, Optional, Union
 
 from pydantic import (  # pylint: disable=no-name-in-module
     AnyHttpUrl,
@@ -14,7 +14,7 @@ from pydantic import (  # pylint: disable=no-name-in-module
 from pydantic.env_settings import SettingsSourceCallable
 
 from optimade import __api_version__, __version__
-from optimade.models import Implementation, Provider
+from optimade.models import Implementation, Provider  # type: ignore[attr-defined]
 
 DEFAULT_CONFIG_FILE_PATH: str = str(Path.home().joinpath(".optimade.json"))
 """Default configuration file path.
@@ -67,7 +67,19 @@ class SupportedBackend(Enum):
     MONGOMOCK = "mongomock"
 
 
-def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
+class SupportedResponseFormats(Enum):
+    """Enumeration of supported response formats.
+
+    - 'JSON': [JSON](https://www.json.org/json-en.html)
+    - `JSONL`: [JSONL](https://jsonlines.org/)
+
+    """
+
+    JSON = "json"
+    JSONL = "jsonlines"
+
+
+def config_file_settings(settings: BaseSettings) -> dict[str, Any]:
     """Configuration file settings source.
 
     Based on the example in the
@@ -87,8 +99,6 @@ def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
     import json
     import os
 
-    import yaml
-
     encoding = settings.__config__.env_file_encoding
     config_file = Path(os.getenv("OPTIMADE_CONFIG_FILE", DEFAULT_CONFIG_FILE_PATH))
 
@@ -100,6 +110,8 @@ def config_file_settings(settings: BaseSettings) -> Dict[str, Any]:
             res = json.loads(config_file_content)
         except json.JSONDecodeError as json_exc:
             try:
+                import yaml
+
                 # This can essentially also load JSON files, as JSON is a subset of YAML v1,
                 # but I suspect it is not as rigorous
                 res = yaml.safe_load(config_file_content)
@@ -153,7 +165,7 @@ class ServerConfig(BaseSettings):
         description="Which database backend to use out of the supported backends.",
     )
 
-    elastic_hosts: Optional[Union[str, List[str], Dict, List[Dict]]] = Field(
+    elastic_hosts: Optional[Union[str, list[str], dict, list[dict]]] = Field(
         None, description="Host settings to pass through to the `Elasticsearch` class."
     )
 
@@ -177,6 +189,10 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
     structures_collection: str = Field(
         "structures",
         description="Mongo collection name for /structures endpoint resources",
+    )
+    partial_data_collection: str = Field(
+        "fs",
+        description="Mongo Grid FS system containing the data that needs to be returned via the partial data mechanism.",
     )
     page_limit: int = Field(20, description="Default number of resources per page")
     page_limit_max: int = Field(
@@ -224,9 +240,9 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         ),
         description="General information about the provider of this OPTIMADE implementation",
     )
-    provider_fields: Dict[
+    provider_fields: dict[
         Literal["links", "references", "structures"],
-        List[Union[str, Dict[Literal["name", "type", "unit", "description"], str]]],
+        list[Union[str, dict[Literal["name", "type", "unit", "description"], str]]],
     ] = Field(
         {},
         description=(
@@ -234,15 +250,18 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             "broken down by endpoint."
         ),
     )
-    aliases: Dict[Literal["links", "references", "structures"], Dict[str, str]] = Field(
+    supported_prefixes: list[str] = Field(
+        [], description="A list of all the prefixes that are supported by this server."
+    )
+    aliases: dict[Literal["links", "references", "structures"], dict[str, str]] = Field(
         {},
         description=(
             "A mapping between field names in the database with their corresponding OPTIMADE field"
             " names, broken down by endpoint."
         ),
     )
-    length_aliases: Dict[
-        Literal["links", "references", "structures"], Dict[str, str]
+    length_aliases: dict[
+        Literal["links", "references", "structures"], dict[str, str]
     ] = Field(
         {},
         description=(
@@ -308,6 +327,20 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         description="""If False, data from the database will not undergo validation before being emitted by the API, and
         only the mapping of aliases will occur.""",
     )
+    partial_data_formats: list[SupportedResponseFormats] = Field(
+        ["json", "jsonlines"],
+        description="""A list of the response formats that are supported by this server. Must include the "json" format.""",
+    )
+    max_response_size: dict[SupportedResponseFormats, int] = Field(
+        {"json": 10, "jsonlines": 10},
+        description="""This dictionary contains the approximate maximum size for a trajectory response in megabytes for the different response_formats. The keys indicate the response_format and the values the maximum size.""",
+    )
+
+    @validator("supported_prefixes")
+    def add_own_prefix_to_supported_prefixes(value, values):
+        if values["provider"].prefix not in value:
+            value.append(values["provider"].prefix)
+        return value
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):
@@ -354,7 +387,7 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             init_settings: SettingsSourceCallable,
             env_settings: SettingsSourceCallable,
             file_secret_settings: SettingsSourceCallable,
-        ) -> Tuple[SettingsSourceCallable, ...]:
+        ) -> tuple[SettingsSourceCallable, ...]:
             """
             **Priority of config settings sources**:
 
