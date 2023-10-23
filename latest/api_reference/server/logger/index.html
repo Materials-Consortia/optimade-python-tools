@@ -1621,6 +1621,26 @@
   
   
     <li class="md-nav__item">
+      <a href="../../models/types/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    types
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../models/utils/" class="md-nav__link">
         
   
@@ -1794,7 +1814,56 @@
       
         <li class="md-nav__item">
   <a href="#optimade.server.logger" class="md-nav__link">
-    optimade.server.logger
+    logger
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.CONFIG" class="md-nav__link">
+    CONFIG
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.CONSOLE_FORMATTER" class="md-nav__link">
+    CONSOLE_FORMATTER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.CONSOLE_HANDLER" class="md-nav__link">
+    CONSOLE_HANDLER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.FILE_FORMATTER" class="md-nav__link">
+    FILE_FORMATTER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.FILE_HANDLER" class="md-nav__link">
+    FILE_HANDLER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.LOGGER" class="md-nav__link">
+    LOGGER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.LOGS_DIR" class="md-nav__link">
+    LOGS_DIR
   </a>
   
 </li>
@@ -2507,7 +2576,56 @@
       
         <li class="md-nav__item">
   <a href="#optimade.server.logger" class="md-nav__link">
-    optimade.server.logger
+    logger
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.CONFIG" class="md-nav__link">
+    CONFIG
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.CONSOLE_FORMATTER" class="md-nav__link">
+    CONSOLE_FORMATTER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.CONSOLE_HANDLER" class="md-nav__link">
+    CONSOLE_HANDLER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.FILE_FORMATTER" class="md-nav__link">
+    FILE_FORMATTER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.FILE_HANDLER" class="md-nav__link">
+    FILE_HANDLER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.LOGGER" class="md-nav__link">
+    LOGGER
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.server.logger.LOGS_DIR" class="md-nav__link">
+    LOGS_DIR
   </a>
   
 </li>
@@ -2530,14 +2648,16 @@
 <h1 id="logger">logger<a class="headerlink" href="#logger" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade.server.logger"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>Logging to both file and terminal</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -2547,9 +2667,149 @@
 
 
 
+<div class="doc doc-object doc-attribute">
 
 
 
+
+<h2 id="optimade.server.logger.CONFIG" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">CONFIG</span><span class="p">:</span> <span class="n">ServerConfig</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.server.logger.CONFIG" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>This singleton loads the config from a hierarchy of sources (see
+<a class="autorefs autorefs-internal" href="../config/#optimade.server.config.ServerConfig.settings_customise_sources"><code>customise_sources</code></a>)
+and makes it importable in the server code.</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="optimade.server.logger.CONSOLE_FORMATTER" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">CONSOLE_FORMATTER</span> <span class="o">=</span> <span class="n">DefaultFormatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(levelprefix)s</span><span class="s1"> [</span><span class="si">%(name)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.server.logger.CONSOLE_FORMATTER" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="optimade.server.logger.CONSOLE_HANDLER" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">CONSOLE_HANDLER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.server.logger.CONSOLE_HANDLER" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="optimade.server.logger.FILE_FORMATTER" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">FILE_FORMATTER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%(levelname)-8s</span><span class="s1"> </span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(filename)s</span><span class="s1">:</span><span class="si">%(lineno)d</span><span class="s1">][</span><span class="si">%(name)s</span><span class="s1">] </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-%m-%Y %H:%M:%S&#39;</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.server.logger.FILE_FORMATTER" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="optimade.server.logger.FILE_HANDLER" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">FILE_HANDLER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">RotatingFileHandler</span><span class="p">(</span><span class="n">LOGS_DIR</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;optimade.log&#39;</span><span class="p">),</span> <span class="n">maxBytes</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">backupCount</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.server.logger.FILE_HANDLER" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="optimade.server.logger.LOGGER" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;optimade&#39;</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.server.logger.LOGGER" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="optimade.server.logger.LOGS_DIR" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">LOGS_DIR</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">log_dir</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.server.logger.LOGS_DIR" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
 
 
 
@@ -2557,9 +2817,9 @@
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
 
 
