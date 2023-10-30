@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
+from optimade.models.structures import Periodicity, StructureFeatures
 from optimade.warnings import MissingExpectedField
 
 if TYPE_CHECKING:
@@ -55,7 +56,11 @@ def test_more_good_structures(
 
     for index, structure in enumerate(good_structures):
         try:
-            StructureResource(**mapper(MAPPER).map_back(structure))
+            s = StructureResource(**mapper(MAPPER).map_back(structure))
+            if s.attributes.structure_features:
+                assert isinstance(s.attributes.structure_features[0], StructureFeatures)
+            for dim in s.attributes.dimension_types:
+                assert isinstance(dim, Periodicity)
         except ValidationError:
             # Printing to keep the original exception as is, while still being informational
             print(
