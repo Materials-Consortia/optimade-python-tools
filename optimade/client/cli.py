@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 import click
 import rich
 
+from optimade import __api_version__, __version__
 from optimade.client.client import OptimadeClient
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -23,6 +24,10 @@ __all__ = ("_get",)
 
 
 @click.command("optimade-get", no_args_is_help=True)
+@click.version_option(
+    __version__,
+    prog_name=f"optimade-get, an async OPTIMADE v{__api_version__} client",
+)
 @click.option(
     "--filter",
     default=[None],
