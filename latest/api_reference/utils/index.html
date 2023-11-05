@@ -2770,7 +2770,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
 
 <h2 id="optimade.utils.get_all_databases" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">(</span><span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">(</span><span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_all_databases" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -2863,17 +2863,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">169</span>
 <span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span>
@@ -2896,10 +2886,40 @@ with OPTIMADE providers that can be used in server or client code.</p>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
-<span class="normal">192</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_databases</span><span class="p">(</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_databases</span><span class="p">(</span>
     <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">progress</span><span class="p">:</span> <span class="s2">&quot;Optional[rich.Progress]&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate through all databases reported by registered OPTIMADE providers.</span>
 
@@ -2912,24 +2932,42 @@ with OPTIMADE providers that can be used in server or client code.</p>
 <span class="sd">        A generator of child database links that obey the given parameters.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="n">get_providers</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">and</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">exclude_providers</span><span class="p">:</span>
-            <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">include_providers</span> <span class="ow">and</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">include_providers</span><span class="p">:</span>
-            <span class="k">continue</span>
+    <span class="k">if</span> <span class="n">progress</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_task</span> <span class="o">=</span> <span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Retrieving all databases from registered OPTIMADE providers...&quot;</span><span class="p">,</span>
+            <span class="n">total</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">nullcontext</span><span class="p">()</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">links</span> <span class="o">=</span> <span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="p">(</span>
-                        <span class="n">exclude_databases</span>
-                        <span class="ow">and</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span> <span class="ow">in</span> <span class="n">exclude_databases</span>
-                    <span class="p">):</span>
-                        <span class="k">continue</span>
-                    <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
-            <span class="k">pass</span>
+    <span class="k">with</span> <span class="n">progress</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="n">get_providers</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">and</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">exclude_providers</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">include_providers</span> <span class="ow">and</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">include_providers</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">links</span> <span class="o">=</span> <span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="n">exclude_databases</span>
+                            <span class="ow">and</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span> <span class="ow">in</span> <span class="n">exclude_databases</span>
+                        <span class="p">):</span>
+                            <span class="k">continue</span>
+                        <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">links</span> <span class="ow">and</span> <span class="n">progress</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">_task</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Retrieved databases from [bold green]</span><span class="si">{</span><span class="n">provider</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">[/bold green]&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">progress</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Unable to retrieve databases from [bold red]</span><span class="si">{</span><span class="n">provider</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">[/bold red]: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -2943,7 +2981,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
 
 <h2 id="optimade.utils.get_child_database_links" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_child_database_links" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -2977,6 +3015,35 @@ with OPTIMADE providers that can be used in server or client code.</p>
           </td>
           <td>
               <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>obey_aggregate</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to only return links that allow
+aggregation.</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>headers</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Additional HTTP headers to pass to the provider.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
           </td>
         </tr>
     </tbody>
@@ -3043,11 +3110,7 @@ invalid, or the request otherwise fails.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
 <span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
@@ -3095,13 +3158,28 @@ invalid, or the request otherwise fails.</p>
 <span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span>
-<span class="normal">156</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_child_database_links</span><span class="p">(</span>
-    <span class="n">provider</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_child_database_links</span><span class="p">(</span>
+    <span class="n">provider</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span>
+    <span class="n">obey_aggregate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;For a provider, return a list of available child databases.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        provider: The links entry for the provider.</span>
+<span class="sd">        obey_aggregate: Whether to only return links that allow</span>
+<span class="sd">            aggregation.</span>
+<span class="sd">        headers: Additional HTTP headers to pass to the provider.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A list of the valid links entries from this provider that</span>
@@ -3115,7 +3193,6 @@ invalid, or the request otherwise fails.</p>
     <span class="kn">import</span> <span class="nn">requests</span>
 
     <span class="kn">from</span> <span class="nn">optimade.models.links</span> <span class="kn">import</span> <span class="n">Aggregate</span><span class="p">,</span> <span class="n">LinkType</span>
-    <span class="kn">from</span> <span class="nn">optimade.models.responses</span> <span class="kn">import</span> <span class="n">LinksResponse</span>
 
     <span class="n">base_url</span> <span class="o">=</span> <span class="n">provider</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;base_url&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">base_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -3123,7 +3200,7 @@ invalid, or the request otherwise fails.</p>
 
     <span class="n">links_endp</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/v1/links&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">links</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">links_endp</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">links_endp</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to connect to provider </span><span class="si">{</span><span class="n">provider</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
 
@@ -3133,21 +3210,23 @@ invalid, or the request otherwise fails.</p>
         <span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">links_resp</span> <span class="o">=</span> <span class="n">LinksResponse</span><span class="p">(</span><span class="o">**</span><span class="n">links</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+        <span class="n">links_resources</span> <span class="o">=</span> <span class="n">links</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">return_links</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links_resources</span><span class="p">:</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="n">LinksResource</span><span class="p">(</span><span class="o">**</span><span class="n">link</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">link_type</span> <span class="o">==</span> <span class="n">LinkType</span><span class="o">.</span><span class="n">CHILD</span>
+                <span class="ow">and</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">obey_aggregate</span> <span class="ow">or</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">aggregate</span> <span class="o">==</span> <span class="n">Aggregate</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">return_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="n">link</span>
-            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links_resp</span><span class="o">.</span><span class="n">data</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">LinksResource</span><span class="p">)</span>
-            <span class="ow">and</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">link_type</span> <span class="o">==</span> <span class="n">LinkType</span><span class="o">.</span><span class="n">CHILD</span>
-            <span class="ow">and</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">obey_aggregate</span> <span class="ow">or</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">aggregate</span> <span class="o">==</span> <span class="n">Aggregate</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span>
-        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">return_links</span>
 
     <span class="k">except</span> <span class="p">(</span><span class="n">ValidationError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Did not understand response from </span><span class="si">{</span><span class="n">provider</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">links</span><span class="o">.</span><span class="n">content</span><span class="si">!r}</span><span class="s2">&quot;</span>
-        <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+            <span class="sa">f</span><span class="s2">&quot;Did not understand response from </span><span class="si">{</span><span class="n">provider</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">links</span><span class="o">.</span><span class="n">content</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
           </details>
   </div>
@@ -3234,11 +3313,7 @@ ObjectID.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
 <span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
@@ -3302,7 +3377,11 @@ ObjectID.</p>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
 <span class="normal">100</span>
-<span class="normal">101</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</span>
 
 <span class="sd">    Fallback order if providers.optimade.org is not available:</span>
@@ -3395,17 +3474,17 @@ ObjectID.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
-<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a MongoDB ObjectId for a database&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">bson.objectid</span> <span class="kn">import</span> <span class="n">ObjectId</span>
 

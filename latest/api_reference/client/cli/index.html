@@ -1238,6 +1238,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.client.cli.__api_version__" class="md-nav__link">
+    __api_version__
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.client.cli.__version__" class="md-nav__link">
+    __version__
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.client.cli.OptimadeClient" class="md-nav__link">
     OptimadeClient
   </a>
@@ -2755,6 +2769,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.client.cli.__api_version__" class="md-nav__link">
+    __api_version__
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optimade.client.cli.__version__" class="md-nav__link">
+    __version__
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.client.cli.OptimadeClient" class="md-nav__link">
     OptimadeClient
   </a>
@@ -3016,6 +3044,46 @@
   </span>
 
 <a href="#optimade.client.cli.__all__" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="optimade.client.cli.__api_version__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">__api_version__</span> <span class="o">=</span> <span class="s1">&#39;1.1.0&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.client.cli.__api_version__" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+  <div class="doc doc-contents ">
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+
+<h2 id="optimade.client.cli.__version__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.25.3&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.client.cli.__version__" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
   <div class="doc doc-contents ">
@@ -4047,7 +4115,15 @@ and provider.</p>
 <span class="normal">1043</span>
 <span class="normal">1044</span>
 <span class="normal">1045</span>
-<span class="normal">1046</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeClient</span><span class="p">:</span>
+<span class="normal">1046</span>
+<span class="normal">1047</span>
+<span class="normal">1048</span>
+<span class="normal">1049</span>
+<span class="normal">1050</span>
+<span class="normal">1051</span>
+<span class="normal">1052</span>
+<span class="normal">1053</span>
+<span class="normal">1054</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class implemements a client for executing the same queries</span>
 <span class="sd">    across multiple OPTIMADE APIs simultaneously, paging and caching the</span>
 <span class="sd">    results.</span>
@@ -4151,6 +4227,7 @@ and provider.</p>
         <span class="n">http_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
             <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span> <span class="nb">type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]]</span>
         <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
@@ -4183,12 +4260,25 @@ and provider.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">include_providers</span><span class="p">)</span> <span class="k">if</span> <span class="n">include_providers</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_databases</span><span class="p">)</span> <span class="k">if</span> <span class="n">exclude_databases</span> <span class="k">else</span> <span class="kc">None</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">silent</span> <span class="o">=</span> <span class="n">silent</span>
+
+        <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">(</span>
-                <span class="n">exclude_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_providers</span><span class="p">,</span>
-                <span class="n">include_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span><span class="p">,</span>
-                <span class="n">exclude_databases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span><span class="p">,</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+                <span class="n">progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="n">get_all_databases</span><span class="p">(</span>
+                    <span class="n">exclude_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_providers</span><span class="p">,</span>
+                    <span class="n">include_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span><span class="p">,</span>
+                    <span class="n">exclude_databases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span><span class="p">,</span>
+                    <span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">,</span>
+                <span class="p">)</span>
             <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">or</span> <span class="n">include_providers</span> <span class="ow">or</span> <span class="n">exclude_databases</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -4197,26 +4287,20 @@ and provider.</p>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
                 <span class="s2">&quot;Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs.&quot;</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
-
         <span class="k">if</span> <span class="n">http_timeout</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">http_timeout</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">silent</span> <span class="o">=</span> <span class="n">silent</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="n">use_async</span>
 
@@ -5137,7 +5221,7 @@ the results from each base URL for that particular filter.</p>
 
 
 <h3 id="optimade.client.cli.OptimadeClient.base_urls" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">base_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="n">base_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5402,15 +5486,7 @@ original <code>__getattribute__</code>.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
 <span class="normal">252</span>
 <span class="normal">253</span>
 <span class="normal">254</span>
@@ -5430,7 +5506,15 @@ original <code>__getattribute__</code>.</p>
 <span class="normal">268</span>
 <span class="normal">269</span>
 <span class="normal">270</span>
-<span class="normal">271</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Allows entry endpoints to be queried via attribute access, using the</span>
 <span class="sd">    allowed list for this module.</span>
 
@@ -5472,7 +5556,7 @@ original <code>__getattribute__</code>.</p>
 
 
 <h3 id="optimade.client.cli.OptimadeClient.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.client.cli.OptimadeClient.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -5762,7 +5846,15 @@ docstring for more details.</p>
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
-<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">base_urls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">max_results_per_provider</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
@@ -5777,6 +5869,7 @@ docstring for more details.</p>
     <span class="n">http_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
         <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span> <span class="nb">type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]]</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
@@ -5809,12 +5902,25 @@ docstring for more details.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">include_providers</span><span class="p">)</span> <span class="k">if</span> <span class="n">include_providers</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_databases</span><span class="p">)</span> <span class="k">if</span> <span class="n">exclude_databases</span> <span class="k">else</span> <span class="kc">None</span>
 
+    <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">silent</span> <span class="o">=</span> <span class="n">silent</span>
+
+    <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">get_all_databases</span><span class="p">(</span>
-            <span class="n">exclude_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_providers</span><span class="p">,</span>
-            <span class="n">include_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span><span class="p">,</span>
-            <span class="n">exclude_databases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span><span class="p">,</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="n">get_all_databases</span><span class="p">(</span>
+                <span class="n">exclude_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_providers</span><span class="p">,</span>
+                <span class="n">include_providers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_included_providers</span><span class="p">,</span>
+                <span class="n">exclude_databases</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_databases</span><span class="p">,</span>
+                <span class="n">progress</span><span class="o">=</span><span class="n">progress</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">or</span> <span class="n">include_providers</span> <span class="ow">or</span> <span class="n">exclude_databases</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
@@ -5823,26 +5929,20 @@ docstring for more details.</p>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
             <span class="s2">&quot;Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs.&quot;</span>
         <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">headers</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
-
     <span class="k">if</span> <span class="n">http_timeout</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">http_timeout</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="n">http_timeout</span><span class="p">)</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">silent</span> <span class="o">=</span> <span class="n">silent</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="n">use_async</span>
 
@@ -5941,15 +6041,7 @@ key.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span>
-<span class="normal">338</span>
-<span class="normal">339</span>
-<span class="normal">340</span>
-<span class="normal">341</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">341</span>
 <span class="normal">342</span>
 <span class="normal">343</span>
 <span class="normal">344</span>
@@ -6001,7 +6093,15 @@ key.</p>
 <span class="normal">390</span>
 <span class="normal">391</span>
 <span class="normal">392</span>
-<span class="normal">393</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">count</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Counts the number of results for the filter, requiring</span>
@@ -6208,15 +6308,7 @@ from the server.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">281</span>
 <span class="normal">282</span>
 <span class="normal">283</span>
 <span class="normal">284</span>
@@ -6266,7 +6358,15 @@ from the server.</p>
 <span class="normal">328</span>
 <span class="normal">329</span>
 <span class="normal">330</span>
-<span class="normal">331</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6477,15 +6577,7 @@ after one page.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">523</span>
-<span class="normal">524</span>
-<span class="normal">525</span>
-<span class="normal">526</span>
-<span class="normal">527</span>
-<span class="normal">528</span>
-<span class="normal">529</span>
-<span class="normal">530</span>
-<span class="normal">531</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">531</span>
 <span class="normal">532</span>
 <span class="normal">533</span>
 <span class="normal">534</span>
@@ -6523,7 +6615,15 @@ after one page.</p>
 <span class="normal">566</span>
 <span class="normal">567</span>
 <span class="normal">568</span>
-<span class="normal">569</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_one</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -6734,15 +6834,7 @@ after one page.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">658</span>
-<span class="normal">659</span>
-<span class="normal">660</span>
-<span class="normal">661</span>
-<span class="normal">662</span>
-<span class="normal">663</span>
-<span class="normal">664</span>
-<span class="normal">665</span>
-<span class="normal">666</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">666</span>
 <span class="normal">667</span>
 <span class="normal">668</span>
 <span class="normal">669</span>
@@ -6787,7 +6879,15 @@ after one page.</p>
 <span class="normal">708</span>
 <span class="normal">709</span>
 <span class="normal">710</span>
-<span class="normal">711</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_one_async</span><span class="p">(</span>
+<span class="normal">711</span>
+<span class="normal">712</span>
+<span class="normal">713</span>
+<span class="normal">714</span>
+<span class="normal">715</span>
+<span class="normal">716</span>
+<span class="normal">717</span>
+<span class="normal">718</span>
+<span class="normal">719</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span> <span class="nf">get_one_async</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -6866,15 +6966,7 @@ for the given entry type, for each database.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">395</span>
-<span class="normal">396</span>
-<span class="normal">397</span>
-<span class="normal">398</span>
-<span class="normal">399</span>
-<span class="normal">400</span>
-<span class="normal">401</span>
-<span class="normal">402</span>
-<span class="normal">403</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">403</span>
 <span class="normal">404</span>
 <span class="normal">405</span>
 <span class="normal">406</span>
@@ -6899,7 +6991,15 @@ for the given entry type, for each database.</p>
 <span class="normal">425</span>
 <span class="normal">426</span>
 <span class="normal">427</span>
-<span class="normal">428</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_properties</span><span class="p">(</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_properties</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
@@ -7036,15 +7136,7 @@ served by each database.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">430</span>
-<span class="normal">431</span>
-<span class="normal">432</span>
-<span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">438</span>
 <span class="normal">439</span>
 <span class="normal">440</span>
 <span class="normal">441</span>
@@ -7060,7 +7152,15 @@ served by each database.</p>
 <span class="normal">451</span>
 <span class="normal">452</span>
 <span class="normal">453</span>
-<span class="normal">454</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">search_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">search_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Searches for the query substring within the listed properties</span>
 <span class="sd">    served by each database.</span>
 
@@ -7440,12 +7540,7 @@ served by each database.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/client/cli.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
@@ -7529,7 +7624,12 @@ served by each database.</p>
 <span class="normal">234</span>
 <span class="normal">235</span>
 <span class="normal">236</span>
-<span class="normal">237</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_get</span><span class="p">(</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_get</span><span class="p">(</span>
     <span class="n">use_async</span><span class="p">,</span>
     <span class="nb">filter</span><span class="p">,</span>
     <span class="n">base_url</span><span class="p">,</span>
@@ -7641,8 +7741,7 @@ served by each database.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/client/cli.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 25</span>
-<span class="normal"> 26</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 26</span>
 <span class="normal"> 27</span>
 <span class="normal"> 28</span>
 <span class="normal"> 29</span>
@@ -7761,7 +7860,16 @@ served by each database.</p>
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
-<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;optimade-get&quot;</span><span class="p">,</span> <span class="n">no_args_is_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="s2">&quot;optimade-get&quot;</span><span class="p">,</span> <span class="n">no_args_is_help</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">version_option</span><span class="p">(</span>
+    <span class="n">__version__</span><span class="p">,</span>
+    <span class="n">prog_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;optimade-get, an async OPTIMADE v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s2"> client&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
     <span class="s2">&quot;--filter&quot;</span><span class="p">,</span>
     <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span>
