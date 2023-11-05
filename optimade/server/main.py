@@ -7,6 +7,7 @@ To implement your own server see the documentation at https://optimade.org/optim
 """
 import os
 import warnings
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,6 +45,19 @@ else:
 if CONFIG.debug:  # pragma: no cover
     LOGGER.info("DEBUG MODE")
 
+
+@asynccontextmanager  # type: ignore[arg-type]
+async def lifespan(app: FastAPI):
+    """Add dynamic endpoints on startup."""
+    # Add API endpoints for MANDATORY base URL `/vMAJOR`
+    add_major_version_base_url(app)
+    # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
+    add_optional_versioned_base_urls(app)
+
+    # Yield so that the app can start
+    yield
+
+
 app = FastAPI(
     root_path=CONFIG.root_path,
     title="OPTIMADE API",
@@ -58,6 +72,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
     openapi_url=f"{BASE_URL_PREFIXES['major']}/extensions/openapi.json",
     default_response_class=JSONAPIResponse,
     separate_input_output_schemas=False,
+    lifespan=lifespan,
 )
 
 
@@ -124,11 +139,3 @@ def add_optional_versioned_base_urls(app: FastAPI):
     for version in ("minor", "patch"):
         for endpoint in (info, links, references, structures, landing):
             app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES[version])
-
-
-@app.on_event("startup")
-async def startup_event():
-    # Add API endpoints for MANDATORY base URL `/vMAJOR`
-    add_major_version_base_url(app)
-    # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
-    add_optional_versioned_base_urls(app)
