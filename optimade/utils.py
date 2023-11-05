@@ -3,9 +3,13 @@ with OPTIMADE providers that can be used in server or client code.
 
 """
 
+import contextlib
 import json
 from collections.abc import Container, Iterable
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    import rich
 
 from pydantic import ValidationError
 
@@ -102,12 +106,17 @@ def get_providers(add_mongo_id: bool = False) -> list:
 
 
 def get_child_database_links(
-    provider: LinksResource, obey_aggregate: bool = True
+    provider: LinksResource,
+    obey_aggregate: bool = True,
+    headers: Optional[dict] = None,
 ) -> list[LinksResource]:
     """For a provider, return a list of available child databases.
 
     Arguments:
         provider: The links entry for the provider.
+        obey_aggregate: Whether to only return links that allow
+            aggregation.
+        headers: Additional HTTP headers to pass to the provider.
 
     Returns:
         A list of the valid links entries from this provider that
@@ -121,7 +130,6 @@ def get_child_database_links(
     import requests
 
     from optimade.models.links import Aggregate, LinkType
-    from optimade.models.responses import LinksResponse
 
     base_url = provider.pop("base_url")
     if base_url is None:
@@ -129,7 +137,7 @@ def get_child_database_links(
 
     links_endp = base_url + "/v1/links"
     try:
-        links = requests.get(links_endp, timeout=10)
+        links = requests.get(links_endp, timeout=10, headers=headers)
     except (requests.ConnectionError, requests.Timeout) as exc:
         raise RuntimeError(f"Unable to connect to provider {provider['id']}") from exc
 
@@ -139,27 +147,30 @@ def get_child_database_links(
         )
 
     try:
-        links_resp = LinksResponse(**links.json())
+        links_resources = links.json().get("data", [])
+        return_links = []
+        for link in links_resources:
+            link = LinksResource(**link)
+            if (
+                link.attributes.link_type == LinkType.CHILD
+                and link.attributes.base_url is not None
+                and (not obey_aggregate or link.attributes.aggregate == Aggregate.OK)
+            ):
+                return_links.append(link)
 
-        return [
-            link
-            for link in links_resp.data
-            if isinstance(link, LinksResource)
-            and link.attributes.link_type == LinkType.CHILD
-            and link.attributes.base_url is not None
-            and (not obey_aggregate or link.attributes.aggregate == Aggregate.OK)
-        ]
+        return return_links
 
     except (ValidationError, json.JSONDecodeError) as exc:
         raise RuntimeError(
-            f"Did not understand response from {provider['id']}: {links.content!r}"
-        ) from exc
+            f"Did not understand response from {provider['id']}: {links.content!r}, {exc}"
+        )
 
 
 def get_all_databases(
     include_providers: Optional[Container[str]] = None,
     exclude_providers: Optional[Container[str]] = None,
     exclude_databases: Optional[Container[str]] = None,
+    progress: "Optional[rich.Progress]" = None,
 ) -> Iterable[str]:
     """Iterate through all databases reported by registered OPTIMADE providers.
 
@@ -172,21 +183,39 @@ def get_all_databases(
         A generator of child database links that obey the given parameters.
 
     """
-    for provider in get_providers():
-        if exclude_providers and provider["id"] in exclude_providers:
-            continue
-        if include_providers and provider["id"] not in include_providers:
-            continue
+    if progress is not None:
+        _task = progress.add_task(
+            description="Retrieving all databases from registered OPTIMADE providers...",
+            total=None,
+        )
+    else:
+        progress = contextlib.nullcontext()
 
-        try:
-            links = get_child_database_links(provider)
-            for link in links:
-                if link.attributes.base_url:
-                    if (
-                        exclude_databases
-                        and link.attributes.base_url in exclude_databases
-                    ):
-                        continue
-                    yield str(link.attributes.base_url)
-        except RuntimeError:
-            pass
+    with progress:
+        for provider in get_providers():
+            if exclude_providers and provider["id"] in exclude_providers:
+                continue
+            if include_providers and provider["id"] not in include_providers:
+                continue
+
+            try:
+                links = get_child_database_links(provider)
+                for link in links:
+                    if link.attributes.base_url:
+                        if (
+                            exclude_databases
+                            and link.attributes.base_url in exclude_databases
+                        ):
+                            continue
+                        yield str(link.attributes.base_url)
+                if links and progress is not None:
+                    progress.advance(_task, 1)
+                    progress.print(
+                        f"Retrieved databases from [bold green]{provider['id']}[/bold green]"
+                    )
+            except RuntimeError as exc:
+                if progress is not None:
+                    progress.print(
+                        f"Unable to retrieve databases from [bold red]{provider['id']}[/bold red]: {exc}",
+                    )
+                pass
