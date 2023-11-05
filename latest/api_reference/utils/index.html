@@ -2915,7 +2915,10 @@ with OPTIMADE providers that can be used in server or client code.</p>
 <span class="normal">218</span>
 <span class="normal">219</span>
 <span class="normal">220</span>
-<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_databases</span><span class="p">(</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_databases</span><span class="p">(</span>
     <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2939,6 +2942,9 @@ with OPTIMADE providers that can be used in server or client code.</p>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">progress</span> <span class="o">=</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">nullcontext</span><span class="p">()</span>
+        <span class="n">progress</span><span class="o">.</span><span class="n">print</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">None</span>  <span class="c1"># type: ignore[attr-defined]</span>
+        <span class="n">progress</span><span class="o">.</span><span class="n">advance</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">_</span><span class="p">:</span> <span class="kc">None</span>  <span class="c1"># type: ignore[attr-defined]</span>
+        <span class="n">_task</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">with</span> <span class="n">progress</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="n">get_providers</span><span class="p">():</span>
