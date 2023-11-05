@@ -200,7 +200,6 @@ class OptimadeClient:
                     progress=progress,
                 )
             )
-            print(self.base_urls)
         else:
             if exclude_providers or include_providers or exclude_databases:
                 raise RuntimeError(

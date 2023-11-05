@@ -35,6 +35,9 @@ def mocked_providers_list_response(
         def json(self) -> Union[list, dict]:
             return self.data
 
+        def content(self) -> str:
+            return str(self.data)
+
     return MockResponse(providers, 200)
 
 
@@ -71,6 +74,12 @@ def test_get_providers():
                     }
                 )
             assert get_providers() == providers_list
+
+
+def test_get_all_databases():
+    from optimade.utils import get_all_databases
+
+    assert list(get_all_databases())
 
 
 def test_get_providers_warning(caplog, top_dir):
