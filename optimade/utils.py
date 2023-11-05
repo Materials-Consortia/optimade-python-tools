@@ -190,6 +190,9 @@ def get_all_databases(
         )
     else:
         progress = contextlib.nullcontext()
+        progress.print = lambda _: None  # type: ignore[attr-defined]
+        progress.advance = lambda *_: None  # type: ignore[attr-defined]
+        _task = None
 
     with progress:
         for provider in get_providers():
