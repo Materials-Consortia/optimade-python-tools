@@ -149,6 +149,7 @@ class OptimadeClient:
         http_client: Optional[
             Union[type[httpx.AsyncClient], type[requests.Session]]
         ] = None,
+        verbose: int = 0,
         callbacks: Optional[list[Callable[[str, dict], Union[None, dict]]]] = None,
     ):
         """Create the OPTIMADE client object.
@@ -181,12 +182,25 @@ class OptimadeClient:
         self._included_providers = set(include_providers) if include_providers else None
         self._excluded_databases = set(exclude_databases) if exclude_databases else None
 
+        self.max_attempts = max_attempts
+        self.silent = silent
+
+        if headers:
+            self.headers.update(headers)
+
         if not base_urls:
-            self.base_urls = get_all_databases(
-                exclude_providers=self._excluded_providers,
-                include_providers=self._included_providers,
-                exclude_databases=self._excluded_databases,
+            progress = None
+            if not self.silent:
+                progress = OptimadeClientProgress()
+            self.base_urls = list(
+                get_all_databases(
+                    exclude_providers=self._excluded_providers,
+                    include_providers=self._included_providers,
+                    exclude_databases=self._excluded_databases,
+                    progress=progress,
+                )
             )
+            print(self.base_urls)
         else:
             if exclude_providers or include_providers or exclude_databases:
                 raise RuntimeError(
@@ -195,26 +209,20 @@ class OptimadeClient:
 
             self.base_urls = base_urls
 
-        if isinstance(self.base_urls, str):
-            self.base_urls = [self.base_urls]
-        self.base_urls = list(self.base_urls)
+            if isinstance(self.base_urls, str):
+                self.base_urls = [self.base_urls]
+            self.base_urls = list(self.base_urls)
 
         if not self.base_urls:
             raise SystemExit(
                 "Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs."
             )
 
-        if headers:
-            self.headers.update(headers)
-
         if http_timeout:
             if isinstance(http_timeout, httpx.Timeout):
                 self.http_timeout = http_timeout
             else:
                 self.http_timeout = httpx.Timeout(http_timeout)
-
-        self.max_attempts = max_attempts
-        self.silent = silent
 
         self.use_async = use_async
 
