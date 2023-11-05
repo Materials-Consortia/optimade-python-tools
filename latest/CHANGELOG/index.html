@@ -3764,6 +3764,10 @@
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
 <h2 id="unreleased-2023-11-05"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2023-11-05)<a class="headerlink" href="#unreleased-2023-11-05" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.3...Unreleased">Full Changelog</a></p>
+<p><strong>Fixed bugs:</strong></p>
+<ul>
+<li>Deserialization regressions: cannot resolve child databases in client <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1843">#1843</a></li>
+</ul>
 <p><strong>Closed issues:</strong></p>
 <ul>
 <li>Remove <code>nullable</code> from schemas (for OpenAPI 3.1) <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1814">#1814</a></li>
@@ -3772,6 +3776,7 @@
 <ul>
 <li>Add test that checks whether client can find at least one base URL <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1849">#1849</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Make client provider scraper more robust and add <code>--version</code> <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1848">#1848</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Fix incorrect 'smart' union discrimination <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1844">#1844</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Fix an inappropriate test expression to remove a logical short circuit <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1838">#1838</a> (<a href="https://github.com/munahaf">munahaf</a>)</li>
 <li>Modernize all Python 3.8 annotations <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1815">#1815</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 <li>Update requirements-client.txt <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1813">#1813</a> (<a href="https://github.com/JPBergsma">JPBergsma</a>)</li>
