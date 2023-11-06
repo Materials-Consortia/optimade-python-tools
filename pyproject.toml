@@ -155,6 +155,10 @@ filterwarnings = [
     "ignore:.*has an unrecognised prefix.*:",
     "ignore:.*pkg_resources is deprecated as an API*:DeprecationWarning",
     "ignore:.*Deprecated call to `pkg_resources.declare_namespace*:DeprecationWarning",
+    "ignore:.*datetime.datetime.utcfromtimestamp()*:DeprecationWarning",  # Raised indirectly by elasticsearch-DSL for Python 3.12
+    "ignore:.*ast.Num is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:.*ast.Str is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:.*ast.* is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
 ]
 testpaths = "tests"
 addopts = "-rs"
