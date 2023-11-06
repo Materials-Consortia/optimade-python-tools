@@ -87,18 +87,18 @@ Each release of the `optimade` package from this repository only targets one ver
 <thead>
     <tr>
         <th align="center">OPTIMADE API version</th>
-        <th align="center"><code>optimade</code> version</th>
+        <th align="center"><code>optimade</code> requirements</th>
     </tr>
 </thead>
 
 <tbody>
     <tr>
         <td align="center"><a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.0.0/optimade.rst">v1.0.0</a></td>
-        <td align="center"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.12.9">v0.12.9</a></td>
+        <td align="center"><code>optimade<=0.12.9</code></td>  
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.1.0/optimade.rst">v1.1.0</a></td>
-        <td align="center"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.16.0">v0.16.0+</a></td>
+        <td align="center"><code>optimade~=0.16</code></td>
     </tr>
 </tbody>
 </table>
