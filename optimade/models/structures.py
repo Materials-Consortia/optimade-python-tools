@@ -7,6 +7,7 @@ from typing import Optional, Union
 from pydantic import BaseModel, conlist, root_validator, validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
+from optimade.models.jsonapi import Attributes
 from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
@@ -30,6 +31,7 @@ __all__ = (
     "Assembly",
     "StructureResourceAttributes",
     "StructureResource",
+    "StructureAttributes",
 )
 
 
@@ -260,7 +262,7 @@ CORRELATED_STRUCTURE_FIELDS = (
 )
 
 
-class StructureResourceAttributes(EntryResourceAttributes):
+class StructureAttributes(Attributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
     elements: Optional[list[str]] = OptimadeField(
@@ -1090,6 +1092,10 @@ The properties of the species are found in the property `species`.
                     )
 
         return v
+
+
+class StructureResourceAttributes(EntryResourceAttributes, StructureAttributes):
+    pass
 
 
 class StructureResource(EntryResource):

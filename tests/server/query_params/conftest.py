@@ -63,6 +63,7 @@ def check_required_fields_response(get_good_response):
         "links": mappers.LinksMapper,
         "references": mappers.ReferenceMapper,
         "structures": mappers.StructureMapper,
+        "trajectories": mappers.TrajectoryMapper,
     }
 
     def inner(
@@ -78,11 +79,13 @@ def check_required_fields_response(get_good_response):
 
         response = get_good_response(request, server)
         expected_fields.add("attributes")
-
+        expected_fields.discard("meta")
         response_fields = set()
         for entry in response["data"]:
             response_fields.update(set(entry.keys()))
             response_fields.update(set(entry["attributes"].keys()))
+            # As "meta" is an optional field the response may or may not have it, so we remove it here to prevent problems in the assert below.
+            response_fields.discard("meta")
         assert sorted(expected_fields) == sorted(response_fields)
 
     return inner

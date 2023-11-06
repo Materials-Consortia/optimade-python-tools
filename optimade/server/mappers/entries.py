@@ -9,7 +9,7 @@ from optimade.models.entries import EntryResource
 # so that the global caches can be set to the correct size.
 # See https://github.com/Materials-Consortia/optimade-python-tools/issues/1434
 # for the details.
-NUM_ENTRY_TYPES = 4
+NUM_ENTRY_TYPES = 5
 
 __all__ = ("BaseResourceMapper",)
 
@@ -73,8 +73,14 @@ class BaseResourceMapper:
     LENGTH_ALIASES: tuple[tuple[str, str], ...] = ()
     PROVIDER_FIELDS: tuple[str, ...] = ()
     ENTRY_RESOURCE_CLASS: type[EntryResource] = EntryResource
-    RELATIONSHIP_ENTRY_TYPES: set[str] = {"references", "structures"}
-    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set[str] = {"id", "type", "relationships", "links"}
+    RELATIONSHIP_ENTRY_TYPES: set[str] = {"references", "structures", "trajectories"}
+    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set[str] = {
+        "id",
+        "type",
+        "relationships",
+        "links",
+        "meta",
+    }
 
     @classmethod
     @lru_cache(maxsize=NUM_ENTRY_TYPES)
@@ -118,18 +124,10 @@ class BaseResourceMapper:
     @classproperty
     @lru_cache(maxsize=1)
     def SUPPORTED_PREFIXES(cls) -> set[str]:
-        """A set of prefixes handled by this entry type.
-
-        !!! note
-            This implementation only includes the provider prefix,
-            but in the future this property may be extended to include other
-            namespaces (for serving fields from, e.g., other providers or
-            domain-specific terms).
-
-        """
+        """A set of prefixes handled by this entry type."""
         from optimade.server.config import CONFIG
 
-        return {CONFIG.provider.prefix}
+        return set(CONFIG.supported_prefixes)
 
     @classproperty
     def ALL_ATTRIBUTES(cls) -> set[str]:
@@ -378,3 +376,38 @@ class BaseResourceMapper:
             return cls.ENTRY_RESOURCE_CLASS(**cls.map_back(results))
 
         return [cls.ENTRY_RESOURCE_CLASS(**cls.map_back(doc)) for doc in results]
+
+    @staticmethod
+    def starts_with_supported_prefix(field: str) -> tuple[bool, Union[str, None]]:
+        """Tests whether the supplied field has a field that is supported by this server.
+        Parameters:
+            field: The field/string for which it should be checked that it starts with a supported prefix.
+
+        Returns:
+            A boolean which is true if the field/string starts with a supported prefix.
+            A string, containing the prefix if the field has a prefix otherwise it returns 'None'.
+        """
+
+        prefix = None
+        if field.startswith("_"):
+            prefix = field.split("_")[1]
+            if prefix in BaseResourceMapper.SUPPORTED_PREFIXES:
+                return True, prefix
+        return False, prefix
+
+    @classmethod
+    def check_starts_with_supported_prefix(cls, field: str, message: str = "") -> None:
+        """Raises a value error if the field does not start with a supported prefix.
+        Parameters:
+            field: The field/string for which it should be checked that it starts with a supported prefix.
+            message: An additional error message that will be appended to the default error message.
+        Returns:
+            Raises a value error when the field has no valid prefix.
+        """
+
+        prefixed, prefix = cls.starts_with_supported_prefix(field)
+        if not prefixed:
+            raise ValueError(
+                f"The field {field} either has no prefix or the prefix {prefix} is not supported by this server."
+                + message
+            )

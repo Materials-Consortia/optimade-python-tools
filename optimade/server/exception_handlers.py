@@ -231,7 +231,7 @@ OPTIMADE_EXCEPTIONS: Iterable[
     (OptimadeHTTPException, http_exception_handler),
     (RequestValidationError, request_validation_exception_handler),
     (ValidationError, validation_exception_handler),
-    (VisitError, grammar_not_implemented_handler),
+    (VisitError, grammar_not_implemented_handler),  # type: ignore[list-item] # not entirely sure why this entry triggers mypy
     (NotImplementedError, not_implemented_handler),  # type: ignore[list-item] # not entirely sure why this entry triggers mypy
     (Exception, general_exception_handler),
 ]

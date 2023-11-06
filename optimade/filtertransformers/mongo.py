@@ -379,6 +379,7 @@ class MongoTransformer(BaseTransformer):
             return str(prop).count(".") == 1 and str(prop).split(".")[0] in (
                 "structures",
                 "references",
+                "trajectories",
             )
 
         def replace_with_relationship(subdict, prop, expr):

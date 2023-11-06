@@ -1,11 +1,12 @@
 from collections.abc import Iterable
 from typing import Callable, Optional
 
-from optimade.models import (
+from optimade.models import (  # type: ignore[attr-defined]
     DataType,
     ErrorResponse,
     ReferenceResource,
     StructureResource,
+    TrajectoryResource,
 )
 
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
@@ -13,6 +14,7 @@ __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properti
 ENTRY_INFO_SCHEMAS: dict[str, Callable[[], dict]] = {
     "structures": StructureResource.schema,
     "references": ReferenceResource.schema,
+    "trajectories": TrajectoryResource.schema,
 }
 """This dictionary is used to define the `/info/<entry_type>` endpoints."""
 

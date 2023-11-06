@@ -24,12 +24,13 @@ import requests
 from pydantic import Field, ValidationError
 
 from optimade import __version__
-from optimade.models import (
+from optimade.models import (  # type: ignore[attr-defined]
     EntryResource,
     LinksResource,
     ReferenceResource,
     ResponseMeta,
     StructureResource,
+    TrajectoryResource,
 )
 from optimade.models.optimade_json import Success
 
@@ -408,7 +409,6 @@ class ValidatorLinksResponse(Success):
 
 
 class ValidatorEntryResponseOne(Success):
-    meta: ResponseMeta = Field(...)
     data: EntryResource = Field(...)
     included: Optional[list[dict[str, Any]]] = Field(None)  # type: ignore[assignment]
 
@@ -429,6 +429,14 @@ class ValidatorReferenceResponseMany(ValidatorEntryResponseMany):
 
 class ValidatorStructureResponseOne(ValidatorEntryResponseOne):
     data: StructureResource = Field(...)
+
+
+class ValidatorTrajectoryResponseOne(ValidatorEntryResponseOne):
+    data: TrajectoryResource = Field(...)
+
+
+class ValidatorTrajectoryResponseMany(ValidatorEntryResponseMany):
+    data: list[TrajectoryResource] = Field(...)
 
 
 class ValidatorStructureResponseMany(ValidatorEntryResponseMany):
