@@ -87,8 +87,6 @@ def config_file_settings(settings: BaseSettings) -> dict[str, Any]:
     import json
     import os
 
-    import yaml
-
     encoding = settings.__config__.env_file_encoding
     config_file = Path(os.getenv("OPTIMADE_CONFIG_FILE", DEFAULT_CONFIG_FILE_PATH))
 
@@ -100,6 +98,8 @@ def config_file_settings(settings: BaseSettings) -> dict[str, Any]:
             res = json.loads(config_file_content)
         except json.JSONDecodeError as json_exc:
             try:
+                import yaml
+
                 # This can essentially also load JSON files, as JSON is a subset of YAML v1,
                 # but I suspect it is not as rigorous
                 res = yaml.safe_load(config_file_content)
@@ -234,6 +234,9 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             "broken down by endpoint."
         ),
     )
+    supported_prefixes: list[str] = Field(
+        [], description="A list of all the prefixes that are supported by this server."
+    )
     aliases: dict[Literal["links", "references", "structures"], dict[str, str]] = Field(
         {},
         description=(
@@ -308,6 +311,12 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         description="""If False, data from the database will not undergo validation before being emitted by the API, and
         only the mapping of aliases will occur.""",
     )
+
+    @validator("supported_prefixes")
+    def add_own_prefix_to_supported_prefixes(value, values):
+        if values["provider"].prefix not in value:
+            value.append(values["provider"].prefix)
+        return value
 
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):

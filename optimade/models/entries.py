@@ -2,9 +2,13 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
+from pydantic import (
+    BaseModel,
+    root_validator,
+    validator,
+)
 
-from optimade.models.jsonapi import Attributes, Relationships, Resource
+from optimade.models.jsonapi import Attributes, Meta, Relationships, Resource
 from optimade.models.optimade_json import DataType, Relationship
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 
@@ -100,6 +104,31 @@ class EntryResourceAttributes(Attributes):
         return value
 
 
+class EntryMetadata(Meta):
+    """Contains the metadata for the attributes of an entry"""
+
+    property_metadata: dict = StrictField(
+        None,
+        description="""An object containing per-entry and per-property metadata. The keys are the names of the fields in attributes for which metadata is available. The values belonging to these keys are dictionaries containing the relevant metadata fields. See also [Metadata properties](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#metadata-properties)""",
+    )
+
+    @validator("property_metadata")
+    def check_property_metadata_subfields(cls, property_metadata):
+        from optimade.server.mappers.entries import (
+            BaseResourceMapper,
+        )
+
+        if property_metadata:
+            for field in property_metadata:
+                if attribute_meta_dict := property_metadata.get(field):
+                    for subfield in attribute_meta_dict:
+                        BaseResourceMapper.check_starts_with_supported_prefix(
+                            subfield,
+                            "Currently no OPTIMADE fields have been defined for the per attribute metadata, thus only database and domain specific fields are allowed",
+                        )
+        return property_metadata
+
+
 class EntryResource(Resource):
     """The base model for an entry resource."""
 
@@ -147,11 +176,47 @@ class EntryResource(Resource):
 Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).""",
     )
 
+    meta: Optional[EntryMetadata] = StrictField(
+        None,
+        description="""A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata.""",
+    )
+
     relationships: Optional[EntryRelationships] = StrictField(
         None,
         description="""A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).
 The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.""",
     )
+
+    @root_validator(pre=True)
+    def check_meta(cls, values):
+        """Validator to check whether meta field has been formatted correctly."""
+        from optimade.server.mappers.entries import (
+            BaseResourceMapper,
+        )
+
+        meta = values.get("meta")
+        if not meta:
+            return values
+
+        if property_metadata := meta.pop("property_metadata", None):
+            # check that all the fields under property metadata are in attributes
+            attributes = values.get("attributes", {})
+            for subfield in property_metadata:
+                if subfield not in attributes:
+                    raise ValueError(
+                        f"The keys under the field `property_metadata` need to match with the field names in attributes. The field {subfield} is however not in attributes."
+                    )
+
+        # At this point I am getting ahead of the specification. There is the intention to allow database specific fields(with the database specific prefixes) here in line with the JSON API specification, but it has not been decided yet how this case should be handled in the property definitions.
+        for field in meta:
+            BaseResourceMapper.check_starts_with_supported_prefix(
+                field,
+                'Currently no OPTIMADE fields other than "property_metadata" have been defined for the per entry "meta" field, thus only database and domain specific fields are allowed.',
+            )
+
+        values["meta"]["property_metadata"] = property_metadata
+
+        return values
 
 
 class EntryInfoProperty(BaseModel):
