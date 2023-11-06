@@ -66,7 +66,7 @@ class SupportedBackend(Enum):
     MONGODB = "mongodb"
     MONGOMOCK = "mongomock"
 
-
+    
 class SupportedResponseFormats(Enum):
     """Enumeration of supported response formats.
 
@@ -77,6 +77,7 @@ class SupportedResponseFormats(Enum):
 
     JSON = "json"
     JSONL = "jsonlines"
+
 
 
 def config_file_settings(settings: BaseSettings) -> dict[str, Any]:
@@ -246,6 +247,7 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
     )
     provider_fields: dict[
         Literal["links", "references", "structures", "trajectories"],
+
         list[Union[str, dict[Literal["name", "type", "unit", "description"], str]]],
     ] = Field(
         {},

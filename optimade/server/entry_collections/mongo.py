@@ -381,7 +381,7 @@ class MongoCollection(MongoBaseCollection):
         self.collection.insert_many(data)
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]  # type: ignore[override]
+        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
     ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
