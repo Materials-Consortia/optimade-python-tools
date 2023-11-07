@@ -149,6 +149,17 @@ jobs:
         fetch-depth: 0
         submodules: true
 
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: pip
+        cache-depedency-path: |
+          requirements*.txt
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt -r requirements-server.txt
+
     - name: Set up Fly
       uses: superfly/flyctl-actions/setup-flyctl@master
 
