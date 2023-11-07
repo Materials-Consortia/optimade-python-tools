@@ -1,6 +1,7 @@
 {
     "debug": false,
     "default_db": "test_server",
+    "insert_test_data": false,
     "base_url": "http://example.org",
     "implementation": {
         "name": "Example implementation",
