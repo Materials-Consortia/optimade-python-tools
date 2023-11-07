@@ -138,7 +138,7 @@ jobs:
   deploy-fly:
     env:
         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-        OPTIMADE_CONFIG_FILE: /app/tests/test_config.json
+        OPTIMADE_CONFIG_FILE: ./tests/test_config.json
         OPTIMADE_BASE_URL: https://optimade.fly.dev
     runs-on: ubuntu-latest
     if: github.repository_owner == 'Materials-Consortia'
