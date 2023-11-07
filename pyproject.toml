@@ -115,6 +115,7 @@ dev = [
 ]
 
 http_client = [
+   "optimade-client",
    "optimade[http-client]"
 ]
 

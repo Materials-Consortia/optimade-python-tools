@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools >= 61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "optimade-validator"
+description = "Tools for validating OPTIMADE APIs."
+readme = "README.md"
+keywords = ["optimade", "jsonapi", "materials", "validator"]
+license = { text = "MIT" }
+authors = [{ name = "OPTIMADE development team", email = "dev@optimade.org" }]
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Database :: Front-Ends",
+]
+
+requires-python = ">=3.9"
+dependencies = [
+    "pydantic[email]~=2.2",
+    "pydantic-settings~=2.0",
+    "requests~=2.28",
+    "optimade-core",
+]
+
+[project.scripts]
+optimade-validator = "optimade.validator:validate"

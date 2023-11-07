@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools >= 61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "optimade-server"
+description = "Tools for implementing and consuming OPTIMADE APIs."
+readme = "README.md"
+keywords = ["optimade", "jsonapi", "materials"]
+license = { text = "MIT" }
+authors = [{ name = "OPTIMADE development team", email = "dev@optimade.org" }]
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Database :: Front-Ends",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "optimade-core",
+    "uvicorn[standard]~=0.19",
+    "fastapi>=0.103.1",
+    "pyyaml~=6.0",
+    "pymongo~=4.0",
+    "mongomock~=4.1"
+]
+
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+optimade = ["py.typed"]
+"optimade.server" = ["*.json"]
+"optimade.server.data" = ["*.json"]
+"optimade.server.routers" = ["static/*.html"]
+"optimade.grammar" = ["*.lark"]
+
+
+[project.optional-dependencies]
+elastic = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]

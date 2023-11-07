@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools >= 61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "optimade-client"
+description = "Tools for consuming OPTIMADE APIs."
+readme = "README.md"
+keywords = ["optimade", "jsonapi", "materials", "client"]
+license = { text = "MIT" }
+authors = [{ name = "OPTIMADE development team", email = "dev@optimade.org" }]
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Database :: Front-Ends",
+]
+
+requires-python = ">=3.9"
+dependencies = [
+    "lark~=1.1",
+    "httpx~=0.23",
+    "rich~=13.0",
+    "click~=8.1",
+    "requests~=2.28",
+]
+
+[project.scripts]
+optimade-get = "optimade.client.cli:get"
