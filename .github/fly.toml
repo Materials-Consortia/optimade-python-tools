@@ -9,6 +9,8 @@ processes = []
 
 [env]
 PORT = 5000
+BPE_OPTIMADE_CONFIG_FILE = "./tests/test_config.json"
+BPL_OPTIMADE_CONFIG_FILE = "./tests/test_config.json"
 OPTIMADE_CONFIG_FILE = "./tests/test_config.json"
 
 [experimental]
