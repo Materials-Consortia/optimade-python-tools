@@ -8,6 +8,7 @@ processes = []
   builder = "paketobuildpacks/builder:base"
 
 [env]
+PORT = 5000
 
 [experimental]
   allowed_public_ports = []
