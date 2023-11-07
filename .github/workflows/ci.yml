@@ -252,12 +252,14 @@ jobs:
       run: |
         coverage run --append --source optimade optimade/client/cli.py \
            --filter 'nsites = 1' \
+           --http-timeout 1.0 \
            --output-file test_get_async.json \
            https://optimade.fly.dev
         test test_get_async.json
 
         coverage run --append --source optimade optimade/client/cli.py \
           --filter 'nsites = 1' \
+           --http-timeout 1.0 \
           --count \
           --output-file test_count.json \
           https://optimade.fly.dev
@@ -266,6 +268,7 @@ jobs:
         coverage run --append --source optimade optimade/client/cli.py \
           --no-async \
           --filter 'nsites = 1' \
+           --http-timeout 1.0 \
           --count \
           --output-file test_count_no_async.json \
           https://optimade.fly.dev
