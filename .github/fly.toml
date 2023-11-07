@@ -41,4 +41,4 @@ processes = []
   builtin = "python"
 
 [build.settings]
-  pythonbase = "3.10-slim-buster"
+  pythonbase = "3.9-slim-buster"
