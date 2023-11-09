@@ -1,5 +1,47 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.0...HEAD)
+
+optimade-python-tools has reached v1.0.0!
+
+We have decided to make this first major release at this point due to the arduous migration to pydantic v2 between v1.0.0 and v0.25.3. This will allow for improved compatibility with the rest of the ecosystem, plus all of the performance and ergonomics benefits of the new pydantic.
+
+If you are using optimade-python-tools primarily as a library, then you may need to make some code changes to support the new version. For example, the underlying API for dealing with the pydantic models has changed (e.g., `model.dict()` is now `model.model_dump()`) -- a full migration guide can be found in the [pydantic docs](https://docs.pydantic.dev/latest/migration/). Additionally, any cases where the underlying JSON schemas were being modified may need to be updated; internally we are pretty much exclusively operating on the pydantic model objects without needing to modify the raw schemas anymore.
+
+Going forward, v1.0.x will be the last series to support v1.1 of the OPTIMADE specification, with future versions of the package v1.x.y adding features from the pre-release of OPTIMADE v1.2.
+
+A branch will be maintained for the v0.25.x series will be maintained for those who are stuck on pydantic v1 and run into bugs. Please make it clear in any bug reports if you are using this version.
+
+**Closed issues:**
+
+- Fly is using the wrong config file [\#1869](https://github.com/Materials-Consortia/optimade-python-tools/issues/1869)
+
+## [v1.0.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.0) (2023-11-07)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.3...v1.0.0)
+
+**Fixed bugs:**
+
+- Deserialization regressions: cannot resolve child databases in client [\#1843](https://github.com/Materials-Consortia/optimade-python-tools/issues/1843)
+- Performance regressions following pydantic update [\#1835](https://github.com/Materials-Consortia/optimade-python-tools/issues/1835)
+
+**Closed issues:**
+
+- Python 3.12 support [\#1859](https://github.com/Materials-Consortia/optimade-python-tools/issues/1859)
+- Remove `nullable` from schemas \(for OpenAPI 3.1\) [\#1814](https://github.com/Materials-Consortia/optimade-python-tools/issues/1814)
+
+**Merged pull requests:**
+
+- Add Python 3.12 to CI [\#1858](https://github.com/Materials-Consortia/optimade-python-tools/pull/1858) ([ml-evs](https://github.com/ml-evs))
+- Add test that checks whether client can find at least one base URL [\#1849](https://github.com/Materials-Consortia/optimade-python-tools/pull/1849) ([ml-evs](https://github.com/ml-evs))
+- Make client provider scraper more robust and add `--version` [\#1848](https://github.com/Materials-Consortia/optimade-python-tools/pull/1848) ([ml-evs](https://github.com/ml-evs))
+- Fix incorrect 'smart' union discrimination [\#1844](https://github.com/Materials-Consortia/optimade-python-tools/pull/1844) ([ml-evs](https://github.com/ml-evs))
+- CI performance refresh [\#1836](https://github.com/Materials-Consortia/optimade-python-tools/pull/1836) ([ml-evs](https://github.com/ml-evs))
+- Modernize all Python 3.8 annotations [\#1815](https://github.com/Materials-Consortia/optimade-python-tools/pull/1815) ([ml-evs](https://github.com/ml-evs))
+- Migration to pydantic v2 [\#1745](https://github.com/Materials-Consortia/optimade-python-tools/pull/1745) ([ml-evs](https://github.com/ml-evs))
+
 ## [v0.25.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.3) (2023-09-29)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.2...v0.25.3)
