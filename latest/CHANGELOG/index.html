@@ -651,8 +651,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2023-11-07" class="md-nav__link">
-    Unreleased (2023-11-07)
+  <a href="#unreleased" class="md-nav__link">
+    Unreleased
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v100-2023-11-07" class="md-nav__link">
+    v1.0.0 (2023-11-07)
   </a>
   
 </li>
@@ -3131,8 +3138,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-2023-11-07" class="md-nav__link">
-    Unreleased (2023-11-07)
+  <a href="#unreleased" class="md-nav__link">
+    Unreleased
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v100-2023-11-07" class="md-nav__link">
+    v1.0.0 (2023-11-07)
   </a>
   
 </li>
@@ -3762,8 +3776,19 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased-2023-11-07"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased">Unreleased</a> (2023-11-07)<a class="headerlink" href="#unreleased-2023-11-07" title="Permanent link">&para;</a></h2>
-<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.3...Unreleased">Full Changelog</a></p>
+<h2 id="unreleased"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD">Unreleased</a><a class="headerlink" href="#unreleased" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.0...HEAD">Full Changelog</a></p>
+<p>optimade-python-tools has reached v1.0.0!</p>
+<p>We have decided to make this first major release at this point due to the arduous migration to pydantic v2 between v1.0.0 and v0.25.3. This will allow for improved compatibility with the rest of the ecosystem, plus all of the performance and ergonomics benefits of the new pydantic.</p>
+<p>If you are using optimade-python-tools primarily as a library, then you may need to make some code changes to support the new version. For example, the underlying API for dealing with the pydantic models has changed (e.g., <code>model.dict()</code> is now <code>model.model_dump()</code>) -- a full migration guide can be found in the <a href="https://docs.pydantic.dev/latest/migration/">pydantic docs</a>. Additionally, any cases where the underlying JSON schemas were being modified may need to be updated; internally we are pretty much exclusively operating on the pydantic model objects without needing to modify the raw schemas anymore.</p>
+<p>Going forward, v1.0.x will be the last series to support v1.1 of the OPTIMADE specification, with future versions of the package v1.x.y adding features from the pre-release of OPTIMADE v1.2.</p>
+<p>A branch will be maintained for the v0.25.x series will be maintained for those who are stuck on pydantic v1 and run into bugs. Please make it clear in any bug reports if you are using this version.</p>
+<p><strong>Closed issues:</strong></p>
+<ul>
+<li>Fly is using the wrong config file <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1869">#1869</a></li>
+</ul>
+<h2 id="v100-2023-11-07"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.0">v1.0.0</a> (2023-11-07)<a class="headerlink" href="#v100-2023-11-07" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.3...v1.0.0">Full Changelog</a></p>
 <p><strong>Fixed bugs:</strong></p>
 <ul>
 <li>Deserialization regressions: cannot resolve child databases in client <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1843">#1843</a></li>
@@ -3773,6 +3798,16 @@
 <ul>
 <li>Python 3.12 support <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1859">#1859</a></li>
 <li>Remove <code>nullable</code> from schemas (for OpenAPI 3.1) <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/1814">#1814</a></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul>
+<li>Add Python 3.12 to CI <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1858">#1858</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Add test that checks whether client can find at least one base URL <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1849">#1849</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Make client provider scraper more robust and add <code>--version</code> <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1848">#1848</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Fix incorrect 'smart' union discrimination <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1844">#1844</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>CI performance refresh <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1836">#1836</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Modernize all Python 3.8 annotations <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1815">#1815</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
+<li>Migration to pydantic v2 <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/1745">#1745</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
 </ul>
 <h2 id="v0253-2023-09-29"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.3">v0.25.3</a> (2023-09-29)<a class="headerlink" href="#v0253-2023-09-29" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.2...v0.25.3">Full Changelog</a></p>
