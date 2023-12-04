@@ -6054,7 +6054,31 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 <span class="normal">1515</span>
 <span class="normal">1516</span>
 <span class="normal">1517</span>
-<span class="normal">1518</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationValidator</span><span class="p">:</span>
+<span class="normal">1518</span>
+<span class="normal">1519</span>
+<span class="normal">1520</span>
+<span class="normal">1521</span>
+<span class="normal">1522</span>
+<span class="normal">1523</span>
+<span class="normal">1524</span>
+<span class="normal">1525</span>
+<span class="normal">1526</span>
+<span class="normal">1527</span>
+<span class="normal">1528</span>
+<span class="normal">1529</span>
+<span class="normal">1530</span>
+<span class="normal">1531</span>
+<span class="normal">1532</span>
+<span class="normal">1533</span>
+<span class="normal">1534</span>
+<span class="normal">1535</span>
+<span class="normal">1536</span>
+<span class="normal">1537</span>
+<span class="normal">1538</span>
+<span class="normal">1539</span>
+<span class="normal">1540</span>
+<span class="normal">1541</span>
+<span class="normal">1542</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationValidator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class used to make a series of checks against a particular</span>
 <span class="sd">    OPTIMADE implementation over HTTP.</span>
 
@@ -7061,6 +7085,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
         <span class="n">response</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_endpoint</span><span class="p">(</span><span class="n">request_str</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_test_if_data_empty</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">request_str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_test_meta_schema_reporting</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">request_str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_test_page_limit</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
@@ -7258,6 +7283,29 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_endpoint</span><span class="p">(</span>
             <span class="s2">&quot;v123123/info&quot;</span><span class="p">,</span> <span class="n">expected_status_code</span><span class="o">=</span><span class="n">expected_status_code</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+    <span class="nd">@test_case</span>
+    <span class="k">def</span> <span class="nf">_test_if_data_empty</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span>
+        <span class="n">request_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tests whether an endpoint responds a entries under `data`.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Query </span><span class="si">{</span><span class="n">request_str</span><span class="si">}</span><span class="s2"> did not respond with any entries under `data`. This may not consitute an error, but should be checked.&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ResponseError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unable to test presence of `data` for query </span><span class="si">{</span><span class="n">request_str</span><span class="si">}</span><span class="s2">: could not decode response as JSON.</span><span class="se">\n</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="kc">True</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Query </span><span class="si">{</span><span class="n">request_str</span><span class="si">}</span><span class="s2"> successfully returned some entries.&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="nd">@test_case</span>
