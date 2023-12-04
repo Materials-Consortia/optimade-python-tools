@@ -178,10 +178,12 @@ def _reduce_or_anonymize_formula(
     """Takes an input formula, reduces it and either alphabetizes or anonymizes it."""
     import sys
 
-    numbers = [int(n.strip() or 1) for n in re.split(r"[A-Z][a-z]*", formula)[1:]]
+    numbers: list[int] = [
+        int(n.strip() or 1) for n in re.split(r"[A-Z][a-z]*", formula)[1:]
+    ]
     # Need to remove leading 1 from split and convert to ints
 
-    species = re.findall("[A-Z][a-z]*", formula)
+    species: list[str] = re.findall("[A-Z][a-z]*", formula)
 
     if sys.version_info[1] >= 9:
         gcd = math.gcd(*numbers)
@@ -198,7 +200,7 @@ def _reduce_or_anonymize_formula(
         species = [s for _, s in zip(numbers, anonymous_element_generator())]
 
     elif alphabetize:
-        species, numbers = zip(*sorted(zip(species, numbers)))
+        species, numbers = zip(*sorted(zip(species, numbers)))  # type: ignore[assignment]
 
     return "".join(f"{s}{n if n != 1 else ''}" for n, s in zip(numbers, species))
 
