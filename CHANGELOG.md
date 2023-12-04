@@ -1,8 +1,22 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v1.0.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.1) (2023-12-04)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.0...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.0...v1.0.1)
+
+**Closed issues:**
+
+- Validator does not error on empty endpoints [\#1890](https://github.com/Materials-Consortia/optimade-python-tools/issues/1890)
+- Provider fields not served when already prefixed in database  [\#1883](https://github.com/Materials-Consortia/optimade-python-tools/issues/1883)
+- Other potential bandaids to pull off before v1.0.0 [\#1847](https://github.com/Materials-Consortia/optimade-python-tools/issues/1847)
+
+**Merged pull requests:**
+
+- Add optional test for whether entry endpoints have any actual entries [\#1891](https://github.com/Materials-Consortia/optimade-python-tools/pull/1891) ([ml-evs](https://github.com/ml-evs))
+
+## [v1.0.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.0) (2023-11-09)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.3...v1.0.0)
 
 optimade-python-tools has reached v1.0.0!
 
@@ -14,14 +28,6 @@ Going forward, v1.0.x will be the last series to support v1.1 of the OPTIMADE sp
 
 A branch will be maintained for the v0.25.x series will be maintained for those who are stuck on pydantic v1 and run into bugs. Please make it clear in any bug reports if you are using this version.
 
-**Closed issues:**
-
-- Fly is using the wrong config file [\#1869](https://github.com/Materials-Consortia/optimade-python-tools/issues/1869)
-
-## [v1.0.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.0) (2023-11-07)
-
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.3...v1.0.0)
-
 **Fixed bugs:**
 
 - Deserialization regressions: cannot resolve child databases in client [\#1843](https://github.com/Materials-Consortia/optimade-python-tools/issues/1843)
@@ -29,6 +35,7 @@ A branch will be maintained for the v0.25.x series will be maintained for those 
 
 **Closed issues:**
 
+- Fly is using the wrong config file [\#1869](https://github.com/Materials-Consortia/optimade-python-tools/issues/1869)
 - Python 3.12 support [\#1859](https://github.com/Materials-Consortia/optimade-python-tools/issues/1859)
 - Remove `nullable` from schemas \(for OpenAPI 3.1\) [\#1814](https://github.com/Materials-Consortia/optimade-python-tools/issues/1814)
 
