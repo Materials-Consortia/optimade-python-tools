@@ -1046,6 +1046,7 @@ class ImplementationValidator:
 
         response, _ = self._get_endpoint(request_str)
 
+        self._test_if_data_empty(response, request_str, optional=True)
         self._test_meta_schema_reporting(response, request_str, optional=True)
         self._test_page_limit(response)
 
@@ -1243,6 +1244,29 @@ class ImplementationValidator:
 
         self._get_endpoint(
             "v123123/info", expected_status_code=expected_status_code, optional=True
+        )
+
+    @test_case
+    def _test_if_data_empty(
+        self,
+        response: requests.models.Response,
+        request_str: str,
+    ):
+        """Tests whether an endpoint responds a entries under `data`."""
+        try:
+            if not response.json().get("data", []):
+                raise ResponseError(
+                    f"Query {request_str} did not respond with any entries under `data`. This may not consitute an error, but should be checked."
+                )
+
+        except json.JSONDecodeError:
+            raise ResponseError(
+                f"Unable to test presence of `data` for query {request_str}: could not decode response as JSON.\n{str(response.content)}"
+            )
+
+        return (
+            True,
+            f"Query {request_str} successfully returned some entries.",
         )
 
     @test_case
