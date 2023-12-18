@@ -4,7 +4,7 @@ class that can be pointed at an OPTIMADE implementation and validated
 against the specification via the pydantic models implemented in this package.
 
 """
-# pylint: disable=import-outside-toplevel
+
 
 import dataclasses
 import json
@@ -59,7 +59,7 @@ class ImplementationValidator:
 
     valid: Optional[bool]
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
         self,
         client: Optional[Any] = None,
         base_url: Optional[str] = None,

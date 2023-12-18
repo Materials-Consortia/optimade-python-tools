@@ -184,7 +184,7 @@ class EntryListingQueryParams(BaseQueryParams):
         *,
         filter: Annotated[
             str,
-            Query(  # pylint: disable=redefined-builtin
+            Query(
                 description="A filter string, in the format described in section API Filtering Format Specification of the specification.",
             ),
         ] = "",

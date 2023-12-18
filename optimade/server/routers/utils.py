@@ -1,4 +1,3 @@
-# pylint: disable=import-outside-toplevel,too-many-locals
 import re
 import urllib.parse
 from datetime import datetime
@@ -221,7 +220,7 @@ def get_included_relationships(
 def get_base_url(
     parsed_url_request: Union[
         urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str
-    ]
+    ],
 ) -> str:
     """Get base URL for current server
 

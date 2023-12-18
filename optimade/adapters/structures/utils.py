@@ -32,7 +32,7 @@ def valid_lattice_vector(lattice_vec: tuple[Vector3D, Vector3D, Vector3D]):
 
 
 def scaled_cell(
-    cell: tuple[Vector3D, Vector3D, Vector3D]
+    cell: tuple[Vector3D, Vector3D, Vector3D],
 ) -> tuple[Vector3D, Vector3D, Vector3D]:
     """Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).
     This 3x3 matrix can be used to calculate the fractional coordinates from the cartesian_site_positions.

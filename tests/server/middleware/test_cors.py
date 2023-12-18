@@ -3,8 +3,8 @@
 
 def test_regular_CORS_request(both_clients):
     response = both_clients.get("/info", headers={"Origin": "http://example.org"})
-    assert ("access-control-allow-origin", "*") in tuple(
-        response.headers.items()
+    assert (
+        ("access-control-allow-origin", "*") in tuple(response.headers.items())
     ), f"Access-Control-Allow-Origin header not found in response headers: {response.headers}"
 
 

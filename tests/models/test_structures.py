@@ -1,4 +1,3 @@
-# pylint: disable=no-member
 import itertools
 from typing import TYPE_CHECKING
 

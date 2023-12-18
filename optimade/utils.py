@@ -80,9 +80,7 @@ def get_providers(add_mongo_id: bool = False) -> list:
 
 {}
     The list of providers will not be included in the `/links`-endpoint.
-""".format(
-                    "".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS])
-                )
+""".format("".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS]))
             )
             return []
 

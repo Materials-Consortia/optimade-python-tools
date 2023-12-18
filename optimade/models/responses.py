@@ -1,4 +1,3 @@
-# pylint: disable=no-self-argument
 from typing import Annotated, Any, Optional, Union
 
 from pydantic import model_validator

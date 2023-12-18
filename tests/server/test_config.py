@@ -1,4 +1,3 @@
-# pylint: disable=protected-access,pointless-statement,relative-beyond-top-level
 import json
 import os
 from pathlib import Path
