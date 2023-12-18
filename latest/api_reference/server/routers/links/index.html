@@ -3804,7 +3804,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
         <span class="o">*</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
             <span class="nb">str</span><span class="p">,</span>
-            <span class="n">Query</span><span class="p">(</span>  <span class="c1"># pylint: disable=redefined-builtin</span>
+            <span class="n">Query</span><span class="p">(</span>
                 <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A filter string, in the format described in section API Filtering Format Specification of the specification.&quot;</span><span class="p">,</span>
             <span class="p">),</span>
         <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
@@ -5613,15 +5613,15 @@ or <code>None</code> if no such alias is found.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/responses.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">108</span>
+<span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LinksResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
+<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LinksResponse</span><span class="p">(</span><span class="n">EntryResponseMany</span><span class="p">):</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span>
         <span class="n">StrictField</span><span class="p">(</span>
@@ -5938,7 +5938,8 @@ microseconds, as filters may return unexpected results.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">242</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">241</span>
+<span class="normal">242</span>
 <span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
@@ -5990,8 +5991,7 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">291</span>
 <span class="normal">292</span>
 <span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_entries</span><span class="p">(</span>
+<span class="normal">294</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_entries</span><span class="p">(</span>
     <span class="n">collection</span><span class="p">:</span> <span class="n">EntryCollection</span><span class="p">,</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>

@@ -6277,7 +6277,8 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
-<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_cif</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-locals,too-many-branches</span>
+<span class="normal">150</span>
+<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_cif</span><span class="p">(</span>
     <span class="n">optimade_structure</span><span class="p">:</span> <span class="n">OptimadeStructure</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get CIF file as string from OPTIMADE structure.</span>
@@ -6361,7 +6362,8 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
         <span class="n">sites</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span>
 
     <span class="n">species</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span> <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>  <span class="c1"># type: ignore[union-attr]</span>
+        <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span>
+        <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>  <span class="c1"># type: ignore[union-attr]</span>
     <span class="p">}</span>
 
     <span class="n">symbol_occurences</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -6608,8 +6610,7 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 
           <details class="quote">
             <summary>Source code in <code>optimade/adapters/structures/proteindatabank.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
-<span class="normal">199</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">199</span>
 <span class="normal">200</span>
 <span class="normal">201</span>
 <span class="normal">202</span>
@@ -6688,7 +6689,8 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 <span class="normal">275</span>
 <span class="normal">276</span>
 <span class="normal">277</span>
-<span class="normal">278</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_pdb</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-locals</span>
+<span class="normal">278</span>
+<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_pdb</span><span class="p">(</span>
     <span class="n">optimade_structure</span><span class="p">:</span> <span class="n">OptimadeStructure</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write Protein Data Bank (PDB) structure in the old PDB format from OPTIMADE structure.</span>
@@ -6979,7 +6981,8 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 <span class="normal">192</span>
 <span class="normal">193</span>
 <span class="normal">194</span>
-<span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_pdbx_mmcif</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-locals</span>
+<span class="normal">195</span>
+<span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_pdbx_mmcif</span><span class="p">(</span>
     <span class="n">optimade_structure</span><span class="p">:</span> <span class="n">OptimadeStructure</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure.</span>
@@ -7098,7 +7101,8 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
         <span class="n">sites</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span>
 
     <span class="n">species</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span> <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>  <span class="c1"># type: ignore[union-attr]</span>
+        <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span>
+        <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>  <span class="c1"># type: ignore[union-attr]</span>
     <span class="p">}</span>
 
     <span class="k">for</span> <span class="n">site_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">nsites</span><span class="p">):</span>  <span class="c1"># type: ignore[arg-type]</span>
