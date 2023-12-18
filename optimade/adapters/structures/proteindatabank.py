@@ -163,7 +163,8 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
         sites = attributes.cartesian_site_positions
 
     species: dict[str, OptimadeStructureSpecies] = {
-        species.name: species for species in attributes.species  # type: ignore[union-attr]
+        species.name: species
+        for species in attributes.species  # type: ignore[union-attr]
     }
 
     for site_number in range(attributes.nsites):  # type: ignore[arg-type]

@@ -106,9 +106,7 @@ def test_get_providers_warning(caplog, top_dir):
 
 {}
     The list of providers will not be included in the `/links`-endpoint.
-""".format(
-                "".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS])
-            )
+""".format("".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS]))
             assert warning_message in caplog.messages
 
     finally:
