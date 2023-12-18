@@ -106,7 +106,7 @@ class BaseTransformer(Transformer, abc.ABC):
     _quantity_type: type[Quantity] = Quantity
     _quantities = None
 
-    def __init__(self, mapper: Optional[type[BaseResourceMapper]] = None):  # pylint: disable=super-init-not-called
+    def __init__(self, mapper: Optional[type[BaseResourceMapper]] = None):
         """Initialise the transformer object, optionally loading in a
         resource mapper for use when post-processing.
 

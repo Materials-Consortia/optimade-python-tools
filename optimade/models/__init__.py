@@ -1,4 +1,3 @@
-# pylint: disable=undefined-variable
 from .baseinfo import *  # noqa: F403
 from .entries import *  # noqa: F403
 from .index_metadb import *  # noqa: F403

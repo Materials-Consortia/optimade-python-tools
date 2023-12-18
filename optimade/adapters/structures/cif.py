@@ -38,7 +38,7 @@ except ImportError:
 __all__ = ("get_cif",)
 
 
-def get_cif(  # pylint: disable=too-many-locals,too-many-branches
+def get_cif(
     optimade_structure: OptimadeStructure,
 ) -> str:
     """Get CIF file as string from OPTIMADE structure.

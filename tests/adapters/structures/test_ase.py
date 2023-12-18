@@ -1,4 +1,3 @@
-# pylint: disable=import-error
 import pytest
 
 from .utils import get_min_ver

@@ -1,4 +1,3 @@
-# pylint: disable=import-outside-toplevel,too-many-locals
 import re
 import urllib.parse
 from datetime import datetime
