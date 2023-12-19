@@ -45,7 +45,7 @@ jobs:
 
     - name: Set up Python 3.9
       if: env.RELEASE_RUN == 'false'
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.9'
 
