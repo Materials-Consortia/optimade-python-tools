@@ -1,12 +1,8 @@
-black==23.12.0
 build==1.0.3
-flake8==6.1.0
 invoke==2.2.0
-isort==5.13.2
 jsondiff==2.0.0
 mypy==1.7.1
 pre-commit==3.6.0
-pylint==3.0.2
 pytest==7.4.3
 pytest-cov==4.1.0
 ruff==0.1.8

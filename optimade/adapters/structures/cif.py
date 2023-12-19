@@ -38,7 +38,7 @@ except ImportError:
 __all__ = ("get_cif",)
 
 
-def get_cif(  # pylint: disable=too-many-locals,too-many-branches
+def get_cif(
     optimade_structure: OptimadeStructure,
 ) -> str:
     """Get CIF file as string from OPTIMADE structure.
@@ -122,7 +122,8 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
         sites = attributes.cartesian_site_positions
 
     species: dict[str, OptimadeStructureSpecies] = {
-        species.name: species for species in attributes.species  # type: ignore[union-attr]
+        species.name: species
+        for species in attributes.species  # type: ignore[union-attr]
     }
 
     symbol_occurences: dict[str, int] = {}

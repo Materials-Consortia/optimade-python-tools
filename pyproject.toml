@@ -104,13 +104,11 @@ testing = [
 ]
 
 dev = [
-   "black~=23.1",
-   "isort~=5.12",
    "mypy~=1.0",
    "pre-commit~=3.0",
    "invoke~=2.0",
    "types-all==1.0.0",
-   "ruff~=0.0",
+   "ruff~=0.1",
    "optimade[docs,testing,client,http-client]"
 ]
 
@@ -162,7 +160,3 @@ filterwarnings = [
 ]
 testpaths = "tests"
 addopts = "-rs"
-
-[tool.isort]
-known_first_party = "optimade"
-profile = "black"

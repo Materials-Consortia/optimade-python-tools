@@ -66,7 +66,7 @@ class OptimadeTestClient(TestClient):
                 version = f"/v{__api_version__.split('.')[0]}"
         self.version = version
 
-    def request(  # pylint: disable=too-many-locals
+    def request(
         self,
         method: str,
         url: httpx._types.URLTypes,
@@ -138,7 +138,7 @@ class BaseEndpointTests:
 
     def test_serialize_response(self):
         assert self.response_cls is not None, "Response class unset for this endpoint"
-        self.response_cls(**self.json_response)  # pylint: disable=not-callable
+        self.response_cls(**self.json_response)
 
 
 class EndpointTests(BaseEndpointTests):
@@ -262,7 +262,7 @@ class HttpxTestClient(httpx.Client):
 
     client = client_factory()(server="regular")
 
-    def request(  # pylint: disable=too-many-locals
+    def request(
         self,
         method: str,
         url: httpx._types.URLTypes,
@@ -276,7 +276,7 @@ class RequestsTestClient(requests.Session):
 
     client = client_factory()(server="regular")
 
-    def request(  # pylint: disable=too-many-locals
+    def request(
         self,
         method,
         url,
@@ -291,7 +291,7 @@ class AsyncHttpxTestClient(httpx.AsyncClient):
 
     client = client_factory()(server="regular")
 
-    async def request(  # pylint: disable=too-many-locals
+    async def request(
         self,
         method: str,
         url: httpx._types.URLTypes,
