@@ -1,4 +1,4 @@
-from typing import Callable, List
+from typing import Callable
 
 import pytest
 from pydantic import BaseModel, Field, ValidationError
@@ -38,7 +38,7 @@ def test_optimade_field():
     make_bad_models(OptimadeField)
 
 
-def test_compatible_strict_optimade_field():
+def test_compatible_strict_optimade_field() -> None:
     """This test checks that OptimadeField and StrictField
     produce the same schemas when given the same arguments.
 
@@ -46,7 +46,7 @@ def test_compatible_strict_optimade_field():
 
     class CorrectModelWithStrictField(BaseModel):
         # check that unit and uniqueItems are passed through
-        good_field: List[str] = StrictField(
+        good_field: list[str] = StrictField(
             ...,
             support=SupportLevel.MUST,
             queryable=SupportLevel.OPTIONAL,
@@ -58,8 +58,7 @@ def test_compatible_strict_optimade_field():
         )
 
     class CorrectModelWithOptimadeField(BaseModel):
-
-        good_field: List[str] = OptimadeField(
+        good_field: list[str] = OptimadeField(
             ...,
             # Only difference here is that OptimadeField allows case-insensitive
             # strings to be passed instead of support levels directly
@@ -78,7 +77,7 @@ def test_compatible_strict_optimade_field():
     assert strict_schema == optimade_schema
 
 
-def test_formula_regexp():
+def test_formula_regexp() -> None:
     """This test checks some simple chemical formulae with the
     `CHEMICAL_FORMULA_REGEXP`.
 
@@ -96,6 +95,7 @@ def test_formula_regexp():
         "LiP5",
         "Jn7Qb4",  # Regexp does not care about the actual existence of elements
         "A5B213CeD3E65F12G",
+        "",
     )
 
     bad_formulae = (
@@ -106,7 +106,7 @@ def test_formula_regexp():
         "6F7G",
         "A0Be2",
         "A1Be2",
-        "",
+        "A0B1",
     )
 
     for formula in good_formulae:
@@ -116,3 +116,25 @@ def test_formula_regexp():
     for formula in bad_formulae:
         with pytest.raises(ValidationError):
             assert DummyModel(formula=formula)
+
+
+def test_reduce_formula():
+    from optimade.models.utils import reduce_formula
+
+    assert reduce_formula("Si1O2") == "O2Si"
+    assert reduce_formula("Si11O2") == "O2Si11"
+    assert reduce_formula("Si10O2C4") == "C2OSi5"
+    assert reduce_formula("Li1") == "Li"
+    assert reduce_formula("Li1Ge1") == "GeLi"
+
+
+def test_anonymize_formula():
+    from optimade.models.utils import anonymize_formula
+
+    assert anonymize_formula("Si1O2") == "A2B"
+    assert anonymize_formula("Si11O2") == "A11B2"
+    assert anonymize_formula("Si10O2C4") == "A5B2C"
+
+    assert anonymize_formula("Si1 O2") == "A2B"
+    assert anonymize_formula("Si11 O2") == "A11B2"
+    assert anonymize_formula("Si10 O2C4") == "A5B2C"

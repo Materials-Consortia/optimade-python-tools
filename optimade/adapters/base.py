@@ -19,7 +19,7 @@ resources can be converted to for [`ReferenceResource`][optimade.models.referenc
 and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
 """
 import re
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Optional, Union
 
 from pydantic import BaseModel  # pylint: disable=no-name-in-module
 
@@ -34,14 +34,18 @@ class EntryAdapter:
     Attributes:
         ENTRY_RESOURCE: Entry resource to store entry as.
         _type_converters: Dictionary of valid conversion types for entry.
+        _type_ingesters: Dictionary of valid ingestion types mapped to ingestion functions.
+        _type_ingesters_by_type: Dictionary mapping the keys of `_type_ingesters` to data
+            types that can be ingested.
         as_<_type_converters>: Convert entry to a type listed in `_type_converters`.
         from_<_type_converters>: Convert an external type to the corresponding OPTIMADE model.
 
     """
 
-    ENTRY_RESOURCE: Type[EntryResource] = EntryResource
-    _type_converters: Dict[str, Callable] = {}
-    _type_ingesters: Dict[str, Callable] = {}
+    ENTRY_RESOURCE: type[EntryResource] = EntryResource
+    _type_converters: dict[str, Callable] = {}
+    _type_ingesters: dict[str, Callable] = {}
+    _type_ingesters_by_type: dict[str, type] = {}
 
     def __init__(self, entry: dict) -> None:
         """
@@ -49,7 +53,7 @@ class EntryAdapter:
             entry (dict): A JSON OPTIMADE single resource entry.
         """
         self._entry: Optional[EntryResource] = None
-        self._converted: Dict[str, Any] = {}
+        self._converted: dict[str, Any] = {}
 
         self.entry: EntryResource = entry  # type: ignore[assignment]
 
@@ -116,9 +120,51 @@ class EntryAdapter:
 
         return self._converted[format]
 
+    @classmethod
+    def ingest_from(cls, data: Any, format: Optional[str] = None) -> Any:
+        """Convert desired format to OPTIMADE format.
+
+        Parameters:
+            data (Any): The data to convert.
+            format (str): Type or format to which the entry should be converted.
+
+        Raises:
+            AttributeError: If `format` can not be found in `_type_ingesters`.
+
+        Returns:
+            The ingested Structure.
+
+        """
+
+        if format is None:
+            for key, instance_type in cls._type_ingesters_by_type.items():
+                if isinstance(data, instance_type):
+                    format = key
+                    break
+
+            else:
+                raise AttributeError(
+                    f"Non entry type to data of type {type(data)} from.\n"
+                    f"Valid entry types: {tuple(cls._type_ingesters.keys())}"
+                )
+
+        if format not in cls._type_ingesters:
+            raise AttributeError(
+                f"Non-valid entry type to ingest from: {format}\n"
+                f"Valid entry types: {tuple(cls._type_ingesters.keys())}"
+            )
+
+        return cls(
+            {
+                "attributes": cls._type_ingesters[format](data).dict(),
+                "id": "",
+                "type": "structures",
+            }
+        )
+
     @staticmethod
     def _get_model_attributes(
-        starting_instances: Union[Tuple[BaseModel, ...], List[BaseModel]], name: str
+        starting_instances: Union[tuple[BaseModel, ...], list[BaseModel]], name: str
     ) -> Any:
         """Helper method for retrieving the OPTIMADE model's attribute, supporting "."-nested attributes"""
         for res in starting_instances:

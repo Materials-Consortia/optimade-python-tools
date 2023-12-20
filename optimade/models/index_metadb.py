@@ -1,6 +1,6 @@
 # pylint: disable=no-self-argument
 from enum import Enum
-from typing import Dict, Union
+from typing import Union
 
 from pydantic import BaseModel, Field  # pylint: disable=no-name-in-module
 
@@ -52,7 +52,7 @@ class IndexInfoResource(BaseInfoResource):
 
     attributes: IndexInfoAttributes = Field(...)
     relationships: Union[
-        None, Dict[DefaultRelationship, IndexRelationship]
+        None, dict[DefaultRelationship, IndexRelationship]
     ] = StrictField(  # type: ignore[assignment]
         ...,
         title="Relationships",

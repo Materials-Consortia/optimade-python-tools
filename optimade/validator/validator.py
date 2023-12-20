@@ -13,7 +13,7 @@ import random
 import re
 import sys
 import urllib.parse
-from typing import Any, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, Optional, Union
 
 import requests
 
@@ -72,7 +72,7 @@ class ImplementationValidator:
         as_type: Optional[str] = None,
         index: bool = False,
         minimal: bool = False,
-        http_headers: Optional[Dict[str, str]] = None,
+        http_headers: Optional[dict[str, str]] = None,
         timeout: float = DEFAULT_CONN_TIMEOUT,
         read_timeout: float = DEFAULT_READ_TIMEOUT,
     ):
@@ -166,15 +166,18 @@ class ImplementationValidator:
         )
 
         # some simple checks on base_url
+        self.base_url = str(self.base_url)
         self.base_url_parsed = urllib.parse.urlparse(self.base_url)
         # only allow filters/endpoints if we are working in "as_type" mode
         if self.as_type_cls is None and self.base_url_parsed.query:
-            raise SystemExit("Base URL not appropriate: should not contain a filter.")
+            raise SystemExit(
+                f"Base URL {self.base_url} not appropriate: should not contain a filter."
+            )
 
         self.valid = None
 
-        self._test_id_by_type: Dict[str, Any] = {}
-        self._entry_info_by_type: Dict[str, Any] = {}
+        self._test_id_by_type: dict[str, Any] = {}
+        self._entry_info_by_type: dict[str, Any] = {}
 
         self.results = ValidatorResults(verbosity=self.verbosity)
 
@@ -350,7 +353,7 @@ class ImplementationValidator:
         self.print_summary()
 
     @test_case
-    def _recurse_through_endpoint(self, endp: str) -> Tuple[Optional[bool], str]:
+    def _recurse_through_endpoint(self, endp: str) -> tuple[Optional[bool], str]:
         """For a given endpoint (`endp`), get the entry type
         and supported fields, testing that all mandatory fields
         are supported, then test queries on every property according
@@ -423,7 +426,6 @@ class ImplementationValidator:
 
     @test_case
     def _test_unknown_provider_property(self, endp):
-
         dummy_provider_field = "_crazyprovider_field"
 
         request = f"{endp}?filter={dummy_provider_field}=2"
@@ -448,8 +450,8 @@ class ImplementationValidator:
         )
 
     def _check_entry_info(
-        self, entry_info: Dict[str, Any], endp: str
-    ) -> Dict[str, Dict[str, Any]]:
+        self, entry_info: dict[str, Any], endp: str
+    ) -> dict[str, dict[str, Any]]:
         """Checks that `entry_info` contains all the required properties,
         and returns the property list for the endpoint.
 
@@ -471,8 +473,8 @@ class ImplementationValidator:
 
     @test_case
     def _test_must_properties(
-        self, properties: List[str], endp: str
-    ) -> Tuple[bool, str]:
+        self, properties: list[str], endp: str
+    ) -> tuple[bool, str]:
         """Check that the entry info lists all properties with the "MUST"
         support level for this endpoint.
 
@@ -484,13 +486,13 @@ class ImplementationValidator:
             `True` if the properties were found, and a string summary.
 
         """
-        must_props = set(
+        must_props = {
             prop
             for prop in CONF.entry_schemas.get(endp, {})
             if CONF.entry_schemas[endp].get(prop, {}).get("support")
             == SupportLevel.MUST
-        )
-        must_props_supported = set(prop for prop in properties if prop in must_props)
+        }
+        must_props_supported = {prop for prop in properties if prop in must_props}
         missing = must_props - must_props_supported
         if len(missing) != 0:
             raise ResponseError(
@@ -501,8 +503,8 @@ class ImplementationValidator:
 
     @test_case
     def _get_archetypal_entry(
-        self, endp: str, properties: List[str]
-    ) -> Tuple[Optional[Dict[str, Any]], str]:
+        self, endp: str, properties: list[str]
+    ) -> tuple[Optional[dict[str, Any]], str]:
         """Get a random entry from the first page of results for this
         endpoint.
 
@@ -542,8 +544,8 @@ class ImplementationValidator:
 
     @test_case
     def _check_response_fields(
-        self, endp: str, fields: List[str]
-    ) -> Tuple[Optional[bool], str]:
+        self, endp: str, fields: list[str]
+    ) -> tuple[Optional[bool], str]:
         """Check that the response field query parameter is obeyed.
 
         Parameters:
@@ -591,8 +593,8 @@ class ImplementationValidator:
         prop_type: DataType,
         sortable: bool,
         endp: str,
-        chosen_entry: Dict[str, Any],
-    ) -> Tuple[Optional[bool], str]:
+        chosen_entry: dict[str, Any],
+    ) -> tuple[Optional[bool], str]:
         """For the given property, property type and chose entry, this method
         runs a series of queries for each field in the entry, testing that the
         initial document is returned where expected.
@@ -680,6 +682,8 @@ class ImplementationValidator:
                 else:
                     _vals = [f"{val}" for val in _vals]
                 _test_value = ",".join(_vals)
+            elif operator == "LENGTH":
+                _test_value = f"{len(test_value)}"
             else:
                 if isinstance(test_value[0], str):
                     _test_value = f'"{test_value[0]}"'
@@ -700,9 +704,9 @@ class ImplementationValidator:
         prop_type: DataType,
         sortable: bool,
         endp: str,
-        chosen_entry: Dict[str, Any],
+        chosen_entry: dict[str, Any],
         query_optional: bool,
-    ) -> Tuple[Optional[bool], str]:
+    ) -> tuple[Optional[bool], str]:
         """This method constructs appropriate queries using all operators
         for a certain field and applies some tests:
 
@@ -805,7 +809,7 @@ class ImplementationValidator:
                 expected_status_code=(200, 501),
             )
 
-            if not response:
+            if response is None or response.status_code != 200:
                 if query_optional:
                     return (
                         None,
@@ -822,7 +826,7 @@ class ImplementationValidator:
                     f"Required field `meta->more_data_available` missing from response for {request}."
                 )
 
-            if not response["meta"]["more_data_available"]:
+            if not response["meta"]["more_data_available"] and "data" in response:
                 num_data_returned[operator] = len(response["data"])
             else:
                 num_data_returned[operator] = response["meta"].get("data_returned")
@@ -843,7 +847,7 @@ class ImplementationValidator:
             # if we have all results on this page, check that the blessed ID is in the response
             if excluded and (
                 chosen_entry.get("id", "")
-                in set(entry.get("id") for entry in response["data"])
+                in {entry.get("id") for entry in response["data"]}
             ):
                 raise ResponseError(
                     f"Entry {chosen_entry['id']} with value {prop!r}: {test_value} was not excluded by {query!r}"
@@ -935,7 +939,7 @@ class ImplementationValidator:
                     ].get("data_returned"):
                         raise ResponseError(
                             f"Query {query} did not work both ways around: {reversed_query}, "
-                            "returning different results each time."
+                            "returning a different number of results each time (as reported by `meta->data_returned`)"
                         )
 
                 # check that the filter returned no entries that had a null or missing value for the filtered property
@@ -1004,9 +1008,8 @@ class ImplementationValidator:
             if response_fields:
                 request_str += f"?response_fields={','.join(response_fields)}"
             response, _ = self._get_endpoint(request_str)
-            self._test_meta_schema_reporting(response, request_str, optional=True)
-
             if response:
+                self._test_meta_schema_reporting(response, request_str, optional=True)
                 self._deserialize_response(response, response_cls, request=request_str)
 
     def _test_multi_entry_endpoint(self, endp: str) -> None:
@@ -1057,7 +1060,7 @@ class ImplementationValidator:
     @test_case
     def _test_data_available_matches_data_returned(
         self, deserialized: Any
-    ) -> Tuple[Optional[bool], str]:
+    ) -> tuple[Optional[bool], str]:
         """In the case where no query is requested, `data_available`
         must equal `data_returned` in the meta response, which is tested
         here.
@@ -1081,7 +1084,7 @@ class ImplementationValidator:
 
         if deserialized.meta.data_available != deserialized.meta.data_returned:
             raise ResponseError(
-                "No query was performed, but `data_returned` != `data_available`."
+                f"No query was performed, but `data_returned` != `data_available` {deserialized.meta.data_returned} vs {deserialized.meta.data_available}."
             )
 
         return (
@@ -1123,7 +1126,7 @@ class ImplementationValidator:
     @test_case
     def _test_versions_endpoint_content(
         self, response: requests.Response
-    ) -> Tuple[requests.Response, str]:
+    ) -> tuple[requests.Response, str]:
         """Checks that the response from the versions endpoint complies
         with the specification and that its 'Content-Type' header complies with
         [RFC 4180](https://tools.ietf.org/html/rfc4180.html).
@@ -1183,9 +1186,9 @@ class ImplementationValidator:
     @test_case
     def _test_versions_headers(
         self,
-        content_type: Dict[str, Any],
-        expected_parameter: Union[str, List[str]],
-    ) -> Tuple[Dict[str, Any], str]:
+        content_type: dict[str, Any],
+        expected_parameter: Union[str, list[str]],
+    ) -> tuple[dict[str, Any], str]:
         """Tests that the `Content-Type` field of the `/versions` header contains
         the passed parameter.
 
@@ -1237,7 +1240,7 @@ class ImplementationValidator:
             expected_status_code = [404, 400]
 
         self._get_endpoint(
-            "v123123", expected_status_code=expected_status_code, optional=True
+            "v123123/info", expected_status_code=expected_status_code, optional=True
         )
 
     @test_case
@@ -1267,8 +1270,8 @@ class ImplementationValidator:
         self,
         response: requests.models.Response,
         check_next_link: int = 5,
-        previous_links: Optional[Set[str]] = None,
-    ) -> Tuple[Optional[bool], str]:
+        previous_links: Optional[set[str]] = None,
+    ) -> tuple[Optional[bool], str]:
         """Test that a multi-entry endpoint obeys the page limit by
         following pagination links up to a depth of `check_next_link`.
 
@@ -1314,6 +1317,10 @@ class ImplementationValidator:
                 next_link = response_json["links"]["next"]
                 if isinstance(next_link, dict):
                     next_link = next_link["href"]
+                if not next_link:
+                    raise ResponseError(
+                        "Endpoint suggested more data was available but provided no valid links->next link."
+                    )
             except KeyError:
                 raise ResponseError(
                     "Endpoint suggested more data was available but provided no valid links->next link."
@@ -1380,7 +1387,7 @@ class ImplementationValidator:
         response: requests.models.Response,
         response_cls: Any,
         request: Optional[str] = None,
-    ) -> Tuple[Any, str]:
+    ) -> tuple[Any, str]:
         """Try to create the appropriate pydantic model from the response.
 
         Parameters:
@@ -1409,13 +1416,13 @@ class ImplementationValidator:
 
         return (
             response_cls(**json_response),
-            "deserialized correctly as object of type {}".format(response_cls),
+            f"deserialized correctly as object of type {response_cls}",
         )
 
     @test_case
     def _get_available_endpoints(
-        self, base_info: Union[Any, Dict[str, Any]]
-    ) -> Tuple[Optional[List[str]], str]:
+        self, base_info: Union[Any, dict[str, Any]]
+    ) -> tuple[Optional[list[str]], str]:
         """Tries to get `entry_types_by_format` from base info response
         even if it could not be deserialized.
 
@@ -1428,6 +1435,7 @@ class ImplementationValidator:
             and a string summary.
 
         """
+        available_json_entry_endpoints = []
         for _ in [0]:
             try:
                 available_json_entry_endpoints = base_info["data"]["attributes"][
@@ -1470,8 +1478,8 @@ class ImplementationValidator:
 
     @test_case
     def _get_endpoint(
-        self, request_str: str, expected_status_code: Union[List[int], int] = 200
-    ) -> Tuple[Optional[requests.Response], str]:
+        self, request_str: str, expected_status_code: Union[list[int], int] = 200
+    ) -> tuple[Optional[requests.Response], str]:
         """Gets the response from the endpoint specified by `request_str`.
         function is wrapped by the `test_case` decorator
 

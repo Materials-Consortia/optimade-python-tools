@@ -15,7 +15,7 @@ class CsvResponse(Response):
     tags=["Versions"],
     response_class=CsvResponse,
 )
-def get_versions(request: Request) -> CsvResponse:
+def get_versions(request: Request):
     """Respond with the text/csv representation for the served versions."""
     version = BASE_URL_PREFIXES["major"].replace("/v", "")
     response = f"version\n{version}"

@@ -36,3 +36,9 @@ processes = []
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
+
+[build]
+  builtin = "python"
+
+[build.settings]
+  pythonbase = "3.10-slim-buster"

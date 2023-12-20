@@ -3,7 +3,8 @@ Utility functions to help the conversion functions along.
 
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
-from typing import Iterable, List, Optional, Tuple, Type
+from collections.abc import Iterable
+from typing import Optional
 
 from optimade.models.structures import Species as OptimadeStructureSpecies
 from optimade.models.structures import Vector3D
@@ -19,7 +20,7 @@ except ImportError:
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 
-def valid_lattice_vector(lattice_vec: Tuple[Vector3D, Vector3D, Vector3D]):
+def valid_lattice_vector(lattice_vec: tuple[Vector3D, Vector3D, Vector3D]):
     if len(lattice_vec) != 3:
         return False
     for vector in lattice_vec:
@@ -31,8 +32,8 @@ def valid_lattice_vector(lattice_vec: Tuple[Vector3D, Vector3D, Vector3D]):
 
 
 def scaled_cell(
-    cell: Tuple[Vector3D, Vector3D, Vector3D]
-) -> Tuple[Vector3D, Vector3D, Vector3D]:
+    cell: tuple[Vector3D, Vector3D, Vector3D]
+) -> tuple[Vector3D, Vector3D, Vector3D]:
     """Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).
     This 3x3 matrix can be used to calculate the fractional coordinates from the cartesian_site_positions.
 
@@ -62,8 +63,8 @@ def scaled_cell(
 
 
 def fractional_coordinates(
-    cell: Tuple[Vector3D, Vector3D, Vector3D], cartesian_positions: List[Vector3D]
-) -> List[Vector3D]:
+    cell: tuple[Vector3D, Vector3D, Vector3D], cartesian_positions: list[Vector3D]
+) -> list[Vector3D]:
     """Returns fractional coordinates and wraps coordinates to `[0,1[`.
 
     Note:
@@ -101,8 +102,8 @@ def fractional_coordinates(
 
 
 def cell_to_cellpar(
-    cell: Tuple[Vector3D, Vector3D, Vector3D], radians: bool = False
-) -> List[float]:
+    cell: tuple[Vector3D, Vector3D, Vector3D], radians: bool = False
+) -> list[float]:
     """Returns the cell parameters `[a, b, c, alpha, beta, gamma]`.
 
     Angles are in degrees unless `radian=True` is used.
@@ -161,10 +162,10 @@ def unit_vector(x: Vector3D) -> Vector3D:
 
 
 def cellpar_to_cell(
-    cellpar: List[float],
-    ab_normal: Tuple[int, int, int] = (0, 0, 1),
-    a_direction: Optional[Tuple[int, int, int]] = None,
-) -> List[Vector3D]:
+    cellpar: list[float],
+    ab_normal: tuple[int, int, int] = (0, 0, 1),
+    a_direction: Optional[tuple[int, int, int]] = None,
+) -> list[Vector3D]:
     """Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.
 
     Angles must be in degrees.
@@ -277,9 +278,9 @@ def cellpar_to_cell(
 def _pad_iter_of_iters(
     iterable: Iterable[Iterable],
     padding: Optional[float] = None,
-    outer: Optional[Type] = None,
-    inner: Optional[Type] = None,
-) -> Tuple[Iterable[Iterable], bool]:
+    outer: Optional[type] = None,
+    inner: Optional[type] = None,
+) -> tuple[Iterable[Iterable], bool]:
     """Turn any null/None values into a float in given iterable of iterables"""
     try:
         padding = float(padding)  # type: ignore[arg-type]
@@ -306,7 +307,7 @@ def _pad_iter_of_iters(
 
 
 def pad_cell(
-    lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D],
+    lattice_vectors: tuple[Vector3D, Vector3D, Vector3D],
     padding: Optional[float] = None,
 ) -> tuple:  # Setting this properly makes MkDocs fail.
     """Turn any `null`/`None` values into a `float` in given `tuple` of
@@ -333,8 +334,8 @@ def pad_cell(
 
 
 def species_from_species_at_sites(
-    species_at_sites: List[str],
-) -> List[OptimadeStructureSpecies]:
+    species_at_sites: list[str],
+) -> list[OptimadeStructureSpecies]:
     """When a list of species dictionaries is not provided, this function
     can be used to infer the species from the provided species_at_sites.
 
@@ -355,3 +356,14 @@ def species_from_species_at_sites(
         OptimadeStructureSpecies(name=_, concentration=[1.0], chemical_symbols=[_])
         for _ in set(species_at_sites)
     ]
+
+
+def elements_ratios_from_species_at_sites(species_at_sites: list[str]) -> list[float]:
+    """Compute the OPTIMADE `elements_ratios` field from `species_at_sites` in the case where `species_at_sites` refers
+    to sites wholly occupied by the given elements, e.g., not arbitrary species labels or with partial/mixed occupancy.
+
+    """
+    elements = set(species_at_sites)
+    counts = {e: species_at_sites.count(e) for e in elements}
+    num_sites = len(species_at_sites)
+    return [counts[e] / num_sites for e in sorted(elements)]

@@ -1,6 +1,6 @@
 # pylint: disable=line-too-long,no-self-argument
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Optional
 
 from pydantic import BaseModel, validator  # pylint: disable=no-name-in-module
 
@@ -155,7 +155,6 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
 
 
 class EntryInfoProperty(BaseModel):
-
     description: str = StrictField(
         ..., description="A human-readable description of the entry property"
     )
@@ -185,19 +184,18 @@ E.g., for the entry resource `structures`, the `species` property is defined as 
 
 
 class EntryInfoResource(BaseModel):
-
-    formats: List[str] = StrictField(
+    formats: list[str] = StrictField(
         ..., description="List of output formats available for this type of entry."
     )
 
     description: str = StrictField(..., description="Description of the entry.")
 
-    properties: Dict[str, EntryInfoProperty] = StrictField(
+    properties: dict[str, EntryInfoProperty] = StrictField(
         ...,
         description="A dictionary describing queryable properties for this entry type, where each key is a property name.",
     )
 
-    output_fields_by_format: Dict[str, List[str]] = StrictField(
+    output_fields_by_format: dict[str, list[str]] = StrictField(
         ...,
         description="Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.",
     )

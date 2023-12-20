@@ -5,13 +5,34 @@ copyright: Built by the Materials-Consortia
 
 theme:
   name: material
+  font:
+    text: 'Karla'
+    code: 'Share Tech Mono'
+    features:
+      - content.code.copy
   palette:
-    scheme: default
-    primary: black
-    accent: red
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+      primary: black
+      accent: red
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+      primary: black
+      accent: red
+
   icon:
     repo: fontawesome/brands/github
-  logo: images/optimade_logo_180x180.svg
+  logo: https://matsci.org/uploads/default/original/2X/b/bd2f59b3bf14fb046b74538750699d7da4c19ac1.svg
   favicon: images/favicon.png
   language: en
 

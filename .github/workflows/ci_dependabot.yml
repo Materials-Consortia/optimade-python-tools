@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ env.DEFAULT_REPO_BRANCH }}
 
@@ -73,13 +73,13 @@ jobs:
 
     - name: Fetch PR body
       id: pr_body
-      uses: chuhlomin/render-template@v1.6
+      uses: chuhlomin/render-template@v1.7
       with:
         template: .github/utils/single_dependency_pr_body.txt
 
     - name: Create PR
       id: cpr
-      uses: peter-evans/create-pull-request@v4
+      uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.RELEASE_PAT_BOT }}
         commit-message: New @dependabot-fueled updates

@@ -7,7 +7,7 @@ This conversion function relies on the [pymatgen](https://github.com/materialspr
 
 For more information on the pymatgen code see [their documentation](https://pymatgen.org).
 """
-from typing import Dict, List, Optional, Union
+from typing import Optional, Union
 
 from optimade.adapters.structures.utils import (
     species_from_species_at_sites,
@@ -16,9 +16,10 @@ from optimade.adapters.structures.utils import (
 from optimade.models import Species as OptimadeStructureSpecies
 from optimade.models import StructureResource as OptimadeStructure
 from optimade.models import StructureResourceAttributes
+from optimade.models.utils import anonymize_formula, reduce_formula
 
 try:
-    from pymatgen.core import Composition, Lattice, Molecule, Structure
+    from pymatgen.core import Lattice, Molecule, Structure
 
 except (ImportError, ModuleNotFoundError):
     from warnings import warn
@@ -104,9 +105,9 @@ def _get_molecule(optimade_structure: OptimadeStructure) -> Molecule:
 
 def _pymatgen_species(
     nsites: int,
-    species: Optional[List[OptimadeStructureSpecies]],
-    species_at_sites: List[str],
-) -> List[Dict[str, float]]:
+    species: Optional[list[OptimadeStructureSpecies]],
+    species_at_sites: list[str],
+) -> list[dict[str, float]]:
     """
     Create list of {"symbol": "concentration"} per site for values to pymatgen species parameters.
     Remove vacancies, if they are present.
@@ -168,14 +169,14 @@ def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
     attributes["dimension_types"] = [int(_) for _ in pmg_structure.lattice.pbc]
     attributes["nperiodic_dimensions"] = sum(attributes["dimension_types"])
     attributes["nelements"] = len(pmg_structure.composition.elements)
-    attributes["chemical_formula_anonymous"] = _pymatgen_anonymized_formula_to_optimade(
-        pmg_structure.composition
+    attributes["chemical_formula_anonymous"] = anonymize_formula(
+        pmg_structure.composition.formula
     )
     attributes["elements"] = sorted(
         [_.symbol for _ in pmg_structure.composition.elements]
     )
-    attributes["chemical_formula_reduced"] = _pymatgen_reduced_formula_to_optimade(
-        pmg_structure.composition
+    attributes["chemical_formula_reduced"] = reduce_formula(
+        pmg_structure.composition.formula
     )
     attributes["chemical_formula_descriptive"] = pmg_structure.composition.formula
     attributes["elements_ratios"] = [
@@ -188,33 +189,3 @@ def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
     attributes["structure_features"] = []
 
     return StructureResourceAttributes(**attributes)
-
-
-def _pymatgen_anonymized_formula_to_optimade(composition: Composition) -> str:
-    """Construct an OPTIMADE `chemical_formula_anonymous` from a pymatgen `Composition`."""
-    import re
-
-    from optimade.models.utils import anonymous_element_generator
-
-    return "".join(
-        [
-            "".join(x)
-            for x in zip(
-                anonymous_element_generator(),
-                reversed(re.split("[A-Z]", composition.anonymized_formula)[1:]),
-            )
-        ]
-    )
-
-
-def _pymatgen_reduced_formula_to_optimade(composition: Composition) -> str:
-    """Construct an OPTIMADE `chemical_formula_reduced` from a pymatgen `Composition`."""
-    import numpy
-
-    numbers = [int(_) for _ in composition.to_reduced_dict.values()]
-    gcd = numpy.gcd.reduce(numbers)
-    return "".join(
-        _
-        + f"{int(composition.to_reduced_dict[_]) // gcd if composition.to_reduced_dict[_] // gcd > 1 else ''}"
-        for _ in sorted([_.symbol for _ in composition.elements])
-    )

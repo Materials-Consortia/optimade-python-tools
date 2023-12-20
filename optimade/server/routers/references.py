@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, Request
 
 from optimade.models import (
@@ -23,14 +25,14 @@ references_coll = create_collection(
 
 @router.get(
     "/references",
-    response_model=ReferenceResponseMany,
+    response_model=ReferenceResponseMany if CONFIG.validate_api_response else dict,
     response_model_exclude_unset=True,
     tags=["References"],
     responses=ERROR_RESPONSES,
 )
 def get_references(
     request: Request, params: EntryListingQueryParams = Depends()
-) -> ReferenceResponseMany:
+) -> Any:
     return get_entries(
         collection=references_coll,
         response=ReferenceResponseMany,
@@ -41,14 +43,14 @@ def get_references(
 
 @router.get(
     "/references/{entry_id:path}",
-    response_model=ReferenceResponseOne,
+    response_model=ReferenceResponseOne if CONFIG.validate_api_response else dict,
     response_model_exclude_unset=True,
     tags=["References"],
     responses=ERROR_RESPONSES,
 )
 def get_single_reference(
     request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
-) -> ReferenceResponseOne:
+) -> Any:
     return get_single_entry(
         collection=references_coll,
         entry_id=entry_id,

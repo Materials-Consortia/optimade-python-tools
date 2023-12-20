@@ -1,12 +1,14 @@
 import json
 import re
 import warnings
-from typing import Iterable, Optional, Type, Union
+from collections.abc import Iterable
+from typing import Optional, Union
 from urllib.parse import urlparse
 
+import httpx
 import pytest
+import requests
 from fastapi.testclient import TestClient
-from requests import Response
 from starlette import testclient
 
 import optimade.models.jsonapi as jsonapi
@@ -30,7 +32,7 @@ class OptimadeTestClient(TestClient):
         root_path: str = "",
         version: str = "",
     ) -> None:
-        super(OptimadeTestClient, self).__init__(
+        super().__init__(
             app=app,
             base_url=base_url,
             raise_server_exceptions=raise_server_exceptions,
@@ -52,9 +54,10 @@ class OptimadeTestClient(TestClient):
     def request(  # pylint: disable=too-many-locals
         self,
         method: str,
-        url: str,
+        url: httpx._types.URLTypes,
         **kwargs,
-    ) -> Response:
+    ) -> httpx.Response:
+        url = str(url)
         if (
             re.match(r"/?v[0-9](.[0-9]){0,2}/", url) is None
             and not urlparse(url).scheme
@@ -62,7 +65,7 @@ class OptimadeTestClient(TestClient):
             while url.startswith("/"):
                 url = url[1:]
             url = f"{self.version}/{url}"
-        return super(OptimadeTestClient, self).request(
+        return super().request(
             method=method,
             url=url,
             **kwargs,
@@ -73,9 +76,9 @@ class BaseEndpointTests:
     """Base class for common tests of endpoints"""
 
     request_str: Optional[str] = None
-    response_cls: Optional[Type[jsonapi.Response]] = None
+    response_cls: Optional[type[jsonapi.Response]] = None
 
-    response: Optional[Response] = None
+    response: Optional[httpx.Response] = None
     json_response: Optional[dict] = None
 
     @staticmethod
@@ -189,7 +192,6 @@ def client_factory():
         server_module.add_optional_versioned_base_urls(app)
 
         if add_empty_endpoint:
-
             from fastapi import APIRouter
             from fastapi.responses import PlainTextResponse
             from starlette.routing import Route
@@ -222,9 +224,9 @@ class NoJsonEndpointTests:
     """A simplified mixin class for tests on non-JSON endpoints."""
 
     request_str: Optional[str] = None
-    response_cls: Optional[Type] = None
+    response_cls: Optional[type] = None
 
-    response: Optional[Response] = None
+    response: Optional[httpx.Response] = None
 
     @pytest.fixture(autouse=True)
     def get_response(self, both_clients):
@@ -238,3 +240,46 @@ class NoJsonEndpointTests:
         assert (
             self.response.status_code == 200
         ), f"Request to {self.request_str} failed: {self.response.content}"
+
+
+class HttpxTestClient(httpx.Client):
+    """An HTTP client wrapper that calls the regular test server."""
+
+    client = client_factory()(server="regular")
+
+    def request(  # pylint: disable=too-many-locals
+        self,
+        method: str,
+        url: httpx._types.URLTypes,
+        **kwargs,
+    ) -> httpx.Response:
+        return self.client.request(method, url)
+
+
+class RequestsTestClient(requests.Session):
+    """An HTTP client wrapper that calls the regular test server."""
+
+    client = client_factory()(server="regular")
+
+    def request(  # pylint: disable=too-many-locals
+        self,
+        method,
+        url,
+        *args,
+        **kwargs,
+    ) -> requests.Response:
+        return self.client.request(method, url)
+
+
+class AsyncHttpxTestClient(httpx.AsyncClient):
+    """An async HTTP client wrapper that calls the regular test server."""
+
+    client = client_factory()(server="regular")
+
+    async def request(  # pylint: disable=too-many-locals
+        self,
+        method: str,
+        url: httpx._types.URLTypes,
+        **kwargs,
+    ) -> httpx.Response:
+        return self.client.request(method, url)

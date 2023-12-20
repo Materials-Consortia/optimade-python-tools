@@ -158,15 +158,15 @@ deformities = (
     ),
     (
         {"chemical_formula_reduced": "Ge2Si2"},
-        "chemical_formula_reduced 'Ge2Si2' is not properly reduced: greatest common divisor was 2, expected 1.",
+        "chemical_formula_reduced 'Ge2Si2' is not properly reduced: expected 'GeSi'.",
     ),
     (
         {"chemical_formula_reduced": "Ge144Si60V24"},
-        "chemical_formula_reduced 'Ge144Si60V24' is not properly reduced: greatest common divisor was 12, expected 1.",
+        "chemical_formula_reduced 'Ge144Si60V24' is not properly reduced: expected 'Ge12Si5V2'.",
     ),
     (
         {"chemical_formula_anonymous": "A10B5C5"},
-        "chemical_formula_anonymous 'A10B5C5' is not properly reduced: greatest common divisor was 5, expected 1.",
+        "chemical_formula_anonymous 'A10B5C5' is not properly reduced: expected 'A2BC'",
     ),
     (
         {"chemical_formula_anonymous": "A44B15C9D4E3F2GHI0J0K0L0"},
@@ -194,7 +194,7 @@ def test_structure_fatal_deformities(good_structure, deformity):
 
 
 minor_deformities = (
-    {f: None} for f in set(f for _ in CORRELATED_STRUCTURE_FIELDS for f in _)
+    {f: None} for f in {f for _ in CORRELATED_STRUCTURE_FIELDS for f in _}
 )
 
 

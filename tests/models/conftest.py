@@ -12,7 +12,7 @@ def load_test_data(filename: str) -> list:
     if not json_file_path.exists():
         raise RuntimeError(f"Could not find {filename!r} in 'tests.models.test_data'")
 
-    with open(json_file_path, "r") as handle:
+    with open(json_file_path) as handle:
         data = json.load(handle)
 
     return data

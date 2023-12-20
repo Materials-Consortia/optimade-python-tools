@@ -17,42 +17,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -U setuptools wheel
-        pip install flake8
-
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --statistics
 
   pre-commit:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: '3.8'
+        python-version: '3.9'
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
+
 
     - name: Install dependencies
       run: |
@@ -71,14 +52,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
-    - name: Set up Python 3.10
+    - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.9'
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
 
     - name: Install tools
       run: |
@@ -101,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
@@ -147,11 +131,11 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11']
 
     services:
       mongo:
-        image: mongo:4
+        image: mongo:7
         ports:
         - 27017:27017
       postgres:
@@ -177,7 +161,7 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: true
         fetch-depth: 2
@@ -186,6 +170,9 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
 
     - name: Install latest compatible versions of immediate dependencies
       run: |
@@ -207,13 +194,23 @@ jobs:
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
+    - name: Run server tests with no API validation (using `mongomock`)
+      run:
+        pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      env:
+        OPTIMADE_DATABASE_BACKEND: 'mongomock'
+        OPTIMADE_VALIDATE_API_RESPONSE: false
+
     - name: Run server tests (using a real MongoDB)
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
 
     - name: Run server tests (using Elasticsearch)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      run: |
+        .github/utils/wait_for_it.sh localhost:9200 -t 120
+        .github/utils/wait_for_it.sh localhost:9300 -t 120
+        pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
 
@@ -230,27 +227,27 @@ jobs:
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
     - name: Run tests for validator only to assess coverage (mongomock)
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == 3.9
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
     - name: Run tests for validator only to assess coverage (Elasticsearch)
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == 3.9
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
         OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
 
     - name: Run tests for validator only to assess coverage (MongoDB)
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == 3.9
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
         OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
 
     - name: Run the OPTIMADE Client CLI
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == 3.9
       run: |
         coverage run --append --source optimade optimade/client/cli.py \
            --filter 'nsites = 1' \
@@ -278,7 +275,7 @@ jobs:
         coverage xml
 
     - name: Upload coverage to Codecov
-      if: matrix.python-version == '3.10' && github.repository == 'Materials-Consortia/optimade-python-tools'
+      if: matrix.python-version == '3.9' && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v3
       with:
         name: project
@@ -286,7 +283,7 @@ jobs:
         flags: project
 
     - name: Upload validator coverage to Codecov
-      if: matrix.python-version == '3.10' && github.repository == 'Materials-Consortia/optimade-python-tools'
+      if: matrix.python-version == '3.9' && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v3
       with:
         name: validator
@@ -297,13 +294,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
     - uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.9'
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
 
     - name: Install dependencies
       run: |
@@ -328,12 +328,15 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Set up Python 3.10
+    - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.9'
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
 
     - name: Install Python dependencies
       run: |
@@ -346,4 +349,4 @@ jobs:
           pip install -e .[all]
 
     - name: Build source distribution
-      run: python ./setup.py sdist
+      run: python -m build

@@ -2,7 +2,7 @@
 import re
 import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set, Type, Union
+from typing import Any, Optional, Union
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
@@ -55,7 +55,7 @@ class JSONAPIResponse(JSONResponse):
 
 def meta_values(
     url: Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str],
-    data_returned: int,
+    data_returned: Optional[int],
     data_available: int,
     more_data_available: bool,
     schema: Optional[str] = None,
@@ -91,10 +91,10 @@ def meta_values(
 
 
 def handle_response_fields(
-    results: Union[List[EntryResource], EntryResource],
-    exclude_fields: Set[str],
-    include_fields: Set[str],
-) -> List[Dict[str, Any]]:
+    results: Union[list[EntryResource], EntryResource, list[dict], dict],
+    exclude_fields: set[str],
+    include_fields: set[str],
+) -> list[dict[str, Any]]:
     """Handle query parameter `response_fields`.
 
     It is assumed that all fields are under `attributes`.
@@ -115,7 +115,11 @@ def handle_response_fields(
 
     new_results = []
     while results:
-        new_entry = results.pop(0).dict(exclude_unset=True, by_alias=True)
+        new_entry = results.pop(0)
+        try:
+            new_entry = new_entry.dict(exclude_unset=True, by_alias=True)  # type: ignore[union-attr]
+        except AttributeError:
+            pass
 
         # Remove fields excluded by their omission in `response_fields`
         for field in exclude_fields:
@@ -133,10 +137,10 @@ def handle_response_fields(
 
 
 def get_included_relationships(
-    results: Union[EntryResource, List[EntryResource]],
-    ENTRY_COLLECTIONS: Dict[str, EntryCollection],
-    include_param: List[str],
-) -> List[Union[EntryResource, Dict]]:
+    results: Union[EntryResource, list[EntryResource], dict, list[dict]],
+    ENTRY_COLLECTIONS: dict[str, EntryCollection],
+    include_param: list[str],
+) -> list[Union[EntryResource, dict]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
@@ -164,17 +168,23 @@ def get_included_relationships(
                 f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
             )
 
-    endpoint_includes: Dict[Any, Dict] = defaultdict(dict)
+    endpoint_includes: dict[Any, dict] = defaultdict(dict)
     for doc in results:
         # convert list of references into dict by ID to only included unique IDs
         if doc is None:
             continue
 
-        relationships = doc.relationships
+        try:
+            relationships = doc.relationships  # type: ignore
+        except AttributeError:
+            relationships = doc.get("relationships", None)
+
         if relationships is None:
             continue
 
-        relationships = relationships.dict()
+        if not isinstance(relationships, dict):
+            relationships = relationships.dict()
+
         for entry_type in ENTRY_COLLECTIONS:
             # Skip entry type if it is not in `include_param`
             if entry_type not in include_param:
@@ -187,10 +197,12 @@ def get_included_relationships(
                     if ref["id"] not in endpoint_includes[entry_type]:
                         endpoint_includes[entry_type][ref["id"]] = ref
 
-    included = {}
+    included: dict[
+        str, Union[list[EntryResource], EntryResource, list[dict], dict]
+    ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
-            ['id="{}"'.format(ref_id) for ref_id in endpoint_includes[entry_type]]
+            [f'id="{ref_id}"' for ref_id in endpoint_includes[entry_type]]
         )
         params = EntryListingQueryParams(
             filter=compound_filter,
@@ -203,6 +215,8 @@ def get_included_relationships(
 
         # still need to handle pagination
         ref_results, _, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
+        if ref_results is None:
+            ref_results = []
         included[entry_type] = ref_results
 
     # flatten dict by endpoint to list
@@ -232,10 +246,10 @@ def get_base_url(
 
 def get_entries(
     collection: EntryCollection,
-    response: Type[EntryResponseMany],
+    response: type[EntryResponseMany],  # noqa
     request: Request,
     params: EntryListingQueryParams,
-) -> EntryResponseMany:
+) -> dict:
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
@@ -259,8 +273,8 @@ def get_entries(
     if more_data_available:
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
-        if isinstance(results, list):
-            query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)  # type: ignore[assignment,list-item]
+        query.update(collection.get_next_query_params(params, results))
+
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
 
@@ -271,9 +285,9 @@ def get_entries(
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)  # type: ignore[assignment]
 
-    return response(
+    return dict(
         links=links,
-        data=results,
+        data=results if results else [],
         meta=meta_values(
             url=request.url,
             data_returned=data_returned,
@@ -290,10 +304,10 @@ def get_entries(
 def get_single_entry(
     collection: EntryCollection,
     entry_id: str,
-    response: Type[EntryResponseOne],
+    response: type[EntryResponseOne],
     request: Request,
     params: SingleEntryQueryParams,
-) -> EntryResponseOne:
+) -> dict:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
@@ -324,9 +338,9 @@ def get_single_entry(
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
 
-    return response(
+    return dict(
         links=links,
-        data=results,
+        data=results if results else None,
         meta=meta_values(
             url=request.url,
             data_returned=data_returned,

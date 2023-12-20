@@ -45,3 +45,23 @@ def test_special_species(SPECIAL_SPECIES_STRUCTURES):
 def test_null_species(null_species_structure):
     """Make sure null species are handled"""
     assert isinstance(get_ase_atoms(null_species_structure), Atoms)
+
+
+def test_extra_info_keys(RAW_STRUCTURES):
+    """Test that provider fields/ASE metadata is preserved during conversion."""
+    structure = RAW_STRUCTURES[0]
+    structure["attributes"]["_ase_key"] = "some value"
+    structure["attributes"]["_ase_another_key"] = [1, 2, 3]
+    structure["attributes"]["_key_without_ase_prefix"] = [4, 5, 6]
+
+    atoms = Structure(structure).as_ase
+    assert atoms.info["key"] == "some value"
+    assert atoms.info["another_key"] == [1, 2, 3]
+    assert atoms.info["_key_without_ase_prefix"] == [4, 5, 6]
+
+    roundtrip_structure = Structure.ingest_from(atoms).attributes.dict()
+    assert roundtrip_structure["_ase_key"] == "some value"
+    assert roundtrip_structure["_ase_another_key"] == [1, 2, 3]
+
+    # This key should have the _ase prefix re-added
+    assert roundtrip_structure["_ase__key_without_ase_prefix"] == [4, 5, 6]

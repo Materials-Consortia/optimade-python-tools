@@ -1,4 +1,5 @@
 """Test Structure adapter"""
+
 import pytest
 
 from optimade.adapters import Structure
@@ -146,3 +147,88 @@ def test_common_converters(raw_structure, RAW_STRUCTURES):
         raw_structure_property_set = set(raw_structure.keys())
         resource_property_set = set(Structure(raw_structure).as_dict.keys())
         assert raw_structure_property_set.issubset(resource_property_set)
+
+
+def compare_lossy_conversion(structure_attributes, reconverted_structure_attributes):
+    """Compare two structures, allowing for some loss of information and mapping of prefixed keys."""
+
+    try:
+        import numpy as np
+    except ImportError:
+        pytest.node.warn(
+            pytest.PytestWarning(
+                "numpy not found, some cases of conversion tests will be skipped"
+            )
+        )
+        np = None
+
+    lossy_keys = (
+        "chemical_formula_descriptive",
+        "chemical_formula_hill",
+        "last_modified",
+        "assemblies",
+        "attached",
+        "immutable_id",
+        "species",
+        "fractional_site_positions",
+    )
+    array_keys = ("cartesian_site_positions", "lattice_vectors")
+
+    for k in reconverted_structure_attributes:
+        if k not in lossy_keys:
+            if k in array_keys and np is not None:
+                np.testing.assert_almost_equal(
+                    reconverted_structure_attributes[k], structure_attributes[k]
+                )
+            elif k.startswith("_"):
+                # ugly way of checking if a substring exists in the initial structure
+                for i in range(len(k)):
+                    subkey = k[i:]
+                    if subkey in structure_attributes:
+                        assert (
+                            reconverted_structure_attributes[k]
+                            == structure_attributes[subkey]
+                        )
+                        break
+                else:
+                    raise ValueError(f"No subkey of {k} was found in initial structure")
+
+            else:
+                assert reconverted_structure_attributes[k] == structure_attributes[k]
+
+
+@pytest.mark.parametrize(
+    "format",
+    [k for k in Structure._type_ingesters.keys() if k in Structure._type_converters],
+)
+def test_two_way_conversion(RAW_STRUCTURES, format):
+    for structure in RAW_STRUCTURES:
+        new_structure = Structure(structure)
+        converted_structure = new_structure.convert(format)
+        if converted_structure is None:
+            continue
+        reconverted_structure = Structure.ingest_from(
+            converted_structure, format
+        ).entry.dict()
+        compare_lossy_conversion(
+            structure["attributes"], reconverted_structure["attributes"]
+        )
+
+
+@pytest.mark.parametrize(
+    "format",
+    [k for k in Structure._type_ingesters.keys() if k in Structure._type_converters],
+)
+def test_two_way_conversion_with_implicit_type(RAW_STRUCTURES, format):
+    for structure in RAW_STRUCTURES:
+        new_structure = Structure(structure)
+        converted_structure = new_structure.convert(format)
+        if converted_structure is None:
+            continue
+        reconverted_structure = Structure.ingest_from(
+            converted_structure, format=None
+        ).entry.dict()
+
+        compare_lossy_conversion(
+            structure["attributes"], reconverted_structure["attributes"]
+        )

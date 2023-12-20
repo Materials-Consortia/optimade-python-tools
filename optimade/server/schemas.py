@@ -1,4 +1,5 @@
-from typing import Callable, Dict, Iterable, Optional
+from collections.abc import Iterable
+from typing import Callable, Optional
 
 from optimade.models import (
     DataType,
@@ -9,7 +10,7 @@ from optimade.models import (
 
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
 
-ENTRY_INFO_SCHEMAS: Dict[str, Callable[[], Dict]] = {
+ENTRY_INFO_SCHEMAS: dict[str, Callable[[], dict]] = {
     "structures": StructureResource.schema,
     "references": ReferenceResource.schema,
 }
@@ -24,7 +25,7 @@ try:
     """
     from optimade.exceptions import POSSIBLE_ERRORS
 
-    ERROR_RESPONSES: Optional[Dict[int, Dict]] = {
+    ERROR_RESPONSES: Optional[dict[int, dict]] = {
         err.status_code: {"model": ErrorResponse, "description": err.title}
         for err in POSSIBLE_ERRORS
     }
@@ -94,7 +95,11 @@ def retrieve_queryable_properties(
             if isinstance(field, dict)
         ]
         for field in described_provider_fields:
-            name = f"_{CONFIG.provider.prefix}_{field['name']}"
+            name = (
+                f"_{CONFIG.provider.prefix}_{field['name']}"
+                if not field["name"].startswith("_")
+                else field["name"]
+            )
             properties[name] = {k: field[k] for k in field if k != "name"}
             properties[name]["sortable"] = field.get("sortable", True)
 

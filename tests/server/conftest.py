@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Union
+from typing import Optional, Union
 
 import pytest
 
@@ -124,7 +124,6 @@ def check_response(get_good_response):
         server: The type of server to test, or the actual test client class.
 
     """
-    from typing import List
 
     from optimade.server.config import CONFIG
 
@@ -132,11 +131,11 @@ def check_response(get_good_response):
 
     def inner(
         request: str,
-        expected_ids: Union[str, List[str]],
+        expected_ids: Union[str, list[str]],
         page_limit: int = CONFIG.page_limit,
         expected_return: Optional[int] = None,
         expected_as_is: bool = False,
-        expected_warnings: Optional[List[Dict[str, str]]] = None,
+        expected_warnings: Optional[list[dict[str, str]]] = None,
         server: Union[str, OptimadeTestClient] = "regular",
     ):
         if expected_warnings:
@@ -170,6 +169,8 @@ def check_response(get_good_response):
                     assert response["meta"]["warnings"][ind][key] == warn[key]
         else:
             assert "warnings" not in response["meta"]
+
+        return response
 
     return inner
 
@@ -243,3 +244,17 @@ def check_error_response(client, index_client):
             raise
 
     return inner
+
+
+@pytest.fixture(scope="session")
+def http_client():
+    from .utils import RequestsTestClient
+
+    return RequestsTestClient
+
+
+@pytest.fixture(scope="session")
+def async_http_client():
+    from .utils import AsyncHttpxTestClient
+
+    return AsyncHttpxTestClient

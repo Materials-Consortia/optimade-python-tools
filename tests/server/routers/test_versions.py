@@ -4,7 +4,6 @@ from ..utils import NoJsonEndpointTests
 
 
 class TestVersionsEndpoint(NoJsonEndpointTests):
-
     request_str = "/versions"
     response_cls = str
 

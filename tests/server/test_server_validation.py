@@ -20,6 +20,19 @@ def test_with_validator(both_fake_remote_clients):
     assert validator.valid
 
 
+def test_with_validator_skip_optional(both_fake_remote_clients):
+    from optimade.server.main_index import app
+
+    validator = ImplementationValidator(
+        client=both_fake_remote_clients,
+        index=both_fake_remote_clients.app == app,
+        run_optional_tests=False,
+    )
+
+    validator.validate_implementation()
+    assert validator.valid
+
+
 def test_with_validator_json_response(both_fake_remote_clients, capsys):
     """Test that the validator writes compliant JSON when requested."""
     from optimade.server.main_index import app
@@ -138,7 +151,6 @@ def test_meta_schema_value_obeys_index(client, index_client, server: str):
     }
 
     for version in BASE_URL_PREFIXES.values():
-
         # Mimic the effect of the relevant server's startup
         CONFIG.is_index = server == "index"
         response = clients[server].get(url=version + "/links")

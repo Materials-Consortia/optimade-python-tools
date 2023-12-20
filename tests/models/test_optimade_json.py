@@ -31,7 +31,7 @@ def test_convert_python_types():
 
     test_none = None
     python_types_as_objects = [
-        str("Test"),
+        "Test",
         42,
         42.42,
         ["Test", 42],
@@ -112,7 +112,6 @@ def test_good_prefixes(prefix):
     ("Example", "_exmpl", "123_exmpl", "", "example provider", "exampleProvider"),
 )
 def test_bad_prefixes(prefix):
-
     provider = {
         "name": "Example",
         "description": "example",

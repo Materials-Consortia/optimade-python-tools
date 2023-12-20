@@ -4,20 +4,17 @@ from ..utils import RegularEndpointTests
 
 
 class TestReferencesEndpoint(RegularEndpointTests):
-
     request_str = "/references"
     response_cls = ReferenceResponseMany
 
 
 class TestSingleReferenceEndpoint(RegularEndpointTests):
-
     test_id = "dijkstra1968"
     request_str = f"/references/{test_id}"
     response_cls = ReferenceResponseOne
 
 
 class TestSingleReferenceEndpointDifficult(RegularEndpointTests):
-
     test_id = "dummy/20.19"
     request_str = f"/references/{test_id}"
     response_cls = ReferenceResponseOne

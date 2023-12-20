@@ -1,12 +1,274 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v0.25.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.3) (2023-09-29)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.1...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.2...v0.25.3)
+
+**Merged pull requests:**
+
+- Add mp-api and emmet pins to avoid premature pydantic v2 upgrade [\#1795](https://github.com/Materials-Consortia/optimade-python-tools/pull/1795) ([ml-evs](https://github.com/ml-evs))
+- Debugging `links->next` issues [\#1794](https://github.com/Materials-Consortia/optimade-python-tools/pull/1794) ([ml-evs](https://github.com/ml-evs))
+- Add option for custom landing pages [\#1788](https://github.com/Materials-Consortia/optimade-python-tools/pull/1788) ([ml-evs](https://github.com/ml-evs))
+- Add config option `mongo_count_timeout` to skip the global count per request [\#1757](https://github.com/Materials-Consortia/optimade-python-tools/pull/1757) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.25.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.2) (2023-09-12)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.1...v0.25.2)
+
+**Merged pull requests:**
+
+- Fix typo in pyproject.toml [\#1763](https://github.com/Materials-Consortia/optimade-python-tools/pull/1763) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.25.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.1) (2023-08-10)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.0...v0.25.1)
+
+This release simply tests the migration to `pyproject.toml`, as well as updating a few dependencies along the way.
+
+**Merged pull requests:**
+
+- Migrate fully to pyproject.toml [\#1737](https://github.com/Materials-Consortia/optimade-python-tools/pull/1737) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.25.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.0) (2023-07-25)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.24.1...v0.25.0)
+
+This release primarily contains changes to the server code including significant optimizations, the ability to fully disable validation of outgoing responses and the ability to configure provider fields that already exist in the database with a prefix, as well as various bug fixes and dependency compatibility updates. Other important changes include the dropping of Python 3.8 support. This version still uses Pydantic v1 and a future version will migrate fully to Pydantic v2.
 
 **Fixed bugs:**
 
-- Cannot retrieve child database links [\#1410](https://github.com/Materials-Consortia/optimade-python-tools/issues/1410)
+- Fixed `elements_ratios` length alias bug [\#1713](https://github.com/Materials-Consortia/optimade-python-tools/pull/1713) ([JPBergsma](https://github.com/JPBergsma))
+
+**Closed issues:**
+
+- Flaky elasticsearch tests [\#1683](https://github.com/Materials-Consortia/optimade-python-tools/issues/1683)
+- Suggestion: add functionality for listing the fields in an API to the client [\#1662](https://github.com/Materials-Consortia/optimade-python-tools/issues/1662)
+
+**Merged pull requests:**
+
+- Allow already prefixed fields to be configured as provider fields [\#1720](https://github.com/Materials-Consortia/optimade-python-tools/pull/1720) ([ml-evs](https://github.com/ml-evs))
+- Add `[all_strict]` deps set that reads from requirements files [\#1719](https://github.com/Materials-Consortia/optimade-python-tools/pull/1719) ([ml-evs](https://github.com/ml-evs))
+- Do not raise local OPTIMADE warnings at server level [\#1718](https://github.com/Materials-Consortia/optimade-python-tools/pull/1718) ([ml-evs](https://github.com/ml-evs))
+- Assorted server optimizations [\#1717](https://github.com/Materials-Consortia/optimade-python-tools/pull/1717) ([ml-evs](https://github.com/ml-evs))
+- Loosen version requirement email\_validator [\#1716](https://github.com/Materials-Consortia/optimade-python-tools/pull/1716) ([JPBergsma](https://github.com/JPBergsma))
+- Update dependency Pymatgen [\#1714](https://github.com/Materials-Consortia/optimade-python-tools/pull/1714) ([JPBergsma](https://github.com/JPBergsma))
+- Bump providers from `1e5d59d` to `564a499` [\#1696](https://github.com/Materials-Consortia/optimade-python-tools/pull/1696) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Upgrade Fly deployment to Python 3.10 [\#1695](https://github.com/Materials-Consortia/optimade-python-tools/pull/1695) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `1e5d59d` to `564a499` [\#1692](https://github.com/Materials-Consortia/optimade-python-tools/pull/1692) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Add CI timeout to wait for ES [\#1687](https://github.com/Materials-Consortia/optimade-python-tools/pull/1687) ([ml-evs](https://github.com/ml-evs))
+- Allow client callbacks to dynamically set the next URL [\#1685](https://github.com/Materials-Consortia/optimade-python-tools/pull/1685) ([ml-evs](https://github.com/ml-evs))
+- Debugging flaky ES tests [\#1684](https://github.com/Materials-Consortia/optimade-python-tools/pull/1684) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `1e5d59d` to `564a499` [\#1674](https://github.com/Materials-Consortia/optimade-python-tools/pull/1674) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v0.24.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.24.1) (2023-06-07)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.24.0...v0.24.1)
+
+**Implemented enhancements:**
+
+- Add `--list-properties` and `--search-property` functionality to client [\#1663](https://github.com/Materials-Consortia/optimade-python-tools/pull/1663) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Use default parser version in Mongo collection [\#1655](https://github.com/Materials-Consortia/optimade-python-tools/pull/1655) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `54c4f05` to `1e5d59d` [\#1654](https://github.com/Materials-Consortia/optimade-python-tools/pull/1654) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump providers from `1c3f0f1` to `1e5d59d` [\#1639](https://github.com/Materials-Consortia/optimade-python-tools/pull/1639) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v0.24.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.24.0) (2023-05-19)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.23.1...v0.24.0)
+
+**Implemented enhancements:**
+
+- Validate list `LENGTH` queries with validator [\#1637](https://github.com/Materials-Consortia/optimade-python-tools/pull/1637) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- Local version app not reachable in docker container. [\#1589](https://github.com/Materials-Consortia/optimade-python-tools/issues/1589)
+
+**Merged pull requests:**
+
+- Bump providers from `ae359c2` to `1c3f0f1` [\#1638](https://github.com/Materials-Consortia/optimade-python-tools/pull/1638) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Fix local docker dev server usage [\#1631](https://github.com/Materials-Consortia/optimade-python-tools/pull/1631) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `54c4f05` to `ae359c2` [\#1622](https://github.com/Materials-Consortia/optimade-python-tools/pull/1622) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v0.23.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.23.1) (2023-04-13)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.23.0...v0.23.1)
+
+**Merged pull requests:**
+
+- Removing Codecov from dependencies because it is no longer on pypi. [\#1603](https://github.com/Materials-Consortia/optimade-python-tools/pull/1603) ([JPBergsma](https://github.com/JPBergsma))
+
+## [v0.23.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.23.0) (2023-03-28)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.2...v0.23.0)
+
+**Fixed bugs:**
+
+- Landing page provider homepage link is broken [\#1568](https://github.com/Materials-Consortia/optimade-python-tools/issues/1568)
+
+**Merged pull requests:**
+
+- Element symbols are now used when generating an ase atom. [\#1571](https://github.com/Materials-Consortia/optimade-python-tools/pull/1571) ([JPBergsma](https://github.com/JPBergsma))
+- Fix provider homepage on landing page [\#1569](https://github.com/Materials-Consortia/optimade-python-tools/pull/1569) ([ml-evs](https://github.com/ml-evs))
+- Small code corrections [\#1562](https://github.com/Materials-Consortia/optimade-python-tools/pull/1562) ([JPBergsma](https://github.com/JPBergsma))
+- Extract next link query param creation into EntriesCollection method. [\#1561](https://github.com/Materials-Consortia/optimade-python-tools/pull/1561) ([markus1978](https://github.com/markus1978))
+- Preliminary support for `page_above` in base entry collections [\#1560](https://github.com/Materials-Consortia/optimade-python-tools/pull/1560) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.22.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.2) (2023-03-16)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.1...v0.22.2)
+
+**Closed issues:**
+
+- Validator presents internal errors when run with `--skip-optional` [\#1558](https://github.com/Materials-Consortia/optimade-python-tools/issues/1558)
+
+**Merged pull requests:**
+
+- Fix spurious errors when running validator with `--skip-optional` [\#1559](https://github.com/Materials-Consortia/optimade-python-tools/pull/1559) ([ml-evs](https://github.com/ml-evs))
+- Improve some validator error messages [\#1557](https://github.com/Materials-Consortia/optimade-python-tools/pull/1557) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `a92e5bc` to `3be73e9` [\#1538](https://github.com/Materials-Consortia/optimade-python-tools/pull/1538) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v0.22.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.1) (2023-02-28)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.22.0...v0.22.1)
+
+This patch release changes the synchronous functionality of `OptimadeClient` to use "vanilla" requests rather than httpx. This enables easier use inside of Jupyter notebooks.
+
+**Closed issues:**
+
+- Add docs examples for client callbacks [\#1527](https://github.com/Materials-Consortia/optimade-python-tools/issues/1527)
+- Cannot use the `OptimadeClient` in async mode with an existing event loop [\#1195](https://github.com/Materials-Consortia/optimade-python-tools/issues/1195)
+
+**Merged pull requests:**
+
+- Replace httpx usage in synchronous `OptimadeClient` with requests  [\#1536](https://github.com/Materials-Consortia/optimade-python-tools/pull/1536) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.22.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.22.0) (2023-02-27)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.21.0...v0.22.0)
+
+This release adds a new feature to the reference server for avoiding validating data on the way out of the API (useful in cases where a small amount of leniency is desirable, and will have a minor performance bump). It also fixes a bug in the schema where `page_below` and `page_above` were codified as integers rather than strings.
+
+**Implemented enhancements:**
+
+- Add server config option to disable validation of outgoing data [\#1530](https://github.com/Materials-Consortia/optimade-python-tools/pull/1530) ([ml-evs](https://github.com/ml-evs))
+
+**Fixed bugs:**
+
+- Make `page_above/below` strings rather than ints [\#1529](https://github.com/Materials-Consortia/optimade-python-tools/pull/1529) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.21.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.21.0) (2023-02-20)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.3...v0.21.0)
+
+This minor release contains new client functionality and improved support for ASE.
+
+## New features:
+
+- Ability to specify async callback functions that are called after every client response.
+  This can be used for e.g., iteratively saving to file or a database. For example:
+
+  ```python
+  from optimade.client import OptimadeClient
+
+  DATABASE = pymongo.MongoClient().database.collection
+
+  def save_callback(url, results) -> None:
+      for structure in results["data"]:
+          DATABASE.insert_one(structure)
+
+  client = OptimadeClient(callbacks=[save_callback])
+  client.get()
+  ```
+
+- Ability to create OPTIMADE structure objects from ASE atoms:
+  ```python
+  from optimade.adapters import Structure
+  from ase import Atoms
+
+  co = Atoms('CO', positions=[(0, 0, 0), (0, 0, 1.1)])
+
+  structure = Structure.from_ase_atoms(co)
+  ```
+
+- Added ability to mute the client progress bars with `--silent`/`silent=True` and increased default response timeouts to better reflect those required for practical queries.
+
+**Implemented enhancements:**
+
+- Add customisable callback functions to client [\#1515](https://github.com/Materials-Consortia/optimade-python-tools/issues/1515)
+- Add ability to specify callbacks to run after each client request [\#1519](https://github.com/Materials-Consortia/optimade-python-tools/pull/1519) ([ml-evs](https://github.com/ml-evs))
+- Increase client timeouts and tweak `response_fields` behaviour [\#1514](https://github.com/Materials-Consortia/optimade-python-tools/pull/1514) ([ml-evs](https://github.com/ml-evs))
+- Add ASE ingester and generalize other ingestion utilities [\#1509](https://github.com/Materials-Consortia/optimade-python-tools/pull/1509) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- Increase default client timeouts [\#1513](https://github.com/Materials-Consortia/optimade-python-tools/issues/1513)
+- Provide basic support for older pymatgen versions in adapters [\#1490](https://github.com/Materials-Consortia/optimade-python-tools/issues/1490)
+
+**Merged pull requests:**
+
+- Replace several linters and fixers \(flake8, isort etc.\) with ruff [\#1526](https://github.com/Materials-Consortia/optimade-python-tools/pull/1526) ([ml-evs](https://github.com/ml-evs))
+- Add `--silent` option to suppress client output until results [\#1518](https://github.com/Materials-Consortia/optimade-python-tools/pull/1518) ([ml-evs](https://github.com/ml-evs))
+- Update tests and client to properly test async mode [\#1517](https://github.com/Materials-Consortia/optimade-python-tools/pull/1517) ([ml-evs](https://github.com/ml-evs))
+- Refresh docs style and associated tweaks [\#1516](https://github.com/Materials-Consortia/optimade-python-tools/pull/1516) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.20.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.3) (2023-01-09)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.2...v0.20.3)
+
+This release primarily adds compatibility for the newest FastAPI releases (`>=0.87`) by updating our test client to work with both `httpx` and `requests`.
+
+**Merged pull requests:**
+
+- Add compatibility for `httpx`-based `TestClient` for latest FastAPI version [\#1460](https://github.com/Materials-Consortia/optimade-python-tools/pull/1460) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.20.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.2) (2022-12-21)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.20.1...v0.20.2)
+
+This release adds the ability to include or exclude particular providers from queries with the `OptimadeClient` class and `optimade-get` CLI, via the provider's registered prefix (#1412)
+
+For example:
+
+```shell
+# Only query databases served by the example providers
+optimade-get --include-providers exmpl,optimade
+# Exclude example providers from global list
+optimade-get --exclude-providers exmpl,optimade
+```
+
+You can also now exclude particular databases by their URLs:
+```shell
+# Exclude specific example databases
+optimade-get --exclude-databases https://example.org/optimade,https://optimade.org/example
+```
+
+The release also includes some server enhancements and fixes:
+- Caching of `/info/` and `/info/<entry>` endpoint responses (#1433)
+- A bugfix for the entry mapper classes, which were sharing cache resources globally leading to poor utilization (#1435)
+
+**Implemented enhancements:**
+
+- Cache `/info` and `/info/<entry>` responses [\#1433](https://github.com/Materials-Consortia/optimade-python-tools/pull/1433) ([ml-evs](https://github.com/ml-evs))
+
+**Fixed bugs:**
+
+- `lru_cache`s on the mapper classes are subtly wrong [\#1434](https://github.com/Materials-Consortia/optimade-python-tools/issues/1434)
+- Fix for mapper caches [\#1435](https://github.com/Materials-Consortia/optimade-python-tools/pull/1435) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- Migrate away from Heroku for demo server [\#1307](https://github.com/Materials-Consortia/optimade-python-tools/issues/1307)
+- Add ability to use provider prefixes/custom index base URLs with client [\#1295](https://github.com/Materials-Consortia/optimade-python-tools/issues/1295)
+
+**Merged pull requests:**
+
+- Add pip caches to CI and tidy old flake8 job [\#1442](https://github.com/Materials-Consortia/optimade-python-tools/pull/1442) ([ml-evs](https://github.com/ml-evs))
+- Allow empty strings through chemical formula regexp [\#1428](https://github.com/Materials-Consortia/optimade-python-tools/pull/1428) ([ml-evs](https://github.com/ml-evs))
+- Explicitly use Python 3.8 environment for pre-commit in CI [\#1421](https://github.com/Materials-Consortia/optimade-python-tools/pull/1421) ([ml-evs](https://github.com/ml-evs))
+- Add ability to \(in/ex\)clude providers by ID within client [\#1412](https://github.com/Materials-Consortia/optimade-python-tools/pull/1412) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.20.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.1) (2022-12-03)
 
@@ -14,6 +276,7 @@
 
 **Fixed bugs:**
 
+- Cannot retrieve child database links [\#1410](https://github.com/Materials-Consortia/optimade-python-tools/issues/1410)
 - Fix typo that breaks `get_child_databases` retriever [\#1411](https://github.com/Materials-Consortia/optimade-python-tools/pull/1411) ([ml-evs](https://github.com/ml-evs))
 
 ## [v0.20.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.20.0) (2022-11-29)
@@ -38,10 +301,8 @@ Aside from that, the package now supports Python 3.11, and our example server is
 **Closed issues:**
 
 - Fully isolate server code from other submodules [\#1403](https://github.com/Materials-Consortia/optimade-python-tools/issues/1403)
-- Replace https://gitlab.com/pycqa/flake8 with https://github.com/pycqa/flake8 [\#1388](https://github.com/Materials-Consortia/optimade-python-tools/issues/1388)
 - OpenAPI schema should not enforce recommended constraint on `page_number` [\#1372](https://github.com/Materials-Consortia/optimade-python-tools/issues/1372)
 - Pydantic models docs are broken on the mkdocs site with new renderer [\#1353](https://github.com/Materials-Consortia/optimade-python-tools/issues/1353)
-- Migrate away from Heroku for demo server [\#1307](https://github.com/Materials-Consortia/optimade-python-tools/issues/1307)
 - FastAPI should not be a core dependency [\#1198](https://github.com/Materials-Consortia/optimade-python-tools/issues/1198)
 
 **Merged pull requests:**
