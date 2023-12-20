@@ -12,6 +12,7 @@ from optimade.models.utils import (
     CHEMICAL_FORMULA_REGEXP,
     CHEMICAL_SYMBOLS,
     EXTRA_SYMBOLS,
+    SPACE_GROUP_SYMMETRY_OPERATION_REGEX,
     OptimadeField,
     StrictField,
     SupportLevel,
@@ -523,9 +524,57 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.OPTIONAL,
     )
 
+    space_group_symmetry_operations_xyz: Optional[list[str]] = OptimadeField(
+        None,
+        description="""A list of symmetry operations given as general position x, y and z coordinates in algebraic form.
+
+Each symmetry operation is described by a string that gives that symmetry operation in Jones' faithful representation (Bradley & Cracknell, 1972: pp. 35-37), adapted for computer string notation.
+The letters x, y and z that are typesetted with overbars in printed text represent coordinate values multiplied by -1 and are encoded as -x, -y and -z, respectively.
+The syntax of the strings representing symmetry operations MUST conform to regular expressions given in appendix The Symmetry Operation String Regular Expressions.
+The interpretation of the strings MUST follow the conventions of the IUCr CIF core dictionary (IUCr, 2023).
+In particular, this property MUST explicitly provide all symmetry operations needed to generate all the atoms in the unit cell from the atoms in the asymmetric unit, for the setting used.
+This symmetry operation set MUST always include the `"x,y,z"` identity operation.
+The symmetry operations are to be applied to fractional atom coordinates.
+In case only Cartesian coordinates are available, these Cartesian coordinates must be converted to fractional coordinates before the application of the provided symmetry operations.
+If the symmetry operation list is present, it MUST be compatible with other space group specifications (e.g. the ITC space group number, the Hall symbol, the Hermann-Mauguin symbol) if these are present.
+
+- **Type**: list of strings
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+      However, the property is RECOMMENDED if coordinates are returned in a form to which these operations can or must be applied (e.g. fractional atom coordinates of an asymmetric unit).
+      Moreover, the property is REQUIRED if symmetry operations are necessary to reconstruct the full model of the material and no other symmetry information (e.g., the Hall symbol) is provided that would allow the user to derive symmetry operations unambiguously.
+    - MUST be null if `nperiodic_dimensions` is equal to 0.
+
+- **Examples**:
+    - Space group operations for the space group with ITC number 3 (H-M symbol: P 2, extended H-M symbol: P 1 2 1, Hall symbol P 2y):
+      ```
+      ["x,y,z", "-x,y,-z"]
+      ```
+    - Space group operations for the space group with ITC number 5 (H-M symbol C 2, extended H-M symbol: C 1 2 1, Hall symbol C 2y):
+      ```
+      ["x,y,z", "-x,y,-z", "x+1/2,y+1/2,z", "-x+1/2,y+1/2,-z"]
+      ```
+
+- **Notes**:
+  The list of space group symmetry operations applies to the whole periodic array of atoms and together with the lattice translations given in the `lattice_vectors` property provides the necessary information to reconstruct all atom site positions of the periodic material.
+  Thus, the symmetry operations described in this property are only applicable to material models with at least one periodic dimension.
+  This property is not meant to represent arbitrary symmetries of molecules, non-periodic (finite) collections of atoms or non-crystallographic symmetry.
+
+- **Bibliographic References**:
+
+  Bradley, C. J. and Cracknell, A. P. (1972) The Mathematical Theory of Symmetry in Solids. Oxford, Clarendon Press (paperback edition 2010) 745 p. ISBN 978-0-19-958258-7.
+
+  IUCr (2023) Core dictionary (coreCIF) version 2.4.5; data name _space_group_symop_operation_xyz. Available from: https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_symop_operation_xyz.html [Accessed 2023-06-18T16:46+03:00].""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+        regex=SPACE_GROUP_SYMMETRY_OPERATION_REGEX,
+    )
+
     space_group_hall: Optional[str] = OptimadeField(
         None,
-        description="""A Hall space group symbol representing the symmetry of the structure as defined in Hall, S. R. (1981), Acta Cryst. A37, 517-525 and erratum (1981), A37, 921.
+        description="""A Hall space group symbol representing the symmetry of the structure as defined in (Hall, 1981, 1981a).
+The change-of-basis operations are used as defined in the International Tables of Crystallography (ITC) Vol. B, Sect. 1.4, Appendix A1.4.2 (IUCr, 2001).
 
 - **Type**: string
 
@@ -534,7 +583,45 @@ Note: the elements in this list each refer to the direction of the corresponding
   - **Query**: Support for queries on this property is OPTIONAL.
   - Each component of the Hall symbol MUST be separated by a single space symbol.
   - If there exists a standard Hall symbol which represents the symmetry it SHOULD be used.
-  - MUST be null if `nperiodic_dimensions` is not equal to 3.""",
+  - MUST be null if `nperiodic_dimensions` is not equal to 3.
+
+- **Bibliographic References**:
+
+  Hall, S. R. (1981) Space-group notation with an explicit origin. Acta Crystallographica Section A, 37, 517-525, International Union of Crystallography (IUCr), DOI: https://doi.org/10.1107/s0567739481001228
+
+  Hall, S. R. (1981a) Space-group notation with an explicit origin; erratum. Acta Crystallographica Section A, 37, 921-921, International Union of Crystallography (IUCr), DOI: https://doi.org/10.1107/s0567739481001976
+
+  IUCr (2001). International Tables for Crystallography vol. B. Reciprocal Space. Ed. U. Shmueli. 2-nd edition. Dordrecht/Boston/London, Kluwer Academic Publishers.""",
+        support=SupportLevel.OPTIONAL,
+        queryable=SupportLevel.OPTIONAL,
+    )
+
+    space_group_symbol_hermann_mauguin: Optional[str] = OptimadeField(
+        None,
+        description="""A human- and machine-readable string containing the short Hermann-Mauguin (H-M) symbol which specifies the space group of the structure in the response.
+The H-M symbol SHOULD aim to convey the closest representation of the symmetry information that can be specified using the short format used in the International Tables for Crystallography vol. A (IUCr, 2005), Table 4.3.2.1 as described in the accompanying text.
+The symbol MAY be a non-standard short H-M symbol.
+The H-M symbol does not unambiguously communicate the axis, cell, and origin choice, and the given symbol SHOULD NOT be amended to convey this information.
+
+To encode as character strings, the following adaptations MUST be made when representing H-M symbols given in their typesetted form:
+  - the overbar above the numbers MUST be changed to the minus sign in front of the digit (e.g. '-2');
+  - subscripts that denote screw axes are written as digits immediately after the axis designator without a space (e.g. 'P 32')
+  - the space group generators MUST be separated by a single space (e.g. 'P 21 21 2');
+  - there MUST be no spaces in the space group generator designation (i.e. use 'P 21/m', not the 'P 21 / m');
+
+- **Type**: string
+
+- **Requirements/Conventions**:
+  - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+  - **Query**: Support for queries on this property is OPTIONAL.
+
+- **Examples**:
+  - `C 2`
+  - `P 21 21 21`
+
+- **Bibliographic References**:
+
+IUCr (2005). International Tables for Crystallography vol. A. Space-Group Symmetry. Ed. Theo Hahn. 5-th edition. Dordrecht, Springer.""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
