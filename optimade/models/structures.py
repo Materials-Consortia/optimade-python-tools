@@ -4,7 +4,7 @@ import warnings
 from enum import Enum, IntEnum
 from typing import Optional, Union
 
-from pydantic import BaseModel, conint, conlist, root_validator, validator
+from pydantic import BaseModel, conint, conlist, constr, root_validator, validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.utils import (
@@ -40,6 +40,7 @@ EPS = 2**-23
 
 Vector3D = conlist(float, min_items=3, max_items=3)
 Vector3D_unknown = conlist(Union[float, None], min_items=3, max_items=3)
+SymOp = constr(regex=SPACE_GROUP_SYMMETRY_OPERATION_REGEX)
 
 
 class Periodicity(IntEnum):
@@ -524,7 +525,7 @@ Note: the elements in this list each refer to the direction of the corresponding
         queryable=SupportLevel.OPTIONAL,
     )
 
-    space_group_symmetry_operations_xyz: Optional[list[str]] = OptimadeField(
+    space_group_symmetry_operations_xyz: Optional[list[SymOp]] = OptimadeField(  # type: ignore[valid-type]
         None,
         description="""A list of symmetry operations given as general position x, y and z coordinates in algebraic form.
 
@@ -568,7 +569,6 @@ If the symmetry operation list is present, it MUST be compatible with other spac
   IUCr (2023) Core dictionary (coreCIF) version 2.4.5; data name _space_group_symop_operation_xyz. Available from: https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_symop_operation_xyz.html [Accessed 2023-06-18T16:46+03:00].""",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
-        regex=SPACE_GROUP_SYMMETRY_OPERATION_REGEX,
     )
 
     space_group_hall: Optional[str] = OptimadeField(
