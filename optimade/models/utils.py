@@ -422,5 +422,5 @@ for Z, symbol in enumerate(CHEMICAL_SYMBOLS):
 translation = "1/2|[12]/3|[1-3]/4|[1-5]/6"
 translation_appended = f"[-+]? [xyz] ([-+][xyz])? ([-+] ({translation}) )?"
 translation_prepended = f"[-+]? ({translation}) ([-+] [xyz] ([-+][xyz])? )?"
-symop = f"({translation_appended}|{translation_prepended})"
+symop = f"({translation_appended}|{translation_prepended})".replace(" ", "")
 SPACE_GROUP_SYMMETRY_OPERATION_REGEX = f"^{symop},{symop},{symop}$"
