@@ -107,13 +107,13 @@ class StructureResponseMany(EntryResponseMany):
 
 
 class FileResponseOne(EntryResponseOne):
-    data: Union[FileResource, Dict[str, Any], None] = StrictField(
+    data: Union[FileResource, dict[str, Any], None] = StrictField(
         ..., description="A single files entry resource."
     )
 
 
 class FileResponseMany(EntryResponseMany):
-    data: Union[List[FileResource], List[Dict[str, Any]]] = StrictField(
+    data: Union[list[FileResource], list[dict[str, Any]]] = StrictField(
         ...,
         description="List of unique OPTIMADE files entry resource objects.",
         uniqueItems=True,
