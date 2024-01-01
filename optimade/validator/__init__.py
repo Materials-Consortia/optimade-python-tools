@@ -1,5 +1,5 @@
 """ This module contains the ImplementationValidator class and corresponding command line tools. """
-# pylint: disable=import-outside-toplevel
+
 import warnings
 
 from optimade import __api_version__, __version__

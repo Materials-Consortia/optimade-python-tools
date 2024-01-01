@@ -97,7 +97,7 @@ def test_get_providers_warning(caplog, top_dir):
 
         caplog.clear()
         with mock.patch("requests.get", side_effect=ConnectionError):
-            del data.providers  # pylint: disable=no-member
+            del data.providers
             assert get_providers() == []
 
             warning_message = """Could not retrieve a list of providers!
@@ -106,9 +106,7 @@ def test_get_providers_warning(caplog, top_dir):
 
 {}
     The list of providers will not be included in the `/links`-endpoint.
-""".format(
-                "".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS])
-            )
+""".format("".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS]))
             assert warning_message in caplog.messages
 
     finally:

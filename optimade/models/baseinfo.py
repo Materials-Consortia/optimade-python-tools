@@ -1,4 +1,3 @@
-# pylint: disable=no-self-argument,no-name-in-module
 import re
 from typing import Annotated, Literal, Optional
 

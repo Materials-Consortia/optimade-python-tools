@@ -2,11 +2,6 @@ default_language_version:
   python: python3.9
 
 repos:
-  - repo: https://github.com/ambv/black
-    rev: 23.12.1
-    hooks:
-    - id: black
-      name: Blacken
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -31,9 +26,11 @@ repos:
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: 'v0.1.9'
+
     hooks:
     - id: ruff
       args: [--fix, --exit-non-zero-on-fix]
+    - id: ruff-format
 
   - repo: local
     hooks:
