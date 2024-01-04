@@ -4,7 +4,14 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Optional, Union
 
-from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr, root_validator
+from pydantic import (
+    AnyHttpUrl,
+    AnyUrl,
+    BaseModel,
+    EmailStr,
+    NonNegativeFloat,
+    root_validator,
+)
 
 from optimade.models import jsonapi
 from optimade.models.utils import SemanticVersion, StrictField
@@ -119,6 +126,17 @@ class DataType(Enum):
         }
 
         return mapping.get(json_type, None)
+
+
+class AllowedJSONSchemaDataType(Enum):
+    """The allowed values for `type` in the Property Definition restricted JSON Schema syntax."""
+
+    BOOLEAN = "boolean"
+    OBJECT = "object"
+    ARRAY = "array"
+    NUMBER = "number"
+    STRING = "string"
+    INTEGER = "integer"
 
 
 class OptimadeError(jsonapi.Error):
@@ -311,6 +329,11 @@ Hence, if the `meta` field of the JSON API links object is provided and contains
 
     response_message: Optional[str] = StrictField(
         None, description="response string from the server"
+    )
+
+    request_delay: Optional[NonNegativeFloat] = StrictField(
+        None,
+        description="A non-negative float giving time in seconds that the client is suggested to wait before issuing a subsequent request.",
     )
 
     implementation: Optional[Implementation] = StrictField(

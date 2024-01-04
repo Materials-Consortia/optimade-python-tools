@@ -1,3 +1,4 @@
+import re
 from typing import Callable
 
 import pytest
@@ -138,3 +139,12 @@ def test_anonymize_formula():
     assert anonymize_formula("Si1 O2") == "A2B"
     assert anonymize_formula("Si11 O2") == "A11B2"
     assert anonymize_formula("Si10 O2C4") == "A5B2C"
+
+
+@pytest.mark.parametrize(
+    "symops", ["x,y,z", "-x,y,-z", "x+1/2,y+1/2,z", "-x+1/2,y+1/2,-z"]
+)
+def test_symop_regex(symops):
+    from optimade.models.utils import SPACE_GROUP_SYMMETRY_OPERATION_REGEX
+
+    assert re.match(SPACE_GROUP_SYMMETRY_OPERATION_REGEX, symops)

@@ -178,6 +178,10 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         "structures",
         description="Mongo collection name for /structures endpoint resources",
     )
+    files_collection: str = Field(
+        "files",
+        description="Mongo collection name for /files endpoint resources",
+    )
     page_limit: int = Field(20, description="Default number of resources per page")
     page_limit_max: int = Field(
         500, description="Max allowed number of resources per page"
@@ -234,7 +238,9 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
             "broken down by endpoint."
         ),
     )
-    aliases: dict[Literal["links", "references", "structures"], dict[str, str]] = Field(
+    aliases: dict[
+        Literal["links", "references", "structures", "files"], dict[str, str]
+    ] = Field(
         {},
         description=(
             "A mapping between field names in the database with their corresponding OPTIMADE field"
@@ -291,6 +297,13 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         ),
     )
 
+    license: str = Field(
+        "CC-BY-4.0",
+        description="""The SPDX license identifier that will be linked to by the server under the info field `license`.
+The `license` field value will be constructed from this identifier preprended with `https://spdx.org/licenses/CC-BY-4.0`, and the identifier will also be added to the `available_licenses` field directly.
+There is currently no support for providing a full list of identifiers to be served at `available_licenses`.""",
+    )
+
     log_level: LogLevel = Field(
         LogLevel.INFO, description="Logging level for the OPTIMADE server."
     )
@@ -309,12 +322,26 @@ This operation can require a full COLLSCAN for empty queries which can be prohib
         only the mapping of aliases will occur.""",
     )
 
+    request_delay: Optional[float] = Field(
+        None,
+        description=(
+            "The value to use for the `meta->request_delay` field, which indicates to clients how long they should leave between success queries."
+        ),
+    )
+
     @validator("implementation", pre=True)
     def set_implementation_version(cls, v):
         """Set defaults and modify bypassed value(s)"""
         res = {"version": __version__}
         res.update(v)
         return res
+
+    @validator("request_delay", pre=True)
+    def check_request_delay(cls, v):
+        """Check `request_delay` is non-negative."""
+        if v is not None and v < 0:
+            raise ValueError("`request_delay` must be non-negative")
+        return v
 
     @root_validator(pre=True)
     def use_real_mongo_override(cls, values):

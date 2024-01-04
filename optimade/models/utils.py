@@ -36,6 +36,13 @@ class SupportLevel(Enum):
     OPTIONAL = "optional"
 
 
+class QuerySupport(Enum):
+    ALL_MANDATORY = "all mandatory"
+    EQUALITY_ONLY = "equality only"
+    PARTIAL = "partial"
+    NONE = "none"
+
+
 class StrictFieldInfo(FieldInfo):
     """Wraps the standard pydantic `FieldInfo` in order
     to prefix any custom keys from `StrictField`.
@@ -418,3 +425,9 @@ CHEMICAL_SYMBOLS = [
 ATOMIC_NUMBERS = {}
 for Z, symbol in enumerate(CHEMICAL_SYMBOLS):
     ATOMIC_NUMBERS[symbol] = Z + 1
+
+translation = "1/2|[12]/3|[1-3]/4|[1-5]/6"
+translation_appended = f"[-+]? [xyz] ([-+][xyz])? ([-+] ({translation}) )?"
+translation_prepended = f"[-+]? ({translation}) ([-+] [xyz] ([-+][xyz])? )?"
+symop = f"({translation_appended}|{translation_prepended})".replace(" ", "")
+SPACE_GROUP_SYMMETRY_OPERATION_REGEX = f"^{symop},{symop},{symop}$"
