@@ -11,7 +11,7 @@ license = { text = "MIT" }
 authors = [{ name = "OPTIMADE development team", email = "dev@optimade.org" }]
 dynamic = ["version"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
