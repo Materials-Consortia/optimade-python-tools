@@ -8,6 +8,7 @@
 import asyncio
 import functools
 import json
+import math
 import time
 from collections import defaultdict
 from collections.abc import Iterable
@@ -108,6 +109,9 @@ class OptimadeClient:
 
     """
 
+    count_binary_search: bool = True
+    """Enable binary search count for databases that do not support `meta->data_returned`."""
+
     silent: bool
     """Whether to disable progress bar printing."""
 
@@ -149,7 +153,7 @@ class OptimadeClient:
         http_client: Optional[
             Union[type[httpx.AsyncClient], type[requests.Session]]
         ] = None,
-        verbose: int = 0,
+        verbosity: int = 0,
         callbacks: Optional[list[Callable[[str, dict], Union[None, dict]]]] = None,
     ):
         """Create the OPTIMADE client object.
@@ -171,6 +175,7 @@ class OptimadeClient:
             callbacks: A list of functions to call after each successful response, see the
                 attribute [`OptimadeClient.callbacks`][optimade.client.OptimadeClient.callbacks]
                 docstring for more details.
+            verbosity: The verbosity level of the client.
 
         """
 
@@ -184,6 +189,7 @@ class OptimadeClient:
 
         self.max_attempts = max_attempts
         self.silent = silent
+        self.verbosity = verbosity
 
         if headers:
             self.headers.update(headers)
@@ -392,12 +398,133 @@ class OptimadeClient:
                 )
 
                 if count_results[base_url] is None:
-                    self._progress.print(
-                        f"Warning: {base_url} did not return a value for `meta->data_returned`, unable to count results. Full response: {results[base_url]}"
-                    )
+                    if self.count_binary_search:
+                        count_results[base_url] = self.binary_search_count(
+                            filter, endpoint, base_url, results
+                        )
+                    else:
+                        self._progress.print(
+                            f"Warning: {base_url} did not return a value for `meta->data_returned`, unable to count results. Full response: {results[base_url]}"
+                        )
 
             self.count_results[endpoint][filter] = count_results
             return {endpoint: {filter: count_results}}
+
+    def binary_search_count(
+        self, filter: str, endpoint: str, base_url: str, results: Optional[dict] = None
+    ) -> int:
+        """In cases where `data_returned` is not available (due to database limitations or
+        otherwise), iteratively probe the final page of results available for a filter using
+        binary search.
+
+        Note: These queries always happen synchronously across APIs, but can be executed
+        asynchronously within a single API.
+
+        Parameters:
+            filter: The OPTIMADE filter string for the query.
+            endpoint: The endpoint to query.
+            base_url: The base URL to query.
+            results: The results from a previous query for the first page of results.
+
+        Returns:
+            The number of results for the filter.
+
+        """
+        if self.verbosity:
+            self._progress.print(f"Performing binary search count for {base_url}")
+        if self.use_async:
+            return self._binary_search_count_async(filter, endpoint, base_url, results)
+
+        else:
+            raise NotImplementedError(
+                "Binary search count is not yet implemented for synchronous queries."
+            )
+
+    def _binary_search_count_async(
+        self, filter: str, endpoint: str, base_url: str, result: Optional[dict] = None
+    ) -> int:
+        """Run a series of asynchronously queries on a given API to
+        find the number of results for a filter.
+
+        Starting with logarithmically spaced page offsets, iteratively probe
+        the final page of results available for a filter.
+
+        Parameters:
+            filter: The OPTIMADE filter string for the query.
+            endpoint: The endpoint to query.
+            base_url: The base URL to query.
+            result: The results from a previous query for the first page of results.
+
+        Returns:
+            The number of results for the filter.
+
+        """
+        if result is None:
+            # first a check that there are any results at all
+            result = asyncio.run(
+                self.get_one_async(
+                    endpoint,
+                    filter,
+                    base_url,
+                    page_limit=1,
+                    response_fields=[],
+                    paginate=False,
+                )
+            )
+            if self.verbosity:
+                self._progress.print("Definitely found results")
+
+        if not result[base_url].data:
+            return 0
+
+        attempts = 0
+        probe = 1_000_000
+        window: tuple[int, Union[int, None]] = (1, None)
+        max_attempts = 100
+
+        while attempts < max_attempts:
+            if window[1] is not None and abs(window[0] - window[1]) <= 1:
+                count: int = min(window)  # type: ignore[type-var, assignment]
+                return count
+
+            self._progress.disable = True
+
+            result = asyncio.run(
+                self.get_one_async(
+                    endpoint,
+                    filter,
+                    base_url,
+                    page_limit=1,
+                    response_fields=[],
+                    paginate=False,
+                    other_params={"page_offset": probe},
+                )
+            )
+
+            self._progress.disable = self.silent
+
+            if result[base_url].data:
+                window = (probe, window[1])
+            if not result[base_url].data:
+                window = (window[0], probe)
+
+            # If we've not reached the upper bound yet, try 10x
+            if window[1] is None:
+                probe *= 10
+
+            # Otherwise, if we're in the window and the ends of the window now have the same power of 10, take the average (102 => 108) => 105
+            elif round(math.log10(window[0])) == round(math.log10(window[0])):
+                probe = (window[1] + window[0]) // 2
+            # otherwise use logarithmic average (10, 1000) => 100
+            else:
+                probe = int(10 ** (math.log10(window[1]) + math.log10(window[0]) / 2))
+            attempts += 1
+
+            if self.verbosity > 2:
+                self._progress.print(f"Binary search debug info: {window=}, {probe=}")
+
+        else:
+            raise RuntimeError(f"Exceeded maximum number of retries for {base_url}")
 
     def list_properties(
         self,
@@ -536,6 +663,7 @@ class OptimadeClient:
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
         paginate: bool = True,
+        other_params: Optional[dict[str, Any]] = None,
     ) -> dict[str, QueryResults]:
         """Executes the query synchronously on one API.
 
@@ -550,6 +678,7 @@ class OptimadeClient:
             paginate: Whether to pull all pages of results (up to the
                 value of `max_results_per_provider`) or whether to return
                 after one page.
+            other_params: Any other parameters to pass to the server.
 
         Returns:
             A dictionary mapping from base URL to the results of the query.
@@ -564,6 +693,7 @@ class OptimadeClient:
                 paginate=paginate,
                 response_fields=response_fields,
                 sort=sort,
+                other_params=other_params,
             )
         except Exception as exc:
             error_query_results = QueryResults()
@@ -583,6 +713,8 @@ class OptimadeClient:
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
         paginate: bool = True,
+        base_urls: Optional[Iterable[str]] = None,
+        other_params: Optional[dict[str, Any]] = None,
     ) -> dict[str, QueryResults]:
         """Executes the query asynchronously across all defined APIs.
 
@@ -597,11 +729,16 @@ class OptimadeClient:
             paginate: Whether to pull all pages of results (up to the
                 value of `max_results_per_provider`) or whether to return
                 after one page.
+            base_urls: A list of base URLs to query (defaults to `self.base_urls`).
+            other_params: Any other parameters to pass to the server.
 
         Returns:
             A dictionary mapping from base URL to the results of the query.
 
         """
+        if not base_urls:
+            base_urls = self.base_urls
+
         results = await asyncio.gather(
             *[
                 self.get_one_async(
@@ -612,8 +749,9 @@ class OptimadeClient:
                     paginate=paginate,
                     response_fields=response_fields,
                     sort=sort,
+                    other_params=other_params,
                 )
-                for base_url in self.base_urls
+                for base_url in base_urls
             ]
         )
         return functools.reduce(lambda r1, r2: {**r1, **r2}, results)
@@ -626,6 +764,8 @@ class OptimadeClient:
         response_fields: Optional[list[str]] = None,
         sort: Optional[str] = None,
         paginate: bool = True,
+        base_urls: Optional[Iterable[str]] = None,
+        other_params: Optional[dict[str, Any]] = None,
     ) -> dict[str, QueryResults]:
         """Executes the query synchronously across all defined APIs.
 
@@ -640,11 +780,15 @@ class OptimadeClient:
             paginate: Whether to pull all pages of results (up to the
                 value of `max_results_per_provider`) or whether to return
                 after one page.
+            base_urls: A list of base URLs to query (defaults to `self.base_urls`).
+            other_params: Any other parameters to pass to the server.
 
         Returns:
             A dictionary mapping from base URL to the results of the query.
 
         """
+        if not base_urls:
+            base_urls = self.base_urls
         results = [
             self.get_one(
                 endpoint,
@@ -654,8 +798,9 @@ class OptimadeClient:
                 paginate=paginate,
                 response_fields=response_fields,
                 sort=sort,
+                other_params=other_params,
             )
-            for base_url in self.base_urls
+            for base_url in base_urls
         ]
         if results:
             return functools.reduce(lambda r1, r2: {**r1, **r2}, results)
@@ -671,6 +816,7 @@ class OptimadeClient:
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
         paginate: bool = True,
+        other_params: Optional[dict[str, Any]] = None,
     ) -> dict[str, QueryResults]:
         """Executes the query asynchronously on one API.
 
@@ -692,6 +838,7 @@ class OptimadeClient:
             paginate: Whether to pull all pages of results (up to the
                 value of `max_results_per_provider`) or whether to return
                 after one page.
+            other_params: Any other parameters to pass to the server.
 
         Returns:
             A dictionary mapping from base URL to the results of the query.
@@ -706,6 +853,7 @@ class OptimadeClient:
                 paginate=paginate,
                 response_fields=response_fields,
                 sort=sort,
+                other_params=other_params,
             )
         except Exception as exc:
             error_query_results = QueryResults()
@@ -726,6 +874,7 @@ class OptimadeClient:
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
         paginate: bool = True,
+        other_params: Optional[dict[str, Any]] = None,
     ) -> dict[str, QueryResults]:
         """See [`OptimadeClient.get_one_async`][optimade.client.OptimadeClient.get_one_async]."""
         next_url, _task = self._setup(
@@ -735,6 +884,7 @@ class OptimadeClient:
             page_limit=page_limit,
             response_fields=response_fields,
             sort=sort,
+            other_params=other_params,
         )
         results = QueryResults()
         try:
@@ -742,6 +892,10 @@ class OptimadeClient:
                 while next_url:
                     attempts = 0
                     try:
+                        if self.verbosity:
+                            self._progress.print(
+                                f"Making request to {next_url!r} {attempts=}"
+                            )
                         r = await client.get(
                             next_url, follow_redirects=True, timeout=self.http_timeout
                         )
@@ -784,6 +938,7 @@ class OptimadeClient:
         page_limit: Optional[int] = None,
         response_fields: Optional[list[str]] = None,
         paginate: bool = True,
+        other_params: Optional[dict[str, Any]] = None,
     ) -> dict[str, QueryResults]:
         """See [`OptimadeClient.get_one`][optimade.client.OptimadeClient.get_one]."""
         next_url, _task = self._setup(
@@ -793,6 +948,7 @@ class OptimadeClient:
             page_limit=page_limit,
             response_fields=response_fields,
             sort=sort,
+            other_params=other_params,
         )
         results = QueryResults()
         try:
@@ -806,6 +962,10 @@ class OptimadeClient:
                 while next_url:
                     attempts = 0
                     try:
+                        if self.verbosity:
+                            self._progress.print(
+                                f"Making request to {next_url!r} {attempts=}"
+                            )
                         r = client.get(next_url, timeout=timeout)
                         page_results, next_url = self._handle_response(r, _task)
                     except RecoverableHTTPError:
@@ -845,6 +1005,7 @@ class OptimadeClient:
         page_limit: Optional[int],
         response_fields: Optional[list[str]],
         sort: Optional[str],
+        other_params: Optional[dict[str, Any]] = None,
     ) -> tuple[str, TaskID]:
         """Constructs the first query URL and creates the progress bar task.
 
@@ -859,6 +1020,7 @@ class OptimadeClient:
             page_limit=page_limit,
             response_fields=response_fields,
             sort=sort,
+            other_params=other_params,
         )
         parsed_url = urlparse(url)
         _task = self._progress.add_task(
@@ -876,6 +1038,7 @@ class OptimadeClient:
         response_fields: Optional[list[str]] = None,
         sort: Optional[str] = None,
         page_limit: Optional[int] = None,
+        other_params: Optional[dict[str, Any]] = None,
     ) -> str:
         """Builds the URL to query based on the passed parameters.
 
@@ -887,6 +1050,7 @@ class OptimadeClient:
             response_fields: A list of response fields to request from the server.
             sort: The field by which to sort the results.
             page_limit: The page limit for an individual request.
+            other_params: Any other parameters to pass to the server.
 
         Returns:
             The overall query URL, including parameters.
@@ -900,28 +1064,29 @@ class OptimadeClient:
 
         url = f"{base_url}/{version}/{endpoint}"
 
-        # Handle params
-        _filter: Optional[str] = None
-        _response_fields: Optional[str] = None
-        _page_limit: Optional[str] = None
-        _sort: Optional[str] = None
+        params_dict: dict[str, str] = {}
 
         if filter:
-            _filter = f"filter={filter}"
+            params_dict["filter"] = f"filter={filter}"
         if response_fields is not None:
             # If we have requested no response fields (e.g., in the case of --count) then just ask for IDs
             if len(response_fields) == 0:
-                _response_fields = "response_fields=id"
+                params_dict["response_fields"] = "response_fields=id"
             else:
-                _response_fields = f'response_fields={",".join(response_fields)}'
-        if page_limit:
-            _page_limit = f"page_limit={page_limit}"
-        if sort:
-            _sort = f"sort={sort}"
+                params_dict[
+                    "response_fields"
+                ] = f'response_fields={",".join(response_fields)}'
 
-        params = "&".join(
-            p for p in (_filter, _response_fields, _page_limit, _sort) if p
-        )
+        if page_limit:
+            params_dict["page_limit"] = f"page_limit={page_limit}"
+        if sort:
+            params_dict["sort"] = f"sort={sort}"
+
+        if other_params:
+            for p in other_params:
+                params_dict[p] = f"{p}={other_params[p]}"
+
+        params = "&".join(p for p in params_dict.values() if p)
         if params:
             url += f"?{params}"
 
