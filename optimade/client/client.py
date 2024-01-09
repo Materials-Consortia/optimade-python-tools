@@ -138,6 +138,11 @@ class OptimadeClient:
     is impossible due to, e.g., a running event loop.
     """
 
+    __force_binary_search: bool = False
+    """Setting to test binary searches in cases where servers do return
+    the count.
+    """
+
     def __init__(
         self,
         base_urls: Optional[Union[str, Iterable[str]]] = None,
@@ -348,7 +353,8 @@ class OptimadeClient:
     ) -> dict[str, dict[str, dict[str, Optional[int]]]]:
         """Counts the number of results for the filter, requiring
         only 1 request per provider by making use of the `meta->data_returned`
-        key.
+        key. If missing, attempts will be made to perform an exponential/binary
+        search over pagination to count the results.
 
         Raises:
             RuntimeError: If the query could not be executed.
@@ -397,7 +403,7 @@ class OptimadeClient:
                     "data_returned", None
                 )
 
-                if count_results[base_url] is None:
+                if count_results[base_url] is None or self.__force_binary_search:
                     if self.count_binary_search:
                         count_results[base_url] = self.binary_search_count(
                             filter, endpoint, base_url, results

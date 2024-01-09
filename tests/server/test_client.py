@@ -76,9 +76,28 @@ def test_client_endpoints(async_http_client, http_client, use_async):
         count_results = cli.references.count()
         assert count_results["references"][filter][TEST_URL] > 0
 
+        if use_async:
+            cli.__force_binary_search = True
+            count_results_binary = cli.references.count()
+            assert (
+                count_results_binary["references"][filter][TEST_URL]
+                == count_results["references"][filter][TEST_URL]
+            )
+            cli.__force_binary_search = False
+
         filter = 'elements HAS "Ag"'
         count_results = cli.count(filter)
         assert count_results["structures"][filter][TEST_URL] > 0
+
+        if use_async:
+            cli.__force_binary_search = True
+            filter = 'elements HAS "Ag"'
+            count_results_binary = cli.count(filter)
+            assert (
+                count_results_binary["structures"][filter][TEST_URL]
+                == count_results["structures"][filter][TEST_URL]
+            )
+            cli.__force_binary_search = False
 
         count_results = cli.info.get()
         assert count_results["info"][""][TEST_URL]["data"]["type"] == "info"
