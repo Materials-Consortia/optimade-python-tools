@@ -216,6 +216,7 @@ def test_command_line_client(async_http_client, http_client, use_async, capsys):
         exclude_databases=None,
         http_client=async_http_client if use_async else http_client,
         http_timeout=httpx.Timeout(2.0),
+        verbosity=0,
     )
 
     # Test multi-provider query
@@ -252,6 +253,7 @@ def test_command_line_client_silent(async_http_client, http_client, use_async, c
         exclude_databases=None,
         http_client=async_http_client if use_async else http_client,
         http_timeout=httpx.Timeout(2.0),
+        verbosity=0,
     )
 
     # Test silent mode
@@ -291,6 +293,7 @@ def test_command_line_client_multi_provider(
         exclude_databases=None,
         http_client=async_http_client if use_async else http_client,
         http_timeout=httpx.Timeout(2.0),
+        verbosity=0,
     )
     _get(**args)
     captured = capsys.readouterr()
@@ -325,6 +328,7 @@ def test_command_line_client_write_to_file(
         exclude_databases=None,
         http_client=async_http_client if use_async else http_client,
         http_timeout=httpx.Timeout(2.0),
+        verbosity=0,
     )
     test_filename = "test-optimade-client.json"
     if Path(test_filename).is_file():
