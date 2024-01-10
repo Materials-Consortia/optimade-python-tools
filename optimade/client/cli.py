@@ -105,6 +105,7 @@ __all__ = ("_get",)
     default=None,
     nargs=-1,
 )
+@click.option("-v", "--verbosity", count=True, help="Increase verbosity of output.")
 @click.option(
     "--http-timeout",
     type=float,
@@ -127,6 +128,7 @@ def get(
     include_providers,
     exclude_providers,
     exclude_databases,
+    verbosity,
     http_timeout,
 ):
     return _get(
@@ -146,6 +148,7 @@ def get(
         include_providers,
         exclude_providers,
         exclude_databases,
+        verbosity,
         http_timeout,
     )
 
@@ -167,6 +170,7 @@ def _get(
     include_providers,
     exclude_providers,
     exclude_databases,
+    verbosity,
     http_timeout,
     **kwargs,
 ):
@@ -199,6 +203,8 @@ def _get(
     # default value set on the OptimadeClient class
     if http_timeout:
         args["http_timeout"] = http_timeout
+
+    args["verbosity"] = verbosity
 
     client = OptimadeClient(
         **args,
