@@ -14,6 +14,7 @@
         "prefix": "exmpl",
         "homepage": "https://example.com"
     },
+    "mongo_count_timeout": 0,
     "index_base_url": "http://localhost:5001",
     "provider_fields": {
         "structures": [

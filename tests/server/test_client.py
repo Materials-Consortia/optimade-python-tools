@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Optional
 
 import httpx
+import numpy as np
 import pytest
 
 from optimade.client.cli import _get
@@ -76,9 +77,32 @@ def test_client_endpoints(async_http_client, http_client, use_async):
         count_results = cli.references.count()
         assert count_results["references"][filter][TEST_URL] > 0
 
+        if use_async:
+            cli._force_binary_search = True
+            count_results_binary = cli.references.count()
+            assert (
+                count_results_binary["references"][filter][TEST_URL]
+                == count_results["references"][filter][TEST_URL]
+            )
+            cli._force_binary_search = False
+
         filter = 'elements HAS "Ag"'
         count_results = cli.count(filter)
         assert count_results["structures"][filter][TEST_URL] > 0
+
+        filter = 'elements HAS "Ac"'
+        count_results = cli.count(filter)
+        assert count_results["structures"][filter][TEST_URL] == 6
+
+        if use_async:
+            cli._force_binary_search = True
+            filter = 'elements HAS "Ac"'
+            count_results_binary = cli.count(filter)
+            assert (
+                count_results_binary["structures"][filter][TEST_URL]
+                == count_results["structures"][filter][TEST_URL]
+            )
+            cli._force_binary_search = False
 
         count_results = cli.info.get()
         assert count_results["info"][""][TEST_URL]["data"]["type"] == "info"
@@ -216,6 +240,7 @@ def test_command_line_client(async_http_client, http_client, use_async, capsys):
         exclude_databases=None,
         http_client=async_http_client if use_async else http_client,
         http_timeout=httpx.Timeout(2.0),
+        verbosity=0,
     )
 
     # Test multi-provider query
@@ -252,6 +277,7 @@ def test_command_line_client_silent(async_http_client, http_client, use_async, c
         exclude_databases=None,
         http_client=async_http_client if use_async else http_client,
         http_timeout=httpx.Timeout(2.0),
+        verbosity=0,
     )
 
     # Test silent mode
@@ -291,6 +317,7 @@ def test_command_line_client_multi_provider(
         exclude_databases=None,
         http_client=async_http_client if use_async else http_client,
         http_timeout=httpx.Timeout(2.0),
+        verbosity=0,
     )
     _get(**args)
     captured = capsys.readouterr()
@@ -325,6 +352,7 @@ def test_command_line_client_write_to_file(
         exclude_databases=None,
         http_client=async_http_client if use_async else http_client,
         http_timeout=httpx.Timeout(2.0),
+        verbosity=0,
     )
     test_filename = "test-optimade-client.json"
     if Path(test_filename).is_file():
@@ -483,3 +511,32 @@ def test_list_properties(
     results = cli.search_property("structures", "site")
     for database in results:
         assert results[database] == ["nsites", "cartesian_site_positions"]
+
+
+@pytest.mark.parametrize(
+    "trial_counts", [1, 2] + [int(x) for x in np.logspace(1, 10, 102)]
+)
+def test_binary_search_internals(trial_counts):
+    cli = OptimadeClient(
+        base_urls=TEST_URLS,
+    )
+    max_attempts = 100
+    attempts = 0
+    window, probe = cli._update_probe_and_window()
+    while attempts < max_attempts:
+        if trial_counts + 1 > probe:
+            below = True
+        else:
+            below = False
+        window, probe = cli._update_probe_and_window(window, probe, below=below)
+        # print(trial_counts, window, probe)
+        if window[0] == window[1] == probe:
+            assert (
+                window[0] == trial_counts
+            ), "Binary search did not converge to the correct value."
+            break
+        attempts += 1
+    else:
+        raise RuntimeError(
+            f"Could not converge binary search for {trial_counts} in {max_attempts} attempts."
+        )
