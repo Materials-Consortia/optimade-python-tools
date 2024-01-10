@@ -1987,7 +1987,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.AddWarnings.chunk_it_up" class="md-nav__link">
     <span class="md-ellipsis">
-      chunk_it_up()
+      chunk_it_up
     </span>
   </a>
   
@@ -1996,7 +1996,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.AddWarnings.showwarning" class="md-nav__link">
     <span class="md-ellipsis">
-      showwarning()
+      showwarning
     </span>
   </a>
   
@@ -2029,7 +2029,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls.check_url" class="md-nav__link">
     <span class="md-ellipsis">
-      check_url()
+      check_url
     </span>
   </a>
   
@@ -2053,7 +2053,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.EnsureQueryParamIntegrity.check_url" class="md-nav__link">
     <span class="md-ellipsis">
-      check_url()
+      check_url
     </span>
   </a>
   
@@ -2086,7 +2086,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.HandleApiHint.handle_api_hint" class="md-nav__link">
     <span class="md-ellipsis">
-      handle_api_hint()
+      handle_api_hint
     </span>
   </a>
   
@@ -2095,7 +2095,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.HandleApiHint.is_versioned_base_url" class="md-nav__link">
     <span class="md-ellipsis">
-      is_versioned_base_url()
+      is_versioned_base_url
     </span>
   </a>
   
@@ -2163,7 +2163,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.middleware.get_base_url" class="md-nav__link">
     <span class="md-ellipsis">
-      get_base_url()
+      get_base_url
     </span>
   </a>
   
@@ -2889,7 +2889,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.AddWarnings.chunk_it_up" class="md-nav__link">
     <span class="md-ellipsis">
-      chunk_it_up()
+      chunk_it_up
     </span>
   </a>
   
@@ -2898,7 +2898,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.AddWarnings.showwarning" class="md-nav__link">
     <span class="md-ellipsis">
-      showwarning()
+      showwarning
     </span>
   </a>
   
@@ -2931,7 +2931,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls.check_url" class="md-nav__link">
     <span class="md-ellipsis">
-      check_url()
+      check_url
     </span>
   </a>
   
@@ -2955,7 +2955,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.EnsureQueryParamIntegrity.check_url" class="md-nav__link">
     <span class="md-ellipsis">
-      check_url()
+      check_url
     </span>
   </a>
   
@@ -2988,7 +2988,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.HandleApiHint.handle_api_hint" class="md-nav__link">
     <span class="md-ellipsis">
-      handle_api_hint()
+      handle_api_hint
     </span>
   </a>
   
@@ -2997,7 +2997,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.middleware.HandleApiHint.is_versioned_base_url" class="md-nav__link">
     <span class="md-ellipsis">
-      is_versioned_base_url()
+      is_versioned_base_url
     </span>
   </a>
   
@@ -3065,7 +3065,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.middleware.get_base_url" class="md-nav__link">
     <span class="md-ellipsis">
-      get_base_url()
+      get_base_url
     </span>
   </a>
   
@@ -3115,7 +3115,6 @@ information on it's middleware implementation.</p>
 
 
 
-
 <h2 id="optimade.server.middleware.BASE_URL_PREFIXES" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">BASE_URL_PREFIXES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;major&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;minor&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;/v</span><span class="si">{</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;patch&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;/v</span><span class="si">{</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[:</span><span class="mi">3</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span></code>
   
@@ -3132,7 +3131,6 @@ information on it's middleware implementation.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3156,7 +3154,6 @@ and makes it importable in the server code.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3209,7 +3206,6 @@ in the <em>reverse</em> order to <code>OPTIMADE_MIDDLEWARE</code>.</p>
 
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -3267,7 +3263,7 @@ appears <em>first</em>. More information can be found in the docstring of
     </thead>
     <tbody>
         <tr>
-          <td><code>_warnings</code></td>
+          <td><code><span title="optimade.server.middleware.AddWarnings._warnings">_warnings</span></code></td>
           <td>
                 <code>List[<a class="autorefs autorefs-internal" title="optimade.models.Warnings" href="../../../all_models/#optimade.models.Warnings">Warnings</a>]</code>
           </td>
@@ -3694,7 +3690,6 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 
 
 
-
 <h3 id="optimade.server.middleware.AddWarnings.chunk_it_up" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span></code>
   
@@ -3816,7 +3811,6 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -4155,10 +4149,10 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -4208,10 +4202,10 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -4313,7 +4307,6 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -4447,10 +4440,10 @@ and the version part is not supported by the implementation.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -4568,7 +4561,6 @@ and the version part is not supported by the implementation.</p>
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -4771,10 +4763,10 @@ and semi-colon (<code>;</code>).</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -4802,10 +4794,10 @@ and semi-colon (<code>;</code>).</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -5160,7 +5152,6 @@ and semi-colon (<code>;</code>).</p>
 
 
 
-
 <h3 id="optimade.server.middleware.HandleApiHint.handle_api_hint" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">)</span></code>
   
@@ -5447,7 +5438,6 @@ supported major version of the implementation.</p>
 
 
 
-
 <h3 id="optimade.server.middleware.HandleApiHint.is_versioned_base_url" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">is_versioned_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
   
@@ -5572,10 +5562,10 @@ Return <code>bool</code> of final result.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -5608,10 +5598,10 @@ and should not appear in the server log or response.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -5703,10 +5693,10 @@ and should not appear in the server log or response.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -5734,10 +5724,10 @@ and should not appear in the server log or response.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -5765,10 +5755,10 @@ and should not appear in the server log or response.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -5818,10 +5808,10 @@ and should not appear in the server log or response.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -5919,12 +5909,12 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
   </div>
 
+
 </div>
 
 
 
 <div class="doc doc-object doc-function">
-
 
 
 

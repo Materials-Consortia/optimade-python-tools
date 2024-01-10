@@ -1663,7 +1663,7 @@
           <li class="md-nav__item">
   <a href="#optimade.models.index_metadb.BaseInfoAttributes.formats_and_endpoints_must_be_valid" class="md-nav__link">
     <span class="md-ellipsis">
-      formats_and_endpoints_must_be_valid()
+      formats_and_endpoints_must_be_valid
     </span>
   </a>
   
@@ -1861,7 +1861,7 @@
           <li class="md-nav__item">
   <a href="#optimade.models.index_metadb.IndexInfoAttributes.formats_and_endpoints_must_be_valid" class="md-nav__link">
     <span class="md-ellipsis">
-      formats_and_endpoints_must_be_valid()
+      formats_and_endpoints_must_be_valid
     </span>
   </a>
   
@@ -2019,7 +2019,7 @@
         <li class="md-nav__item">
   <a href="#optimade.models.index_metadb.StrictField" class="md-nav__link">
     <span class="md-ellipsis">
-      StrictField()
+      StrictField
     </span>
   </a>
   
@@ -3141,7 +3141,7 @@
           <li class="md-nav__item">
   <a href="#optimade.models.index_metadb.BaseInfoAttributes.formats_and_endpoints_must_be_valid" class="md-nav__link">
     <span class="md-ellipsis">
-      formats_and_endpoints_must_be_valid()
+      formats_and_endpoints_must_be_valid
     </span>
   </a>
   
@@ -3339,7 +3339,7 @@
           <li class="md-nav__item">
   <a href="#optimade.models.index_metadb.IndexInfoAttributes.formats_and_endpoints_must_be_valid" class="md-nav__link">
     <span class="md-ellipsis">
-      formats_and_endpoints_must_be_valid()
+      formats_and_endpoints_must_be_valid
     </span>
   </a>
   
@@ -3497,7 +3497,7 @@
         <li class="md-nav__item">
   <a href="#optimade.models.index_metadb.StrictField" class="md-nav__link">
     <span class="md-ellipsis">
-      StrictField()
+      StrictField
     </span>
   </a>
   
@@ -3542,7 +3542,6 @@
 
 
 
-
 <h2 id="optimade.models.index_metadb.__all__" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;IndexInfoAttributes&#39;</span><span class="p">,</span> <span class="s1">&#39;RelatedLinksResource&#39;</span><span class="p">,</span> <span class="s1">&#39;IndexRelationship&#39;</span><span class="p">,</span> <span class="s1">&#39;IndexInfoResource&#39;</span><span class="p">)</span></code>
   
@@ -3560,7 +3559,6 @@
 
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -3700,7 +3698,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.BaseInfoAttributes.api_version" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">api_version</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SemanticVersion</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Presently used full version of the OPTIMADE API.</span><span class="se">\n</span><span class="s1">The version number string MUST NOT be prefixed by, e.g., &quot;v&quot;.</span><span class="se">\n</span><span class="s1">Examples: `1.0.0`, `1.0.0-rc.2`.&#39;</span><span class="p">)]</span></code>
   
@@ -3717,7 +3714,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3740,7 +3736,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.BaseInfoAttributes.available_endpoints" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">available_endpoints</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of available endpoints (i.e., the string to be appended to the versioned base URL).&#39;</span><span class="p">)]</span></code>
   
@@ -3760,7 +3755,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.BaseInfoAttributes.entry_types_by_format" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">entry_types_by_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Available entry endpoints as a function of output formats.&#39;</span><span class="p">)]</span></code>
   
@@ -3777,7 +3771,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3801,7 +3794,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.BaseInfoAttributes.is_index" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">is_index</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for `is_index` to be `false`).&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">False</span></code>
   
@@ -3822,7 +3814,6 @@
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -3869,10 +3860,10 @@
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -3914,7 +3905,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.BaseInfoResource.attributes" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">BaseInfoAttributes</span></code>
   
@@ -3931,7 +3921,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3955,7 +3944,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.BaseInfoResource.links" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">ResourceLinks</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
@@ -3973,7 +3961,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -3997,7 +3984,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.BaseInfoResource.model_config" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_schema_extra</span><span class="o">=</span><span class="n">resource_json_schema_extra</span><span class="p">)</span></code>
   
@@ -4018,7 +4004,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.BaseInfoResource.relationships" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Relationships</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)</span><span class="se">\n</span><span class="s1">describing relationships between the resource and other JSON API resources.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
@@ -4036,7 +4021,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4064,10 +4048,10 @@
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -4117,7 +4101,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.BaseResource.id" class="doc doc-heading">
           <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource ID&#39;</span><span class="p">)]</span></code>
   
@@ -4134,7 +4117,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4155,7 +4137,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4182,10 +4163,10 @@
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -4239,7 +4220,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.IndexInfoAttributes.api_version" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">api_version</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SemanticVersion</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Presently used full version of the OPTIMADE API.</span><span class="se">\n</span><span class="s1">The version number string MUST NOT be prefixed by, e.g., &quot;v&quot;.</span><span class="se">\n</span><span class="s1">Examples: `1.0.0`, `1.0.0-rc.2`.&#39;</span><span class="p">)]</span></code>
   
@@ -4256,7 +4236,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4279,7 +4258,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.IndexInfoAttributes.available_endpoints" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">available_endpoints</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of available endpoints (i.e., the string to be appended to the versioned base URL).&#39;</span><span class="p">)]</span></code>
   
@@ -4299,7 +4277,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.IndexInfoAttributes.entry_types_by_format" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">entry_types_by_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Available entry endpoints as a function of output formats.&#39;</span><span class="p">)]</span></code>
   
@@ -4316,7 +4293,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4340,7 +4316,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.IndexInfoAttributes.is_index" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">is_index</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;This must be `true` since this is an index meta-database (see section Index Meta-Database).&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span></code>
   
@@ -4361,7 +4336,6 @@
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -4408,10 +4382,10 @@
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -4471,7 +4445,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.IndexInfoResource.attributes" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">IndexInfoAttributes</span></code>
   
@@ -4488,7 +4461,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4512,7 +4484,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.IndexInfoResource.links" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">ResourceLinks</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
   
@@ -4530,7 +4501,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4554,7 +4524,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.IndexInfoResource.model_config" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_schema_extra</span><span class="o">=</span><span class="n">resource_json_schema_extra</span><span class="p">)</span></code>
   
@@ -4575,7 +4544,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.IndexInfoResource.relationships" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">],</span> <span class="n">IndexRelationship</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Relationships</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their &#39;default&#39; OPTIMADE API database.</span><span class="se">\n</span><span class="s2">A client SHOULD present this database as the first choice when an end-user chooses this provider.&quot;</span><span class="p">)]</span></code>
   
@@ -4592,7 +4560,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4620,10 +4587,10 @@
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -4679,7 +4646,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.IndexRelationship.data" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">RelatedLinksResource</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;[JSON API resource linkage](http://jsonapi.org/format/1.0/#document-links).</span><span class="se">\n</span><span class="s1">It MUST be either `null` or contain a single Links identifier object with the fields `id` and `type`&#39;</span><span class="p">)]</span></code>
   
@@ -4703,10 +4669,10 @@
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -4750,7 +4716,6 @@
 
 
 
-
 <h3 id="optimade.models.index_metadb.RelatedLinksResource.id" class="doc doc-heading">
           <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource ID&#39;</span><span class="p">)]</span></code>
   
@@ -4767,7 +4732,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4788,7 +4752,6 @@
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -4816,12 +4779,12 @@
 
   </div>
 
+
 </div>
 
 
 
 <div class="doc doc-object doc-function">
-
 
 
 

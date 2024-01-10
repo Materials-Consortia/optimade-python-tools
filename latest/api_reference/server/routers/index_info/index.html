@@ -2383,7 +2383,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.routers.index_info.IndexInfoResponse.either_data_meta_or_errors_must_be_set" class="md-nav__link">
     <span class="md-ellipsis">
-      either_data_meta_or_errors_must_be_set()
+      either_data_meta_or_errors_must_be_set
     </span>
   </a>
   
@@ -2415,7 +2415,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.routers.index_info.get_base_url" class="md-nav__link">
     <span class="md-ellipsis">
-      get_base_url()
+      get_base_url
     </span>
   </a>
   
@@ -2424,7 +2424,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.routers.index_info.get_info" class="md-nav__link">
     <span class="md-ellipsis">
-      get_info()
+      get_info
     </span>
   </a>
   
@@ -2433,7 +2433,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.routers.index_info.meta_values" class="md-nav__link">
     <span class="md-ellipsis">
-      meta_values()
+      meta_values
     </span>
   </a>
   
@@ -2837,7 +2837,7 @@
           <li class="md-nav__item">
   <a href="#optimade.server.routers.index_info.IndexInfoResponse.either_data_meta_or_errors_must_be_set" class="md-nav__link">
     <span class="md-ellipsis">
-      either_data_meta_or_errors_must_be_set()
+      either_data_meta_or_errors_must_be_set
     </span>
   </a>
   
@@ -2869,7 +2869,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.routers.index_info.get_base_url" class="md-nav__link">
     <span class="md-ellipsis">
-      get_base_url()
+      get_base_url
     </span>
   </a>
   
@@ -2878,7 +2878,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.routers.index_info.get_info" class="md-nav__link">
     <span class="md-ellipsis">
-      get_info()
+      get_info
     </span>
   </a>
   
@@ -2887,7 +2887,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.routers.index_info.meta_values" class="md-nav__link">
     <span class="md-ellipsis">
-      meta_values()
+      meta_values
     </span>
   </a>
   
@@ -2932,7 +2932,6 @@
 
 
 
-
 <h2 id="optimade.server.routers.index_info.CONFIG" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">CONFIG</span><span class="p">:</span> <span class="n">ServerConfig</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span></code>
   
@@ -2956,7 +2955,6 @@ and makes it importable in the server code.</p>
 
 
 
-
 <h2 id="optimade.server.routers.index_info.ERROR_RESPONSES" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">ERROR_RESPONSES</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">err</span><span class="o">.</span><span class="n">status_code</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">ErrorResponse</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">err</span><span class="o">.</span><span class="n">title</span><span class="p">}</span><span class="k">for</span> <span class="n">err</span> <span class="ow">in</span> <span class="n">POSSIBLE_ERRORS</span><span class="p">}</span></code>
   
@@ -2973,7 +2971,6 @@ and makes it importable in the server code.</p>
 </div>
 
 <div class="doc doc-object doc-attribute">
-
 
 
 
@@ -2996,7 +2993,6 @@ and makes it importable in the server code.</p>
 
 
 
-
 <h2 id="optimade.server.routers.index_info.router" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">(</span><span class="n">redirect_slashes</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
   
@@ -3014,7 +3010,6 @@ and makes it importable in the server code.</p>
 
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -3072,10 +3067,10 @@ and makes it importable in the server code.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -3139,10 +3134,10 @@ and makes it importable in the server code.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -3184,7 +3179,6 @@ and makes it importable in the server code.</p>
 
 
 
-
 <h3 id="optimade.server.routers.index_info.IndexInfoResponse.model_config" class="doc doc-heading">
           <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
   
@@ -3211,7 +3205,6 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -3266,10 +3259,10 @@ microseconds, as filters may return unexpected results.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -3329,10 +3322,10 @@ microseconds, as filters may return unexpected results.</p>
 
   </div>
 
+
 </div>
 
 <div class="doc doc-object doc-class">
-
 
 
 
@@ -3380,12 +3373,12 @@ microseconds, as filters may return unexpected results.</p>
 
   </div>
 
+
 </div>
 
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -3447,7 +3440,6 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
@@ -3552,7 +3544,6 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <div class="doc doc-object doc-function">
-
 
 
 
