@@ -138,7 +138,7 @@ class OptimadeClient:
     is impossible due to, e.g., a running event loop.
     """
 
-    __force_binary_search: bool = False
+    _force_binary_search: bool = False
     """Setting to test binary searches in cases where servers do return
     the count.
     """
@@ -403,7 +403,7 @@ class OptimadeClient:
                     "data_returned", None
                 )
 
-                if count_results[base_url] is None or self.__force_binary_search:
+                if count_results[base_url] is None or self._force_binary_search:
                     if self.count_binary_search:
                         count_results[base_url] = self.binary_search_count(
                             filter, endpoint, base_url, results
@@ -484,15 +484,11 @@ class OptimadeClient:
             return 0
 
         attempts = 0
-        probe = 1_000_000
-        window: tuple[int, Union[int, None]] = (1, None)
         max_attempts = 100
 
-        while attempts < max_attempts:
-            if window[1] is not None and abs(window[0] - window[1]) <= 1:
-                count: int = min(window)  # type: ignore[type-var, assignment]
-                return count
+        window, probe = self._update_probe_and_window()
 
+        while attempts < max_attempts:
             self._progress.disable = True
 
             result = asyncio.run(
@@ -509,28 +505,79 @@ class OptimadeClient:
 
             self._progress.disable = self.silent
 
-            if result[base_url].data:
-                window = (probe, window[1])
-            if not result[base_url].data:
-                window = (window[0], probe)
+            window, probe = self._update_probe_and_window(
+                window, probe, bool(result[base_url].data)
+            )
 
-            # If we've not reached the upper bound yet, try 10x
-            if window[1] is None:
-                probe *= 10
+            if window[0] == window[1] and window[0] == probe:
+                return probe
 
-            # Otherwise, if we're in the window and the ends of the window now have the same power of 10, take the average (102 => 108) => 105
-            elif round(math.log10(window[0])) == round(math.log10(window[0])):
-                probe = (window[1] + window[0]) // 2
-            # otherwise use logarithmic average (10, 1000) => 100
-            else:
-                probe = int(10 ** (math.log10(window[1]) + math.log10(window[0]) / 2))
             attempts += 1
 
             if self.verbosity > 2:
                 self._progress.print(f"Binary search debug info: {window=}, {probe=}")
 
         else:
-            raise RuntimeError(f"Exceeded maximum number of retries for {base_url}")
+            message = f"Exceeded maximum number of attempts for binary search on {base_url}, {filter=}"
+            self._progress.print(message)
+            raise RuntimeError(message)
+
+    @staticmethod
+    def _update_probe_and_window(
+        window: Optional[tuple[int, Optional[int]]] = None,
+        last_probe: Optional[int] = None,
+        below: Optional[bool] = None,
+    ) -> tuple[tuple[int, Optional[int]], int]:
+        """Sets the new range, trial value and exit condition for exponential/binary search.
+        When converged, returns the same value three times.
+
+        Parameters:
+            window: The current window of results.
+            last_probe: The last probe value.
+            below: Whether the last probe was below the target value.
+
+        Returns:
+            A tuple of the new window and probe value,
+            or the count three times if converged.
+
+        """
+
+        if window is None and last_probe is None:
+            return (1, None), 1_000_000
+
+        if window is None or last_probe is None:
+            raise RuntimeError(
+                "Invalid arguments: must provide all or none of window, last_probe and below parameters"
+            )
+
+        probe: int = last_probe
+
+        # Exit condition: find a range of (count, count+1) values
+        # and determine whether the probe was above or below in the last guess
+        if window[1] is not None and window[1] - window[0] == 1:
+            if below:
+                return (window[0], window[0]), window[0]
+            else:
+                return (window[1], window[1]), window[1]
+
+        # Enclose the real value in the window, with `None` indicating an open boundary
+        if below:
+            window = (last_probe, window[1])
+        else:
+            window = (window[0], last_probe)
+
+        # If we've not reached the upper bound yet, try 10x
+        if window[1] is None:
+            probe *= 10
+
+        # Otherwise, if we're in the window and the ends of the window now have the same power of 10, take the average (102 => 108) => 105
+        elif round(math.log10(window[0])) == round(math.log10(window[0])):
+            probe = (window[1] + window[0]) // 2
+        # otherwise use logarithmic average (10, 1000) => 100
+        else:
+            probe = int(10 ** (math.log10(window[1]) + math.log10(window[0]) / 2))
+
+        return window, probe
 
     def list_properties(
         self,
