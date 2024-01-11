@@ -39,7 +39,7 @@ jobs:
       with:
         submodules: true
         fetch-depth: 0
-        branch: ${{ publish_branch }}
+        branch: ${{ steps.save_branch.outputs.publish_branch }}
 
     - name: Set up Python 3.10
       uses: actions/setup-python@v5
