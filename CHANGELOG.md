@@ -1,5 +1,20 @@
 # Changelog
 
+## [v1.0.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.2) (2024-01-11)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.1...v1.0.2)
+
+**Implemented enhancements:**
+
+- Client: counting number of matching entries when `data_returned` is not available [\#1924](https://github.com/Materials-Consortia/optimade-python-tools/issues/1924)
+- Client: add ability to count the number of matches for a filter using binary search over pagination [\#1925](https://github.com/Materials-Consortia/optimade-python-tools/pull/1925) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Add upper pin to numpy in preparation for v2 [\#1928](https://github.com/Materials-Consortia/optimade-python-tools/pull/1928) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `d8322a4` to `93d2b52` [\#1926](https://github.com/Materials-Consortia/optimade-python-tools/pull/1926) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump providers from `564a499` to `d8322a4` [\#1909](https://github.com/Materials-Consortia/optimade-python-tools/pull/1909) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v1.0.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.1) (2023-12-04)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.0...v1.0.1)
