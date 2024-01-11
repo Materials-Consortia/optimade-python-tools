@@ -80,8 +80,8 @@ http_client = [
 ]
 
 ase = ["ase~=3.22"]
-cif = ["numpy>=1.20"]
-# we don't support pydantic v2 yet, but pymatgen has a (uncessary IMO) tight coupling to mp-api which now enforces it
+cif = ["numpy~=1.20"]
+# The 0.25.x series doesn't support pydantic v2 yet, but pymatgen has a (uncessary IMO) tight coupling to mp-api which now enforces it
 # as "true" users of pydantic, if we can't update our stuff to v2 (including all the fieldinfo hacks) then we will
 # probably just have to hard pin or remove pymatgen support
 pymatgen = [
