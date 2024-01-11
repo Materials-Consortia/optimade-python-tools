@@ -24,8 +24,8 @@ jobs:
       id: get_release_branch
       with:
         route: GET /repos/{owner}/{repo}/releases/tags/${{ github.ref_name }}
-        owner: octokit
-        repo: request-action
+        owner: Materials-Consortia
+        repo: optimade-python-tools
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
