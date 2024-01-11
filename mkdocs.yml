@@ -70,38 +70,29 @@ plugins:
       lang: en
   - mkdocstrings:
       default_handler: python
-      enable_inventory: true
       handlers:
         python:
           options:
-            # General options
-            show_source: true
-            show_bases: true
-
-            # Heading options
-            heading_level: 2
             show_root_heading: false
             show_root_toc_entry: true
             show_root_full_path: true
             show_object_full_path: false
             show_category_heading: false
-
-            # Members options
-            inherited_members: true
-            members: true
+            show_if_no_docstring: false
+            show_source: true
+            show_bases: true
+            group_by_category: true
+            heading_level: 2
             filters:
               - "!^_[^_]"
               - "!__json_encoder__$"
               - "!__all__$"
               - "!__config__$"
               - "!ValidatorResults$"
-            group_by_category: true
-
-            # Docstring options
+            members: true
+            inherited_members: true
             docstring_style: google
-            docstring_options:
-              replace_admonitions: true
-            show_if_no_docstring: false
+            enable_inventory: true
   - awesome-pages
   - autorefs
 
