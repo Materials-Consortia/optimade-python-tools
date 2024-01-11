@@ -88,7 +88,6 @@ plugins:
 
             # Members options
             inherited_members: true
-            members: true
             filters:
               - "!^_[^_]"
               - "!__json_encoder__$"
