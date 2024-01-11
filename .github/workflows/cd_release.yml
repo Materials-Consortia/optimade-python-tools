@@ -6,7 +6,6 @@ on:
     - published
 
 env:
-  PUBLISH_UPDATE_BRANCH: master
   GIT_USER_NAME: OPTIMADE Developers
   GIT_USER_EMAIL: "dev@optimade.org"
 
@@ -36,21 +35,26 @@ jobs:
         pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
         pip install -e .[all]
 
+    - name: Get base branch name for tag
+      id: branch_finder
+      run:
+        echo "branch=$(git branch --show-current)" >> "$GITHUB_OUTPUT"
+
     - name: Update changelog
       uses: CharMixer/auto-changelog-action@v1
       with:
         token: ${{ secrets.RELEASE_PAT_BOT }}
-        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        release_branch: ${{ steps.branch_finder.outputs.branch }}
         exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
 
     - name: Update API Reference docs and version - Commit changes and update tag
       run: .github/utils/update_docs.sh
 
-    - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
+    - name: Update triggering branch
       uses: CasperWA/push-protected@v2
       with:
         token: ${{ secrets.RELEASE_PAT_BOT }}
-        branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        release_branch: ${{ steps.branch_finder.outputs.branch }}
         unprotect_reviews: true
         sleep: 15
         force: true
@@ -63,7 +67,7 @@ jobs:
       uses: CharMixer/auto-changelog-action@v1
       with:
         token: ${{ secrets.RELEASE_PAT_BOT }}
-        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        release_branch: ${{ steps.branch_finder.outputs.branch }}
         since_tag: "${{ env.PREVIOUS_VERSION }}"
         output: "release_changelog.md"
         exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
@@ -96,7 +100,7 @@ jobs:
       with:
         submodules: true
         fetch-depth: 0
-        ref: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        ref: ${{ needs.publish.branch_finder.outputs.branch }}
 
     - name: Set up Python 3.10
       uses: actions/setup-python@v4
@@ -126,7 +130,7 @@ jobs:
     uses: ./.github/workflows/cd_container_image.yml
     with:
       release: true
-      checkout_ref: master
+      checkout_ref: ${{ needs.publish.branch_finder.outputs.branch }}
     secrets: inherit
     permissions:
       packages: write
