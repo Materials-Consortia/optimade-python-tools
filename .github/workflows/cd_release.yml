@@ -8,6 +8,7 @@ on:
 env:
   GIT_USER_NAME: OPTIMADE Developers
   GIT_USER_EMAIL: "dev@optimade.org"
+  DEFAULT_RELEASE_BRANCH: "master"
 
 jobs:
 
@@ -137,10 +138,15 @@ jobs:
         git config --global user.name "${{ env.GIT_USER_NAME }}"
         git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
-    - name: Deploy documentation
+    - name: Deploy versioned documentation
+      run: |
+        mike deploy --push --remote origin --branch gh-pages --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v}
+
+    - name: Deploy stable/latest documentation
+      if: ${{ needs.publish.outputs.publish_branch }} == ${{ DEFAULT_RELEASE_BRANCH }}
       run: |
         mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
-        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest master
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ DEFAULT_RELEASE_BRANCH }}
 
   publish_container_image:
     name: Publish container image
