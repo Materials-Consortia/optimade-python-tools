@@ -191,6 +191,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://www.optimade.org/optimade-python-tools/latest/api_reference/models/types/</loc>
+         <lastmod>2024-01-11</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://www.optimade.org/optimade-python-tools/latest/api_reference/models/utils/</loc>
          <lastmod>2024-01-11</lastmod>
          <changefreq>daily</changefreq>
