@@ -768,7 +768,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade.utils
+      utils
     </span>
   </a>
   
@@ -777,7 +777,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils.get_all_databases" class="md-nav__link">
     <span class="md-ellipsis">
-      get_all_databases()
+      get_all_databases
     </span>
   </a>
   
@@ -786,7 +786,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils.get_child_database_links" class="md-nav__link">
     <span class="md-ellipsis">
-      get_child_database_links()
+      get_child_database_links
     </span>
   </a>
   
@@ -795,7 +795,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils.get_providers" class="md-nav__link">
     <span class="md-ellipsis">
-      get_providers()
+      get_providers
     </span>
   </a>
   
@@ -804,7 +804,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils.mongo_id_for_database" class="md-nav__link">
     <span class="md-ellipsis">
-      mongo_id_for_database()
+      mongo_id_for_database
     </span>
   </a>
   
@@ -2655,7 +2655,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade.utils
+      utils
     </span>
   </a>
   
@@ -2664,7 +2664,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils.get_all_databases" class="md-nav__link">
     <span class="md-ellipsis">
-      get_all_databases()
+      get_all_databases
     </span>
   </a>
   
@@ -2673,7 +2673,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils.get_child_database_links" class="md-nav__link">
     <span class="md-ellipsis">
-      get_child_database_links()
+      get_child_database_links
     </span>
   </a>
   
@@ -2682,7 +2682,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils.get_providers" class="md-nav__link">
     <span class="md-ellipsis">
-      get_providers()
+      get_providers
     </span>
   </a>
   
@@ -2691,7 +2691,7 @@
         <li class="md-nav__item">
   <a href="#optimade.utils.mongo_id_for_database" class="md-nav__link">
     <span class="md-ellipsis">
-      mongo_id_for_database()
+      mongo_id_for_database
     </span>
   </a>
   
@@ -2715,15 +2715,17 @@
 <h1 id="utils">utils<a class="headerlink" href="#utils" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade.utils"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>This submodule implements some useful utilities for dealing
 with OPTIMADE providers that can be used in server or client code.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -2735,69 +2737,161 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
 
 
-  <div class="doc doc-object doc-function">
+
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.utils.get_all_databases" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">(</span><span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
+          <code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">(</span><span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_all_databases" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Iterate through all databases reported by registered OPTIMADE providers.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>include_providers</code></td>
-        <td><code>Optional[collections.abc.Container[str]]</code></td>
-        <td><p>A set/container of provider IDs to include child databases for.</p></td>
-        <td><code>None</code></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>include_providers</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A set/container of provider IDs to include child databases for.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>exclude_providers</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A set/container of provider IDs to exclude child databases for.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>exclude_databases</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A set/container of specific database URLs to exclude.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>exclude_providers</code></td>
-        <td><code>Optional[collections.abc.Container[str]]</code></td>
-        <td><p>A set/container of provider IDs to exclude child databases for.</p></td>
-        <td><code>None</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>exclude_databases</code></td>
-        <td><code>Optional[collections.abc.Container[str]]</code></td>
-        <td><p>A set/container of specific database URLs to exclude.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>collections.abc.Iterable[str]</code></td>
-      <td><p>A generator of child database links that obey the given parameters.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_databases</span><span class="p">(</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A generator of child database links that obey the given parameters.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>optimade/utils.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_all_databases</span><span class="p">(</span>
     <span class="n">include_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2853,95 +2947,206 @@ with OPTIMADE providers that can be used in server or client code.</p>
                         <span class="sa">f</span><span class="s2">&quot;Unable to retrieve databases from [bold red]</span><span class="si">{</span><span class="n">provider</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">[/bold red]: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="k">pass</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.utils.get_child_database_links" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
+          <code class="highlight language-python"><span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_child_database_links" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>For a provider, return a list of available child databases.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>provider</code></td>
-        <td><code>LinksResource</code></td>
-        <td><p>The links entry for the provider.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>provider</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The links entry for the provider.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>obey_aggregate</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to only return links that allow
+aggregation.</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>headers</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[dict]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Additional HTTP headers to pass to the provider.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>obey_aggregate</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to only return links that allow
-aggregation.</p></td>
-        <td><code>True</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A list of the valid links entries from this provider that</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>have <code>link_type</code> <code>"child"</code>.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>headers</code></td>
-        <td><code>Optional[dict]</code></td>
-        <td><p>Additional HTTP headers to pass to the provider.</p></td>
-        <td><code>None</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>list[optimade.models.links.LinksResource]</code></td>
-      <td><p>A list of the valid links entries from this provider that
-have <code>link_type</code> <code>"child"</code>.</p></td>
-    </tr>
-  </tbody>
-</table>
-<p><strong>Exceptions:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>RuntimeError</code></td>
-        <td><p>If the provider's index meta-database is down,
-invalid, or the request otherwise fails.</p></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_child_database_links</span><span class="p">(</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>RuntimeError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>If the provider's index meta-database is down,
+invalid, or the request otherwise fails.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>optimade/utils.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_child_database_links</span><span class="p">(</span>
     <span class="n">provider</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span>
     <span class="n">obey_aggregate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3000,26 +3205,25 @@ invalid, or the request otherwise fails.</p></td>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Did not understand response from </span><span class="si">{</span><span class="n">provider</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">links</span><span class="o">.</span><span class="n">content</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.utils.get_providers" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
-
+          <code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_providers" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</p>
 <p>Fallback order if providers.optimade.org is not available:</p>
 <ol>
@@ -3029,44 +3233,130 @@ invalid, or the request otherwise fails.</p></td>
    <code>/links</code>-endpoint.</li>
 </ol>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>add_mongo_id</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to populate the <code>_id</code> field of the provider with MongoDB
-ObjectID.</p></td>
-        <td><code>False</code></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>list</code></td>
-      <td><p>List of raw JSON-decoded providers including MongoDB object IDs.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>optimade/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>add_mongo_id</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to populate the <code>_id</code> field of the provider with MongoDB
+ObjectID.</p>
+            </div>
+          </td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>list</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>List of raw JSON-decoded providers including MongoDB object IDs.</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>optimade/utils.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</span>
 
 <span class="sd">    Fallback order if providers.optimade.org is not available:</span>
@@ -3133,31 +3423,40 @@ ObjectID.</p></td>
         <span class="n">providers_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">providers_list</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.utils.mongo_id_for_database" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">database_type</span><span class="p">)</span></code>
-
+          <code class="highlight language-python"><span class="n">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">database_type</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.mongo_id_for_database" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Produce a MongoDB ObjectId for a database</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade/utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade/utils.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a MongoDB ObjectId for a database&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">bson.objectid</span> <span class="kn">import</span> <span class="n">ObjectId</span>
 
@@ -3168,22 +3467,19 @@ ObjectID.</p></td>
         <span class="n">oid</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">oid</span><span class="si">}{</span><span class="s1">&#39;0&#39;</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mi">12</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">oid</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">ObjectId</span><span class="p">(</span><span class="n">oid</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
 
 
