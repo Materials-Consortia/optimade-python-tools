@@ -6,7 +6,6 @@ on:
     - published
 
 env:
-  PUBLISH_UPDATE_BRANCH: master
   GIT_USER_NAME: OPTIMADE Developers
   GIT_USER_EMAIL: "dev@optimade.org"
 
@@ -54,6 +53,11 @@ jobs:
         pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
         pip install -e .[all]
 
+    - name: Get base branch name for tag
+      id: branch_finder
+      run:
+        echo "branch=$(git branch --show-current)" >> "$GITHUB_OUTPUT"
+
     - name: Update changelog
       uses: CharMixer/auto-changelog-action@v1
       with:
@@ -64,7 +68,7 @@ jobs:
     - name: Update API Reference docs and version - Commit changes and update tag
       run: .github/utils/update_docs.sh
 
-    - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
+    - name: Update triggering branch
       uses: CasperWA/push-protected@v2
       with:
         token: ${{ secrets.RELEASE_PAT_BOT }}
