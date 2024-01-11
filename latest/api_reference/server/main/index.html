@@ -1899,7 +1899,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.main" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade.server.main
+      main
     </span>
   </a>
   
@@ -1908,7 +1908,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.main.add_major_version_base_url" class="md-nav__link">
     <span class="md-ellipsis">
-      add_major_version_base_url()
+      add_major_version_base_url
     </span>
   </a>
   
@@ -1917,7 +1917,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.main.add_optional_versioned_base_urls" class="md-nav__link">
     <span class="md-ellipsis">
-      add_optional_versioned_base_urls()
+      add_optional_versioned_base_urls
     </span>
   </a>
   
@@ -1926,7 +1926,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.main.lifespan" class="md-nav__link">
     <span class="md-ellipsis">
-      lifespan()
+      lifespan
     </span>
   </a>
   
@@ -2648,7 +2648,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.main" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade.server.main
+      main
     </span>
   </a>
   
@@ -2657,7 +2657,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.main.add_major_version_base_url" class="md-nav__link">
     <span class="md-ellipsis">
-      add_major_version_base_url()
+      add_major_version_base_url
     </span>
   </a>
   
@@ -2666,7 +2666,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.main.add_optional_versioned_base_urls" class="md-nav__link">
     <span class="md-ellipsis">
-      add_optional_versioned_base_urls()
+      add_optional_versioned_base_urls
     </span>
   </a>
   
@@ -2675,7 +2675,7 @@
         <li class="md-nav__item">
   <a href="#optimade.server.main.lifespan" class="md-nav__link">
     <span class="md-ellipsis">
-      lifespan()
+      lifespan
     </span>
   </a>
   
@@ -2699,17 +2699,19 @@
 <h1 id="main">main<a class="headerlink" href="#main" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade.server.main"></a>
-    <div class="doc doc-contents first">
-
+  <div class="doc doc-contents first">
+  
       <p>The OPTIMADE server</p>
 <p>The server is based on MongoDB, using either <code>pymongo</code> or <code>mongomock</code>.</p>
 <p>This is an example implementation with example data.
 To implement your own server see the documentation at https://optimade.org/optimade-python-tools.</p>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -2722,54 +2724,65 @@ To implement your own server see the documentation at https://optimade.org/optim
 
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.server.main.add_major_version_base_url" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
-
+          <code class="highlight language-python"><span class="n">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
 
 <a href="#optimade.server.main.add_major_version_base_url" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Add mandatory vMajor endpoints, i.e. all except versions.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade/server/main.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade/server/main.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add mandatory vMajor endpoints, i.e. all except versions.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">structures</span><span class="p">,</span> <span class="n">landing</span><span class="p">):</span>
         <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">])</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.server.main.add_optional_versioned_base_urls" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
-
+          <code class="highlight language-python"><span class="n">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
 
 <a href="#optimade.server.main.add_optional_versioned_base_urls" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Add the following OPTIONAL prefixes/base URLs to server:
 <div class="highlight"><pre><span></span><code>    /vMajor.Minor
     /vMajor.Minor.Patch
 </code></pre></div></p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade/server/main.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade/server/main.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the following OPTIONAL prefixes/base URLs to server:</span>
 <span class="sd">    ```</span>
 <span class="sd">        /vMajor.Minor</span>
@@ -2779,31 +2792,43 @@ To implement your own server see the documentation at https://optimade.org/optim
     <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;minor&quot;</span><span class="p">,</span> <span class="s2">&quot;patch&quot;</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">structures</span><span class="p">,</span> <span class="n">landing</span><span class="p">):</span>
             <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="n">version</span><span class="p">])</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h2 id="optimade.server.main.lifespan" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
-
+          <code class="highlight language-python"><span class="n">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
 
 <a href="#optimade.server.main.lifespan" class="headerlink" title="Permanent link">&para;</a></h2>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Add dynamic endpoints on startup.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>optimade/server/main.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@asynccontextmanager</span>  <span class="c1"># type: ignore[arg-type]</span>
+          <details class="quote">
+            <summary>Source code in <code>optimade/server/main.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@asynccontextmanager</span>  <span class="c1"># type: ignore[arg-type]</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add dynamic endpoints on startup.&quot;&quot;&quot;</span>
     <span class="c1"># Add API endpoints for MANDATORY base URL `/vMAJOR`</span>
@@ -2813,23 +2838,19 @@ To implement your own server see the documentation at https://optimade.org/optim
 
     <span class="c1"># Yield so that the app can start</span>
     <span class="k">yield</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+          </details>
   </div>
 
-
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
+
+</div>
 
 
 

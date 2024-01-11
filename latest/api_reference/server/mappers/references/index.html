@@ -2214,48 +2214,9 @@
         <li class="md-nav__item">
   <a href="#optimade.server.mappers.references" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade.server.mappers.references
+      references
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#optimade.server.mappers.references.ReferenceMapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      ReferenceMapper
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ReferenceMapper">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.server.mappers.references.ReferenceMapper.ENTRY_RESOURCE_CLASS" class="md-nav__link">
-    <span class="md-ellipsis">
-      ENTRY_RESOURCE_CLASS
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ENTRY_RESOURCE_CLASS">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.server.mappers.references.ReferenceMapper.ENTRY_RESOURCE_CLASS.model_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      model_config
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2662,48 +2623,9 @@
         <li class="md-nav__item">
   <a href="#optimade.server.mappers.references" class="md-nav__link">
     <span class="md-ellipsis">
-      optimade.server.mappers.references
+      references
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#optimade.server.mappers.references.ReferenceMapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      ReferenceMapper
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ReferenceMapper">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.server.mappers.references.ReferenceMapper.ENTRY_RESOURCE_CLASS" class="md-nav__link">
-    <span class="md-ellipsis">
-      ENTRY_RESOURCE_CLASS
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="ENTRY_RESOURCE_CLASS">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#optimade.server.mappers.references.ReferenceMapper.ENTRY_RESOURCE_CLASS.model_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      model_config
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2725,145 +2647,14 @@
 <h1 id="references">references<a class="headerlink" href="#references" title="Permanent link">&para;</a></h1>
 
 
-  <div class="doc doc-object doc-module">
+<div class="doc doc-object doc-module">
+
+
 
 <a id="optimade.server.mappers.references"></a>
-    <div class="doc doc-contents first">
+  <div class="doc doc-contents first">
 
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h2 id="optimade.server.mappers.references.ReferenceMapper" class="doc doc-heading">
-        <code>
-ReferenceMapper            (<a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper" href="../entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a>)
-        </code>
-
-
-
-<a href="#optimade.server.mappers.references.ReferenceMapper" class="headerlink" title="Permanent link">&para;</a></h2>
-
-    <div class="doc doc-contents ">
-
-
-        <details class="quote">
-          <summary>Source code in <code>optimade/server/mappers/references.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceMapper</span><span class="p">(</span><span class="n">BaseResourceMapper</span><span class="p">):</span>
-    <span class="n">ENTRY_RESOURCE_CLASS</span> <span class="o">=</span> <span class="n">ReferenceResource</span>
-</code></pre></div>
-        </details>
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-  <div class="doc doc-object doc-class">
-
-
-
-<h3 id="optimade.server.mappers.references.ReferenceMapper.ENTRY_RESOURCE_CLASS" class="doc doc-heading">
-        <code>
-ENTRY_RESOURCE_CLASS            (<a class="autorefs autorefs-internal" title="optimade.models.entries.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>)
-        </code>
-
-
-
-<a href="#optimade.server.mappers.references.ReferenceMapper.ENTRY_RESOURCE_CLASS" class="headerlink" title="Permanent link">&para;</a></h3>
-
-    <div class="doc doc-contents ">
-
-      <p>The <code>references</code> entries describe bibliographic references.</p>
-<p>The following properties are used to provide the bibliographic details:</p>
-<ul>
-<li><strong>address</strong>, <strong>annote</strong>, <strong>booktitle</strong>, <strong>chapter</strong>, <strong>crossref</strong>, <strong>edition</strong>, <strong>howpublished</strong>, <strong>institution</strong>, <strong>journal</strong>, <strong>key</strong>, <strong>month</strong>, <strong>note</strong>, <strong>number</strong>, <strong>organization</strong>, <strong>pages</strong>, <strong>publisher</strong>, <strong>school</strong>, <strong>series</strong>, <strong>title</strong>, <strong>volume</strong>, <strong>year</strong>: meanings of these properties match the <a href="http://bibtexml.sourceforge.net/btxdoc.pdf">BibTeX specification</a>, values are strings;</li>
-<li><strong>bib_type</strong>: type of the reference, corresponding to <strong>type</strong> property in the BibTeX specification, value is string;</li>
-<li><strong>authors</strong> and <strong>editors</strong>: lists of <em>person objects</em> which are dictionaries with the following keys:<ul>
-<li><strong>name</strong>: Full name of the person, REQUIRED.</li>
-<li><strong>firstname</strong>, <strong>lastname</strong>: Parts of the person's name, OPTIONAL.</li>
-</ul>
-</li>
-<li><strong>doi</strong> and <strong>url</strong>: values are strings.</li>
-<li><strong>Requirements/Conventions</strong>:<ul>
-<li><strong>Support</strong>: OPTIONAL support in implementations, i.e., any of the properties MAY be <code>null</code>.</li>
-<li><strong>Query</strong>: Support for queries on any of these properties is OPTIONAL.
-    If supported, filters MAY support only a subset of comparison operators.</li>
-<li>Every references entry MUST contain at least one of the properties.</li>
-</ul>
-</li>
-</ul>
-
-        <details class="quote">
-          <summary>Source code in <code>optimade/server/mappers/references.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `references` entries describe bibliographic references.</span>
-
-<span class="sd">    The following properties are used to provide the bibliographic details:</span>
-
-<span class="sd">    - **address**, **annote**, **booktitle**, **chapter**, **crossref**, **edition**, **howpublished**, **institution**, **journal**, **key**, **month**, **note**, **number**, **organization**, **pages**, **publisher**, **school**, **series**, **title**, **volume**, **year**: meanings of these properties match the [BibTeX specification](http://bibtexml.sourceforge.net/btxdoc.pdf), values are strings;</span>
-<span class="sd">    - **bib_type**: type of the reference, corresponding to **type** property in the BibTeX specification, value is string;</span>
-<span class="sd">    - **authors** and **editors**: lists of *person objects* which are dictionaries with the following keys:</span>
-<span class="sd">        - **name**: Full name of the person, REQUIRED.</span>
-<span class="sd">        - **firstname**, **lastname**: Parts of the person&#39;s name, OPTIONAL.</span>
-<span class="sd">    - **doi** and **url**: values are strings.</span>
-<span class="sd">    - **Requirements/Conventions**:</span>
-<span class="sd">        - **Support**: OPTIONAL support in implementations, i.e., any of the properties MAY be `null`.</span>
-<span class="sd">        - **Query**: Support for queries on any of these properties is OPTIONAL.</span>
-<span class="sd">            If supported, filters MAY support only a subset of comparison operators.</span>
-<span class="sd">        - Every references entry MUST contain at least one of the properties.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">],</span>
-        <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
-<span class="s2">- **Type**: string.</span>
-<span class="s2">- **Requirements/Conventions**:</span>
-<span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
-<span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
-<span class="s2">    - **Response**: REQUIRED in the response.</span>
-<span class="s2">    - MUST be an existing entry type.</span>
-<span class="s2">    - The entry of type &lt;type&gt; and ID &lt;id&gt; MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
-<span class="s2">- **Example**: `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
-            <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;^references$&quot;</span><span class="p">,</span>
-            <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
-            <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;references&quot;</span>
-    <span class="n">attributes</span><span class="p">:</span> <span class="n">ReferenceResourceAttributes</span>
-
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">validate_attributes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;attributes field must be a mapping&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;reference object must have at least one field defined&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">value</span>
-</code></pre></div>
-        </details>
-
-
+  
 
   <div class="doc doc-children">
 
@@ -2877,72 +2668,11 @@ ENTRY_RESOURCE_CLASS            (<a class="autorefs autorefs-internal" title="op
 
 
 
-
-
-
-
-
-
-
-  <div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="optimade.server.mappers.references.ReferenceMapper.ENTRY_RESOURCE_CLASS.model_config" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">model_config</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">pydantic_settings</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">SettingsConfigDict</span><span class="p">]</span></code>
-
-
-<a href="#optimade.server.mappers.references.ReferenceMapper.ENTRY_RESOURCE_CLASS.model_config" class="headerlink" title="Permanent link">&para;</a></h4>
-
-    <div class="doc doc-contents ">
-
-      <p>The specification mandates that datetimes must be encoded following
-<a href="https://tools.ietf.org/html/rfc3339">RFC3339</a>, which does not support
-fractional seconds, thus they must be stripped in the response. This can
-cause issues when the underlying database contains fields that do include
-microseconds, as filters may return unexpected results.</p>
-    </div>
+  </div>
 
   </div>
 
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-  </div>
+</div>
 
 
 
