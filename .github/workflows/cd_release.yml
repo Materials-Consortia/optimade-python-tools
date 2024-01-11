@@ -6,9 +6,9 @@ on:
     - published
 
 env:
-  PUBLISH_UPDATE_BRANCH: master
   GIT_USER_NAME: OPTIMADE Developers
   GIT_USER_EMAIL: "dev@optimade.org"
+  DEFAULT_RELEASE_BRANCH: "master"
 
 jobs:
 
@@ -16,13 +16,31 @@ jobs:
     name: Publish OPTIMADE Python tools
     runs-on: ubuntu-latest
     if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/v')
+    outputs:
+      publish_branch: ${{ steps.save_branch.outputs.publish_branch }}
 
     steps:
-    - name: Checkout repository
+    - name: Get triggering branch
+      uses: octokit/request-action@v2.x
+      id: get_release_branch
+      with:
+        route: GET /repos/{owner}/{repo}/releases/tags/${{ github.ref_name }}
+        owner: Materials-Consortia
+        repo: optimade-python-tools
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Save branch name
+      id: save_branch
+      run: |
+        echo 'publish_branch=${{ fromJson(steps.get_release_branch.outputs.data).target_commitish }}' >> $GITHUB_OUTPUT
+
+    - name: Checkout publish branch
       uses: actions/checkout@v4
       with:
         submodules: true
         fetch-depth: 0
+        branch: ${{ steps.save_branch.outputs.publish_branch }}
 
     - name: Set up Python 3.10
       uses: actions/setup-python@v5
@@ -36,21 +54,26 @@ jobs:
         pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
         pip install -e .[all]
 
+    - name: Get base branch name for tag
+      id: branch_finder
+      run:
+        echo "branch=$(git branch --show-current)" >> "$GITHUB_OUTPUT"
+
     - name: Update changelog
       uses: CharMixer/auto-changelog-action@v1
       with:
         token: ${{ secrets.RELEASE_PAT_BOT }}
-        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        release_branch: ${{ steps.save_branch.outputs.publish_branch }}
         exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
 
     - name: Update API Reference docs and version - Commit changes and update tag
       run: .github/utils/update_docs.sh
 
-    - name: Update '${{ env.PUBLISH_UPDATE_BRANCH }}'
+    - name: Update triggering branch
       uses: CasperWA/push-protected@v2
       with:
         token: ${{ secrets.RELEASE_PAT_BOT }}
-        branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        branch: ${{ steps.save_branch.outputs.publish_branch }}
         unprotect_reviews: true
         sleep: 15
         force: true
@@ -63,7 +86,7 @@ jobs:
       uses: CharMixer/auto-changelog-action@v1
       with:
         token: ${{ secrets.RELEASE_PAT_BOT }}
-        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        release_branch: ${{ steps.save_branch.outputs.publish_branch }}
         since_tag: "${{ env.PREVIOUS_VERSION }}"
         output: "release_changelog.md"
         exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
@@ -96,7 +119,7 @@ jobs:
       with:
         submodules: true
         fetch-depth: 0
-        ref: ${{ env.PUBLISH_UPDATE_BRANCH }}
+        ref: ${{ needs.publish.outputs.publish_branch }}
 
     - name: Set up Python 3.10
       uses: actions/setup-python@v5
@@ -115,10 +138,15 @@ jobs:
         git config --global user.name "${{ env.GIT_USER_NAME }}"
         git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
-    - name: Deploy documentation
+    - name: Deploy versioned documentation
+      run: |
+        mike deploy --push --remote origin --branch gh-pages --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v}
+
+    - name: Deploy stable/latest documentation
+      if: ${{ needs.publish.outputs.publish_branch }} == ${{ DEFAULT_RELEASE_BRANCH }}
       run: |
         mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
-        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest master
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ DEFAULT_RELEASE_BRANCH }}
 
   publish_container_image:
     name: Publish container image
@@ -126,7 +154,7 @@ jobs:
     uses: ./.github/workflows/cd_container_image.yml
     with:
       release: true
-      checkout_ref: master
+      checkout_ref: ${{ needs.publish.outputs.publish_branch }}
     secrets: inherit
     permissions:
       packages: write
