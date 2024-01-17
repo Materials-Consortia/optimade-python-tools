@@ -668,7 +668,6 @@ class OptimadeClient:
             A mapping from base URL to `QueryResults` for each queried API.
 
         """
-
         if self.use_async:
             # Check for a pre-existing event loop (e.g. within a Jupyter notebook)
             # and use it if present
@@ -680,9 +679,10 @@ class OptimadeClient:
                             "Detected a running event loop, cannot run in async mode."
                         )
                     self._progress.print(
-                        "Detected a running event loop (e.g., Jupyter, pytest). Trying to use nest_asyncio."
+                        "Detected a running event loop (e.g., Jupyter). Attempting to switch to synchronous mode."
                     )
                     self.use_async = False
+                    self._http_client = requests.Session
             except RuntimeError:
                 event_loop = None
 
