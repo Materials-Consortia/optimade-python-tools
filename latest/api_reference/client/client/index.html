@@ -4981,7 +4981,6 @@ and provider.</p>
 <span class="sd">            A mapping from base URL to `QueryResults` for each queried API.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span><span class="p">:</span>
             <span class="c1"># Check for a pre-existing event loop (e.g. within a Jupyter notebook)</span>
             <span class="c1"># and use it if present</span>
@@ -4993,9 +4992,10 @@ and provider.</p>
                             <span class="s2">&quot;Detected a running event loop, cannot run in async mode.&quot;</span>
                         <span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                        <span class="s2">&quot;Detected a running event loop (e.g., Jupyter, pytest). Trying to use nest_asyncio.&quot;</span>
+                        <span class="s2">&quot;Detected a running event loop (e.g., Jupyter). Attempting to switch to synchronous mode.&quot;</span>
                     <span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span>
             <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                 <span class="n">event_loop</span> <span class="o">=</span> <span class="kc">None</span>
 
