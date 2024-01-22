@@ -87,7 +87,8 @@ cif = ["numpy~=1.20"]
 pymatgen = [
     "pymatgen>=2022",
     "mp-api<=0.36",
-    "emmet-core<=0.68"
+    "emmet-core<=0.68",
+    "pandas~=2.2"
 ]
 jarvis = ["jarvis-tools>=2023.1.8"]
 client = ["optimade[cif]"]
@@ -141,7 +142,13 @@ plugins = "pydantic.mypy"
 ignore_missing_imports = true
 follow_imports = "skip"
 
+[tool.isort]
+known_first_party = "optimade"
+profile = "black"
+
 [tool.pytest.ini_options]
+testpaths = "tests"
+addopts = "-rs"
 filterwarnings = [
     "error",
     "ignore:.*flaky.*:UserWarning",
@@ -157,10 +164,9 @@ filterwarnings = [
     "ignore:.*has an unrecognised prefix.*:",
     "ignore:.*pkg_resources is deprecated as an API*:DeprecationWarning",
     "ignore:.*Deprecated call to `pkg_resources.declare_namespace*:DeprecationWarning",
+    "ignore:.*datetime.datetime.utcfromtimestamp()*:DeprecationWarning",  # Raised indirectly by elasticsearch-DSL for Python 3.12
+    "ignore:.*ast.Num is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:.*ast.Str is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:.*ast.* is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:\\nPyarrow will become a required dependency of pandas.*:DeprecationWarning" # Raised indirectly by pymatgen for Python 3.12
 ]
-testpaths = "tests"
-addopts = "-rs"
-
-[tool.isort]
-known_first_party = "optimade"
-profile = "black"
