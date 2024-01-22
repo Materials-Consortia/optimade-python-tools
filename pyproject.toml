@@ -82,7 +82,7 @@ http-client = [
 
 ase = ["ase~=3.22"]
 cif = ["numpy~=1.22"]
-pymatgen = ["pymatgen>=2022"]
+pymatgen = ["pymatgen>=2022", "pandas~=2.2"]
 jarvis = ["jarvis-tools>=2023.1.8"]
 client = ["optimade[cif]"]
 
@@ -138,6 +138,8 @@ ignore_missing_imports = true
 follow_imports = "skip"
 
 [tool.pytest.ini_options]
+testpaths = "tests"
+addopts = "-rs"
 filterwarnings = [
     "error",
     "ignore:.*flaky.*:UserWarning",
@@ -157,6 +159,5 @@ filterwarnings = [
     "ignore:.*ast.Num is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
     "ignore:.*ast.Str is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
     "ignore:.*ast.* is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:\\nPyarrow will become a required dependency of pandas.*:DeprecationWarning" # Raised indirectly by pymatgen for Python 3.12
 ]
-testpaths = "tests"
-addopts = "-rs"
