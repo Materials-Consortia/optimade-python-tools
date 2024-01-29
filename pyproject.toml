@@ -98,7 +98,7 @@ docs = [
 testing = [
     "build~=1.0",
     "jsondiff~=2.0",
-    "pytest~=7.2",
+    "pytest>=7.2,<9.0",
     "pytest-cov~=4.0",
     "optimade[server]",
 ]
