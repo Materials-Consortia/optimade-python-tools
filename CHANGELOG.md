@@ -1,5 +1,20 @@
 # Changelog
 
+## [v0.25.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.5) (2024-01-30)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.4...v0.25.5)
+
+**Fixed bugs:**
+
+- Missing timeout for `requests.get` in `get_providers` [\#1954](https://github.com/Materials-Consortia/optimade-python-tools/issues/1954)
+- Transformers not recognizing `LinksResource` [\#939](https://github.com/Materials-Consortia/optimade-python-tools/issues/939)
+
+**Closed issues:**
+
+- ImportError and AttributeError in the Python notebooks on Binder and Google Colab [\#1939](https://github.com/Materials-Consortia/optimade-python-tools/issues/1939)
+- Docs builds with new mkdocstrings handler ignore filters [\#1934](https://github.com/Materials-Consortia/optimade-python-tools/issues/1934)
+- Cannot release backport branches [\#1930](https://github.com/Materials-Consortia/optimade-python-tools/issues/1930)
+
 ## [v0.25.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.4) (2024-01-11)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.2...v0.25.4)
