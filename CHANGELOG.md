@@ -1,5 +1,43 @@
 # Changelog
 
+## [v1.0.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.3) (2024-01-30)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.5...v1.0.3)
+
+**Fixed bugs:**
+
+- Add `requests` timeout when getting providers list [\#1955](https://github.com/Materials-Consortia/optimade-python-tools/pull/1955) ([ml-evs](https://github.com/ml-evs))
+
+**Merged pull requests:**
+
+- Fix release workflow [\#1959](https://github.com/Materials-Consortia/optimade-python-tools/pull/1959) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `46c8d85` to `ad0e214` [\#1948](https://github.com/Materials-Consortia/optimade-python-tools/pull/1948) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump providers from `97c69be` to `46c8d85` [\#1946](https://github.com/Materials-Consortia/optimade-python-tools/pull/1946) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Add upper pin for pandas and ignore pandas3/pyarrow deprecation warning [\#1945](https://github.com/Materials-Consortia/optimade-python-tools/pull/1945) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `93d2b52` to `97c69be` [\#1941](https://github.com/Materials-Consortia/optimade-python-tools/pull/1941) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Client: attempt to switch to synchronous mode when existing event loop is detected [\#1940](https://github.com/Materials-Consortia/optimade-python-tools/pull/1940) ([ml-evs](https://github.com/ml-evs))
+- mkdocs fix global setting of `members: true` [\#1936](https://github.com/Materials-Consortia/optimade-python-tools/pull/1936) ([ml-evs](https://github.com/ml-evs))
+- Allow backported releases in CI [\#1933](https://github.com/Materials-Consortia/optimade-python-tools/pull/1933) ([ml-evs](https://github.com/ml-evs))
+
+## [v0.25.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.5) (2024-01-30)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.4...v0.25.5)
+
+**Fixed bugs:**
+
+- Missing timeout for `requests.get` in `get_providers` [\#1954](https://github.com/Materials-Consortia/optimade-python-tools/issues/1954)
+- Transformers not recognizing `LinksResource` [\#939](https://github.com/Materials-Consortia/optimade-python-tools/issues/939)
+
+**Closed issues:**
+
+- ImportError and AttributeError in the Python notebooks on Binder and Google Colab [\#1939](https://github.com/Materials-Consortia/optimade-python-tools/issues/1939)
+- Docs builds with new mkdocstrings handler ignore filters [\#1934](https://github.com/Materials-Consortia/optimade-python-tools/issues/1934)
+- Cannot release backport branches [\#1930](https://github.com/Materials-Consortia/optimade-python-tools/issues/1930)
+
+## [v0.25.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.4) (2024-01-11)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.2...v0.25.4)
+
 ## [v1.0.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.2) (2024-01-11)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.1...v1.0.2)
