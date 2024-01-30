@@ -143,10 +143,10 @@ jobs:
         mike deploy --push --remote origin --branch gh-pages --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v}
 
     - name: Deploy stable/latest documentation
-      if: ${{ needs.publish.outputs.publish_branch }} == ${{ DEFAULT_RELEASE_BRANCH }}
+      if: ${{ needs.publish.outputs.publish_branch }} == ${{ env.DEFAULT_RELEASE_BRANCH }}
       run: |
         mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
-        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ DEFAULT_RELEASE_BRANCH }}
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_RELEASE_BRANCH }}
 
   publish_container_image:
     name: Publish container image
