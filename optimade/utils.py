@@ -54,7 +54,7 @@ def get_providers(add_mongo_id: bool = False) -> list:
 
     for provider_list_url in PROVIDER_LIST_URLS:
         try:
-            providers = requests.get(provider_list_url).json()
+            providers = requests.get(provider_list_url, timeout=10).json()
         except (
             requests.exceptions.ConnectionError,
             requests.exceptions.ConnectTimeout,
