@@ -280,16 +280,18 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.11' && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         name: project
         file: ./coverage.xml
         flags: project
 
     - name: Upload validator coverage to Codecov
       if: matrix.python-version == '3.11' && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         name: validator
         file: ./validator_cov.xml
         flags: validator
