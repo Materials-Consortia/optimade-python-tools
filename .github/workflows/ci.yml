@@ -282,6 +282,7 @@ jobs:
       if: matrix.python-version == '3.11' && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v4
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         name: project
         file: ./coverage.xml
         flags: project
@@ -290,6 +291,7 @@ jobs:
       if: matrix.python-version == '3.11' && github.repository == 'Materials-Consortia/optimade-python-tools'
       uses: codecov/codecov-action@v4
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         name: validator
         file: ./validator_cov.xml
         flags: validator
