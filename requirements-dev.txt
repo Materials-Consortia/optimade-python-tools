@@ -3,7 +3,7 @@ invoke==2.2.0
 jsondiff==2.0.0
 mypy==1.8.0
 pre-commit==3.6.1
-pytest==8.0.0
+pytest==8.0.1
 pytest-cov==4.1.0
 ruff==0.2.1
 types-all==1.0.0
