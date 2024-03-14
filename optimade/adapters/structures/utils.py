@@ -3,6 +3,7 @@ Utility functions to help the conversion functions along.
 
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
+
 from collections.abc import Iterable
 from typing import Optional
 

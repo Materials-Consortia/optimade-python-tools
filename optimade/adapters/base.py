@@ -18,6 +18,7 @@ See [`Reference`][optimade.adapters.references.adapter.Reference] and
 resources can be converted to for [`ReferenceResource`][optimade.models.references.ReferenceResource]s
 and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
 """
+
 import re
 from typing import Any, Callable, Optional, Union
 

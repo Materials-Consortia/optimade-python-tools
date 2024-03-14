@@ -10,6 +10,7 @@ This conversion function relies on the [jarvis-tools](https://github.com/usnistg
 !!! success "Contributing author"
     This conversion function was contributed by Kamal Choudhary ([@knc6](https://github.com/knc6)).
 """
+
 from optimade.adapters.exceptions import ConversionError
 from optimade.models import StructureFeatures
 from optimade.models import StructureResource as OptimadeStructure

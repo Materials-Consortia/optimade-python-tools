@@ -2,6 +2,7 @@
 [`MongoTransformer`][optimade.filtertransformers.mongo.MongoTransformer],
 which takes the parsed filter and converts it to a valid pymongo/BSON query.
 """
+
 import copy
 import itertools
 import warnings

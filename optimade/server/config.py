@@ -205,9 +205,9 @@ class ServerConfig(BaseSettings):
     mongo_database: Annotated[
         str, Field(description="Mongo database for collection data")
     ] = "optimade"
-    mongo_uri: Annotated[
-        str, Field(description="URI for the Mongo server")
-    ] = "localhost:27017"
+    mongo_uri: Annotated[str, Field(description="URI for the Mongo server")] = (
+        "localhost:27017"
+    )
     links_collection: Annotated[
         str, Field(description="Mongo collection name for /links endpoint resources")
     ] = "links"

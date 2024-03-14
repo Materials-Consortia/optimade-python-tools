@@ -1,4 +1,5 @@
 """Tests for optimade.filtertransformers.BaseTransformer"""
+
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:

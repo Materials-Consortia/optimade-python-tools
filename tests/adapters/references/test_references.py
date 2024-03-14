@@ -1,4 +1,5 @@
 """Test Reference adapter"""
+
 from typing import TYPE_CHECKING
 
 import pytest

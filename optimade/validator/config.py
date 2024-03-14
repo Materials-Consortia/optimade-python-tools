@@ -1,4 +1,4 @@
-""" This submodule defines constant values and definitions
+"""This submodule defines constant values and definitions
 from the OPTIMADE specification for use by the validator.
 
 The `VALIDATOR_CONFIG` object can be imported and modified

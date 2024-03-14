@@ -7,6 +7,7 @@ This conversion function relies on the [pymatgen](https://github.com/materialspr
 
 For more information on the pymatgen code see [their documentation](https://pymatgen.org).
 """
+
 from typing import Optional, Union
 
 from optimade.adapters.structures.utils import (
