@@ -10,8 +10,7 @@ if TYPE_CHECKING:
     from optimade.server.mappers import BaseResourceMapper
 
     class MapperInner(Protocol):
-        def __call__(self, name: str) -> type[BaseResourceMapper]:
-            ...
+        def __call__(self, name: str) -> type[BaseResourceMapper]: ...
 
 
 def pytest_configure(config):

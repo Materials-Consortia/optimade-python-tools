@@ -1,4 +1,4 @@
-""" This submodule contains utility methods and models
+"""This submodule contains utility methods and models
 used by the validator. The two main features being:
 
 1. The `@test_case` decorator can be used to decorate validation
@@ -11,6 +11,7 @@ used by the validator. The two main features being:
    themselves.
 
 """
+
 import dataclasses
 import json
 import sys

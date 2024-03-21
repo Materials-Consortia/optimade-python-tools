@@ -27,8 +27,7 @@ if TYPE_CHECKING:
             server: str = "regular",
             raise_server_exceptions: bool = True,
             add_empty_endpoint: bool = False,
-        ) -> "OptimadeTestClient":
-            ...
+        ) -> "OptimadeTestClient": ...
 
 
 class OptimadeTestClient(TestClient):

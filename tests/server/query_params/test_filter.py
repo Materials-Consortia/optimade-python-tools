@@ -1,4 +1,5 @@
 """Make sure filters are handled correctly"""
+
 import pytest
 
 from optimade.server.config import CONFIG, SupportedBackend

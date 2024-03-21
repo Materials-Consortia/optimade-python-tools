@@ -1,4 +1,5 @@
 """This module should reproduce JSON API v1.0 https://jsonapi.org/format/1.0/"""
+
 from datetime import datetime, timezone
 from typing import Annotated, Any, Optional, Union
 
@@ -57,9 +58,9 @@ JsonLinkType = Union[AnyUrl, Link]
 class JsonApi(BaseModel):
     """An object describing the server's implementation"""
 
-    version: Annotated[
-        str, StrictField(description="Version of the json API used")
-    ] = "1.0"
+    version: Annotated[str, StrictField(description="Version of the json API used")] = (
+        "1.0"
+    )
     meta: Annotated[
         Optional[Meta], StrictField(description="Non-standard meta information")
     ] = None

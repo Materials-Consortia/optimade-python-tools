@@ -1,4 +1,5 @@
 """Test HandleApiHint middleware and the `api_hint` query parameter"""
+
 from urllib.parse import unquote
 
 import pytest

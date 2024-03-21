@@ -128,9 +128,9 @@ class OptimadeClient:
     """Used internally when querying via `client.structures.get()` to set the
     chosen endpoint. Should be reset to `None` outside of all `get()` calls."""
 
-    _http_client: Optional[
-        Union[type[httpx.AsyncClient], type[requests.Session]]
-    ] = None
+    _http_client: Optional[Union[type[httpx.AsyncClient], type[requests.Session]]] = (
+        None
+    )
     """Override the HTTP client class, primarily used for testing."""
 
     __strict_async: bool = False
@@ -1126,9 +1126,9 @@ class OptimadeClient:
             if len(response_fields) == 0:
                 params_dict["response_fields"] = "response_fields=id"
             else:
-                params_dict[
-                    "response_fields"
-                ] = f'response_fields={",".join(response_fields)}'
+                params_dict["response_fields"] = (
+                    f'response_fields={",".join(response_fields)}'
+                )
 
         if page_limit:
             params_dict["page_limit"] = f"page_limit={page_limit}"

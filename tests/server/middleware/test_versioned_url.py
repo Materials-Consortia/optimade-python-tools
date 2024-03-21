@@ -1,4 +1,5 @@
 """Test CheckWronglyVersionedBaseUrls middleware"""
+
 import urllib.parse
 
 import pytest

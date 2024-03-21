@@ -1,4 +1,5 @@
 """This module uses the reference test server to test the OPTIMADE client."""
+
 import json
 import warnings
 from functools import partial

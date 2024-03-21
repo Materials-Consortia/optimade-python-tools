@@ -5,6 +5,7 @@ The server is based on MongoDB, using either `pymongo` or `mongomock`.
 This is an example implementation with example data.
 To implement your own index meta-database server see the documentation at https://optimade.org/optimade-python-tools.
 """
+
 import json
 import os
 import warnings

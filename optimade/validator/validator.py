@@ -5,7 +5,6 @@ against the specification via the pydantic models implemented in this package.
 
 """
 
-
 import dataclasses
 import json
 import logging

@@ -1,4 +1,5 @@
 """Tests specifically for optimade.servers.routers.utils."""
+
 from collections.abc import Mapping
 from typing import Optional, Union
 from unittest import mock

@@ -7,6 +7,7 @@ For more information on the AiiDA code see [their website](http://www.aiida.net)
 
 This conversion function relies on the [`aiida-core`](https://github.com/aiidateam/aiida-core) package.
 """
+
 from typing import Optional
 from warnings import warn
 

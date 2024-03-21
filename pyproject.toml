@@ -118,16 +118,17 @@ http_client = [
 
 all = ["optimade[dev,elastic,aiida,ase,pymatgen,jarvis,http-client,client]"]
 
-
 [tool.ruff]
-select = ["E", "F", "I", "W", "Q"]
-ignore = ["E501", "E402"]
-fixable = ["A", "B", "C", "D", "E", "F", "I"]
-unfixable = []
 extend-exclude = [
     "providers",
 ]
 target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "Q"]
+ignore = ["E501", "E402"]
+fixable = ["A", "B", "C", "D", "E", "F", "I"]
+unfixable = []
 per-file-ignores = {}
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
@@ -159,5 +160,6 @@ filterwarnings = [
     "ignore:.*ast.Num is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
     "ignore:.*ast.Str is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
     "ignore:.*ast.* is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
-    "ignore:\\nPyarrow will become a required dependency of pandas.*:DeprecationWarning" # Raised indirectly by pymatgen for Python 3.12
+    "ignore:\\nPyarrow will become a required dependency of pandas.*:DeprecationWarning", # Raised indirectly by pymatgen for Python 3.12
+    "ignore:.*The 'app' shortcut is now deprecated.*:DeprecationWarning" # Raised by httpx for test client code; would rather not force upgrade of httpx to deal with it for now
 ]

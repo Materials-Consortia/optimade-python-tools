@@ -1,4 +1,5 @@
 """Modified JSON API v1.0 for OPTIMADE API"""
+
 from datetime import datetime
 from enum import Enum
 from typing import Annotated, Any, Literal, Optional, Union

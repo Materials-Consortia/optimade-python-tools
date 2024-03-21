@@ -1,4 +1,5 @@
 """Test EntryListingQueryParams middleware"""
+
 import pytest
 
 from optimade.exceptions import BadRequest

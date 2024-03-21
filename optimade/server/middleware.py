@@ -5,6 +5,7 @@ These middleware are based on [Starlette](https://www.starlette.io)'s `BaseHTTPM
 See the specific Starlette [documentation page](https://www.starlette.io/middleware/) for more
 information on it's middleware implementation.
 """
+
 import json
 import re
 import urllib.parse
