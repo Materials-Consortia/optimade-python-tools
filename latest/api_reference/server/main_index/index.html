@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.9">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f2e4d321.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e359304.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2708,10 +2708,10 @@ To implement your own index meta-database server see the documentation at https:
 
           <details class="quote">
             <summary>Source code in <code>optimade/server/main_index.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
-<span class="normal">134</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
 <span class="normal">135</span>
-<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<span class="normal">136</span>
+<span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add mandatory endpoints to `/vMAJOR` base URL.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">index_info</span><span class="p">,</span> <span class="n">links</span><span class="p">):</span>
         <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">])</span>
@@ -2741,8 +2741,7 @@ To implement your own index meta-database server see the documentation at https:
 
           <details class="quote">
             <summary>Source code in <code>optimade/server/main_index.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
-<span class="normal">140</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
@@ -2750,7 +2749,8 @@ To implement your own index meta-database server see the documentation at https:
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<span class="normal">148</span>
+<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the following OPTIONAL prefixes/base URLs to server:</span>
 <span class="sd">    ```</span>
 <span class="sd">        /vMajor.Minor</span>
@@ -2787,8 +2787,7 @@ To implement your own index meta-database server see the documentation at https:
 
           <details class="quote">
             <summary>Source code in <code>optimade/server/main_index.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
-<span class="normal">44</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
@@ -2797,7 +2796,8 @@ To implement your own index meta-database server see the documentation at https:
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
-<span class="normal">53</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@asynccontextmanager</span>  <span class="c1"># type: ignore[arg-type]</span>
+<span class="normal">53</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@asynccontextmanager</span>  <span class="c1"># type: ignore[arg-type]</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add dynamic endpoints and adjust config on startup.&quot;&quot;&quot;</span>
     <span class="n">CONFIG</span><span class="o">.</span><span class="n">is_index</span> <span class="o">=</span> <span class="kc">True</span>

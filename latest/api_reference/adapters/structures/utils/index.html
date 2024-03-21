@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.9">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.f2e4d321.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.7e359304.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2872,8 +2872,7 @@
 
           <details class="quote">
             <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">104</span>
-<span class="normal">105</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
@@ -2911,7 +2910,8 @@
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
-<span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cell_to_cellpar</span><span class="p">(</span>
+<span class="normal">143</span>
+<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cell_to_cellpar</span><span class="p">(</span>
     <span class="n">cell</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">radians</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the cell parameters `[a, b, c, alpha, beta, gamma]`.</span>
@@ -3105,8 +3105,7 @@ array([[ 0.816, -0.408,  0.408],
 
           <details class="quote">
             <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">164</span>
-<span class="normal">165</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
 <span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
@@ -3216,7 +3215,8 @@ array([[ 0.816, -0.408,  0.408],
 <span class="normal">272</span>
 <span class="normal">273</span>
 <span class="normal">274</span>
-<span class="normal">275</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cellpar_to_cell</span><span class="p">(</span>
+<span class="normal">275</span>
+<span class="normal">276</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cellpar_to_cell</span><span class="p">(</span>
     <span class="n">cellpar</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
     <span class="n">ab_normal</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="n">a_direction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3352,15 +3352,15 @@ to sites wholly occupied by the given elements, e.g., not arbitrary species labe
 
           <details class="quote">
             <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">361</span>
-<span class="normal">362</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">362</span>
 <span class="normal">363</span>
 <span class="normal">364</span>
 <span class="normal">365</span>
 <span class="normal">366</span>
 <span class="normal">367</span>
 <span class="normal">368</span>
-<span class="normal">369</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">elements_ratios_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="normal">369</span>
+<span class="normal">370</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">elements_ratios_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the OPTIMADE `elements_ratios` field from `species_at_sites` in the case where `species_at_sites` refers</span>
 <span class="sd">    to sites wholly occupied by the given elements, e.g., not arbitrary species labels or with partial/mixed occupancy.</span>
 
@@ -3467,8 +3467,7 @@ attribute.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 65</span>
-<span class="normal"> 66</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 66</span>
 <span class="normal"> 67</span>
 <span class="normal"> 68</span>
 <span class="normal"> 69</span>
@@ -3503,7 +3502,8 @@ attribute.</p>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
 <span class="normal">100</span>
-<span class="normal">101</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fractional_coordinates</span><span class="p">(</span>
+<span class="normal">101</span>
+<span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fractional_coordinates</span><span class="p">(</span>
     <span class="n">cell</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span> <span class="n">cartesian_positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns fractional coordinates and wraps coordinates to `[0,1[`.</span>
@@ -3654,8 +3654,7 @@ attribute.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">309</span>
-<span class="normal">310</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">310</span>
 <span class="normal">311</span>
 <span class="normal">312</span>
 <span class="normal">313</span>
@@ -3678,7 +3677,8 @@ attribute.</p>
 <span class="normal">330</span>
 <span class="normal">331</span>
 <span class="normal">332</span>
-<span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pad_cell</span><span class="p">(</span>
+<span class="normal">333</span>
+<span class="normal">334</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pad_cell</span><span class="p">(</span>
     <span class="n">lattice_vectors</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span>
     <span class="n">padding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>  <span class="c1"># Setting this properly makes MkDocs fail.</span>
@@ -3784,8 +3784,7 @@ For more info, see <a href="https://www.wwpdb.org/documentation/file-format-cont
 
           <details class="quote">
             <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
-<span class="normal">35</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
@@ -3812,7 +3811,8 @@ For more info, see <a href="https://www.wwpdb.org/documentation/file-format-cont
 <span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
-<span class="normal">62</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scaled_cell</span><span class="p">(</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scaled_cell</span><span class="p">(</span>
     <span class="n">cell</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">,</span> <span class="n">Vector3D</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).</span>
@@ -3924,8 +3924,7 @@ the chemical symbol.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">336</span>
-<span class="normal">337</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">337</span>
 <span class="normal">338</span>
 <span class="normal">339</span>
 <span class="normal">340</span>
@@ -3946,7 +3945,8 @@ the chemical symbol.</p>
 <span class="normal">355</span>
 <span class="normal">356</span>
 <span class="normal">357</span>
-<span class="normal">358</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">species_from_species_at_sites</span><span class="p">(</span>
+<span class="normal">358</span>
+<span class="normal">359</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">species_from_species_at_sites</span><span class="p">(</span>
     <span class="n">species_at_sites</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">OptimadeStructureSpecies</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;When a list of species dictionaries is not provided, this function</span>
@@ -4046,8 +4046,7 @@ the chemical symbol.</p>
 
           <details class="quote">
             <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
-<span class="normal">147</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
@@ -4061,7 +4060,8 @@ the chemical symbol.</p>
 <span class="normal">158</span>
 <span class="normal">159</span>
 <span class="normal">160</span>
-<span class="normal">161</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">unit_vector</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Vector3D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector3D</span><span class="p">:</span>
+<span class="normal">161</span>
+<span class="normal">162</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">unit_vector</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Vector3D</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector3D</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a unit vector in the same direction as `x`.</span>
 
 <span class="sd">    Parameters:</span>

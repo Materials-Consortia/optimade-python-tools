@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.9">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f2e4d321.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e359304.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -4409,9 +4409,9 @@ and provider.</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Used internally when querying via `client.structures.get()` to set the</span>
 <span class="sd">    chosen endpoint. Should be reset to `None` outside of all `get()` calls.&quot;&quot;&quot;</span>
 
-    <span class="n">_http_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-        <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span> <span class="nb">type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]]</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_http_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">],</span> <span class="nb">type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="kc">None</span>
+    <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the HTTP client class, primarily used for testing.&quot;&quot;&quot;</span>
 
     <span class="n">__strict_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
@@ -5407,9 +5407,9 @@ and provider.</p>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">params_dict</span><span class="p">[</span><span class="s2">&quot;response_fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;response_fields=id&quot;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">params_dict</span><span class="p">[</span>
-                    <span class="s2">&quot;response_fields&quot;</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;response_fields=</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="n">params_dict</span><span class="p">[</span><span class="s2">&quot;response_fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;response_fields=</span><span class="si">{</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">page_limit</span><span class="p">:</span>
             <span class="n">params_dict</span><span class="p">[</span><span class="s2">&quot;page_limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;page_limit=</span><span class="si">{</span><span class="n">page_limit</span><span class="si">}</span><span class="s2">&quot;</span>

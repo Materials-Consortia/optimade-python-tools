@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.9">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f2e4d321.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e359304.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -4681,9 +4681,9 @@ can be easily extended for new config file types.</p>
     <span class="n">mongo_database</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo database for collection data&quot;</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;optimade&quot;</span>
-    <span class="n">mongo_uri</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;URI for the Mongo server&quot;</span><span class="p">)</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;localhost:27017&quot;</span>
+    <span class="n">mongo_uri</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;URI for the Mongo server&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;localhost:27017&quot;</span>
+    <span class="p">)</span>
     <span class="n">links_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for /links endpoint resources&quot;</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;links&quot;</span>

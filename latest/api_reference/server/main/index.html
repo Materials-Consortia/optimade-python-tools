@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.9">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.11">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f2e4d321.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.7e359304.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2708,10 +2708,10 @@ To implement your own server see the documentation at https://optimade.org/optim
 
           <details class="quote">
             <summary>Source code in <code>optimade/server/main.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">126</span>
-<span class="normal">127</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
 <span class="normal">128</span>
-<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<span class="normal">129</span>
+<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add mandatory vMajor endpoints, i.e. all except versions.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">links</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">structures</span><span class="p">,</span> <span class="n">landing</span><span class="p">):</span>
         <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">])</span>
@@ -2741,8 +2741,7 @@ To implement your own server see the documentation at https://optimade.org/optim
 
           <details class="quote">
             <summary>Source code in <code>optimade/server/main.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
-<span class="normal">133</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
@@ -2750,7 +2749,8 @@ To implement your own server see the documentation at https://optimade.org/optim
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
-<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<span class="normal">141</span>
+<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the following OPTIONAL prefixes/base URLs to server:</span>
 <span class="sd">    ```</span>
 <span class="sd">        /vMajor.Minor</span>
@@ -2787,8 +2787,7 @@ To implement your own server see the documentation at https://optimade.org/optim
 
           <details class="quote">
             <summary>Source code in <code>optimade/server/main.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
-<span class="normal">50</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
@@ -2796,7 +2795,8 @@ To implement your own server see the documentation at https://optimade.org/optim
 <span class="normal">55</span>
 <span class="normal">56</span>
 <span class="normal">57</span>
-<span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@asynccontextmanager</span>  <span class="c1"># type: ignore[arg-type]</span>
+<span class="normal">58</span>
+<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@asynccontextmanager</span>  <span class="c1"># type: ignore[arg-type]</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add dynamic endpoints on startup.&quot;&quot;&quot;</span>
     <span class="c1"># Add API endpoints for MANDATORY base URL `/vMAJOR`</span>
