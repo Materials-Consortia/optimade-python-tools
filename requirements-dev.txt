@@ -1,4 +1,4 @@
-build==1.0.3
+build==1.1.1
 invoke==2.2.0
 jsondiff==2.0.0
 mypy==1.8.0
