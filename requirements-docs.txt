@@ -2,4 +2,4 @@ mike==2.0.0
 mkdocs==1.5.3
 mkdocs-awesome-pages-plugin==2.9.2
 mkdocs-material==9.5.11
-mkdocstrings[python]==0.24.0
+mkdocstrings[python]==0.24.1
