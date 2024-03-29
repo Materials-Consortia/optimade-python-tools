@@ -9,6 +9,7 @@ For more information on the pymatgen code see [their documentation](https://pyma
 """
 
 from typing import Optional, Union
+from warnings import warn
 
 from optimade.adapters.structures.utils import (
     species_from_species_at_sites,
@@ -23,13 +24,12 @@ try:
     from pymatgen.core import Lattice, Molecule, Structure
 
 except (ImportError, ModuleNotFoundError):
-    from warnings import warn
-
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     Structure = type("Structure", (), {})
     Molecule = type("Molecule", (), {})
     Composition = type("Composition", (), {})
+    Lattice = type("Lattice", (), {})
     PYMATGEN_NOT_FOUND = "Pymatgen not found, cannot convert structure to a pymatgen Structure or Molecule"
 
 
@@ -78,7 +78,10 @@ def _get_structure(optimade_structure: OptimadeStructure) -> Structure:
     attributes = optimade_structure.attributes
 
     return Structure(
-        lattice=Lattice(attributes.lattice_vectors, attributes.dimension_types),
+        lattice=Lattice(
+            attributes.lattice_vectors,
+            [bool(d) for d in attributes.dimension_types],  # type: ignore[union-attr]
+        ),
         species=_pymatgen_species(
             nsites=attributes.nsites,  # type: ignore[arg-type]
             species=attributes.species,
