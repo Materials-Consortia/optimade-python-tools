@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.0.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.4) (2024-03-29)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.3...v1.0.4)
+
+**Closed issues:**
+
+- Asking a syntax of paging  [\#2020](https://github.com/Materials-Consortia/optimade-python-tools/issues/2020)
+
+**Merged pull requests:**
+
+- Use simple bools in pymatgen `Structure` converter [\#2021](https://github.com/Materials-Consortia/optimade-python-tools/pull/2021) ([ml-evs](https://github.com/ml-evs))
+
 ## [v1.0.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.3) (2024-01-30)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v0.25.5...v1.0.3)
