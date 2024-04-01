@@ -4,4 +4,3 @@ mkdocs-awesome-pages-plugin==2.9.2
 mkdocs-material==9.5.11
 mkdocstrings[python]==0.24.1
 mkdocs-material==9.5.16
-mkdocstrings[python]==0.24.1
