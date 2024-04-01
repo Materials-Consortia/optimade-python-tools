@@ -19,13 +19,13 @@ repos:
       args: [--markdown-linebreak-ext=md]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.1
+    rev: v3.15.2
     hooks:
     - id: pyupgrade
       args: ["--py39-plus"]
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.3.0'
+    rev: 'v0.3.4'
 
     hooks:
     - id: ruff
@@ -49,7 +49,7 @@ repos:
       description: Update the API Reference documentation whenever a Python file is touched in the code base.
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
+    rev: v1.9.0
     hooks:
       - id: mypy
         name: "MyPy"
