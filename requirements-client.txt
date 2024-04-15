@@ -2,4 +2,4 @@ aiida-core==2.5.1
 ase==3.22.1
 jarvis-tools==2024.3.30
 numpy>=1.20
-pymatgen==2024.3.1
+pymatgen==2024.4.13
