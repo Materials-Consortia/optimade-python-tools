@@ -1027,11 +1027,19 @@
       "IndexInfoResource": {
         "properties": {
           "id": {
+            "type": "string",
+            "enum": [
+              "/"
+            ],
             "const": "/",
             "title": "Id",
             "default": "/"
           },
           "type": {
+            "type": "string",
+            "enum": [
+              "info"
+            ],
             "const": "info",
             "title": "Type",
             "default": "info"
@@ -1261,6 +1269,10 @@
             "x-optimade-support": "must"
           },
           "type": {
+            "type": "string",
+            "enum": [
+              "links"
+            ],
             "const": "links",
             "pattern": "^links$",
             "title": "Type",
@@ -1711,6 +1723,10 @@
             "description": "Resource ID"
           },
           "type": {
+            "type": "string",
+            "enum": [
+              "links"
+            ],
             "const": "links",
             "title": "Type",
             "default": "links"
@@ -2263,6 +2279,10 @@
             "description": "a meta object containing non-standard meta-information about the error."
           },
           "type": {
+            "type": "string",
+            "enum": [
+              "warning"
+            ],
             "const": "warning",
             "pattern": "^warning$",
             "title": "Type",
