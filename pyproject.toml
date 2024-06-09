@@ -163,4 +163,5 @@ filterwarnings = [
     "ignore:\\nPyarrow will become a required dependency of pandas.*:DeprecationWarning", # Raised indirectly by pymatgen for Python 3.12
     "ignore:.*The 'app' shortcut is now deprecated.*:DeprecationWarning", # Raised by httpx for test client code; would rather not force upgrade of httpx to deal with it for now
     "ignore::pytest.PytestUnraisableExceptionWarning",  # Started raising with pytest 8.2.1, seemingly related to anyio warnings
+    "ignore:.*Unclosed.*:ResourceWarning", # Also started raising with pytest 8.2.1, seemingly related to anyio warnings
 ]
