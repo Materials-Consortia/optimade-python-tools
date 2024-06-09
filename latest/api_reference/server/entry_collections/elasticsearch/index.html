@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2866,9 +2866,9 @@
 
 
 <a id="optimade.server.entry_collections.elasticsearch"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2884,20 +2884,20 @@
 
 
 <h2 id="optimade.server.entry_collections.elasticsearch.ElasticCollection" class="doc doc-heading">
-          <code>ElasticCollection</code>
+            <code>ElasticCollection</code>
 
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.entry_collections.EntryCollection" href="../entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</a></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.entry_collections.EntryCollection" href="../entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</a></code></p>
 
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
 <span class="normal"> 23</span>
 <span class="normal"> 24</span>
 <span class="normal"> 25</span>
@@ -3291,9 +3291,9 @@
 
         <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3308,8 +3308,8 @@
 
 
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.all_fields" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">all_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
-  
+            <code class="highlight language-python"><span class="n">all_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
@@ -3317,37 +3317,36 @@
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.all_fields" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get the set of all fields handled in this collection,
 from attribute fields in the schema, provider fields and top-level OPTIMADE fields.</p>
 <p>The set of all fields are lazily created and then cached.
 This means the set is created the first time the property is requested and then cached.</p>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>set[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>All fields handled in this collection.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
-  </div>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>set[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>All fields handled in this collection.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+    </div>
 
 </div>
 
@@ -3356,8 +3355,8 @@ This means the set is created the first time the property is requested and then 
 
 
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">predefined_index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
-  
+            <code class="highlight language-python"><span class="n">predefined_index</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
@@ -3365,106 +3364,103 @@ This means the set is created the first time the property is requested and then 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.predefined_index" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Loads and returns the default pre-defined index.</p>
-  </div>
+    </div>
 
 </div>
-
 
 
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">resource_cls</span><span class="p">,</span> <span class="n">resource_mapper</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">resource_cls</span><span class="p">,</span> <span class="n">resource_mapper</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Initialize the ElasticCollection for the given parameters.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>name</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The name of the collection.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>resource_cls</code></td>
-          <td>
-                <code>type[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The type of entry resource that is stored by the collection.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>resource_mapper</code></td>
-          <td>
-                <code>type[<a class="autorefs autorefs-internal" title="optimade.server.mappers.BaseResourceMapper" href="../../mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A resource mapper object that handles aliases and
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>name</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The name of the collection.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>resource_cls</code></td>
+            <td>
+                  <code>type[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The type of entry resource that is stored by the collection.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>resource_mapper</code></td>
+            <td>
+                  <code>type[<a class="autorefs autorefs-internal" title="optimade.server.mappers.BaseResourceMapper" href="../../mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A resource mapper object that handles aliases and
 format changes between deserialization and response.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>client</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="elasticsearch.Elasticsearch">Elasticsearch</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A preconfigured Elasticsearch client.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>client</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="elasticsearch.Elasticsearch">Elasticsearch</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A preconfigured Elasticsearch client.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
@@ -3524,47 +3520,43 @@ format changes between deserialization and response.</p>
     <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">insert_test_data</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_optimade_index</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.__len__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__len__</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="fm">__len__</span><span class="p">()</span></code>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.__len__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns the total number of entries in the collection.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">110</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">Search</span><span class="p">(</span><span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span><span class="o">.</span><span class="n">hits</span><span class="o">.</span><span class="n">total</span><span class="o">.</span><span class="n">value</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.create_elastic_index_from_mapper" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">create_elastic_index_from_mapper</span><span class="p">(</span><span class="n">resource_mapper</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">create_elastic_index_from_mapper</span><span class="p">(</span><span class="n">resource_mapper</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
@@ -3572,82 +3564,80 @@ format changes between deserialization and response.</p>
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.create_elastic_index_from_mapper" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Create a fallback elastic index based on a resource mapper.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>resource_mapper</code></td>
-          <td>
-                <code>type[<a class="autorefs autorefs-internal" title="optimade.server.mappers.BaseResourceMapper" href="../../mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The resource mapper to create the index for.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>fields</code></td>
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The list of fields to use in the index.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>resource_mapper</code></td>
+            <td>
+                  <code>type[<a class="autorefs autorefs-internal" title="optimade.server.mappers.BaseResourceMapper" href="../../mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The resource mapper to create the index for.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>fields</code></td>
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The list of fields to use in the index.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, <span title="typing.Any">Any</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The parameters to pass to <code>client.indices.create(...)</code> (previously
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The parameters to pass to <code>client.indices.create(...)</code> (previously
 the 'body' parameters).</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
 <span class="normal"> 89</span>
 <span class="normal"> 90</span>
 <span class="normal"> 91</span>
@@ -3689,30 +3679,28 @@ the 'body' parameters).</p>
     <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="n">properties</span><span class="p">}}</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.create_optimade_index" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">create_optimade_index</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">create_optimade_index</span><span class="p">()</span></code>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.create_optimade_index" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Load or create an index that can handle aliased OPTIMADE fields and attach it
 to the current client.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
@@ -3754,24 +3742,22 @@ to the current client.</p>
 
     <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with parameters </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.find" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.find" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Fetches results and indicates if more data is available.</p>
 <p>Also gives the total number of data available in the absence of <code>page_limit</code>.
 See <a class="autorefs autorefs-internal" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams"><code>EntryListingQueryParams</code></a>
@@ -3780,72 +3766,70 @@ for more information.</p>
 <p>If no results match the query, then <code>results</code> is set to <code>None</code>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>params</code></td>
-          <td>
-                <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a>, <a class="autorefs autorefs-internal" title="optimade.server.query_params.SingleEntryQueryParams" href="../../query_params/#optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Entry listing URL query params.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>params</code></td>
+            <td>
+                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a>, <a class="autorefs autorefs-internal" title="optimade.server.query_params.SingleEntryQueryParams" href="../../query_params/#optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Entry listing URL query params.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[dict[str, <span title="typing.Any">Any</span>], list[dict[str, <span title="typing.Any">Any</span>]]]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A tuple of various relevant values:</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="typing.Optional">Optional</span>[int]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>(<code>results</code>, <code>data_returned</code>, <code>more_data_available</code>, <code>exclude_fields</code>, <code>include_fields</code>).</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[dict[str, <span title="typing.Any">Any</span>], list[dict[str, <span title="typing.Any">Any</span>]]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A tuple of various relevant values:</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[int]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>(<code>results</code>, <code>data_returned</code>, <code>more_data_available</code>, <code>exclude_fields</code>, <code>include_fields</code>).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
@@ -4029,27 +4013,26 @@ for more information.</p>
         <span class="n">include_fields</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.get_attribute_fields" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_attribute_fields</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">get_attribute_fields</span><span class="p">()</span></code>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.get_attribute_fields" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get the set of attribute fields</p>
 <p>Return only the <em>first-level</em> attribute fields from the schema of the resource class,
 resolving references along the way if needed.</p>
+
 
 <details class="note" open>
   <summary>Note</summary>
@@ -4058,32 +4041,31 @@ since only <code>allOf</code> will be found in this context.
 Other special keys can be found in <a href="https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/">the Swagger documentation</a>.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>set[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Property names.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>set[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Property names.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
 <span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
@@ -4133,98 +4115,94 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
 
     <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">model_fields</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.get_next_query_params" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_next_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_next_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span></code>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.get_next_query_params" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Provides url query pagination parameters that will be used in the next
 link.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>results</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[dict[str, <span title="typing.Any">Any</span>], list[dict[str, <span title="typing.Any">Any</span>]]]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The results produced by find.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>params</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The parsed request params produced by handle_query_params.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>results</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[dict[str, <span title="typing.Any">Any</span>], list[dict[str, <span title="typing.Any">Any</span>]]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The results produced by find.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>params</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The parsed request params produced by handle_query_params.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, list[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A dictionary with the necessary query parameters.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, list[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A dictionary with the necessary query parameters.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">468</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">468</span>
 <span class="normal">469</span>
 <span class="normal">470</span>
 <span class="normal">471</span>
@@ -4296,26 +4274,25 @@ link.</p>
 
     <span class="k">return</span> <span class="n">query</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.handle_query_params" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.handle_query_params" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Parse and interpret the backend-agnostic query parameter models into a dictionary
 that can be used by the specific backend.</p>
+
 
 <details class="note" open>
   <summary>Note</summary>
@@ -4323,97 +4300,94 @@ that can be used by the specific backend.</p>
 which will need modification for modified for other backends.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>params</code></td>
-          <td>
-                <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a>, <a class="autorefs autorefs-internal" title="optimade.server.query_params.SingleEntryQueryParams" href="../../query_params/#optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The initialized query parameter model from the server.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>params</code></td>
+            <td>
+                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a>, <a class="autorefs autorefs-internal" title="optimade.server.query_params.SingleEntryQueryParams" href="../../query_params/#optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The initialized query parameter model from the server.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.exceptions.Forbidden" href="../../../exceptions/#optimade.exceptions.Forbidden">Forbidden</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If too large of a page limit is provided.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If an invalid request is made, e.g., with incorrect fields
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.Forbidden" href="../../../exceptions/#optimade.exceptions.Forbidden">Forbidden</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If too large of a page limit is provided.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If an invalid request is made, e.g., with incorrect fields
 or response format.</p>
-            </div>
-          </td>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A dictionary representation of the query parameters.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, <span title="typing.Any">Any</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A dictionary representation of the query parameters.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">303</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">303</span>
 <span class="normal">304</span>
 <span class="normal">305</span>
 <span class="normal">306</span>
@@ -4627,63 +4601,61 @@ or response format.</p>
 
     <span class="k">return</span> <span class="n">cursor_kwargs</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.insert" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">insert</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">insert</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.insert" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Add the given entries to the underlying database.</p>
+
 
 <details class="warning" open>
   <summary>Warning</summary>
   <p>No validation is performed on the incoming data.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>data</code></td>
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The entry resource objects to add to the database.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>data</code></td>
+            <td>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The entry resource objects to add to the database.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/elasticsearch.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
 <span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
@@ -4755,88 +4727,84 @@ or response format.</p>
         <span class="p">),</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.entry_collections.elasticsearch.ElasticCollection.parse_sort_params" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">parse_sort_params</span><span class="p">(</span><span class="n">sort_params</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">parse_sort_params</span><span class="p">(</span><span class="n">sort_params</span><span class="p">)</span></code>
 
 <a href="#optimade.server.entry_collections.elasticsearch.ElasticCollection.parse_sort_params" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Handles any sort parameters passed to the collection,
 resolving aliases and dealing with any invalid fields.</p>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>if an invalid sort is requested.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>if an invalid sort is requested.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, int]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of tuples containing the aliased field name and</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, int]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>sort direction encoded as 1 (ascending) or -1 (descending).</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, int]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of tuples containing the aliased field name and</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, int]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>sort direction encoded as 1 (ascending) or -1 (descending).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">411</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">411</span>
 <span class="normal">412</span>
 <span class="normal">413</span>
 <span class="normal">414</span>
@@ -4948,8 +4916,8 @@ resolving aliases and dealing with any invalid fields.</p>
 
     <span class="k">return</span> <span class="n">sort_spec</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -4957,8 +4925,7 @@ resolving aliases and dealing with any invalid fields.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -4967,7 +4934,7 @@ resolving aliases and dealing with any invalid fields.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -5038,7 +5005,7 @@ resolving aliases and dealing with any invalid fields.</p>
     <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

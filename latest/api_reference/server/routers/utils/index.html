@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2764,9 +2764,9 @@
 
 
 <a id="optimade.server.routers.utils"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2782,23 +2782,23 @@
 
 
 <h2 id="optimade.server.routers.utils.JSONAPIResponse" class="doc doc-heading">
-          <code>JSONAPIResponse</code>
+            <code>JSONAPIResponse</code>
 
 
 <a href="#optimade.server.routers.utils.JSONAPIResponse" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="fastapi.responses.JSONResponse">JSONResponse</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="fastapi.responses.JSONResponse">JSONResponse</span></code></p>
 
-  
+
       <p>This class simply patches <code>fastapi.responses.JSONResponse</code> to use the
 JSON:API 'application/vnd.api+json' MIME type.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
 <span class="normal">41</span>
 <span class="normal">42</span>
 <span class="normal">43</span>
@@ -2812,9 +2812,9 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
     <span class="n">media_type</span> <span class="o">=</span> <span class="s2">&quot;application/vnd.api+json&quot;</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2830,31 +2830,28 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
-
 
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.routers.utils.get_base_url" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_base_url</span><span class="p">(</span><span class="n">parsed_url_request</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_base_url</span><span class="p">(</span><span class="n">parsed_url_request</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.utils.get_base_url" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get base URL for current server</p>
 <p>Take the base URL from the config file, if it exists, otherwise use the request.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
 <span class="normal">221</span>
 <span class="normal">222</span>
 <span class="normal">223</span>
@@ -2892,29 +2889,27 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
         <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parsed_url_request</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">parsed_url_request</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.routers.utils.get_entries" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_entries</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_entries</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.utils.get_entries" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Generalized /{entry} endpoint getter</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">241</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">241</span>
 <span class="normal">242</span>
 <span class="normal">243</span>
 <span class="normal">244</span>
@@ -3022,115 +3017,111 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
         <span class="s2">&quot;included&quot;</span><span class="p">:</span> <span class="n">included</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.routers.utils.get_included_relationships" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_included_relationships</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">ENTRY_COLLECTIONS</span><span class="p">,</span> <span class="n">include_param</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_included_relationships</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">ENTRY_COLLECTIONS</span><span class="p">,</span> <span class="n">include_param</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.utils.get_included_relationships" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Filters the included relationships and makes the appropriate compound request
 to include them in the response.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>results</code></td>
-          <td>
-                <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>, list[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>], dict, list[dict]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>list of returned documents.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>ENTRY_COLLECTIONS</code></td>
-          <td>
-                <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.server.entry_collections.EntryCollection" href="../../entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>dictionary containing collections to query, with key
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>results</code></td>
+            <td>
+                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>, list[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>], dict, list[dict]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>list of returned documents.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>ENTRY_COLLECTIONS</code></td>
+            <td>
+                  <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.server.entry_collections.EntryCollection" href="../../entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>dictionary containing collections to query, with key
 based on endpoint type.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>include_param</code></td>
-          <td>
-                <code>list[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>list of queried related resources that should be included in
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>include_param</code></td>
+            <td>
+                  <code>list[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>list of queried related resources that should be included in
 <code>included</code>.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>, dict[str, <span title="typing.Any">Any</span>]]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Dictionary with the same keys as ENTRY_COLLECTIONS, each containing the list
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>, dict[str, <span title="typing.Any">Any</span>]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary with the same keys as ENTRY_COLLECTIONS, each containing the list
 of resource objects for that entry type.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
@@ -3302,24 +3293,22 @@ of resource objects for that entry type.</p>
     <span class="c1"># flatten dict by endpoint to list</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">endp</span> <span class="ow">in</span> <span class="n">included</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">endp</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.routers.utils.get_providers" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.utils.get_providers" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</p>
 <p>Fallback order if providers.optimade.org is not available:</p>
 <ol>
@@ -3330,63 +3319,61 @@ of resource objects for that entry type.</p>
 </ol>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>add_mongo_id</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to populate the <code>_id</code> field of the provider with MongoDB
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>add_mongo_id</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to populate the <code>_id</code> field of the provider with MongoDB
 ObjectID.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of raw JSON-decoded providers including MongoDB object IDs.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>List of raw JSON-decoded providers including MongoDB object IDs.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
 <span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
@@ -3520,110 +3507,106 @@ ObjectID.</p>
 
     <span class="k">return</span> <span class="n">providers_list</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.routers.utils.handle_response_fields" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">handle_response_fields</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">exclude_fields</span><span class="p">,</span> <span class="n">include_fields</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">handle_response_fields</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">exclude_fields</span><span class="p">,</span> <span class="n">include_fields</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.utils.handle_response_fields" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Handle query parameter <code>response_fields</code>.</p>
 <p>It is assumed that all fields are under <code>attributes</code>.
 This is due to all other top-level fields are REQUIRED in the response.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>exclude_fields</code></td>
-          <td>
-                <code>set[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Fields under <code>attributes</code> to be excluded from the response.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>include_fields</code></td>
-          <td>
-                <code>set[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Fields under <code>attributes</code> that were requested that should be
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>exclude_fields</code></td>
+            <td>
+                  <code>set[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Fields under <code>attributes</code> to be excluded from the response.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>include_fields</code></td>
+            <td>
+                  <code>set[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Fields under <code>attributes</code> that were requested that should be
 set to null if missing in the entry.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[dict[str, <span title="typing.Any">Any</span>]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of resulting resources as dictionaries after pruning according to</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[dict[str, <span title="typing.Any">Any</span>]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>the <code>response_fields</code> OPTIMADE URL query parameter.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[dict[str, <span title="typing.Any">Any</span>]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>List of resulting resources as dictionaries after pruning according to</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[dict[str, <span title="typing.Any">Any</span>]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>the <code>response_fields</code> OPTIMADE URL query parameter.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 86</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 86</span>
 <span class="normal"> 87</span>
 <span class="normal"> 88</span>
 <span class="normal"> 89</span>
@@ -3711,29 +3694,27 @@ set to null if missing in the entry.</p>
 
     <span class="k">return</span> <span class="n">new_results</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.routers.utils.meta_values" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">meta_values</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">data_available</span><span class="p">,</span> <span class="n">more_data_available</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">meta_values</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">data_available</span><span class="p">,</span> <span class="n">more_data_available</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.utils.meta_values" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Helper to initialize the meta values</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
@@ -3803,29 +3784,27 @@ set to null if missing in the entry.</p>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.routers.utils.mongo_id_for_database" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">database_type</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">database_type</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.utils.mongo_id_for_database" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Produce a MongoDB ObjectId for a database</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
@@ -3847,8 +3826,8 @@ set to null if missing in the entry.</p>
 
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">ObjectId</span><span class="p">(</span><span class="n">oid</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)))</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -3856,7 +3835,7 @@ set to null if missing in the entry.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -3927,7 +3906,7 @@ set to null if missing in the entry.</p>
     <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

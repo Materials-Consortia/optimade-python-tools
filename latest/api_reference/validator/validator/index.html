@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -26,7 +26,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2700,14 +2700,14 @@
 
 
 <a id="optimade.validator.validator"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>This module contains the
 <a class="autorefs autorefs-internal" href="#optimade.validator.validator.ImplementationValidator"><code>ImplementationValidator</code></a>
 class that can be pointed at an OPTIMADE implementation and validated
 against the specification via the pydantic models implemented in this package.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2723,15 +2723,15 @@ against the specification via the pydantic models implemented in this package.</
 
 
 <h2 id="optimade.validator.validator.ImplementationValidator" class="doc doc-heading">
-          <code>ImplementationValidator</code>
+            <code>ImplementationValidator</code>
 
 
 <a href="#optimade.validator.validator.ImplementationValidator" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
+    <div class="doc doc-contents ">
 
-  
+
       <p>Class used to make a series of checks against a particular
 OPTIMADE implementation over HTTP.</p>
 <p>Uses the pydantic models in <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.models"><code>optimade.models</code></a> to
@@ -2739,40 +2739,40 @@ validate the response from the server and crawl through the
 available endpoints.</p>
 
 
-
-  <p><span class="doc-section-title">Attributes:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.validator.validator.ImplementationValidator.valid">valid</span></code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[bool]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>whether or not the implementation was deemed valid, with
-<code>None</code> signifying that tests did not run.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.validator.validator.ImplementationValidator.valid">valid</span></code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[bool]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>whether or not the implementation was deemed valid, with
+<code>None</code> signifying that tests did not run.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
 
 <details class="caution" open>
   <summary>Caution</summary>
   <p>Only works for current version of the specification as defined
 by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.models"><code>optimade.models</code></a>.</p>
 </details>
-            <details class="quote">
-              <summary>Source code in <code>optimade/validator/validator.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  41</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  41</span>
 <span class="normal">  42</span>
 <span class="normal">  43</span>
 <span class="normal">  44</span>
@@ -5774,12 +5774,11 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
         <span class="k">return</span> <span class="n">response</span><span class="p">,</span> <span class="n">message</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -5792,244 +5791,242 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.validator.validator.ImplementationValidator.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">respond_json</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">run_optional_tests</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fail_fast</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">as_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">http_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">DEFAULT_CONN_TIMEOUT</span><span class="p">,</span> <span class="n">read_timeout</span><span class="o">=</span><span class="n">DEFAULT_READ_TIMEOUT</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">respond_json</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">run_optional_tests</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fail_fast</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">as_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">http_headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">DEFAULT_CONN_TIMEOUT</span><span class="p">,</span> <span class="n">read_timeout</span><span class="o">=</span><span class="n">DEFAULT_READ_TIMEOUT</span><span class="p">)</span></code>
 
 <a href="#optimade.validator.validator.ImplementationValidator.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Set up the tests to run, based on constants in this module
 for required endpoints.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>client</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="typing.Any">Any</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A client that has a <code>.get()</code> method to obtain the
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>client</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A client that has a <code>.get()</code> method to obtain the
 response from the implementation. If <code>None</code>, then
 <a class="autorefs autorefs-internal" href="../utils/#optimade.validator.utils.Client"><code>Client</code></a> will be used.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>base_url</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The URL of the implementation to validate. Unless
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>base_url</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The URL of the implementation to validate. Unless
 performing "as_type" validation, this should point to the
 base of the OPTIMADE implementation.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>verbosity</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The verbosity of the output and logging as an integer
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>verbosity</code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The verbosity of the output and logging as an integer
 (<code>0</code>: critical, <code>1</code>: warning, <code>2</code>: info, <code>3</code>: debug).</p>
-            </div>
-          </td>
-          <td>
-                <code>0</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>respond_json</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If <code>True</code>, print only a JSON representation of the
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>respond_json</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>True</code>, print only a JSON representation of the
 results of validation to stdout.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>page_limit</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The default page limit to apply to filters.</p>
-            </div>
-          </td>
-          <td>
-                <code>4</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>max_retries</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Argument is passed to the client for how many
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>page_limit</code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The default page limit to apply to filters.</p>
+              </div>
+            </td>
+            <td>
+                  <code>4</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>max_retries</code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Argument is passed to the client for how many
 attempts to make for a request before failing.</p>
-            </div>
-          </td>
-          <td>
-                <code>5</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>run_optional_tests</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to run the tests on optional
+              </div>
+            </td>
+            <td>
+                  <code>5</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>run_optional_tests</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to run the tests on optional
 OPTIMADE features.</p>
-            </div>
-          </td>
-          <td>
-                <code>True</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>fail_fast</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to exit validation after the first failure
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>fail_fast</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to exit validation after the first failure
 of a mandatory test.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>as_type</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An OPTIMADE entry or endpoint type to coerce the response
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>as_type</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An OPTIMADE entry or endpoint type to coerce the response
 from implementation into, e.g. "structures". Requires <code>base_url</code>
 to be pointed to the corresponding endpoint.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>index</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to validate the implementation as an index meta-database.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>minimal</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether or not to run only a minimal test set.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>http_headers</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[dict[str, str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Dictionary of additional headers to add to every request.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>timeout</code></td>
-          <td>
-                <code>float</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The connection timeout to use for all requests (in seconds).</p>
-            </div>
-          </td>
-          <td>
-                <code><span title="optimade.validator.utils.DEFAULT_CONN_TIMEOUT">DEFAULT_CONN_TIMEOUT</span></code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>read_timeout</code></td>
-          <td>
-                <code>float</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The read timeout to use for all requests (in seconds).</p>
-            </div>
-          </td>
-          <td>
-                <code><span title="optimade.validator.utils.DEFAULT_READ_TIMEOUT">DEFAULT_READ_TIMEOUT</span></code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>index</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to validate the implementation as an index meta-database.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>minimal</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether or not to run only a minimal test set.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>http_headers</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[dict[str, str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary of additional headers to add to every request.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>timeout</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The connection timeout to use for all requests (in seconds).</p>
+              </div>
+            </td>
+            <td>
+                  <code><span title="optimade.validator.utils.DEFAULT_CONN_TIMEOUT">DEFAULT_CONN_TIMEOUT</span></code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>read_timeout</code></td>
+            <td>
+                  <code>float</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The read timeout to use for all requests (in seconds).</p>
+              </div>
+            </td>
+            <td>
+                  <code><span title="optimade.validator.utils.DEFAULT_READ_TIMEOUT">DEFAULT_READ_TIMEOUT</span></code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/validator/validator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 61</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 61</span>
 <span class="normal"> 62</span>
 <span class="normal"> 63</span>
 <span class="normal"> 64</span>
@@ -6271,29 +6268,27 @@ to be pointed to the corresponding endpoint.</p>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">ValidatorResults</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.validator.validator.ImplementationValidator.print_summary" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">print_summary</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">print_summary</span><span class="p">()</span></code>
 
 <a href="#optimade.validator.validator.ImplementationValidator.print_summary" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Print a summary of the results of validation.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/validator/validator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">206</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">206</span>
 <span class="normal">207</span>
 <span class="normal">208</span>
 <span class="normal">209</span>
@@ -6389,56 +6384,53 @@ to be pointed to the corresponding endpoint.</p>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">optional_success_count</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">optional_failure_count</span><span class="si">}</span><span class="s2"> optional tests.&quot;</span>
             <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.validator.validator.ImplementationValidator.validate_implementation" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">validate_implementation</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">validate_implementation</span><span class="p">()</span></code>
 
 <a href="#optimade.validator.validator.ImplementationValidator.validate_implementation" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Run all the test cases on the implementation, or the single type test,
 depending on what options were provided on initialiation.</p>
 <p>Sets the <code>self.valid</code> attribute to <code>True</code> or <code>False</code> depending on the
 outcome of the tests.</p>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>RuntimeError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If it was not possible to start the validation process.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>RuntimeError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If it was not possible to start the validation process.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/validator/validator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">255</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/validator/validator.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">255</span>
 <span class="normal">256</span>
 <span class="normal">257</span>
 <span class="normal">258</span>
@@ -6634,8 +6626,8 @@ outcome of the tests.</p>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">print_summary</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -6643,8 +6635,7 @@ outcome of the tests.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -6653,7 +6644,7 @@ outcome of the tests.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -6724,7 +6715,7 @@ outcome of the tests.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

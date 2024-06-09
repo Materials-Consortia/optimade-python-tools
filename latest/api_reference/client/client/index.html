@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -3062,15 +3062,15 @@
 
 
 <a id="optimade.client.client"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>This module implements OPTIMADE client functionality for:</p>
 <ul>
 <li>making web requests to filter and harvest resources from OPTIMADE APIs,</li>
 <li>query multiple providers simultaneously.</li>
 </ul>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3086,15 +3086,15 @@
 
 
 <h2 id="optimade.client.client.OptimadeClient" class="doc doc-heading">
-          <code>OptimadeClient</code>
+            <code>OptimadeClient</code>
 
 
 <a href="#optimade.client.client.OptimadeClient" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
+    <div class="doc doc-contents ">
 
-  
+
       <p>This class implemements a client for executing the same queries
 across multiple OPTIMADE APIs simultaneously, paging and caching the
 results.</p>
@@ -3103,9 +3103,9 @@ simulateneously and asynchronously, with the results collected
 into the <code>all_results</code> attribute, keyed by endpoint, filter
 and provider.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/client/client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  49</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/client/client.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  49</span>
 <span class="normal">  50</span>
 <span class="normal">  51</span>
 <span class="normal">  52</span>
@@ -5551,9 +5551,9 @@ and provider.</p>
             <span class="n">cb_response</span> <span class="o">=</span> <span class="n">callback</span><span class="p">(</span><span class="n">request_url</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cb_response</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -5568,8 +5568,8 @@ and provider.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.__current_endpoint" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">__current_endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
-  
+            <code class="highlight language-python"><span class="n">__current_endpoint</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5578,11 +5578,11 @@ and provider.</p>
 <a href="#optimade.client.client.OptimadeClient.__current_endpoint" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Used internally when querying via <code>client.structures.get()</code> to set the
 chosen endpoint. Should be reset to <code>None</code> outside of all <code>get()</code> calls.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5591,8 +5591,8 @@ chosen endpoint. Should be reset to <code>None</code> outside of all <code>get()
 
 
 <h3 id="optimade.client.client.OptimadeClient.__strict_async" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">__strict_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
-  
+            <code class="highlight language-python"><span class="n">__strict_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5601,11 +5601,11 @@ chosen endpoint. Should be reset to <code>None</code> outside of all <code>get()
 <a href="#optimade.client.client.OptimadeClient.__strict_async" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Whether or not to fallover if <code>use_async</code> is true yet asynchronous mode
 is impossible due to, e.g., a running event loop.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5614,8 +5614,8 @@ is impossible due to, e.g., a running event loop.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.all_results" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">all_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">all_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5624,11 +5624,11 @@ is impossible due to, e.g., a running event loop.</p>
 <a href="#optimade.client.client.OptimadeClient.all_results" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
 the results from each base URL for that particular filter.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5637,8 +5637,8 @@ the results from each base URL for that particular filter.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.base_urls" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">base_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></code>
-  
+            <code class="highlight language-python"><span class="n">base_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
@@ -5646,10 +5646,10 @@ the results from each base URL for that particular filter.</p>
 <a href="#optimade.client.client.OptimadeClient.base_urls" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>A list (or any iterable) of OPTIMADE base URLs to query.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5658,8 +5658,8 @@ the results from each base URL for that particular filter.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.callbacks" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="n">callbacks</span></code>
-  
+            <code class="highlight language-python"><span class="n">callbacks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]]</span> <span class="o">=</span> <span class="n">callbacks</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5668,8 +5668,8 @@ the results from each base URL for that particular filter.</p>
 <a href="#optimade.client.client.OptimadeClient.callbacks" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>A list of callbacks to execute after each successful request, used
 to e.g., write to a file, add results to a database or perform additional
 filtering.</p>
@@ -5680,7 +5680,7 @@ and 'included'.</p>
 key <code>next</code> and the progress bar with the key <code>advance_results</code>.
 In the case of multiple provided callbacks, only the value returned by the final
 callback in the stack will be used.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5689,8 +5689,8 @@ callback in the stack will be used.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.count_binary_search" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">count_binary_search</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
-  
+            <code class="highlight language-python"><span class="n">count_binary_search</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5699,10 +5699,10 @@ callback in the stack will be used.</p>
 <a href="#optimade.client.client.OptimadeClient.count_binary_search" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Enable binary search count for databases that do not support <code>meta-&gt;data_returned</code>.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5711,8 +5711,8 @@ callback in the stack will be used.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.count_results" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">count_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">count_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5721,11 +5721,11 @@ callback in the stack will be used.</p>
 <a href="#optimade.client.client.OptimadeClient.count_results" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
 the number of results from each base URL for that particular filter.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5734,8 +5734,8 @@ the number of results from each base URL for that particular filter.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.headers" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;optimade-python-tools/</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span></code>
-  
+            <code class="highlight language-python"><span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;optimade-python-tools/</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5744,10 +5744,10 @@ the number of results from each base URL for that particular filter.</p>
 <a href="#optimade.client.client.OptimadeClient.headers" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Additional HTTP headers.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5756,8 +5756,8 @@ the number of results from each base URL for that particular filter.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.http_timeout" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">http_timeout</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">http_timeout</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5766,10 +5766,10 @@ the number of results from each base URL for that particular filter.</p>
 <a href="#optimade.client.client.OptimadeClient.http_timeout" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>The timeout to use for each HTTP request.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5778,8 +5778,8 @@ the number of results from each base URL for that particular filter.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.max_attempts" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">max_attempts</span></code>
-  
+            <code class="highlight language-python"><span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">max_attempts</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
@@ -5787,10 +5787,10 @@ the number of results from each base URL for that particular filter.</p>
 <a href="#optimade.client.client.OptimadeClient.max_attempts" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>The maximum number of times to repeat a failed query before giving up.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5799,8 +5799,8 @@ the number of results from each base URL for that particular filter.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.max_results_per_provider" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">max_results_per_provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results_per_provider</span></code>
-  
+            <code class="highlight language-python"><span class="n">max_results_per_provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results_per_provider</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5809,11 +5809,11 @@ the number of results from each base URL for that particular filter.</p>
 <a href="#optimade.client.client.OptimadeClient.max_results_per_provider" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Maximum number of results to downlod per provider. If None, will
 download all.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5822,8 +5822,8 @@ download all.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.property_lists" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">property_lists</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">property_lists</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5832,11 +5832,11 @@ download all.</p>
 <a href="#optimade.client.client.OptimadeClient.property_lists" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>A dictionary containing list of properties served by each database,
 broken down by entry type, then database.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5845,8 +5845,8 @@ broken down by entry type, then database.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.silent" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">silent</span></code>
-  
+            <code class="highlight language-python"><span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">silent</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
@@ -5854,10 +5854,10 @@ broken down by entry type, then database.</p>
 <a href="#optimade.client.client.OptimadeClient.silent" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Whether to disable progress bar printing.</p>
-  </div>
+    </div>
 
 </div>
 
@@ -5866,8 +5866,8 @@ broken down by entry type, then database.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.use_async" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">use_async</span></code>
-  
+            <code class="highlight language-python"><span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">use_async</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
@@ -5875,28 +5875,26 @@ broken down by entry type, then database.</p>
 <a href="#optimade.client.client.OptimadeClient.use_async" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Whether or not to make all requests asynchronously using asyncio.</p>
-  </div>
+    </div>
 
 </div>
-
 
 
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.client.client.OptimadeClient.__getattribute__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
 
 <a href="#optimade.client.client.OptimadeClient.__getattribute__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Allows entry endpoints to be queried via attribute access, using the
 allowed list for this module.</p>
 <p>Should also pass through any <code>extensions/&lt;example&gt;</code> endpoints.</p>
@@ -5912,9 +5910,9 @@ original <code>__getattribute__</code>.</p>
 </code></pre></div>
 </div>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">261</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/client/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
 <span class="normal">264</span>
@@ -5972,218 +5970,215 @@ original <code>__getattribute__</code>.</p>
 
     <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getattribute__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.client.client.OptimadeClient.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results_per_provider</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">use_async</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.client.client.OptimadeClient.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Create the OPTIMADE client object.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>base_urls</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[str, <span title="collections.abc.Iterable">Iterable</span>[str]]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of OPTIMADE base URLs to query.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>max_results_per_provider</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The maximum number of results to download
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>base_urls</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[str, <span title="collections.abc.Iterable">Iterable</span>[str]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of OPTIMADE base URLs to query.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>max_results_per_provider</code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The maximum number of results to download
 from each provider (-1 or 0 indicate unlimited).</p>
-            </div>
-          </td>
-          <td>
-                <code>1000</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>headers</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[dict]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Any additional HTTP headers to use for the queries.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>http_timeout</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[<span title="httpx.Timeout">Timeout</span>, float]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The timeout to use per request. Defaults to 10
+              </div>
+            </td>
+            <td>
+                  <code>1000</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>headers</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[dict]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Any additional HTTP headers to use for the queries.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>http_timeout</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[<span title="httpx.Timeout">Timeout</span>, float]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The timeout to use per request. Defaults to 10
 seconds with 1000 seconds for reads specifically. Overriding this value
 will replace all timeouts (connect, read, write and pool) with this value.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>max_attempts</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The maximum number of times to repeat a failing query.</p>
-            </div>
-          </td>
-          <td>
-                <code>5</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>use_async</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether or not to make all requests asynchronously.</p>
-            </div>
-          </td>
-          <td>
-                <code>True</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>exclude_providers</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[list[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A set or collection of provider IDs to exclude from queries.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>include_providers</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[list[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A set or collection of provider IDs to include in queries.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>exclude_databases</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[list[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A set or collection of child database URLs to exclude from queries.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>http_client</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[type[<span title="httpx.AsyncClient">AsyncClient</span>], type[<span title="requests.Session">Session</span>]]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An override for the underlying HTTP client, primarily used for testing.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>callbacks</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[list[<span title="typing.Callable">Callable</span>[[str, dict], <span title="typing.Union">Union</span>[None, dict]]]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of functions to call after each successful response, see the
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>max_attempts</code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The maximum number of times to repeat a failing query.</p>
+              </div>
+            </td>
+            <td>
+                  <code>5</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>use_async</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether or not to make all requests asynchronously.</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>exclude_providers</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A set or collection of provider IDs to exclude from queries.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>include_providers</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A set or collection of provider IDs to include in queries.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>exclude_databases</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A set or collection of child database URLs to exclude from queries.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>http_client</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[type[<span title="httpx.AsyncClient">AsyncClient</span>], type[<span title="requests.Session">Session</span>]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An override for the underlying HTTP client, primarily used for testing.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>callbacks</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[list[<span title="typing.Callable">Callable</span>[[str, dict], <span title="typing.Union">Union</span>[None, dict]]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of functions to call after each successful response, see the
 attribute <a class="autorefs autorefs-internal" href="#optimade.client.client.OptimadeClient.callbacks"><code>OptimadeClient.callbacks</code></a>
 docstring for more details.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>verbosity</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The verbosity level of the client.</p>
-            </div>
-          </td>
-          <td>
-                <code>0</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>verbosity</code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The verbosity level of the client.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/client/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
@@ -6411,24 +6406,22 @@ docstring for more details.</p>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">=</span> <span class="n">callbacks</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.client.client.OptimadeClient.binary_search_count" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">binary_search_count</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">results</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">binary_search_count</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">results</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.client.client.OptimadeClient.binary_search_count" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>In cases where <code>data_returned</code> is not available (due to database limitations or
 otherwise), iteratively probe the final page of results available for a filter using
 binary search.</p>
@@ -6436,104 +6429,102 @@ binary search.</p>
 asynchronously within a single API.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>filter</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE filter string for the query.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>endpoint</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The endpoint to query.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>base_url</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The base URL to query.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>results</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[dict]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The results from a previous query for the first page of results.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>filter</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE filter string for the query.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>endpoint</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The endpoint to query.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>base_url</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The base URL to query.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>results</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[dict]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The results from a previous query for the first page of results.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The number of results for the filter.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The number of results for the filter.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">419</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/client/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">419</span>
 <span class="normal">420</span>
 <span class="normal">421</span>
 <span class="normal">422</span>
@@ -6591,80 +6582,76 @@ asynchronously within a single API.</p>
             <span class="s2">&quot;Binary search count is not yet implemented for synchronous queries.&quot;</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.client.client.OptimadeClient.count" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">count</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">count</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.client.client.OptimadeClient.count" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Counts the number of results for the filter, requiring
 only 1 request per provider by making use of the <code>meta-&gt;data_returned</code>
 key. If missing, attempts will be made to perform an exponential/binary
 search over pagination to count the results.</p>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>RuntimeError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the query could not be executed.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>RuntimeError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the query could not be executed.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, dict[str, dict[str, <span title="typing.Optional">Optional</span>[int]]]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A nested mapping from endpoint, filter and base URL to the number of query results.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, dict[str, dict[str, <span title="typing.Optional">Optional</span>[int]]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A nested mapping from endpoint, filter and base URL to the number of query results.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">351</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/client/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">351</span>
 <span class="normal">352</span>
 <span class="normal">353</span>
 <span class="normal">354</span>
@@ -6798,151 +6785,146 @@ search over pagination to count the results.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">count_results</span><span class="p">[</span><span class="n">endpoint</span><span class="p">][</span><span class="nb">filter</span><span class="p">]</span> <span class="o">=</span> <span class="n">count_results</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">endpoint</span><span class="p">:</span> <span class="p">{</span><span class="nb">filter</span><span class="p">:</span> <span class="n">count_results</span><span class="p">}}</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.client.client.OptimadeClient.get" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.client.client.OptimadeClient.get" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Gets the results from the endpoint and filter across the
 defined OPTIMADE APIs.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>filter</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE filter string for the query.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>endpoint</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The endpoint to query.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>response_fields</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[list[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of response fields to request
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>filter</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE filter string for the query.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>endpoint</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The endpoint to query.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>response_fields</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of response fields to request
 from the server.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>sort</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The field by which to sort the results.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>sort</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The field by which to sort the results.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>RuntimeError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the query could not be executed.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, dict[str, dict[str, dict]]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A nested mapping from endpoint, filter and base URL to the query results.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>RuntimeError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the query could not be executed.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, dict[str, dict[str, dict]]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A nested mapping from endpoint, filter and base URL to the query results.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">291</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/client/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">291</span>
 <span class="normal">292</span>
 <span class="normal">293</span>
 <span class="normal">294</span>
@@ -7060,171 +7042,167 @@ from the server.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">all_results</span><span class="p">[</span><span class="n">endpoint</span><span class="p">][</span><span class="nb">filter</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">endpoint</span><span class="p">:</span> <span class="p">{</span><span class="nb">filter</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">results</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">asdict</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">results</span><span class="p">}}}</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.client.client.OptimadeClient.get_one" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_one</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="nb">filter</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">response_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">paginate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">other_params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_one</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="nb">filter</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">response_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">paginate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">other_params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.client.client.OptimadeClient.get_one" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Executes the query synchronously on one API.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>endpoint</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE endpoint to query.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>filter</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE filter string.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>response_fields</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[list[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of response fields to request
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>endpoint</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE endpoint to query.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>filter</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE filter string.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>response_fields</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of response fields to request
 from the server.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>sort</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The field by which to sort the results.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>page_limit</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[int]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A page limit to enforce for each query (used in
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>sort</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The field by which to sort the results.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>page_limit</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[int]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A page limit to enforce for each query (used in
 conjunction with <code>paginate</code>).</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>paginate</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to pull all pages of results (up to the
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>paginate</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to pull all pages of results (up to the
 value of <code>max_results_per_provider</code>) or whether to return
 after one page.</p>
-            </div>
-          </td>
-          <td>
-                <code>True</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>other_params</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[dict[str, <span title="typing.Any">Any</span>]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Any other parameters to pass to the server.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>other_params</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[dict[str, <span title="typing.Any">Any</span>]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Any other parameters to pass to the server.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.client.utils.QueryResults" href="../utils/#optimade.client.utils.QueryResults">QueryResults</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A dictionary mapping from base URL to the results of the query.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.client.utils.QueryResults" href="../utils/#optimade.client.utils.QueryResults">QueryResults</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A dictionary mapping from base URL to the results of the query.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">710</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/client/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">710</span>
 <span class="normal">711</span>
 <span class="normal">712</span>
 <span class="normal">713</span>
@@ -7324,19 +7302,17 @@ after one page.</p>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">base_url</span><span class="p">:</span> <span class="n">error_query_results</span><span class="p">}</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.client.client.OptimadeClient.get_one_async" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_one_async</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="nb">filter</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">response_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">paginate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">other_params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_one_async</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="nb">filter</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">response_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">paginate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">other_params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -7344,8 +7320,8 @@ after one page.</p>
 <a href="#optimade.client.client.OptimadeClient.get_one_async" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Executes the query asynchronously on one API.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -7357,150 +7333,148 @@ async requests to other APIs.</p>
 </div>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>endpoint</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE endpoint to query.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>filter</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE filter string.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>response_fields</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[list[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of response fields to request
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>endpoint</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE endpoint to query.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>filter</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE filter string.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>response_fields</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of response fields to request
 from the server.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>sort</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The field by which to sort the results.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>page_limit</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[int]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A page limit to enforce for each query (used in
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>sort</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The field by which to sort the results.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>page_limit</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[int]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A page limit to enforce for each query (used in
 conjunction with <code>paginate</code>).</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>paginate</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to pull all pages of results (up to the
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>paginate</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to pull all pages of results (up to the
 value of <code>max_results_per_provider</code>) or whether to return
 after one page.</p>
-            </div>
-          </td>
-          <td>
-                <code>True</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>other_params</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[dict[str, <span title="typing.Any">Any</span>]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Any other parameters to pass to the server.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>other_params</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[dict[str, <span title="typing.Any">Any</span>]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Any other parameters to pass to the server.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.client.utils.QueryResults" href="../utils/#optimade.client.utils.QueryResults">QueryResults</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A dictionary mapping from base URL to the results of the query.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.client.utils.QueryResults" href="../utils/#optimade.client.utils.QueryResults">QueryResults</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A dictionary mapping from base URL to the results of the query.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">863</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/client/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">863</span>
 <span class="normal">864</span>
 <span class="normal">865</span>
 <span class="normal">866</span>
@@ -7614,30 +7588,28 @@ after one page.</p>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">base_url</span><span class="p">:</span> <span class="n">error_query_results</span><span class="p">}</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.client.client.OptimadeClient.list_properties" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">list_properties</span><span class="p">(</span><span class="n">entry_type</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">list_properties</span><span class="p">(</span><span class="n">entry_type</span><span class="p">)</span></code>
 
 <a href="#optimade.client.client.OptimadeClient.list_properties" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns the list of properties reported at <code>/info/&lt;entry_type&gt;</code>
 for the given entry type, for each database.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">582</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/client/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">582</span>
 <span class="normal">583</span>
 <span class="normal">584</span>
 <span class="normal">585</span>
@@ -7705,108 +7677,104 @@ for the given entry type, for each database.</p>
         <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.client.client.OptimadeClient.search_property" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">search_property</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">search_property</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">)</span></code>
 
 <a href="#optimade.client.client.OptimadeClient.search_property" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Searches for the query substring within the listed properties
 served by each database.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>query</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The substring to search for.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>entry_type</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The entry type to query.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>query</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The substring to search for.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>entry_type</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The entry type to query.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, list[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A nested dictionary of matching property lists, arranged by</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict[str, list[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>entry type and database.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, list[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A nested dictionary of matching property lists, arranged by</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict[str, list[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>entry type and database.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/client/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">617</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/client/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">617</span>
 <span class="normal">618</span>
 <span class="normal">619</span>
 <span class="normal">620</span>
@@ -7856,8 +7824,8 @@ served by each database.</p>
                     <span class="n">matching_properties</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">property</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">matching_properties</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -7865,8 +7833,7 @@ served by each database.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -7875,7 +7842,7 @@ served by each database.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -7946,7 +7913,7 @@ served by each database.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

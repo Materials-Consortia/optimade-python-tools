@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2656,18 +2656,17 @@
 
 
 <a id="optimade.adapters.structures.ase"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Convert an OPTIMADE structure, in the format of
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResource"><code>StructureResource</code></a>
 to an ASE <code>Atoms</code> object.</p>
 <p>This conversion function relies on the ASE code.</p>
 <p>For more information on the ASE code see <a href="https://wiki.fysik.dtu.dk/ase/">their documentation</a>.</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -2680,75 +2679,72 @@ to an ASE <code>Atoms</code> object.</p>
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.ase.from_ase_atoms" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">from_ase_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">from_ase_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.ase.from_ase_atoms" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Convert an ASE <code>Atoms</code> object into an OPTIMADE <code>StructureResourceAttributes</code> model.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>atoms</code></td>
-          <td>
-                <code><span title="ase.Atoms">Atoms</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The ASE <code>Atoms</code> object to convert.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>atoms</code></td>
+            <td>
+                  <code><span title="ase.Atoms">Atoms</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The ASE <code>Atoms</code> object to convert.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.structures.StructureResourceAttributes" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes">StructureResourceAttributes</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An OPTIMADE <code>StructureResourceAttributes</code> model, which can be converted to a raw Python
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.structures.StructureResourceAttributes" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes">StructureResourceAttributes</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An OPTIMADE <code>StructureResourceAttributes</code> model, which can be converted to a raw Python
 dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_json()</code>.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/ase.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/ase.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
@@ -2848,87 +2844,84 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 
     <span class="k">return</span> <span class="n">StructureResourceAttributes</span><span class="p">(</span><span class="o">**</span><span class="n">attributes</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.ase.get_ase_atoms" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_ase_atoms</span><span class="p">(</span><span class="n">optimade_structure</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_ase_atoms</span><span class="p">(</span><span class="n">optimade_structure</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.ase.get_ase_atoms" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get ASE <code>Atoms</code> from OPTIMADE structure.</p>
+
 
 <details class="caution" open>
   <summary>Caution</summary>
   <p>Cannot handle partial occupancies (this includes vacancies).</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>optimade_structure</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.StructureResource" href="../../../models/structures/#optimade.models.structures.StructureResource">StructureResource</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>OPTIMADE structure.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>optimade_structure</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.StructureResource" href="../../../models/structures/#optimade.models.structures.StructureResource">StructureResource</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>OPTIMADE structure.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="ase.Atoms">Atoms</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>ASE <code>Atoms</code> object.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ase.Atoms">Atoms</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>ASE <code>Atoms</code> object.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/ase.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 38</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/ase.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
 <span class="normal"> 41</span>
@@ -3066,8 +3059,8 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
         <span class="n">info</span><span class="o">=</span><span class="n">info</span> <span class="k">if</span> <span class="n">info</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -3075,7 +3068,7 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -3146,7 +3139,7 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
     <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

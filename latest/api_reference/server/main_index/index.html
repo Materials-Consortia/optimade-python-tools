@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2672,14 +2672,14 @@
 
 
 <a id="optimade.server.main_index"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>The OPTIMADE Index Meta-Database server</p>
 <p>The server is based on MongoDB, using either <code>pymongo</code> or <code>mongomock</code>.</p>
 <p>This is an example implementation with example data.
 To implement your own index meta-database server see the documentation at https://optimade.org/optimade-python-tools.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2691,24 +2691,22 @@ To implement your own index meta-database server see the documentation at https:
 
 
 
-
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.main_index.add_major_version_base_url" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
 
 <a href="#optimade.server.main_index.add_major_version_base_url" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Add mandatory endpoints to <code>/vMAJOR</code> base URL.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/main_index.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/main_index.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
@@ -2716,32 +2714,30 @@ To implement your own index meta-database server see the documentation at https:
     <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="p">(</span><span class="n">index_info</span><span class="p">,</span> <span class="n">links</span><span class="p">):</span>
         <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">endpoint</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">])</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.main_index.add_optional_versioned_base_urls" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
 
 <a href="#optimade.server.main_index.add_optional_versioned_base_urls" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Add the following OPTIONAL prefixes/base URLs to server:
 <div class="highlight"><pre><span></span><code>    /vMajor.Minor
     /vMajor.Minor.Patch
 </code></pre></div></p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/main_index.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/main_index.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
@@ -2761,19 +2757,17 @@ To implement your own index meta-database server see the documentation at https:
         <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">index_info</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="n">version</span><span class="p">])</span>
         <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">links</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="n">version</span><span class="p">])</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.server.main_index.lifespan" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
@@ -2781,13 +2775,13 @@ To implement your own index meta-database server see the documentation at https:
 <a href="#optimade.server.main_index.lifespan" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Add dynamic endpoints and adjust config on startup.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/main_index.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/main_index.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
@@ -2809,8 +2803,8 @@ To implement your own index meta-database server see the documentation at https:
     <span class="c1"># Yield so that the app can start</span>
     <span class="k">yield</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -2818,7 +2812,7 @@ To implement your own index meta-database server see the documentation at https:
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -2889,7 +2883,7 @@ To implement your own index meta-database server see the documentation at https:
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

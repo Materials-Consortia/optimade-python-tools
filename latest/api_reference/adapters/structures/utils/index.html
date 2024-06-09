@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2764,15 +2764,14 @@
 
 
 <a id="optimade.adapters.structures.utils"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Utility functions to help the conversion functions along.</p>
 <p>Most of these functions rely on the <a href="https://numpy.org/">NumPy</a> library.</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -2785,94 +2784,92 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.utils.cell_to_cellpar" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">cell_to_cellpar</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">radians</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">cell_to_cellpar</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">radians</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.utils.cell_to_cellpar" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns the cell parameters <code>[a, b, c, alpha, beta, gamma]</code>.</p>
 <p>Angles are in degrees unless <code>radian=True</code> is used.</p>
+
 
 <details class="note" open>
   <summary>Note</summary>
   <p>Based on <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/geometry/cell.html#cell_to_cellpar">ASE code</a>.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>cell</code></td>
-          <td>
-                <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A Cartesian 3x3 cell. This equates to the
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>cell</code></td>
+            <td>
+                  <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A Cartesian 3x3 cell. This equates to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>radians</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Use radians instead of degrees (default) for angles.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>radians</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Use radians instead of degrees (default) for angles.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[float]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[float]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">105</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
@@ -2952,24 +2949,22 @@
         <span class="n">angles</span> <span class="o">=</span> <span class="p">[</span><span class="n">angle</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span> <span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">angles</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">lengths</span> <span class="o">+</span> <span class="n">angles</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.utils.cellpar_to_cell" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">cellpar_to_cell</span><span class="p">(</span><span class="n">cellpar</span><span class="p">,</span> <span class="n">ab_normal</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">a_direction</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">cellpar_to_cell</span><span class="p">(</span><span class="n">cellpar</span><span class="p">,</span> <span class="n">ab_normal</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">a_direction</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.utils.cellpar_to_cell" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return a 3x3 cell matrix from <code>cellpar=[a,b,c,alpha,beta,gamma]</code>.</p>
 <p>Angles must be in degrees.</p>
 <p>The returned cell is orientated such that a and b
@@ -2981,6 +2976,7 @@ are normal to <code>ab_normal</code> and a is parallel to the projection of
 cell will be oriented such that va and vb are normal to <code>ab_normal</code>
 and va will be along the projection of <code>a_direction</code> onto the a-b
 plane.</p>
+
 
 <details class="example" open>
   <summary>Example</summary>
@@ -2996,116 +2992,115 @@ array([[ 0.816, -0.408,  0.408],
 </blockquote>
 </blockquote>
 </details>
+
 <details class="note" open>
   <summary>Note</summary>
   <p>Direct copy of <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/geometry/cell.html#cellpar_to_cell">ASE code</a>.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>cellpar</code></td>
-          <td>
-                <code>list[float]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>cellpar</code></td>
+            <td>
+                  <code>list[float]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The unit cell parameters as a <code>list</code> of <code>float</code> values.</p>
 <p><strong>Note</strong>: The angles must be given in degrees.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>ab_normal</code></td>
-          <td>
-                <code>tuple[int, int, int]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Unit vector normal to the ab-plane.</p>
-            </div>
-          </td>
-          <td>
-                <code>(0, 0, 1)</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>a_direction</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[tuple[int, int, int]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Unit vector defining the a-direction (default: <code>(1, 0, 0)</code>).</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>ab_normal</code></td>
+            <td>
+                  <code>tuple[int, int, int]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Unit vector normal to the ab-plane.</p>
+              </div>
+            </td>
+            <td>
+                  <code>(0, 0, 1)</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>a_direction</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[tuple[int, int, int]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Unit vector defining the a-direction (default: <code>(1, 0, 0)</code>).</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A Cartesian 3x3 cell.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>This should equate to the</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A Cartesian 3x3 cell.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>This should equate to the</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p><a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
 <span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
@@ -3329,30 +3324,28 @@ array([[ 0.816, -0.408,  0.408],
 
     <span class="k">return</span> <span class="n">cell</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.utils.elements_ratios_from_species_at_sites" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">elements_ratios_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">elements_ratios_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.utils.elements_ratios_from_species_at_sites" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Compute the OPTIMADE <code>elements_ratios</code> field from <code>species_at_sites</code> in the case where <code>species_at_sites</code> refers
 to sites wholly occupied by the given elements, e.g., not arbitrary species labels or with partial/mixed occupancy.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">362</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">362</span>
 <span class="normal">363</span>
 <span class="normal">364</span>
 <span class="normal">365</span>
@@ -3370,104 +3363,101 @@ to sites wholly occupied by the given elements, e.g., not arbitrary species labe
     <span class="n">num_sites</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">counts</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">/</span> <span class="n">num_sites</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">elements</span><span class="p">)]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.utils.fractional_coordinates" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">fractional_coordinates</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">cartesian_positions</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">fractional_coordinates</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">cartesian_positions</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.utils.fractional_coordinates" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns fractional coordinates and wraps coordinates to <code>[0,1[</code>.</p>
+
 
 <details class="note" open>
   <summary>Note</summary>
   <p>Based on <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/atoms.html#Atoms.get_scaled_positions">ASE code</a>.</p>
 </details>
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>cell</code></td>
-          <td>
-                <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A Cartesian 3x3 cell. This equates to the
-<a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>cartesian_positions</code></td>
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of cartesian atomic positions. This equates to the
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>cell</code></td>
+            <td>
+                  <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A Cartesian 3x3 cell. This equates to the
+<a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>cartesian_positions</code></td>
+            <td>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of cartesian atomic positions. This equates to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.cartesian_site_positions"><code>cartesian_site_positions</code></a>
 attribute.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of fractional coordinates for the atomic positions.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of fractional coordinates for the atomic positions.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 66</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 66</span>
 <span class="normal"> 67</span>
 <span class="normal"> 68</span>
 <span class="normal"> 69</span>
@@ -3541,120 +3531,116 @@ attribute.</p>
 
     <span class="k">return</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">fractional</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.utils.pad_cell" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">pad_cell</span><span class="p">(</span><span class="n">lattice_vectors</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">pad_cell</span><span class="p">(</span><span class="n">lattice_vectors</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.utils.pad_cell" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Turn any <code>null</code>/<code>None</code> values into a <code>float</code> in given <code>tuple</code> of
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>lattice_vectors</code></td>
-          <td>
-                <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A 3x3 cartesian cell. This is the
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>lattice_vectors</code></td>
+            <td>
+                  <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A 3x3 cartesian cell. This is the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a>
 attribute.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>padding</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[float]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A value with which <code>null</code> or <code>None</code> values should be replaced.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>padding</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[float]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A value with which <code>null</code> or <code>None</code> values should be replaced.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>tuple</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The possibly redacted/padded <code>lattice_vectors</code> and a <code>bool</code> declaring whether or not</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>tuple</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>the value has been redacted/padded or not, i.e., whether it contained <code>null</code> or <code>None</code></p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>tuple</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>values.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>tuple</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The possibly redacted/padded <code>lattice_vectors</code> and a <code>bool</code> declaring whether or not</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>tuple</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>the value has been redacted/padded or not, i.e., whether it contained <code>null</code> or <code>None</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>tuple</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>values.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">310</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">310</span>
 <span class="normal">311</span>
 <span class="normal">312</span>
 <span class="normal">313</span>
@@ -3704,87 +3690,83 @@ attribute.</p>
         <span class="n">inner</span><span class="o">=</span><span class="nb">tuple</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.utils.scaled_cell" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">scaled_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">scaled_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.utils.scaled_cell" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return a scaled 3x3 cell from cartesian 3x3 cell (<code>lattice_vectors</code>).
 This 3x3 matrix can be used to calculate the fractional coordinates from the cartesian_site_positions.</p>
 <p>This is based on PDB's method of calculating SCALE from CRYST data.
 For more info, see <a href="https://www.wwpdb.org/documentation/file-format-content/format33/sect8.html#SCALEn">this site</a>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>cell</code></td>
-          <td>
-                <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A Cartesian 3x3 cell. This equates to the
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>cell</code></td>
+            <td>
+                  <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A Cartesian 3x3 cell. This equates to the
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.lattice_vectors"><code>lattice_vectors</code></a> attribute.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A scaled 3x3 cell.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>tuple[<a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>, <a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A scaled 3x3 cell.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
@@ -3842,24 +3824,22 @@ For more info, see <a href="https://www.wwpdb.org/documentation/file-format-cont
         <span class="n">scale</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>  <span class="c1"># type: ignore[return-value]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.utils.species_from_species_at_sites" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">species_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">species_from_species_at_sites</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.utils.species_from_species_at_sites" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>When a list of species dictionaries is not provided, this function
 can be used to infer the species from the provided species_at_sites.</p>
 <p>In this use case, species_at_sites is assumed to provide a list of
@@ -3869,62 +3849,60 @@ concentration equal to 1 and the species_at_site tag will be used as
 the chemical symbol.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>species_at_sites</code></td>
-          <td>
-                <code>list[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The list found under the species_at_sites field.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>species_at_sites</code></td>
+            <td>
+                  <code>list[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The list found under the species_at_sites field.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Species" href="../../../models/structures/#optimade.models.structures.Species">Species</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An OPTIMADE species list.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.structures.Species" href="../../../models/structures/#optimade.models.structures.Species">Species</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An OPTIMADE species list.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">337</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">337</span>
 <span class="normal">338</span>
 <span class="normal">339</span>
 <span class="normal">340</span>
@@ -3970,83 +3948,79 @@ the chemical symbol.</p>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">species_at_sites</span><span class="p">)</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.utils.unit_vector" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">unit_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">unit_vector</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.utils.unit_vector" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return a unit vector in the same direction as <code>x</code>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>x</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A three-dimensional vector.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>x</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A three-dimensional vector.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A unit vector in the same direction as <code>x</code>.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.structures.Vector3D" href="../../../models/structures/#optimade.models.structures.Vector3D">Vector3D</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A unit vector in the same direction as <code>x</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
@@ -4078,8 +4052,8 @@ the chemical symbol.</p>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">y</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -4087,7 +4061,7 @@ the chemical symbol.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -4158,7 +4132,7 @@ the chemical symbol.</p>
     <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

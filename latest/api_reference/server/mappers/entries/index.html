@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2920,9 +2920,9 @@
 
 
 <a id="optimade.server.mappers.entries"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2938,146 +2938,145 @@
 
 
 <h2 id="optimade.server.mappers.entries.BaseResourceMapper" class="doc doc-heading">
-          <code>BaseResourceMapper</code>
+            <code>BaseResourceMapper</code>
 
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
+    <div class="doc doc-contents ">
 
-  
+
       <p>Generic Resource Mapper that defines and performs the mapping
 between objects in the database and the resource objects defined by
 the specification.</p>
 
 
-
-  <p><span class="doc-section-title">Attributes:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.ALIASES">ALIASES</span></code></td>
-          <td>
-                <code>tuple[tuple[str, str], ...]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>a tuple of aliases between
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.ALIASES">ALIASES</span></code></td>
+            <td>
+                  <code>tuple[tuple[str, str], ...]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>a tuple of aliases between
 OPTIMADE field names and the field names in the database ,
 e.g. <code>(("elements", "custom_elements_field"))</code>.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.LENGTH_ALIASES">LENGTH_ALIASES</span></code></td>
-          <td>
-                <code>tuple[tuple[str, str], ...]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>a tuple of aliases between
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.LENGTH_ALIASES">LENGTH_ALIASES</span></code></td>
+            <td>
+                  <code>tuple[tuple[str, str], ...]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>a tuple of aliases between
 a field name and another field that defines its length, to be used
 when querying, e.g. <code>(("elements", "nelements"))</code>.
 e.g. <code>(("elements", "custom_elements_field"))</code>.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_CLASS">ENTRY_RESOURCE_CLASS</span></code></td>
-          <td>
-                <code>type[<a class="autorefs autorefs-internal" title="optimade.models.entries.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The entry type that this mapper corresponds to.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.PROVIDER_FIELDS">PROVIDER_FIELDS</span></code></td>
-          <td>
-                <code>tuple[str, ...]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>a tuple of extra field names that this
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_CLASS">ENTRY_RESOURCE_CLASS</span></code></td>
+            <td>
+                  <code>type[<a class="autorefs autorefs-internal" title="optimade.models.entries.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The entry type that this mapper corresponds to.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.PROVIDER_FIELDS">PROVIDER_FIELDS</span></code></td>
+            <td>
+                  <code>tuple[str, ...]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>a tuple of extra field names that this
 mapper should support when querying with the database prefix.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span></code></td>
-          <td>
-                <code>set[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>the set of top-level
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span></code></td>
+            <td>
+                  <code>set[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>the set of top-level
 field names common to all endpoints.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES" href="#optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES">SUPPORTED_PREFIXES</a></code></td>
-          <td>
-                <code>set[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The set of prefixes registered by this mapper.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES" href="#optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES">ALL_ATTRIBUTES</a></code></td>
-          <td>
-                <code>set[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The set of attributes defined across the entry
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES" href="#optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES">SUPPORTED_PREFIXES</a></code></td>
+            <td>
+                  <code>set[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The set of prefixes registered by this mapper.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES" href="#optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES">ALL_ATTRIBUTES</a></code></td>
+            <td>
+                  <code>set[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The set of attributes defined across the entry
 resource class and the server configuration.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES" href="#optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES">ENTRY_RESOURCE_ATTRIBUTES</a></code></td>
-          <td>
-                <code>dict[str, <span title="typing.Any">Any</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A dictionary of attributes and their definitions
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES" href="#optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES">ENTRY_RESOURCE_ATTRIBUTES</a></code></td>
+            <td>
+                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A dictionary of attributes and their definitions
 defined by the schema of the entry resource class.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT" href="#optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT">ENDPOINT</a></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The expected endpoint name for this resource, as defined by
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT" href="#optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT">ENDPOINT</a></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The expected endpoint name for this resource, as defined by
 the <code>type</code> in the schema of the entry resource class.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 36</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 36</span>
 <span class="normal"> 37</span>
 <span class="normal"> 38</span>
 <span class="normal"> 39</span>
@@ -3763,12 +3762,11 @@ the <code>type</code> in the schema of the entry resource class.</p>
 
         <span class="k">return</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">(</span><span class="o">**</span><span class="bp">cls</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -3781,20 +3779,19 @@ the <code>type</code> in the schema of the entry resource class.</p>
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">ALL_ATTRIBUTES</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">ALL_ATTRIBUTES</span><span class="p">()</span></code>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns all attributes served by this entry.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span>
@@ -3832,19 +3829,17 @@ the <code>type</code> in the schema of the entry resource class.</p>
         <span class="o">.</span><span class="n">union</span><span class="p">({</span><span class="bp">cls</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">PROVIDER_FIELDS</span><span class="p">})</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">ENDPOINT</span><span class="p">()</span></code>
-  
+            <code class="highlight language-python"><span class="n">ENDPOINT</span><span class="p">()</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
@@ -3852,14 +3847,14 @@ the <code>type</code> in the schema of the entry resource class.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns the expected endpoint for this mapper, corresponding
 to the <code>type</code> property of the resource class.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span>
 <span class="normal">164</span>
@@ -3881,29 +3876,27 @@ to the <code>type</code> property of the resource class.</p>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Type not set for this entry type!&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">endpoint</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">ENTRY_RESOURCE_ATTRIBUTES</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">ENTRY_RESOURCE_ATTRIBUTES</span><span class="p">()</span></code>
 
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns the dictionary of attributes defined by the underlying entry resource class.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
@@ -3915,19 +3908,17 @@ to the <code>type</code> property of the resource class.</p>
 
     <span class="k">return</span> <span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">SUPPORTED_PREFIXES</span><span class="p">()</span></code>
-  
+            <code class="highlight language-python"><span class="n">SUPPORTED_PREFIXES</span><span class="p">()</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
@@ -3935,8 +3926,8 @@ to the <code>type</code> property of the resource class.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>A set of prefixes handled by this entry type.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -3946,9 +3937,9 @@ namespaces (for serving fields from, e.g., other providers or
 domain-specific terms).</p>
 </div>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">118</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span>
 <span class="normal">121</span>
@@ -3978,19 +3969,17 @@ domain-specific terms).</p>
 
     <span class="k">return</span> <span class="p">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="p">}</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.alias_for" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">alias_for</span><span class="p">(</span><span class="n">field</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">alias_for</span><span class="p">(</span><span class="n">field</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -3999,8 +3988,8 @@ domain-specific terms).</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.alias_for" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return aliased field name.</p>
 <div class="admonition warning">
 <p class="admonition-title">Deprecated</p>
@@ -4009,62 +3998,60 @@ domain-specific terms).</p>
 </div>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>field</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>OPTIMADE field name.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>field</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>OPTIMADE field name.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Aliased field as found in <a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Aliased field as found in <a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">239</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">239</span>
 <span class="normal">240</span>
 <span class="normal">241</span>
 <span class="normal">242</span>
@@ -4106,19 +4093,17 @@ domain-specific terms).</p>
     <span class="p">)</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.alias_of" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">alias_of</span><span class="p">(</span><span class="n">field</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">alias_of</span><span class="p">(</span><span class="n">field</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -4127,8 +4112,8 @@ domain-specific terms).</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.alias_of" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return de-aliased field name, if it exists,
 otherwise return the input field name.</p>
 <div class="admonition warning">
@@ -4138,62 +4123,60 @@ otherwise return the input field name.</p>
 </div>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>field</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Field name to be de-aliased.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>field</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Field name to be de-aliased.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>De-aliased field name, falling back to returning <code>field</code>.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>De-aliased field name, falling back to returning <code>field</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">289</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">289</span>
 <span class="normal">290</span>
 <span class="normal">291</span>
 <span class="normal">292</span>
@@ -4237,19 +4220,17 @@ otherwise return the input field name.</p>
     <span class="p">)</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.all_aliases" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">all_aliases</span><span class="p">()</span></code>
-  
+            <code class="highlight language-python"><span class="n">all_aliases</span><span class="p">()</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -4258,40 +4239,39 @@ otherwise return the input field name.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns all of the associated aliases for this entry type,
 including those defined by the server config. The first member
 of each tuple is the OPTIMADE-compliant field name, the second
 is the backend-specific field name.</p>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A tuple of alias tuples.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A tuple of alias tuples.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 79</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 79</span>
 <span class="normal"> 80</span>
 <span class="normal"> 81</span>
 <span class="normal"> 82</span>
@@ -4367,19 +4347,17 @@ is the backend-specific field name.</p>
         <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ALIASES</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">all_length_aliases</span><span class="p">()</span></code>
-  
+            <code class="highlight language-python"><span class="n">all_length_aliases</span><span class="p">()</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -4388,38 +4366,37 @@ is the backend-specific field name.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns all of the associated length aliases for this class,
 including those defined by the server config.</p>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>tuple[tuple[str, str], ...]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A tuple of length alias tuples.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>tuple[tuple[str, str], ...]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A tuple of length alias tuples.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span>
 <span class="normal">176</span>
@@ -4449,19 +4426,17 @@ including those defined by the server config.</p>
         <span class="n">CONFIG</span><span class="o">.</span><span class="n">length_aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENDPOINT</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.deserialize" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">deserialize</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">deserialize</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
@@ -4469,14 +4444,14 @@ including those defined by the server config.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.deserialize" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Converts the raw database entries for this class into serialized models,
 mapping the data along the way.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">367</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">367</span>
 <span class="normal">368</span>
 <span class="normal">369</span>
 <span class="normal">370</span>
@@ -4500,19 +4475,17 @@ mapping the data along the way.</p>
 
     <span class="k">return</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">(</span><span class="o">**</span><span class="bp">cls</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.get_backend_field" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_backend_field</span><span class="p">(</span><span class="n">optimade_field</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_backend_field</span><span class="p">(</span><span class="n">optimade_field</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -4521,8 +4494,8 @@ mapping the data along the way.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.get_backend_field" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return the field name configured for the particular
 underlying database for the passed OPTIMADE field name, that would
 be used in an API filter.</p>
@@ -4533,35 +4506,33 @@ This means for an (OPTIMADE, DB) alias of (<code>species</code>, <code>kinds</co
 will return <code>kinds.mass</code>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>optimade_field</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The OPTIMADE field to attempt to map to the backend-specific field.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
-
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>optimade_field</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The OPTIMADE field to attempt to map to the backend-specific field.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -4574,32 +4545,31 @@ will return <code>kinds.mass</code>.</p>
 </code></pre></div>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The mapped field name to be used in the query to the backend.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The mapped field name to be used in the query to the backend.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span>
@@ -4667,19 +4637,17 @@ will return <code>kinds.mass</code>.</p>
         <span class="k">return</span> <span class="n">alias</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">optimade_field</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.get_optimade_field" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">backend_field</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">backend_field</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -4688,43 +4656,41 @@ will return <code>kinds.mass</code>.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.get_optimade_field" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return the corresponding OPTIMADE field name for the underlying database field,
 ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 <p>Aliases are read from
 <a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>backend_field</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The backend field to attempt to map to an OPTIMADE field.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
-
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>backend_field</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The backend field to attempt to map to an OPTIMADE field.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -4737,32 +4703,31 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 </code></pre></div>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The mapped field name to be used in an OPTIMADE-compliant response.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The mapped field name to be used in an OPTIMADE-compliant response.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">261</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">261</span>
 <span class="normal">262</span>
 <span class="normal">263</span>
 <span class="normal">264</span>
@@ -4816,19 +4781,17 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
         <span class="n">backend_field</span><span class="p">,</span> <span class="n">backend_field</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.get_required_fields" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_required_fields</span><span class="p">()</span></code>
-  
+            <code class="highlight language-python"><span class="n">get_required_fields</span><span class="p">()</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -4837,37 +4800,36 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.get_required_fields" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get REQUIRED response fields.</p>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>set</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>REQUIRED response fields.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>set</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>REQUIRED response fields.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
 <span class="normal">313</span>
 <span class="normal">314</span>
 <span class="normal">315</span>
@@ -4887,19 +4849,17 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.length_alias_for" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">length_alias_for</span><span class="p">(</span><span class="n">field</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">length_alias_for</span><span class="p">(</span><span class="n">field</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-cached"><code>cached</code></small>
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -4908,68 +4868,66 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.length_alias_for" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Returns the length alias for the particular field,
 or <code>None</code> if no such alias is found.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>field</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>OPTIMADE field name.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>field</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>OPTIMADE field name.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Aliased field as found in <a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases"><code>all_length_aliases()</code></a>.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Aliased field as found in <a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases"><code>all_length_aliases()</code></a>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
 <span class="normal">192</span>
@@ -4997,19 +4955,17 @@ or <code>None</code> if no such alias is found.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.mappers.entries.BaseResourceMapper.map_back" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
@@ -5017,8 +4973,8 @@ or <code>None</code> if no such alias is found.</p>
 <a href="#optimade.server.mappers.entries.BaseResourceMapper.map_back" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Map properties from MongoDB to OPTIMADE.</p>
 <p>Starting from a MongoDB document <code>doc</code>, map the DB fields to the corresponding OPTIMADE fields.
 Then, the fields are all added to the top-level field "attributes",
@@ -5027,62 +4983,60 @@ All fields not in <code>cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS</code> + "attributes
 Finally, the <code>type</code> is given the value of the specified <code>cls.ENDPOINT</code>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>doc</code></td>
-          <td>
-                <code>dict</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A resource object in MongoDB format.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>doc</code></td>
+            <td>
+                  <code>dict</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A resource object in MongoDB format.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>dict</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A resource object in OPTIMADE format.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>dict</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A resource object in OPTIMADE format.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">323</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">323</span>
 <span class="normal">324</span>
 <span class="normal">325</span>
 <span class="normal">326</span>
@@ -5168,8 +5122,8 @@ Finally, the <code>type</code> is given the value of the specified <code>cls.END
 
     <span class="k">return</span> <span class="n">newdoc</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -5177,8 +5131,7 @@ Finally, the <code>type</code> is given the value of the specified <code>cls.END
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -5187,25 +5140,25 @@ Finally, the <code>type</code> is given the value of the specified <code>cls.END
 
 
 <h2 id="optimade.server.mappers.entries.classproperty" class="doc doc-heading">
-          <code>classproperty</code>
+            <code>classproperty</code>
 
 
 <a href="#optimade.server.mappers.entries.classproperty" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code>property</code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code>property</code></p>
 
-  
+
       <p>A simple extension of the property decorator that binds to types
 rather than instances.</p>
 <p>Modelled on this <a href="https://stackoverflow.com/a/5192374">StackOverflow answer</a>
 with some tweaks to allow mkdocstrings to do its thing.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -5239,9 +5192,9 @@ with some tweaks to allow mkdocstrings to do its thing.</p>
     <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__wrapped__</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -5257,8 +5210,7 @@ with some tweaks to allow mkdocstrings to do its thing.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -5267,7 +5219,7 @@ with some tweaks to allow mkdocstrings to do its thing.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -5338,7 +5290,7 @@ with some tweaks to allow mkdocstrings to do its thing.</p>
     <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

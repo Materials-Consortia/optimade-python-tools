@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2864,14 +2864,14 @@
 
 
 <a id="optimade.server.middleware"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Custom ASGI app middleware.</p>
 <p>These middleware are based on <a href="https://www.starlette.io">Starlette</a>'s <code>BaseHTTPMiddleware</code>.
 See the specific Starlette <a href="https://www.starlette.io/middleware/">documentation page</a> for more
 information on it's middleware implementation.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2886,8 +2886,8 @@ information on it's middleware implementation.</p>
 
 
 <h2 id="optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">BaseHTTPMiddleware</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">EnsureQueryParamIntegrity</span><span class="p">,</span> <span class="n">CheckWronglyVersionedBaseUrls</span><span class="p">,</span> <span class="n">HandleApiHint</span><span class="p">,</span> <span class="n">AddWarnings</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">BaseHTTPMiddleware</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">EnsureQueryParamIntegrity</span><span class="p">,</span> <span class="n">CheckWronglyVersionedBaseUrls</span><span class="p">,</span> <span class="n">HandleApiHint</span><span class="p">,</span> <span class="n">AddWarnings</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
   </span>
@@ -2895,8 +2895,8 @@ information on it's middleware implementation.</p>
 <a href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>A tuple of all the middleware classes that implement certain required
 features of the OPTIMADE specification, e.g. warnings and URL
 versioning.</p>
@@ -2928,7 +2928,7 @@ in the <em>reverse</em> order to <code>OPTIMADE_MIDDLEWARE</code>.</p>
     <span class="n">middleware</span><span class="o">=</span><span class="p">[</span><span class="n">Middleware</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">)]</span>
 <span class="p">)</span>
 </code></pre></div>
-  </div>
+    </div>
 
 </div>
 
@@ -2938,17 +2938,17 @@ in the <em>reverse</em> order to <code>OPTIMADE_MIDDLEWARE</code>.</p>
 
 
 <h2 id="optimade.server.middleware.AddWarnings" class="doc doc-heading">
-          <code>AddWarnings</code>
+            <code>AddWarnings</code>
 
 
 <a href="#optimade.server.middleware.AddWarnings" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
 
-  
+
       <p>Add <a class="autorefs autorefs-internal" href="../../warnings/#optimade.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>s to the response.</p>
 <p>All sub-classes of <a class="autorefs autorefs-internal" href="../../warnings/#optimade.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>
 will also be added to the response's
@@ -2979,35 +2979,34 @@ appears <em>first</em>. More information can be found in the docstring of
 </div>
 
 
-
-  <p><span class="doc-section-title">Attributes:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.middleware.AddWarnings._warnings">_warnings</span></code></td>
-          <td>
-                <code>List[<a class="autorefs autorefs-internal" title="optimade.models.Warnings" href="../../models/optimade_json/#optimade.models.optimade_json.Warnings">Warnings</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>List of <a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.Warnings"><code>Warnings</code></a>
-added through usages of <code>warnings.warn()</code> via <a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code></a>.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.middleware.AddWarnings._warnings">_warnings</span></code></td>
+            <td>
+                  <code>List[<a class="autorefs autorefs-internal" title="optimade.models.Warnings" href="../../models/optimade_json/#optimade.models.optimade_json.Warnings">Warnings</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of <a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.Warnings"><code>Warnings</code></a>
+added through usages of <code>warnings.warn()</code> via <a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code></a>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">272</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">272</span>
 <span class="normal">273</span>
 <span class="normal">274</span>
 <span class="normal">275</span>
@@ -3399,12 +3398,11 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 
         <span class="k">return</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -3417,10 +3415,9 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.middleware.AddWarnings.chunk_it_up" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
@@ -3428,81 +3425,79 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 <a href="#optimade.server.middleware.AddWarnings.chunk_it_up" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return generator for string in chunks of size <code>chunk_size</code>.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>content</code></td>
-          <td>
-                <code><span title="typing.Union">Union</span>[str, bytes]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>String or bytes content to separate into chunks.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>chunk_size</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The size of the chunks, i.e. the length of the string-chunks.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>content</code></td>
+            <td>
+                  <code><span title="typing.Union">Union</span>[str, bytes]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>String or bytes content to separate into chunks.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>chunk_size</code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The size of the chunks, i.e. the length of the string-chunks.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="collections.abc.Generator">Generator</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A Python generator to be converted later to an <code>asyncio</code> generator.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="collections.abc.Generator">Generator</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A Python generator to be converted later to an <code>asyncio</code> generator.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">413</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">413</span>
 <span class="normal">414</span>
 <span class="normal">415</span>
 <span class="normal">416</span>
@@ -3532,24 +3527,22 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
         <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">chunk_size</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">),</span> <span class="n">chunk_size</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.middleware.AddWarnings.showwarning" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">showwarning</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">showwarning</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.server.middleware.AddWarnings.showwarning" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Hook to write a warning to a file using the built-in <code>warnings</code> lib.</p>
 <p>In <a href="https://docs.python.org/3/library/warnings.html">the documentation</a>
 for the built-in <code>warnings</code> library, there are a few recommended ways of
@@ -3571,108 +3564,107 @@ translated into an OPTIMADE Warnings JSON object in accordance with
 This process is similar to the <a class="autorefs autorefs-internal" href="../exception_handlers/#optimade.server.exception_handlers">Exception handlers</a>.</p>
 
 
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>message</code></td>
+            <td>
+                  <code><span title="typing.Union">Union</span>[Warning, str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The <code>Warning</code> object to show and possibly handle.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>category</code></td>
+            <td>
+                  <code>type[Warning]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p><code>Warning</code> type being warned about. This amounts to <code>type(message)</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>filename</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Name of the file, where the warning was issued.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>lineno</code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Line number in the file, where the warning was issued.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>file</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.TextIO">TextIO</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A file-like object to which the warning should be written.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>line</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Source content of the line that issued the warning.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>message</code></td>
-          <td>
-                <code><span title="typing.Union">Union</span>[Warning, str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The <code>Warning</code> object to show and possibly handle.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>category</code></td>
-          <td>
-                <code>type[Warning]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p><code>Warning</code> type being warned about. This amounts to <code>type(message)</code>.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>filename</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Name of the file, where the warning was issued.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>lineno</code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Line number in the file, where the warning was issued.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>file</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="typing.TextIO">TextIO</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A file-like object to which the warning should be written.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>line</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Source content of the line that issued the warning.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">315</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">315</span>
 <span class="normal">316</span>
 <span class="normal">317</span>
 <span class="normal">318</span>
@@ -3866,8 +3858,8 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
         <span class="n">warnings</span><span class="o">.</span><span class="n">WarningMessage</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -3875,8 +3867,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -3885,22 +3876,22 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 
 
 <h2 id="optimade.server.middleware.CheckWronglyVersionedBaseUrls" class="doc doc-heading">
-          <code>CheckWronglyVersionedBaseUrls</code>
+            <code>CheckWronglyVersionedBaseUrls</code>
 
 
 <a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
 
-  
+
       <p>If a non-supported versioned base URL is supplied return <code>553 Version Not Supported</code>.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 77</span>
 <span class="normal"> 78</span>
 <span class="normal"> 79</span>
 <span class="normal"> 80</span>
@@ -3966,12 +3957,11 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
         <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -3984,10 +3974,9 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.middleware.CheckWronglyVersionedBaseUrls.check_url" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">check_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">check_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
@@ -3995,68 +3984,66 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 <a href="#optimade.server.middleware.CheckWronglyVersionedBaseUrls.check_url" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Check URL path for versioned part.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>url</code></td>
-          <td>
-                <code><span title="starlette.datastructures.URL">URL</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A complete urllib-parsed raw URL.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>url</code></td>
+            <td>
+                  <code><span title="starlette.datastructures.URL">URL</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A complete urllib-parsed raw URL.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.exceptions.VersionNotSupported" href="../../exceptions/#optimade.exceptions.VersionNotSupported">VersionNotSupported</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the URL represents an OPTIMADE versioned base URL
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.VersionNotSupported" href="../../exceptions/#optimade.exceptions.VersionNotSupported">VersionNotSupported</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the URL represents an OPTIMADE versioned base URL
 and the version part is not supported by the implementation.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 80</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 80</span>
 <span class="normal"> 81</span>
 <span class="normal"> 82</span>
 <span class="normal"> 83</span>
@@ -4104,8 +4091,8 @@ and the version part is not supported by the implementation.</p>
                 <span class="p">)</span>
             <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -4113,8 +4100,7 @@ and the version part is not supported by the implementation.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -4123,22 +4109,22 @@ and the version part is not supported by the implementation.</p>
 
 
 <h2 id="optimade.server.middleware.EnsureQueryParamIntegrity" class="doc doc-heading">
-          <code>EnsureQueryParamIntegrity</code>
+            <code>EnsureQueryParamIntegrity</code>
 
 
 <a href="#optimade.server.middleware.EnsureQueryParamIntegrity" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
 
-  
+
       <p>Ensure all query parameters are followed by an equal sign (<code>=</code>).</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">34</span>
 <span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
@@ -4220,12 +4206,11 @@ and the version part is not supported by the implementation.</p>
         <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -4238,10 +4223,9 @@ and the version part is not supported by the implementation.</p>
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.middleware.EnsureQueryParamIntegrity.check_url" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">check_url</span><span class="p">(</span><span class="n">url_query</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">check_url</span><span class="p">(</span><span class="n">url_query</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
@@ -4249,123 +4233,120 @@ and the version part is not supported by the implementation.</p>
 <a href="#optimade.server.middleware.EnsureQueryParamIntegrity.check_url" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Check parsed URL query part for parameters not followed by <code>=</code>.</p>
 <p>URL query parameters are considered to be split by ampersand (<code>&amp;</code>)
 and semi-colon (<code>;</code>).</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>url_query</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The raw urllib-parsed query part.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>url_query</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The raw urllib-parsed query part.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If a query parameter does not come with a value.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If a query parameter does not come with a value.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>set</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The set of individual query parameters and their values.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>set</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>This is mainly for testing and not actually neeeded by the middleware,</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>set</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>since if the URL exhibits an invalid query part a <code>400 Bad Request</code></p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>set</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>response will be returned.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>set</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The set of individual query parameters and their values.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>set</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>This is mainly for testing and not actually neeeded by the middleware,</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>set</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>since if the URL exhibits an invalid query part a <code>400 Bad Request</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>set</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>response will be returned.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
 <span class="normal">40</span>
@@ -4427,8 +4408,8 @@ and semi-colon (<code>;</code>).</p>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">queries</span>  <span class="c1"># Useful for testing</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -4436,8 +4417,7 @@ and semi-colon (<code>;</code>).</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -4446,22 +4426,22 @@ and semi-colon (<code>;</code>).</p>
 
 
 <h2 id="optimade.server.middleware.HandleApiHint" class="doc doc-heading">
-          <code>HandleApiHint</code>
+            <code>HandleApiHint</code>
 
 
 <a href="#optimade.server.middleware.HandleApiHint" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
 
-  
+
       <p>Handle <code>api_hint</code> query parameter.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
@@ -4777,12 +4757,11 @@ and semi-colon (<code>;</code>).</p>
         <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -4795,10 +4774,9 @@ and semi-colon (<code>;</code>).</p>
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.middleware.HandleApiHint.handle_api_hint" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
@@ -4806,8 +4784,8 @@ and semi-colon (<code>;</code>).</p>
 <a href="#optimade.server.middleware.HandleApiHint.handle_api_hint" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Handle <code>api_hint</code> parameter value.</p>
 <p>There are several scenarios that can play out, when handling the <code>api_hint</code>
 query parameter:</p>
@@ -4828,87 +4806,84 @@ than the implementation's supported major version, then the implementation's
 supported major version will be returned and tried for the request.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>api_hint</code></td>
-          <td>
-                <code>list[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The urllib-parsed query parameter value for <code>api_hint</code>.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>api_hint</code></td>
+            <td>
+                  <code>list[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The urllib-parsed query parameter value for <code>api_hint</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.exceptions.VersionNotSupported" href="../../exceptions/#optimade.exceptions.VersionNotSupported">VersionNotSupported</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the requested major version is newer than the
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.VersionNotSupported" href="../../exceptions/#optimade.exceptions.VersionNotSupported">VersionNotSupported</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the requested major version is newer than the
 supported major version of the implementation.</p>
-            </div>
-          </td>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="typing.Union">Union</span>[None, str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Either a valid <code>api_hint</code> value or <code>None</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="typing.Union">Union</span>[None, str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Either a valid <code>api_hint</code> value or <code>None</code>.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
@@ -5072,19 +5047,17 @@ supported major version of the implementation.</p>
         <span class="p">)</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.middleware.HandleApiHint.is_versioned_base_url" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">is_versioned_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
-  
+            <code class="highlight language-python"><span class="n">is_versioned_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
   </span>
@@ -5092,70 +5065,68 @@ supported major version of the implementation.</p>
 <a href="#optimade.server.middleware.HandleApiHint.is_versioned_base_url" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Determine whether a request is for a versioned base URL.</p>
 <p>First, simply check whether a <code>/vMAJOR(.MINOR.PATCH)</code> part exists in the URL.
 If not, return <code>False</code>, else, remove unversioned base URL from the URL and check again.
 Return <code>bool</code> of final result.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>url</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The full URL to check.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>url</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The full URL to check.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether or not the full URL represents an OPTIMADE versioned base URL.</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether or not the full URL represents an OPTIMADE versioned base URL.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/middleware.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/middleware.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">198</span>
 <span class="normal">199</span>
 <span class="normal">200</span>
 <span class="normal">201</span>
@@ -5195,8 +5166,8 @@ Return <code>bool</code> of final result.</p>
     <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(/v[0-9]+(\.[0-9]+){0,2})&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span> <span class="p">:]))</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -5204,8 +5175,7 @@ Return <code>bool</code> of final result.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -5214,7 +5184,7 @@ Return <code>bool</code> of final result.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -5285,7 +5255,7 @@ Return <code>bool</code> of final result.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -2688,15 +2688,14 @@
 
 
 <a id="optimade.utils"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>This submodule implements some useful utilities for dealing
 with OPTIMADE providers that can be used in server or client code.</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -2709,102 +2708,99 @@ with OPTIMADE providers that can be used in server or client code.</p>
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.utils.get_all_databases" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">(</span><span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">(</span><span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_all_databases" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Iterate through all databases reported by registered OPTIMADE providers.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>include_providers</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A set/container of provider IDs to include child databases for.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>exclude_providers</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A set/container of provider IDs to exclude child databases for.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>include_providers</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A set/container of provider IDs to include child databases for.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>exclude_providers</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A set/container of provider IDs to exclude child databases for.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>exclude_databases</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A set/container of specific database URLs to exclude.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>exclude_databases</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A set/container of specific database URLs to exclude.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A generator of child database links that obey the given parameters.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A generator of child database links that obey the given parameters.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">167</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">167</span>
 <span class="normal">168</span>
 <span class="normal">169</span>
 <span class="normal">170</span>
@@ -2916,147 +2912,142 @@ with OPTIMADE providers that can be used in server or client code.</p>
                     <span class="p">)</span>
                 <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.utils.get_child_database_links" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_child_database_links" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>For a provider, return a list of available child databases.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>provider</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The links entry for the provider.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>obey_aggregate</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to only return links that allow
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>provider</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The links entry for the provider.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>obey_aggregate</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to only return links that allow
 aggregation.</p>
-            </div>
-          </td>
-          <td>
-                <code>True</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>headers</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[dict]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Additional HTTP headers to pass to the provider.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>headers</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[dict]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Additional HTTP headers to pass to the provider.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A list of the valid links entries from this provider that</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>have <code>link_type</code> <code>"child"</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A list of the valid links entries from this provider that</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code>list[<a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>have <code>link_type</code> <code>"child"</code>.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>RuntimeError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the provider's index meta-database is down,
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>RuntimeError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the provider's index meta-database is down,
 invalid, or the request otherwise fails.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
 <span class="normal">107</span>
 <span class="normal">108</span>
 <span class="normal">109</span>
@@ -3174,24 +3165,22 @@ invalid, or the request otherwise fails.</p>
             <span class="sa">f</span><span class="s2">&quot;Did not understand response from </span><span class="si">{</span><span class="n">provider</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">links</span><span class="o">.</span><span class="n">content</span><span class="si">!r}</span><span class="s2">, </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.utils.get_providers" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_providers" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</p>
 <p>Fallback order if providers.optimade.org is not available:</p>
 <ol>
@@ -3202,63 +3191,61 @@ invalid, or the request otherwise fails.</p>
 </ol>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>add_mongo_id</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Whether to populate the <code>_id</code> field of the provider with MongoDB
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>add_mongo_id</code></td>
+            <td>
+                  <code>bool</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to populate the <code>_id</code> field of the provider with MongoDB
 ObjectID.</p>
-            </div>
-          </td>
-          <td>
-                <code>False</code>
-          </td>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>list</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of raw JSON-decoded providers including MongoDB object IDs.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>list</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>List of raw JSON-decoded providers including MongoDB object IDs.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-          <details class="quote">
-            <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
 <span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
@@ -3392,29 +3379,27 @@ ObjectID.</p>
 
     <span class="k">return</span> <span class="n">providers_list</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.utils.mongo_id_for_database" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">database_type</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">database_type</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.mongo_id_for_database" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Produce a MongoDB ObjectId for a database</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/utils.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/utils.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
@@ -3436,8 +3421,8 @@ ObjectID.</p>
 
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">ObjectId</span><span class="p">(</span><span class="n">oid</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)))</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -3445,7 +3430,7 @@ ObjectID.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -3516,7 +3501,7 @@ ObjectID.</p>
     <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

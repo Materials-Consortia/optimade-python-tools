@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2762,9 +2762,9 @@
 
 
 <a id="optimade.server.query_params"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2780,50 +2780,49 @@
 
 
 <h2 id="optimade.server.query_params.BaseQueryParams" class="doc doc-heading">
-          <code>BaseQueryParams</code>
+            <code>BaseQueryParams</code>
 
 
 <a href="#optimade.server.query_params.BaseQueryParams" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="abc.ABC">ABC</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
 
-  
+
       <p>A base class for query parameters that provides validation via the <code>check_params</code> method.</p>
 
 
-
-  <p><span class="doc-section-title">Attributes:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.BaseQueryParams.unsupported_params">unsupported_params</span></code></td>
-          <td>
-                <code>list[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Any string parameter listed here will raise a warning when passed to
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.BaseQueryParams.unsupported_params">unsupported_params</span></code></td>
+            <td>
+                  <code>list[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Any string parameter listed here will raise a warning when passed to
 the check_params methods. Useful for disabling optional OPTIMADE query parameters that
 are not implemented by the server, e.g., cursor-based pagination.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
 <span class="normal">18</span>
@@ -2965,12 +2964,11 @@ are not implemented by the server, e.g., cursor-based pagination.</p>
                 <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&#39; are not recognised by this endpoint.&quot;</span>
             <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -2983,15 +2981,14 @@ are not implemented by the server, e.g., cursor-based pagination.</p>
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.query_params.BaseQueryParams.check_params" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">check_params</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">check_params</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span></code>
 
 <a href="#optimade.server.query_params.BaseQueryParams.check_params" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>This method checks whether all the query parameters that are specified
 in the URL string are implemented in the relevant <code>*QueryParams</code> class.</p>
 <p>This method handles four cases:</p>
@@ -3008,63 +3005,61 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
 </ul>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>query_params</code></td>
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An iterable of the request's string query parameters.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>query_params</code></td>
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An iterable of the request's string query parameters.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>`BadRequest`</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>if the query parameter was not found in the relevant class, or if it
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>`BadRequest`</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>if the query parameter was not found in the relevant class, or if it
 does not have a valid prefix.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -3182,8 +3177,8 @@ does not have a valid prefix.</p>
             <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&#39; are not recognised by this endpoint.&quot;</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -3191,8 +3186,7 @@ does not have a valid prefix.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -3201,90 +3195,89 @@ does not have a valid prefix.</p>
 
 
 <h2 id="optimade.server.query_params.EntryListingQueryParams" class="doc doc-heading">
-          <code>EntryListingQueryParams</code>
+            <code>EntryListingQueryParams</code>
 
 
 <a href="#optimade.server.query_params.EntryListingQueryParams" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
 
-  
+
       <p>Common query params for all Entry listing endpoints.</p>
 
 
-
-  <p><span class="doc-section-title">Attributes:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.filter">filter</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A filter string, in the format described in section API Filtering Format Specification of the specification.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.response_format">response_format</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The output format requested (see section Response Format).
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.filter">filter</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A filter string, in the format described in section API Filtering Format Specification of the specification.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.response_format">response_format</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The output format requested (see section Response Format).
 Defaults to the format string 'json', which specifies the standard output format described in this specification.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?response_format=xml</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.email_address">email_address</span></code></td>
-          <td>
-                <code><span title="pydantic.EmailStr">EmailStr</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An email address of the user making the request.
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.email_address">email_address</span></code></td>
+            <td>
+                  <code><span title="pydantic.EmailStr">EmailStr</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An email address of the user making the request.
 The email SHOULD be that of a person and not an automatic system.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?email_address=user@example.com</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.response_fields">response_fields</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A comma-delimited set of fields to be provided in the output.
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.response_fields">response_fields</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A comma-delimited set of fields to be provided in the output.
 If provided, these fields MUST be returned along with the REQUIRED fields.
 Other OPTIONAL fields MUST NOT be returned when this parameter is present.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?response_fields=last_modified,nsites</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.sort">sort</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If supporting sortable queries, an implementation MUST use the <code>sort</code> query parameter with format as specified
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.sort">sort</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If supporting sortable queries, an implementation MUST use the <code>sort</code> query parameter with format as specified
 by <a href="https://jsonapi.org/format/1.0/#fetching-sorting">JSON API 1.0</a>.</p>
 <p>An implementation MAY support multiple sort fields for a single query.
 If it does, it again MUST conform to the JSON API 1.0 specification.</p>
@@ -3297,94 +3290,94 @@ The set of field names, with <code>sortable</code> equal to <code>true</code> ar
 its definition in the JSON API 1.0 specification.
 The field <code>sortable</code> is in addition to each property description and other OPTIONAL fields.
 An example is shown in the section Entry Listing Info Endpoints.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_limit">page_limit</span></code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Sets a numerical limit on the number of entries returned.
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_limit">page_limit</span></code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Sets a numerical limit on the number of entries returned.
 See <a href="https://jsonapi.org/format/1.0/#fetching-pagination">JSON API 1.0</a>.
 The API implementation MUST return no more than the number specified.
 It MAY return fewer. The database MAY have a maximum limit and not accept larger numbers
 (in which case an error code -- <code>403 Forbidden</code> -- MUST be returned).
 The default limit value is up to the API implementation to decide.</p>
 <p><strong>Example</strong>: <code>http://example.com/optimade/v1/structures?page_limit=100</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_offset">page_offset</span></code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>RECOMMENDED for use with <em>offset-based</em> pagination: using <code>page_offset</code> and <code>page_limit</code> is RECOMMENDED.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_offset">page_offset</span></code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>RECOMMENDED for use with <em>offset-based</em> pagination: using <code>page_offset</code> and <code>page_limit</code> is RECOMMENDED.</p>
 <p><strong>Example</strong>: Skip 50 structures and fetch up to 100: <code>/structures?page_offset=50&amp;page_limit=100</code>.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_number">page_number</span></code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>RECOMMENDED for use with <em>page-based</em> pagination: using <code>page_number</code> and <code>page_limit</code> is RECOMMENDED.
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_number">page_number</span></code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>RECOMMENDED for use with <em>page-based</em> pagination: using <code>page_number</code> and <code>page_limit</code> is RECOMMENDED.
 It is RECOMMENDED that the first page has number 1, i.e., that <code>page_number</code> is 1-based.</p>
 <p><strong>Example</strong>: Fetch page 2 of up to 50 structures per page: <code>/structures?page_number=2&amp;page_limit=50</code>.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_cursor">page_cursor</span></code></td>
-          <td>
-                <code>int</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>RECOMMENDED for use with <em>cursor-based</em> pagination: using <code>page_cursor</code> and <code>page_limit</code> is RECOMMENDED.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_above">page_above</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_cursor">page_cursor</span></code></td>
+            <td>
+                  <code>int</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>RECOMMENDED for use with <em>cursor-based</em> pagination: using <code>page_cursor</code> and <code>page_limit</code> is RECOMMENDED.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_above">page_above</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p>
 <p><strong>Example</strong>: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by
 increasing <code>id</code>, so <code>page_above</code> value refers to an <code>id</code> value): <code>/structures?page_above=4000&amp;page_limit=100</code>.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_below">page_below</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.include">include</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A server MAY implement the JSON API concept of returning <a href="https://jsonapi.org/format/1.0/#document-compound-documents">compound documents</a>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_below">page_below</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>RECOMMENDED for use with <em>value-based</em> pagination: using <code>page_above</code>/<code>page_below</code> and <code>page_limit</code> is RECOMMENDED.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.include">include</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A server MAY implement the JSON API concept of returning <a href="https://jsonapi.org/format/1.0/#document-compound-documents">compound documents</a>
 by utilizing the <code>include</code> query parameter as specified by <a href="https://jsonapi.org/format/1.0/#fetching-includes">JSON API 1.0</a>.</p>
 <p>All related resource objects MUST be returned as part of an array value for the top-level <code>included</code> field,
 see the section JSON Response Schema: Common Fields.</p>
@@ -3395,28 +3388,28 @@ If relationship paths are not supported, or a server is unable to identify a rel
 Note, if a client explicitly specifies <code>include</code> and leaves out <code>references</code>, <code>references</code> resource objects MUST NOT be included under the top-level
 field <code>included</code>, as per the definition of <code>included</code>, see section JSON Response Schema: Common Fields.</p>
 <p><strong>Note</strong>: A query with the parameter <code>include</code> set to the empty string means no related resource objects are to be returned under the top-level field <code>included</code>.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.EntryListingQueryParams.api_hint">api_hint</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the client provides the parameter, the value SHOULD have the format <code>vMAJOR</code> or <code>vMAJOR.MINOR</code>,
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.api_hint">api_hint</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the client provides the parameter, the value SHOULD have the format <code>vMAJOR</code> or <code>vMAJOR.MINOR</code>,
 where MAJOR is a major version and MINOR is a minor version of the API.
 For example, if a client appends <code>api_hint=v1.0</code> to the query string, the hint provided is for major version 1 and minor version 0.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
 <span class="normal"> 89</span>
 <span class="normal"> 90</span>
 <span class="normal"> 91</span>
@@ -3808,12 +3801,11 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
         <span class="bp">self</span><span class="o">.</span><span class="n">include</span> <span class="o">=</span> <span class="n">include</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_hint</span> <span class="o">=</span> <span class="n">api_hint</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -3826,15 +3818,14 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.query_params.EntryListingQueryParams.check_params" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">check_params</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">check_params</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span></code>
 
 <a href="#optimade.server.query_params.EntryListingQueryParams.check_params" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>This method checks whether all the query parameters that are specified
 in the URL string are implemented in the relevant <code>*QueryParams</code> class.</p>
 <p>This method handles four cases:</p>
@@ -3851,63 +3842,61 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
 </ul>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>query_params</code></td>
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An iterable of the request's string query parameters.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>query_params</code></td>
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An iterable of the request's string query parameters.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>`BadRequest`</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>if the query parameter was not found in the relevant class, or if it
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>`BadRequest`</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>if the query parameter was not found in the relevant class, or if it
 does not have a valid prefix.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -4025,8 +4014,8 @@ does not have a valid prefix.</p>
             <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&#39; are not recognised by this endpoint.&quot;</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -4034,8 +4023,7 @@ does not have a valid prefix.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -4044,79 +4032,78 @@ does not have a valid prefix.</p>
 
 
 <h2 id="optimade.server.query_params.SingleEntryQueryParams" class="doc doc-heading">
-          <code>SingleEntryQueryParams</code>
+            <code>SingleEntryQueryParams</code>
 
 
 <a href="#optimade.server.query_params.SingleEntryQueryParams" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
 
-  
+
       <p>Common query params for single entry endpoints.</p>
 
 
-
-  <p><span class="doc-section-title">Attributes:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.response_format">response_format</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The output format requested (see section Response Format).
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.response_format">response_format</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The output format requested (see section Response Format).
 Defaults to the format string 'json', which specifies the standard output format described in this specification.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?response_format=xml</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.email_address">email_address</span></code></td>
-          <td>
-                <code><span title="pydantic.EmailStr">EmailStr</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An email address of the user making the request.
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.email_address">email_address</span></code></td>
+            <td>
+                  <code><span title="pydantic.EmailStr">EmailStr</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An email address of the user making the request.
 The email SHOULD be that of a person and not an automatic system.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?email_address=user@example.com</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.response_fields">response_fields</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A comma-delimited set of fields to be provided in the output.
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.response_fields">response_fields</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A comma-delimited set of fields to be provided in the output.
 If provided, these fields MUST be returned along with the REQUIRED fields.
 Other OPTIONAL fields MUST NOT be returned when this parameter is present.</p>
 <p><strong>Example</strong>: <code>http://example.com/v1/structures?response_fields=last_modified,nsites</code></p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.include">include</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A server MAY implement the JSON API concept of returning <a href="https://jsonapi.org/format/1.0/#document-compound-documents">compound documents</a>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.include">include</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A server MAY implement the JSON API concept of returning <a href="https://jsonapi.org/format/1.0/#document-compound-documents">compound documents</a>
 by utilizing the <code>include</code> query parameter as specified by <a href="https://jsonapi.org/format/1.0/#fetching-includes">JSON API 1.0</a>.</p>
 <p>All related resource objects MUST be returned as part of an array value for the top-level <code>included</code> field,
 see the section JSON Response Schema: Common Fields.</p>
@@ -4127,28 +4114,28 @@ If relationship paths are not supported, or a server is unable to identify a rel
 Note, if a client explicitly specifies <code>include</code> and leaves out <code>references</code>, <code>references</code> resource objects MUST NOT be included under the top-level
 field <code>included</code>, as per the definition of <code>included</code>, see section JSON Response Schema: Common Fields.</p>
 <p><strong>Note</strong>: A query with the parameter <code>include</code> set to the empty string means no related resource objects are to be returned under the top-level field <code>included</code>.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.api_hint">api_hint</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the client provides the parameter, the value SHOULD have the format <code>vMAJOR</code> or <code>vMAJOR.MINOR</code>,
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.api_hint">api_hint</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the client provides the parameter, the value SHOULD have the format <code>vMAJOR</code> or <code>vMAJOR.MINOR</code>,
 where MAJOR is a major version and MINOR is a minor version of the API.
 For example, if a client appends <code>api_hint=v1.0</code> to the query string, the hint provided is for major version 1 and minor version 0.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">286</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">286</span>
 <span class="normal">287</span>
 <span class="normal">288</span>
 <span class="normal">289</span>
@@ -4316,12 +4303,11 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
         <span class="bp">self</span><span class="o">.</span><span class="n">include</span> <span class="o">=</span> <span class="n">include</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api_hint</span> <span class="o">=</span> <span class="n">api_hint</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -4334,15 +4320,14 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.server.query_params.SingleEntryQueryParams.check_params" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">check_params</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">check_params</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span></code>
 
 <a href="#optimade.server.query_params.SingleEntryQueryParams.check_params" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>This method checks whether all the query parameters that are specified
 in the URL string are implemented in the relevant <code>*QueryParams</code> class.</p>
 <p>This method handles four cases:</p>
@@ -4359,63 +4344,61 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
 </ul>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>query_params</code></td>
-          <td>
-                <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An iterable of the request's string query parameters.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>query_params</code></td>
+            <td>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An iterable of the request's string query parameters.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>`BadRequest`</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>if the query parameter was not found in the relevant class, or if it
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>`BadRequest`</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>if the query parameter was not found in the relevant class, or if it
 does not have a valid prefix.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/server/query_params.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/query_params.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -4533,8 +4516,8 @@ does not have a valid prefix.</p>
             <span class="sa">f</span><span class="s2">&quot;The query parameter(s) &#39;</span><span class="si">{</span><span class="n">errors</span><span class="si">}</span><span class="s2">&#39; are not recognised by this endpoint.&quot;</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -4542,8 +4525,7 @@ does not have a valid prefix.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -4552,7 +4534,7 @@ does not have a valid prefix.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -4623,7 +4605,7 @@ does not have a valid prefix.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

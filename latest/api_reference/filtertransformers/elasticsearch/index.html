@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2876,9 +2876,9 @@
 
 
 <a id="optimade.filtertransformers.elasticsearch"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -2894,24 +2894,24 @@
 
 
 <h2 id="optimade.filtertransformers.elasticsearch.ElasticTransformer" class="doc doc-heading">
-          <code>ElasticTransformer</code>
+            <code>ElasticTransformer</code>
 
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="optimade.filtertransformers.BaseTransformer" href="../base_transformer/#optimade.filtertransformers.base_transformer.BaseTransformer">BaseTransformer</a></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.filtertransformers.BaseTransformer" href="../base_transformer/#optimade.filtertransformers.base_transformer.BaseTransformer">BaseTransformer</a></code></p>
 
-  
+
       <p>Transformer that transforms <code>v0.10.1</code>/<code>v1.0</code> grammar parse
 trees into Elasticsearch queries.</p>
 <p>Uses elasticsearch_dsl and will produce an <code>elasticsearch_dsl.Q</code> instance.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 85</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 85</span>
 <span class="normal"> 86</span>
 <span class="normal"> 87</span>
 <span class="normal"> 88</span>
@@ -3685,9 +3685,9 @@ trees into Elasticsearch queries.</p>
             <span class="n">type_</span> <span class="o">=</span> <span class="nb">float</span>
         <span class="k">return</span> <span class="n">type_</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -3702,8 +3702,8 @@ trees into Elasticsearch queries.</p>
 
 
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.backend_mapping" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">backend_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]</span></code>
-  
+            <code class="highlight language-python"><span class="n">backend_mapping</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]</span></code>
+
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-property"><code>property</code></small>
   </span>
@@ -3711,62 +3711,58 @@ trees into Elasticsearch queries.</p>
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.backend_mapping" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>A mapping between backend field names (aliases) and the corresponding
 <a class="autorefs autorefs-internal" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> object.</p>
-  </div>
+    </div>
 
 </div>
-
 
 
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.__default__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">__default__</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">__default__</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.__default__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Default behavior for rules that only replace one symbol with another</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
 <span class="normal">296</span>
 <span class="normal">297</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.comparison" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">comparison</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">comparison</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.comparison" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>comparison: constant_first_comparison | property_first_comparison</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">299</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">299</span>
 <span class="normal">300</span>
 <span class="normal">301</span>
 <span class="normal">302</span>
@@ -3776,29 +3772,27 @@ trees into Elasticsearch queries.</p>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.constant" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">constant</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">constant</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.constant" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>constant: string | number</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">197</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">197</span>
 <span class="normal">198</span>
 <span class="normal">199</span>
 <span class="normal">200</span>
@@ -3808,29 +3802,27 @@ trees into Elasticsearch queries.</p>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.non_string_value" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">non_string_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">non_string_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.non_string_value" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>non_string_value: number | property</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
 <span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
@@ -3840,54 +3832,51 @@ trees into Elasticsearch queries.</p>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.not_implemented_string" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">not_implemented_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">not_implemented_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.not_implemented_string" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>not_implemented_string: value</p>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code>NotImplementedError</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>For further information, see Materials-Consortia/OPTIMADE issue 157:
-https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code>NotImplementedError</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>For further information, see Materials-Consortia/OPTIMADE issue 157:
+https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
@@ -3907,30 +3896,28 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Comparing strings is not yet implemented.&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.postprocess" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">postprocess</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">postprocess</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.postprocess" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Post-process the query according to the rules defined for
 the backend, returning the backend-specific query.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span>
 <span class="normal">176</span>
@@ -3942,24 +3929,22 @@ the backend, returning the backend-specific query.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">query</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.property" class="doc doc-heading">
-          <code class="highlight language-python"><span class="nb">property</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="nb">property</span><span class="p">(</span><span class="n">args</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.property" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>property: IDENTIFIER ( "." IDENTIFIER )*</p>
 <p>If this transformer has an associated mapper, the property
 will be compared to possible relationship entry types and
@@ -3968,33 +3953,32 @@ this rule will return a string and not a dereferenced
 <a class="autorefs autorefs-internal" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a>.</p>
 
 
-
-  <p><span class="doc-section-title">Raises:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>If the property does not match any
-of the above rules.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If the property does not match any
+of the above rules.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">226</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">226</span>
 <span class="normal">227</span>
 <span class="normal">228</span>
 <span class="normal">229</span>
@@ -4094,30 +4078,28 @@ of the above rules.</p>
 
     <span class="k">return</span> <span class="n">quantity</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.transform" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.transform" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Transform the query using the Lark <code>Transformer</code> then run the
 backend-specific post-processing methods.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
 <span class="normal">181</span>
 <span class="normal">182</span>
 <span class="normal">183</span>
@@ -4129,29 +4111,27 @@ backend-specific post-processing methods.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.value" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.value" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>value: string | number | property</p>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">203</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">203</span>
 <span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
@@ -4161,8 +4141,8 @@ backend-specific post-processing methods.</p>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -4170,8 +4150,7 @@ backend-specific post-processing methods.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -4180,116 +4159,115 @@ backend-specific post-processing methods.</p>
 
 
 <h2 id="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" class="doc doc-heading">
-          <code>ElasticsearchQuantity</code>
+            <code>ElasticsearchQuantity</code>
 
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="optimade.filtertransformers.Quantity" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity">Quantity</a></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.filtertransformers.Quantity" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity">Quantity</a></code></p>
 
-  
+
       <p>Elasticsearch-specific extension of the underlying
 <a class="autorefs autorefs-internal" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> class.</p>
 
 
-
-  <p><span class="doc-section-title">Attributes:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.name">name</span></code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The name of the quantity as used in the filter expressions.</p>
-            </div>
-          </td>
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.backend_field">backend_field</span></code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The name of the field for this quantity in Elasticsearch, will be
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.name">name</span></code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The name of the quantity as used in the filter expressions.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.backend_field">backend_field</span></code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The name of the field for this quantity in Elasticsearch, will be
 <code>name</code> by default.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.elastic_mapping_type">elastic_mapping_type</span></code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="elasticsearch_dsl.Field">Field</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A decendent of an <code>elasticsearch_dsl.Field</code> that denotes which
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.elastic_mapping_type">elastic_mapping_type</span></code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="elasticsearch_dsl.Field">Field</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A decendent of an <code>elasticsearch_dsl.Field</code> that denotes which
 mapping type was used in the Elasticsearch index.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.length_quantity">length_quantity</span></code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Elasticsearch does not support length of arrays, but we can
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.length_quantity">length_quantity</span></code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Elasticsearch does not support length of arrays, but we can
 map fields with array to other fields with ints about the array length. The
 LENGTH operator will only be supported for quantities with this attribute.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.has_only_quantity">has_only_quantity</span></code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Elasticsearch does not support exclusive search on arrays, like
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.has_only_quantity">has_only_quantity</span></code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Elasticsearch does not support exclusive search on arrays, like
 a list of chemical elements. But, we can order all elements by atomic number
 and use a keyword field with all elements to perform this search. This only
 works for elements (i.e. labels in <code>CHEMICAL_SYMBOLS</code>) and quantities
 with this attribute.</p>
-            </div>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.nested_quantity">nested_quantity</span></code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>To support optimade's 'zipped tuple' feature (e.g.
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.nested_quantity">nested_quantity</span></code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>To support optimade's 'zipped tuple' feature (e.g.
 'elements:elements_ratios HAS "H":&gt;0.33), we use elasticsearch nested objects
 and nested queries. This quantity will provide the field for the nested
 object that contains the quantity (and others). The zipped tuples will only
 work for quantities that share the same nested object quantity.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-            <details class="quote">
-              <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
+              <details class="quote">
+                <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">12</span>
 <span class="normal">13</span>
 <span class="normal">14</span>
 <span class="normal">15</span>
@@ -4431,12 +4409,11 @@ work for quantities that share the same nested object quantity.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">has_only_quantity</span> <span class="o">=</span> <span class="n">has_only_quantity</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nested_quantity</span> <span class="o">=</span> <span class="n">nested_quantity</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -4449,132 +4426,130 @@ work for quantities that share the same nested object quantity.</p>
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">backend_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">length_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">elastic_mapping_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">has_only_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nested_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">backend_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">length_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">elastic_mapping_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">has_only_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nested_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.__init__" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Initialise the quantity from its name, aliases and mapping type.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>name</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The name of the quantity as used in the filter expressions.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-        <tr class="doc-section-item">
-          <td><code>backend_field</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[str]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The name of the field for this quantity in Elasticsearch, will be
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>name</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The name of the quantity as used in the filter expressions.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>backend_field</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The name of the field for this quantity in Elasticsearch, will be
 <code>name</code> by default.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>elastic_mapping_type</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<span title="elasticsearch_dsl.Field">Field</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A decendent of an <code>elasticsearch_dsl.Field</code> that denotes which
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>elastic_mapping_type</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<span title="elasticsearch_dsl.Field">Field</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A decendent of an <code>elasticsearch_dsl.Field</code> that denotes which
 mapping type was used in the Elasticsearch index.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>length_quantity</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Elasticsearch does not support length of arrays, but we can
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>length_quantity</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Elasticsearch does not support length of arrays, but we can
 map fields with array to other fields with ints about the array length. The
 LENGTH operator will only be supported for quantities with this attribute.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>has_only_quantity</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Elasticsearch does not support exclusive search on arrays, like
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>has_only_quantity</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Elasticsearch does not support exclusive search on arrays, like
 a list of chemical elements. But, we can order all elements by atomic number
 and use a keyword field with all elements to perform this search. This only
 works for elements (i.e. labels in <code>CHEMICAL_SYMBOLS</code>) and quantities
 with this attribute.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr class="doc-section-item">
-          <td><code>nested_quantity</code></td>
-          <td>
-                <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>To support optimade's 'zipped tuple' feature (e.g.
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code>nested_quantity</code></td>
+            <td>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>To support optimade's 'zipped tuple' feature (e.g.
 'elements:elements_ratios HAS "H":&gt;0.33), we use elasticsearch nested objects
 and nested queries. This quantity will provide the field for the nested
 object that contains the quantity (and others). The zipped tuples will only
 work for quantities that share the same nested object quantity.</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
@@ -4652,8 +4627,8 @@ work for quantities that share the same nested object quantity.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">has_only_quantity</span> <span class="o">=</span> <span class="n">has_only_quantity</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">nested_quantity</span> <span class="o">=</span> <span class="n">nested_quantity</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -4661,8 +4636,7 @@ work for quantities that share the same nested object quantity.</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -4671,7 +4645,7 @@ work for quantities that share the same nested object quantity.</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -4742,7 +4716,7 @@ work for quantities that share the same nested object quantity.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

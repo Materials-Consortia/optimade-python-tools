@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2656,18 +2656,17 @@
 
 
 <a id="optimade.adapters.structures.pymatgen"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Convert an OPTIMADE structure, in the format of
 <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResource"><code>StructureResource</code></a>
 to a pymatgen <code>Molecule</code> or <code>Structure</code> object.</p>
 <p>This conversion function relies on the <a href="https://github.com/materialsproject/pymatgen">pymatgen</a> package.</p>
 <p>For more information on the pymatgen code see <a href="https://pymatgen.org">their documentation</a>.</p>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -2680,75 +2679,72 @@ to a pymatgen <code>Molecule</code> or <code>Structure</code> object.</p>
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.pymatgen.from_pymatgen" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">from_pymatgen</span><span class="p">(</span><span class="n">pmg_structure</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">from_pymatgen</span><span class="p">(</span><span class="n">pmg_structure</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.pymatgen.from_pymatgen" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Convert a pymatgen <code>Structure</code> (3D) into an OPTIMADE <code>StructureResourceAttributes</code> model.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>pmg_structure</code></td>
-          <td>
-                <code><span title="pymatgen.core.Structure">Structure</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The pymatgen <code>Structure</code> to convert.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>pmg_structure</code></td>
+            <td>
+                  <code><span title="pymatgen.core.Structure">Structure</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The pymatgen <code>Structure</code> to convert.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.StructureResourceAttributes" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes">StructureResourceAttributes</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>An OPTIMADE <code>StructureResourceAttributes</code> model, which can be converted to a raw Python
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.StructureResourceAttributes" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes">StructureResourceAttributes</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An OPTIMADE <code>StructureResourceAttributes</code> model, which can be converted to a raw Python
 dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_json()</code>.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/pymatgen.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/pymatgen.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
 <span class="normal">149</span>
@@ -2848,24 +2844,22 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 
     <span class="k">return</span> <span class="n">StructureResourceAttributes</span><span class="p">(</span><span class="o">**</span><span class="n">attributes</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="optimade.adapters.structures.pymatgen.get_pymatgen" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_pymatgen</span><span class="p">(</span><span class="n">optimade_structure</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_pymatgen</span><span class="p">(</span><span class="n">optimade_structure</span><span class="p">)</span></code>
 
 <a href="#optimade.adapters.structures.pymatgen.get_pymatgen" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Get pymatgen <code>Structure</code> or <code>Molecule</code> from OPTIMADE structure.</p>
 <p>This function will return either a pymatgen <code>Structure</code> or <code>Molecule</code> based
 on the periodicity or periodic dimensionality of OPTIMADE structure.</p>
@@ -2875,72 +2869,70 @@ attribute is <code>1</code>s or if <a class="autorefs autorefs-internal" href=".
 <p>Otherwise, a pymatgen <code>Molecule</code> is returned.</p>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>optimade_structure</code></td>
-          <td>
-                <code><a class="autorefs autorefs-internal" title="optimade.models.StructureResource" href="../../../models/structures/#optimade.models.structures.StructureResource">StructureResource</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>OPTIMADE structure.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>optimade_structure</code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.StructureResource" href="../../../models/structures/#optimade.models.structures.StructureResource">StructureResource</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>OPTIMADE structure.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
-
-  <p><span class="doc-section-title">Returns:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="typing.Union">Union</span>[<span title="pymatgen.core.Structure">Structure</span>, <span title="pymatgen.core.Molecule">Molecule</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>A pymatgen <code>Structure</code> or <code>Molecule</code> based on the periodicity of the</p>
-            </div>
-          </td>
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
         </tr>
-        <tr class="doc-section-item">
-          <td>
-                <code><span title="typing.Union">Union</span>[<span title="pymatgen.core.Structure">Structure</span>, <span title="pymatgen.core.Molecule">Molecule</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>OPTIMADE structure.</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="typing.Union">Union</span>[<span title="pymatgen.core.Structure">Structure</span>, <span title="pymatgen.core.Molecule">Molecule</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A pymatgen <code>Structure</code> or <code>Molecule</code> based on the periodicity of the</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="typing.Union">Union</span>[<span title="pymatgen.core.Structure">Structure</span>, <span title="pymatgen.core.Molecule">Molecule</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>OPTIMADE structure.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
-          <details class="quote">
-            <summary>Source code in <code>optimade/adapters/structures/pymatgen.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
+            <details class="quote">
+              <summary>Source code in <code>optimade/adapters/structures/pymatgen.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span>
 <span class="normal">45</span>
@@ -3002,8 +2994,8 @@ attribute is <code>1</code>s or if <a class="autorefs autorefs-internal" href=".
 
     <span class="k">return</span> <span class="n">_get_molecule</span><span class="p">(</span><span class="n">optimade_structure</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -3011,7 +3003,7 @@ attribute is <code>1</code>s or if <a class="autorefs autorefs-internal" href=".
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
@@ -3082,7 +3074,7 @@ attribute is <code>1</code>s or if <a class="autorefs autorefs-internal" href=".
     <script id="__config" type="application/json">{"base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>
