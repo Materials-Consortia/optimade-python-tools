@@ -1,8 +1,21 @@
+# pre-commit.ci configuration
+ci:
+    autofix_commit_msg: |
+        [pre-commit.ci] Auto fixes from pre-commit hooks
+
+        for more information, see https://pre-commit.ci
+    autofix_prs: true
+    autoupdate_branch: 'master'
+    autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+    autoupdate_schedule: monthly
+    skip: []
+    submodules: true
+
 default_language_version:
   python: python3.9
 
+# pre-commit hooks
 repos:
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
