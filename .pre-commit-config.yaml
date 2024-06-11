@@ -1,14 +1,11 @@
 # pre-commit.ci configuration
 ci:
-    autofix_commit_msg: |
-        [pre-commit.ci] Auto fixes from pre-commit hooks
-
-        for more information, see https://pre-commit.ci
-    autofix_prs: true
+    autofix_prs: false
     autoupdate_branch: 'master'
     autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
     autoupdate_schedule: monthly
-    skip: []
+    # Both of these require `invoke` to be installed in the environment
+    skip: [json-diff, update-docs-api-reference]
     submodules: true
 
 default_language_version:
