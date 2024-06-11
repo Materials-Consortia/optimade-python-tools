@@ -35,19 +35,15 @@ jobs:
         cache-dependency-path: |
           requirements*.txt
 
-
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-server.txt -r requirements-dev.txt
         pip install -e .
-        pip install -r requirements.txt
-        pip install -r requirements-server.txt
-        pip install -r requirements-dev.txt
 
     - name: Run pre-commit
-      run: |
-        pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+      run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
   openapi:
     runs-on: ubuntu-latest
@@ -69,10 +65,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-server.txt -r requirements-dev.txt
         pip install -e .
-        pip install -r requirements.txt
-        pip install -r requirements-server.txt
-        pip install -r requirements-dev.txt
 
     - name: Pass generated OpenAPI schemas through validator.swagger.io
       run: |
@@ -179,10 +173,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-dev.txt -r requirements-http-client.txt
         pip install -e .
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
-        pip install -r requirements-http-client.txt
 
     - name: Run non-server tests
       run: pytest -rs -vvv --durations=0 --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
@@ -315,12 +307,8 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-server.txt -r requirements-dev.txt -r requirements-http-client.txt -r requirements-docs.txt
         pip install -e .
-        pip install -r requirements.txt
-        pip install -r requirements-server.txt
-        pip install -r requirements-dev.txt
-        pip install -r requirements-http-client.txt
-        pip install -r requirements-docs.txt
 
     # NOTE: While we're now using `mike`, this is still useful
     # to test the integrity of the documentation build.

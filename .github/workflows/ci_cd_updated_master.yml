@@ -31,26 +31,25 @@ jobs:
           RELEASE_RUN=false
         fi
 
-        echo "RELEASE_RUN=${RELEASE_RUN}" >> $GITHUB_ENV
-        echo "::set-output name=release_run::${RELEASE_RUN}"
+        echo "release_run=${RELEASE_RUN}" >> $GITHUB_OUTPUT
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Checkout repository
-      if: env.RELEASE_RUN == 'false'
+      if: steps.release_check.outputs.release_run == 'false'
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: true
 
     - name: Set up Python 3.9
-      if: env.RELEASE_RUN == 'false'
+      if: steps.release_check.outputs.release_run == 'false'
       uses: actions/setup-python@v5
       with:
         python-version: '3.9'
 
     - name: Install dependencies
-      if: env.RELEASE_RUN == 'false'
+      if: steps.release_check.outputs.release_run == 'false'
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
@@ -58,13 +57,13 @@ jobs:
         pip install -e .[all]
 
     - name: Set up git user
-      if: env.RELEASE_RUN == 'false'
+      if: steps.release_check.outputs.release_run == 'false'
       run: |
         git config --global user.name "${{ env.GIT_USER_NAME }}"
         git config --global user.email "${{ env.GIT_USER_EMAIL }}"
 
     - name: Check API Reference and landing page
-      if: env.RELEASE_RUN == 'false'
+      if: steps.release_check.outputs.release_run == 'false'
       run: |
         invoke create-api-reference-docs --pre-clean
 
@@ -74,72 +73,34 @@ jobs:
           exit 1
         fi
 
+    - name: Setup changelog configuration
+      if: steps.release_check.outputs.release_run == 'false'
+      id: changelog_config
+      run: |
+        echo "project=$(echo $GITHUB_REPOSITORY | cut -d/ -f2- )" >> $GITHUB_OUTPUT
+        echo "exclude_labels=duplicate,question,invalid,wontfix,dependency_updates,skip_changelog" >> $GITHUB_OUTPUT
+
     - name: Update changelog with unreleased changes
-      uses: CharMixer/auto-changelog-action@v1
+      if: steps.release_check.outputs.release_run == 'false'
+      uses: docker://githubchangeloggenerator/github-changelog-generator:1.16.2
       with:
-        token: ${{ secrets.RELEASE_PAT_BOT }}
-        release_branch: ${{ env.PUBLISH_UPDATE_BRANCH }}
-        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
-        future_release: "Unreleased changes"
+        args: --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token ${{ secrets.RELEASE_PAT_BOT }} --release-branch "${{ env.DEFAULT_REPO_BRANCH }}" --future-release "Unreleased changes" --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
 
     - name: Deploy documentation
-      if: env.RELEASE_RUN == 'false'
+      if: steps.release_check.outputs.release_run == 'false'
       run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_REPO_BRANCH }}
 
-  update-dependabot-branch:
-    name: Update permanent dependabot branch `dependabot_updates`
-    if: github.repository_owner == 'Materials-Consortia'
-    runs-on: ubuntu-latest
-
-    env:
-      DEPENDABOT_BRANCH: dependabot_updates
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        ref: ${{ env.DEPENDABOT_BRANCH }}
-        fetch-depth: 0
-
-    - name: Set up git config
-      run: |
-        git config --global user.name "${{ env.GIT_USER_NAME }}"
-        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
-
-    - name: Update '${{ env.DEPENDABOT_BRANCH }}'
-      run: |
-        git fetch origin
-
-        LATEST_PR_BODY="$(gh api /repos/${{ github.repository}}/pulls -X GET -f state=closed -f per_page=1 -f sort=updated -f direction=desc --jq '.[].body')"
-        cat .github/utils/single_dependency_pr_body.txt | head -8 > .tmp_file.txt
-        if [ -z "$(printf '%s\n' "${LATEST_PR_BODY}" | head -8 | diff - .tmp_file.txt --strip-trailing-cr)" ]; then
-          # The dependency branch has just been merged into ${DEFAULT_REPO_BRANCH}
-          # The dependency branch should be reset to ${DEFAULT_REPO_BRANCH}
-          echo "The dependencies have just been updated! Reset to ${{ env.DEFAULT_REPO_BRANCH }}."
-          git reset --hard origin/${{ env.DEFAULT_REPO_BRANCH }}
-          echo "FORCE_PUSH=yes" >> $GITHUB_ENV
-        else
-          # Normal procedure: Merge ${DEFAULT_REPO_BRANCH} into ${DEPENDABOT_BRANCH}
-          echo "Merge new updates to ${{ env.DEFAULT_REPO_BRANCH }} into ${DEPENDABOT_BRANCH}"
-          git merge -m "Keep '${{ env.DEPENDABOT_BRANCH }}' up-to-date with '${{ env.DEFAULT_REPO_BRANCH }}'" origin/${{ env.DEFAULT_REPO_BRANCH }}
-          echo "FORCE_PUSH=no" >> $GITHUB_ENV
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Push to '${{ env.DEPENDABOT_BRANCH }}'
-      uses: CasperWA/push-protected@v2
-      with:
-        token: ${{ secrets.RELEASE_PAT_BOT }}
-        branch: ${{ env.DEPENDABOT_BRANCH }}
-        sleep: 15
-        force: ${{ env.FORCE_PUSH }}
-
   deploy-fly:
-    env:
-        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
     runs-on: ubuntu-latest
     if: github.repository_owner == 'Materials-Consortia'
+
+    environment:
+      name: fly
+      url: https://optimade.fly.dev
+
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -151,8 +112,7 @@ jobs:
       uses: superfly/flyctl-actions/setup-flyctl@master
 
     - name: Combine requirements for builder
-      run: |
-        cat requirements-server.txt >> requirements.txt
+      run: cat requirements-server.txt >> requirements.txt
 
     - name: Deploy to Fly
       run: flyctl deploy --remote-only -c ./.github/fly.toml

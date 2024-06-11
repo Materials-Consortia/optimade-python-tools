@@ -1,8 +1,18 @@
+# pre-commit.ci configuration
+ci:
+    autofix_prs: false
+    autoupdate_branch: 'master'
+    autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+    autoupdate_schedule: monthly
+    # Both of these require `invoke` to be installed in the environment
+    skip: [json-diff, update-docs-api-reference]
+    submodules: true
+
 default_language_version:
   python: python3.9
 
+# pre-commit hooks
 repos:
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:

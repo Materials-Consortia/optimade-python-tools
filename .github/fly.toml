@@ -2,13 +2,13 @@ app = "optimade"
 kill_signal = "SIGINT"
 kill_timeout = 5
 swap_size_mb = 1024
-processes = []
+processes = {}
 
 [build]
   builder = "paketobuildpacks/builder:base"
 
 [env]
-PORT = 5000
+PORT = "5000"
 BPE_OPTIMADE_CONFIG_FILE = "./tests/test_config.json"
 BPL_OPTIMADE_CONFIG_FILE = "./tests/test_config.json"
 OPTIMADE_CONFIG_FILE = "./tests/test_config.json"
