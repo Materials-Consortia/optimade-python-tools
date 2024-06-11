@@ -11,9 +11,8 @@ env:
   DEFAULT_RELEASE_BRANCH: "master"
 
 jobs:
-
-  publish:
-    name: Publish OPTIMADE Python tools
+  release:
+    name: Release OPTIMADE Python tools
     runs-on: ubuntu-latest
     if: github.repository == 'Materials-Consortia/optimade-python-tools' && startsWith(github.ref, 'refs/tags/v')
     outputs:
@@ -25,6 +24,9 @@ jobs:
       id: get_release_branch
       with:
         route: GET /repos/{owner}/{repo}/releases/tags/${{ github.ref_name }}
+        # Note, the following inputs might give warnings that they are not valid.
+        # This is due to the flexible nature of the `octokit/request-action`.
+        # Fore more information see: https://github.com/octokit/request-action/tree/v2.x?tab=readme-ov-file#warnings
         owner: Materials-Consortia
         repo: optimade-python-tools
       env:
@@ -40,7 +42,7 @@ jobs:
       with:
         submodules: true
         fetch-depth: 0
-        branch: ${{ steps.save_branch.outputs.publish_branch }}
+        ref: ${{ steps.save_branch.outputs.publish_branch }}
 
     - name: Set up Python 3.10
       uses: actions/setup-python@v5
@@ -54,17 +56,19 @@ jobs:
         pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
         pip install -e .[all]
 
-    - name: Get base branch name for tag
-      id: branch_finder
-      run:
-        echo "branch=$(git branch --show-current)" >> "$GITHUB_OUTPUT"
+    - name: Setup changelog configuration
+      id: changelog_config
+      run: |
+        echo "project=$(echo $GITHUB_REPOSITORY | cut -d/ -f2- )" >> $GITHUB_OUTPUT
+        echo "exclude_labels=duplicate,question,invalid,wontfix,dependency_updates,skip_changelog" >> $GITHUB_OUTPUT
+
+        # For the release-specific changelog
+        echo "output_file=release_changelog.md" >> $GITHUB_OUTPUT
 
     - name: Update changelog
-      uses: CharMixer/auto-changelog-action@v1
+      uses: docker://githubchangeloggenerator/github-changelog-generator:1.16.2
       with:
-        token: ${{ secrets.RELEASE_PAT_BOT }}
-        release_branch: ${{ steps.save_branch.outputs.publish_branch }}
-        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
+        args: --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token "${{ secrets.RELEASE_PAT_BOT }}" --release-branch "${{ steps.save_branch.outputs.publish_branch }}" --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
 
     - name: Update API Reference docs and version - Commit changes and update tag
       run: .github/utils/update_docs.sh
@@ -79,38 +83,49 @@ jobs:
         force: true
         tags: true
 
-    - name: Get tagged versions
-      run: echo "PREVIOUS_VERSION=$(git tag -l --sort -version:refname | sed -n 2p)" >> $GITHUB_ENV
+    - name: Get previous version
+      id: get_previous_version
+      run: echo "previous_version=$(git tag -l --sort -version:refname | sed -n 2p)" >> $GITHUB_OUTPUT
 
     - name: Create release-specific changelog
-      uses: CharMixer/auto-changelog-action@v1
+      uses: docker://githubchangeloggenerator/github-changelog-generator:1.16.2
       with:
-        token: ${{ secrets.RELEASE_PAT_BOT }}
-        release_branch: ${{ steps.save_branch.outputs.publish_branch }}
-        since_tag: "${{ env.PREVIOUS_VERSION }}"
-        output: "release_changelog.md"
-        exclude_labels: "duplicate,question,invalid,wontfix,dependency_updates,skip_changelog"
+        args: --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token "${{ secrets.RELEASE_PAT_BOT }}" --release-branch "${{ steps.save_branch.outputs.publish_branch }}" --since-tag "${{ steps.get_previous_version.outputs.previous_version }}" --output "${{ steps.changelog_config.outputs.output_file }}" --usernames-as-github-logins --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
 
     - name: Append changelog to release body
       run: |
         gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} --jq '.body' > release_body.md
-        cat release_changelog.md >> release_body.md
+        cat ${{ steps.changelog_config.outputs.output_file }} >> release_body.md
         gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} -X PATCH -F body='@release_body.md'
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE_PAT_BOT }}
 
+  publish-to-pypi:
+    name: Publish to PyPI
+    needs: release
+    runs-on: ubuntu-latest
+
+    environment:
+      name: pypi
+      url: https://pypi.org/p/optimade
+
+    permissions:
+      id-token: write  # Important for Trusted Publishing on PyPI
+
+    steps:
     - name: Build source distribution
       run: python -m build
 
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        user: __token__
-        password: ${{ secrets.PYPI_PASSWORD }}
+        print-hash: true
 
   docs:
     name: Deploy documentation
-    needs: publish
+    needs:
+      - release
+      - publish-to-pypi
     runs-on: ubuntu-latest
 
     steps:
@@ -119,7 +134,7 @@ jobs:
       with:
         submodules: true
         fetch-depth: 0
-        ref: ${{ needs.publish.outputs.publish_branch }}
+        ref: ${{ needs.release.outputs.publish_branch }}
 
     - name: Set up Python 3.10
       uses: actions/setup-python@v5
@@ -143,18 +158,20 @@ jobs:
         mike deploy --push --remote origin --branch gh-pages --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v}
 
     - name: Deploy stable/latest documentation
-      if: ${{ needs.publish.outputs.publish_branch }} == ${{ env.DEFAULT_RELEASE_BRANCH }}
+      if: ${{ needs.release.outputs.publish_branch }} == ${{ env.DEFAULT_RELEASE_BRANCH }}
       run: |
         mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
         mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_RELEASE_BRANCH }}
 
   publish_container_image:
     name: Publish container image
-    needs: publish
+    needs:
+      - release
+      - publish-to-pypi
     uses: ./.github/workflows/cd_container_image.yml
     with:
       release: true
-      checkout_ref: ${{ needs.publish.outputs.publish_branch }}
+      checkout_ref: ${{ needs.release.outputs.publish_branch }}
     secrets: inherit
     permissions:
       packages: write
