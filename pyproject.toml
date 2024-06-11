@@ -62,7 +62,7 @@ optimade = ["py.typed"]
 
 
 [project.optional-dependencies]
-elastic = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
+elastic = ["elasticsearch-dsl>=7.4,<9.0", "elasticsearch>=7.17,<9.0"]
 mongo = ["pymongo~=4.0", "mongomock~=4.1"]
 server = [
     "uvicorn[standard]~=0.19",
