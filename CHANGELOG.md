@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.0.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.5) (2024-06-11)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.4...v1.0.5)
+
+**Closed issues:**
+
+- Fly has marked us as "high risk" and needs a credit card to unlock [\#2027](https://github.com/Materials-Consortia/optimade-python-tools/issues/2027)
+
+**Merged pull requests:**
+
+- Add `skip_ssl` flag/option to client [\#2086](https://github.com/Materials-Consortia/optimade-python-tools/pull/2086) ([ml-evs](https://github.com/ml-evs))
+
 ## [v1.0.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.4) (2024-03-29)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.3...v1.0.4)
