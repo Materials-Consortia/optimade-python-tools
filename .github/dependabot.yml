@@ -13,6 +13,11 @@ updates:
   - dependency_updates
   # Turn off automatic rebases so that auto-merge can work without needed N**2 CI runs
   rebase-strategy: "disabled"
+  ignore:
+  - dependency-name: "elasticsearch*"
+    versions: [ ">=8" ]
+  - dependency-name: "pymatgen"
+    versions: [ "==2024.6.10" ]
   groups:
     python-dependencies:
       applies-to: version-updates
