@@ -8,6 +8,8 @@ import json
 from collections.abc import Container, Iterable
 from typing import TYPE_CHECKING, Optional
 
+from requests.exceptions import SSLError
+
 if TYPE_CHECKING:
     import rich
 
@@ -63,6 +65,7 @@ def get_providers(add_mongo_id: bool = False) -> list:
             requests.exceptions.ConnectionError,
             requests.exceptions.ConnectTimeout,
             json.JSONDecodeError,
+            requests.exceptions.SSLError,
         ):
             pass
         else:
@@ -107,6 +110,7 @@ def get_child_database_links(
     provider: LinksResource,
     obey_aggregate: bool = True,
     headers: Optional[dict] = None,
+    skip_ssl: bool = False,
 ) -> list[LinksResource]:
     """For a provider, return a list of available child databases.
 
@@ -136,6 +140,13 @@ def get_child_database_links(
     links_endp = base_url + "/v1/links"
     try:
         links = requests.get(links_endp, timeout=10, headers=headers)
+    except SSLError as exc:
+        if skip_ssl:
+            links = requests.get(links_endp, timeout=10, headers=headers, verify=False)
+        else:
+            raise RuntimeError(
+                f"SSL error when connecting to provider {provider['id']}. Use `skip_ssl` to ignore."
+            ) from exc
     except (requests.ConnectionError, requests.Timeout) as exc:
         raise RuntimeError(f"Unable to connect to provider {provider['id']}") from exc
 
@@ -169,6 +180,7 @@ def get_all_databases(
     exclude_providers: Optional[Container[str]] = None,
     exclude_databases: Optional[Container[str]] = None,
     progress: "Optional[rich.Progress]" = None,
+    skip_ssl: bool = False,
 ) -> Iterable[str]:
     """Iterate through all databases reported by registered OPTIMADE providers.
 
@@ -200,7 +212,7 @@ def get_all_databases(
                 continue
 
             try:
-                links = get_child_database_links(provider)
+                links = get_child_database_links(provider, skip_ssl=skip_ssl)
                 for link in links:
                     if link.attributes.base_url:
                         if (

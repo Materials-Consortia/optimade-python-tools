@@ -115,6 +115,9 @@ class OptimadeClient:
     silent: bool
     """Whether to disable progress bar printing."""
 
+    skip_ssl: bool = False
+    """Whether to skip SSL verification."""
+
     _excluded_providers: Optional[set[str]] = None
     """A set of providers IDs excluded from future queries."""
 
@@ -160,6 +163,7 @@ class OptimadeClient:
         ] = None,
         verbosity: int = 0,
         callbacks: Optional[list[Callable[[str, dict], Union[None, dict]]]] = None,
+        skip_ssl: bool = False,
     ):
         """Create the OPTIMADE client object.
 
@@ -195,6 +199,7 @@ class OptimadeClient:
         self.max_attempts = max_attempts
         self.silent = silent
         self.verbosity = verbosity
+        self.skip_ssl = skip_ssl
 
         if headers:
             self.headers.update(headers)
@@ -209,6 +214,7 @@ class OptimadeClient:
                     include_providers=self._included_providers,
                     exclude_databases=self._excluded_databases,
                     progress=progress,
+                    skip_ssl=self.skip_ssl,
                 )
             )
         else:

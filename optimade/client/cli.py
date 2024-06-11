@@ -106,6 +106,7 @@ __all__ = ("_get",)
     nargs=-1,
 )
 @click.option("-v", "--verbosity", count=True, help="Increase verbosity of output.")
+@click.option("--skip-ssl", is_flag=True, help="Ignore SSL errors in HTTPS requests.")
 @click.option(
     "--http-timeout",
     type=float,
@@ -129,6 +130,7 @@ def get(
     exclude_providers,
     exclude_databases,
     verbosity,
+    skip_ssl,
     http_timeout,
 ):
     return _get(
@@ -149,6 +151,7 @@ def get(
         exclude_providers,
         exclude_databases,
         verbosity,
+        skip_ssl,
         http_timeout,
     )
 
@@ -171,6 +174,7 @@ def _get(
     exclude_providers,
     exclude_databases,
     verbosity,
+    skip_ssl,
     http_timeout,
     **kwargs,
 ):
@@ -197,6 +201,7 @@ def _get(
         if exclude_databases
         else None,
         "silent": silent,
+        "skip_ssl": skip_ssl,
     }
 
     # Only set http timeout if its not null to avoid overwriting or duplicating the
