@@ -16,7 +16,7 @@ updates:
   ignore:
   - dependency-name: "elasticsearch*"
     versions: [ ">=8" ]
-  - dependency-name: "pymatgen*"
+  - dependency-name: "pymatgen"
     versions: [ "==2024.6.10" ]
   groups:
     python-dependencies:
