@@ -125,7 +125,7 @@ def validate():  # pragma: no cover
         "--random-seed",
         type=int,
         default=None,
-        help=f"Set seed for random number generator for reproducible runs.",
+        help="Set seed for random number generator for reproducible runs.",
     )
 
     args = vars(parser.parse_args())
