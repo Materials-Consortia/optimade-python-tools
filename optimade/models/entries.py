@@ -238,3 +238,12 @@ class EntryInfoResource(BaseModel):
             description="Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.",
         ),
     ]
+
+    @field_validator("properties")
+    @classmethod
+    def check_property_names(cls, v):
+        import re
+        regex = r"^[a-z_][a-z_0-9]+$"
+        for p in v:
+            if not re.match(regex, p):
+                raise ValueError(f"Invalid property name: {p}, did not match regex: {regex}")
