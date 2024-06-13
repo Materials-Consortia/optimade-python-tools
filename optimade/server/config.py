@@ -170,6 +170,16 @@ class ServerConfig(BaseSettings):
         ),
     ] = True
 
+    insert_from_jsonl: Annotated[
+        Optional[Path],
+        Field(
+            description=(
+                "The absolute path to an OPTIMADE JSONL file to use to initialize the database. "
+                "A unique index will be created over the ID to avoid duplication over multiple runs."
+            )
+        ),
+    ] = None
+
     use_real_mongo: Annotated[
         Optional[bool],
         Field(description="DEPRECATED: force usage of MongoDB over any other backend."),
