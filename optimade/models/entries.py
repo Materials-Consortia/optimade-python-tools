@@ -243,7 +243,10 @@ class EntryInfoResource(BaseModel):
     @classmethod
     def check_property_names(cls, v):
         import re
+
         regex = r"^[a-z_][a-z_0-9]+$"
         for p in v:
             if not re.match(regex, p):
-                raise ValueError(f"Invalid property name: {p}, did not match regex: {regex}")
+                raise ValueError(
+                    f"Invalid property name: {p}, did not match regex: {regex}"
+                )
