@@ -8,6 +8,7 @@ from optimade.models.optimade_json import (
     BaseRelationshipResource,
     DataType,
     Relationship,
+    ValidIdentifier,
 )
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 
@@ -226,28 +227,15 @@ class EntryInfoResource(BaseModel):
     description: Annotated[str, StrictField(description="Description of the entry.")]
 
     properties: Annotated[
-        dict[str, EntryInfoProperty],
+        dict[ValidIdentifier, EntryInfoProperty],
         StrictField(
             description="A dictionary describing queryable properties for this entry type, where each key is a property name.",
         ),
     ]
 
     output_fields_by_format: Annotated[
-        dict[str, list[str]],
+        dict[str, list[ValidIdentifier]],
         StrictField(
             description="Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.",
         ),
     ]
-
-    @field_validator("properties")
-    @classmethod
-    def check_property_names(cls, v):
-        """Check that all defined property names obey the rules for OPTIMADE identifiers."""
-        import re
-
-        regex = r"^[a-z_][a-z_0-9]+$"
-        for p in v:
-            if not re.match(regex, p):
-                raise ValueError(
-                    f"Invalid property name: {p}, did not match regex: {regex}"
-                )

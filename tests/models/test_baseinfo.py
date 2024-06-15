@@ -85,6 +85,7 @@ def test_bad_entry_info_custom_properties():
         },
     }
     with pytest.raises(
-        ValueError, match="Invalid property name: _custom_Field, did not match regex.*"
+        ValueError,
+        match=".*[type=string_pattern_mismatch, input_value='_custom_Field', input_type=str].*",
     ):
         EntryInfoResource(**test_bad_info)
