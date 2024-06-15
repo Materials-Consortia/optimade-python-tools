@@ -242,6 +242,7 @@ class EntryInfoResource(BaseModel):
     @field_validator("properties")
     @classmethod
     def check_property_names(cls, v):
+        """Check that all defined property names obey the rules for OPTIMADE identifiers."""
         import re
 
         regex = r"^[a-z_][a-z_0-9]+$"

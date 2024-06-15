@@ -2,6 +2,7 @@ import pytest
 from pydantic import ValidationError
 
 from optimade.models.baseinfo import AvailableApiVersion
+from optimade.models.entries import EntryInfoResource
 
 
 def test_available_api_versions():
@@ -57,3 +58,33 @@ def test_available_api_versions():
 
     for data in good_combos:
         assert isinstance(AvailableApiVersion(**data), AvailableApiVersion)
+
+
+def test_good_entry_info_custom_properties():
+    test_good_info = {
+        "formats": ["json", "xml"],
+        "description": "good info data",
+        "output_fields_by_format": {"json": ["nelements", "id"]},
+        "properties": {
+            "nelements": {"description": "num elements", "type": "integer"},
+            "_custom_field": {"description": "good custom field", "type": "string"},
+        },
+    }
+    assert EntryInfoResource(**test_good_info)
+
+
+def test_bad_entry_info_custom_properties():
+    """Checks that error is raised if custom field contains upper case letter."""
+    test_bad_info = {
+        "formats": ["json", "xml"],
+        "description": "bad info data",
+        "output_fields_by_format": {"json": ["nelements", "id"]},
+        "properties": {
+            "nelements": {"description": "num elements", "type": "integer"},
+            "_custom_Field": {"description": "bad custom field", "type": "string"},
+        },
+    }
+    with pytest.raises(
+        ValueError, match="Invalid property name: _custom_Field, did not match regex.*"
+    ):
+        EntryInfoResource(**test_bad_info)
