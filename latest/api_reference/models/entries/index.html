@@ -3573,8 +3573,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">182</span>
-<span class="normal">183</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
 <span class="normal">186</span>
@@ -3606,7 +3605,8 @@
 <span class="normal">212</span>
 <span class="normal">213</span>
 <span class="normal">214</span>
-<span class="normal">215</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryInfoProperty</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">215</span>
+<span class="normal">216</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryInfoProperty</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A human-readable description of the entry property&quot;</span><span class="p">),</span>
@@ -3760,8 +3760,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">218</span>
-<span class="normal">219</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">219</span>
 <span class="normal">220</span>
 <span class="normal">221</span>
 <span class="normal">222</span>
@@ -3782,7 +3781,8 @@
 <span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
-<span class="normal">240</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryInfoResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">240</span>
+<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryInfoResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">formats</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
@@ -3793,14 +3793,14 @@
     <span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Description of the entry.&quot;</span><span class="p">)]</span>
 
     <span class="n">properties</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">],</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="n">ValidIdentifier</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dictionary describing queryable properties for this entry type, where each key is a property name.&quot;</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">output_fields_by_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">ValidIdentifier</span><span class="p">]],</span>
         <span class="n">StrictField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.&quot;</span><span class="p">,</span>
         <span class="p">),</span>
@@ -3861,7 +3861,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoResource.output_fields_by_format" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">output_fields_by_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">output_fields_by_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">ValidIdentifier</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.&#39;</span><span class="p">)]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3880,7 +3880,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoResource.properties" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">properties</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary describing queryable properties for this entry type, where each key is a property name.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">properties</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">ValidIdentifier</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary describing queryable properties for this entry type, where each key is a property name.&#39;</span><span class="p">)]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3924,8 +3924,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
-<span class="normal">51</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
@@ -3939,7 +3938,8 @@
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
-<span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryRelationships</span><span class="p">(</span><span class="n">Relationships</span><span class="p">):</span>
+<span class="normal">65</span>
+<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryRelationships</span><span class="p">(</span><span class="n">Relationships</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This model wraps the JSON API Relationships to include type-specific top level keys.&quot;&quot;&quot;</span>
 
     <span class="n">references</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -4074,8 +4074,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">119</span>
-<span class="normal">120</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
@@ -4134,7 +4133,8 @@
 <span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span>
-<span class="normal">179</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
+<span class="normal">179</span>
+<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -4375,8 +4375,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 68</span>
-<span class="normal"> 69</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 69</span>
 <span class="normal"> 70</span>
 <span class="normal"> 71</span>
 <span class="normal"> 72</span>
@@ -4423,7 +4422,8 @@
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResourceAttributes</span><span class="p">(</span><span class="n">Attributes</span><span class="p">):</span>
+<span class="normal">116</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">EntryResourceAttributes</span><span class="p">(</span><span class="n">Attributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Contains key-value pairs representing the entry&#39;s properties.&quot;&quot;&quot;</span>
 
     <span class="n">immutable_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -4565,14 +4565,14 @@
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/entries.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
-<span class="normal">110</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">116</span>
+<span class="normal">117</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
@@ -4648,8 +4648,8 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
-<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceRelationship</span><span class="p">(</span><span class="n">TypedRelationship</span><span class="p">):</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
+<span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ReferenceRelationship</span><span class="p">(</span><span class="n">TypedRelationship</span><span class="p">):</span>
     <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;references&quot;</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -4775,8 +4775,7 @@
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/entries.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
-<span class="normal">27</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -4788,7 +4787,8 @@
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">39</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">check_rel_type</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]]</span>
@@ -4834,8 +4834,8 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">46</span>
-<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">StructureRelationship</span><span class="p">(</span><span class="n">TypedRelationship</span><span class="p">):</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
+<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">StructureRelationship</span><span class="p">(</span><span class="n">TypedRelationship</span><span class="p">):</span>
     <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;structures&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;structures&quot;</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -4961,8 +4961,7 @@
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/entries.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
-<span class="normal">27</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -4974,7 +4973,8 @@
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">39</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">check_rel_type</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]]</span>
@@ -5020,8 +5020,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
-<span class="normal">24</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
@@ -5036,7 +5035,8 @@
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TypedRelationship</span><span class="p">(</span><span class="n">Relationship</span><span class="p">):</span>
+<span class="normal">39</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">TypedRelationship</span><span class="p">(</span><span class="n">Relationship</span><span class="p">):</span>
     <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
@@ -5177,8 +5177,7 @@
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/entries.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">26</span>
-<span class="normal">27</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -5190,7 +5189,8 @@
 <span class="normal">36</span>
 <span class="normal">37</span>
 <span class="normal">38</span>
-<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">39</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">check_rel_type</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]]</span>

@@ -1629,6 +1629,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.models.optimade_json.ValidIdentifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      ValidIdentifier
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.models.optimade_json.BaseRelationshipMeta" class="md-nav__link">
     <span class="md-ellipsis">
       BaseRelationshipMeta
@@ -3460,6 +3469,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimade.models.optimade_json.ValidIdentifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      ValidIdentifier
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#optimade.models.optimade_json.BaseRelationshipMeta" class="md-nav__link">
     <span class="md-ellipsis">
       BaseRelationshipMeta
@@ -4360,6 +4378,27 @@
 
 
 
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="optimade.models.optimade_json.ValidIdentifier" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ValidIdentifier</span> <span class="o">=</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="n">IDENTIFIER_REGEX</span><span class="p">)]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#optimade.models.optimade_json.ValidIdentifier" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>A type that constrains strings to valid OPTIMADE identifiers (e.g., property names, ID strings).</p>
+    </div>
+
+</div>
+
 
 <div class="doc doc-object doc-class">
 
@@ -4381,15 +4420,15 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">404</span>
-<span class="normal">405</span>
-<span class="normal">406</span>
-<span class="normal">407</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">407</span>
 <span class="normal">408</span>
 <span class="normal">409</span>
 <span class="normal">410</span>
 <span class="normal">411</span>
-<span class="normal">412</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Specific meta field for base relationship resource&quot;&quot;&quot;</span>
 
     <span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -4480,15 +4519,15 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
-<span class="normal">418</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">418</span>
 <span class="normal">419</span>
 <span class="normal">420</span>
 <span class="normal">421</span>
 <span class="normal">422</span>
-<span class="normal">423</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipResource</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">):</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">BaseRelationshipResource</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">BaseResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimum requirements to represent a relationship resource&quot;&quot;&quot;</span>
 
     <span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -4619,10 +4658,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 32</span>
 <span class="normal"> 33</span>
 <span class="normal"> 34</span>
 <span class="normal"> 35</span>
@@ -4714,7 +4750,10 @@
 <span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
-<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DataType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimade Data types</span>
 
 <span class="sd">    See the section &quot;Data types&quot; in the OPTIMADE API specification for more information.</span>
@@ -5004,10 +5043,7 @@
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
 <span class="normal"> 98</span>
 <span class="normal"> 99</span>
 <span class="normal">100</span>
@@ -5034,7 +5070,10 @@
 <span class="normal">121</span>
 <span class="normal">122</span>
 <span class="normal">123</span>
-<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_json_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">json_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;DataType&quot;</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE data type from a named JSON type&quot;&quot;&quot;</span>
     <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
@@ -5090,10 +5129,7 @@
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
@@ -5133,7 +5169,10 @@
 <span class="normal">89</span>
 <span class="normal">90</span>
 <span class="normal">91</span>
-<span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_python_type</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">python_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;DataType&quot;</span><span class="p">]:</span>
@@ -5202,10 +5241,10 @@
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE data types (enum values) as a (sorted) list&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">cls</span><span class="p">)</span>
@@ -5243,10 +5282,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">241</span>
 <span class="normal">242</span>
 <span class="normal">243</span>
 <span class="normal">244</span>
@@ -5281,7 +5317,10 @@
 <span class="normal">273</span>
 <span class="normal">274</span>
 <span class="normal">275</span>
-<span class="normal">276</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Implementation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Implementation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Information on the server implementation&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -5483,12 +5522,12 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">233</span>
 <span class="normal">234</span>
-<span class="normal">235</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationMaintainer</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationMaintainer</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Details about the maintainer of the implementation&quot;&quot;&quot;</span>
 
     <span class="n">email</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -5556,15 +5595,15 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">130</span>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
-<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeError</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Error</span><span class="p">):</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">OptimadeError</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Error</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;detail MUST be present&quot;&quot;&quot;</span>
 
     <span class="n">detail</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -5797,10 +5836,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span>
@@ -5823,7 +5859,10 @@
 <span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span>
-<span class="normal">227</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Provider</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Provider</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Information on the database provider of the implementation.&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -5970,13 +6009,13 @@
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">426</span>
-<span class="normal">427</span>
-<span class="normal">428</span>
-<span class="normal">429</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">429</span>
 <span class="normal">430</span>
 <span class="normal">431</span>
-<span class="normal">432</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Relationship</span><span class="p">):</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Relationship</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Relationship</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource.&quot;&quot;&quot;</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -6123,10 +6162,7 @@ database-provider-specific prefix.</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">282</span>
 <span class="normal">283</span>
 <span class="normal">284</span>
 <span class="normal">285</span>
@@ -6221,7 +6257,10 @@ database-provider-specific prefix.</p>
 <span class="normal">374</span>
 <span class="normal">375</span>
 <span class="normal">376</span>
-<span class="normal">377</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMeta</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Meta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A [JSON API meta member](https://jsonapi.org/format/1.0#document-meta)</span>
 <span class="sd">    that contains JSON API meta objects of non-standard</span>
@@ -6620,10 +6659,7 @@ database-provider-specific prefix.</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">190</span>
 <span class="normal">191</span>
 <span class="normal">192</span>
 <span class="normal">193</span>
@@ -6631,7 +6667,10 @@ database-provider-specific prefix.</p>
 <span class="normal">195</span>
 <span class="normal">196</span>
 <span class="normal">197</span>
-<span class="normal">198</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMetaQuery</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ResponseMetaQuery</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Information on the query that was requested.&quot;&quot;&quot;</span>
 
     <span class="n">representation</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -6705,10 +6744,7 @@ database-provider-specific prefix.</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">380</span>
-<span class="normal">381</span>
-<span class="normal">382</span>
-<span class="normal">383</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">383</span>
 <span class="normal">384</span>
 <span class="normal">385</span>
 <span class="normal">386</span>
@@ -6726,7 +6762,10 @@ database-provider-specific prefix.</p>
 <span class="normal">398</span>
 <span class="normal">399</span>
 <span class="normal">400</span>
-<span class="normal">401</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Success</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Success</span><span class="p">(</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">Response</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;errors are not allowed&quot;&quot;&quot;</span>
 
     <span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -6923,10 +6962,7 @@ microseconds, as filters may return unexpected results.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">388</span>
-<span class="normal">389</span>
-<span class="normal">390</span>
-<span class="normal">391</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">391</span>
 <span class="normal">392</span>
 <span class="normal">393</span>
 <span class="normal">394</span>
@@ -6936,7 +6972,10 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">398</span>
 <span class="normal">399</span>
 <span class="normal">400</span>
-<span class="normal">401</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
     <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
@@ -6988,10 +7027,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span>
 <span class="normal">164</span>
@@ -7014,7 +7050,10 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 <span class="normal">181</span>
 <span class="normal">182</span>
 <span class="normal">183</span>
-<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Warnings</span><span class="p">(</span><span class="n">OptimadeError</span><span class="p">):</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Warnings</span><span class="p">(</span><span class="n">OptimadeError</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;OPTIMADE-specific warning class based on OPTIMADE-specific JSON API Error.</span>
 
 <span class="sd">    From the specification:</span>
@@ -7290,11 +7329,11 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">status_must_not_be_specified</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Warnings&quot;</span><span class="p">:</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="ow">or</span> <span class="s2">&quot;status&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;status MUST NOT be specified for warnings&quot;</span><span class="p">)</span>
@@ -7340,10 +7379,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 </details>
             <details class="quote">
               <summary>Source code in <code>optimade/models/optimade_json.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
@@ -7357,7 +7393,10 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 <span class="normal">152</span>
 <span class="normal">153</span>
 <span class="normal">154</span>
-<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">warnings_json_schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">warnings_json_schema_extra</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">model</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;Warnings&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update OpenAPI JSON schema model for `Warning`.</span>
 
 <span class="sd">    * Ensure `type` is in the list required properties and in the correct place.</span>

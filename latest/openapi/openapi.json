@@ -1664,8 +1664,10 @@
             "description": "Description of the entry."
           },
           "properties": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/EntryInfoProperty"
+            "patternProperties": {
+              "^[a-z_][a-z_0-9]+$": {
+                "$ref": "#/components/schemas/EntryInfoProperty"
+              }
             },
             "type": "object",
             "title": "Properties",
@@ -1674,7 +1676,8 @@
           "output_fields_by_format": {
             "additionalProperties": {
               "items": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^[a-z_][a-z_0-9]+$"
               },
               "type": "array"
             },
