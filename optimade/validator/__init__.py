@@ -14,6 +14,7 @@ def validate():  # pragma: no cover
     import argparse
     import json
     import os
+    import random
     import sys
     import traceback
 
@@ -120,6 +121,13 @@ def validate():  # pragma: no cover
         help=f"Read timeout to use for each individual request (DEFAULT: {DEFAULT_READ_TIMEOUT} s)",
     )
 
+    parser.add_argument(
+        "--random-seed",
+        type=int,
+        default=None,
+        help="Set seed for random number generator for reproducible runs.",
+    )
+
     args = vars(parser.parse_args())
 
     if os.environ.get("OPTIMADE_VERBOSITY") is not None:
@@ -145,6 +153,9 @@ def validate():  # pragma: no cover
         warnings.warn(
             "The `--page_limit` flag is now deprecated and will not be used by the validator."
         )
+
+    if args["random_seed"] is not None:
+        random.seed(args["random_seed"])
 
     validator = ImplementationValidator(
         base_url=args["base_url"],
