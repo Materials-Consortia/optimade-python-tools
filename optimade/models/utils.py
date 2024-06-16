@@ -26,6 +26,7 @@ OPTIMADE_SCHEMA_EXTENSION_KEYS = ["support", "queryable", "unit", "sortable"]
 OPTIMADE_SCHEMA_EXTENSION_PREFIX = "x-optimade-"
 
 SEMVER_PATTERN = r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
+IDENTIFIER_REGEX = r"^[a-z_][a-z_0-9]+$"
 
 
 class SupportLevel(Enum):

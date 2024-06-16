@@ -4,11 +4,11 @@ from datetime import datetime
 from enum import Enum
 from typing import Annotated, Any, Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, EmailStr, model_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
 
 from optimade.models import jsonapi
 from optimade.models.types import SemanticVersion
-from optimade.models.utils import StrictField
+from optimade.models.utils import IDENTIFIER_REGEX, StrictField
 
 __all__ = (
     "DataType",
@@ -24,6 +24,9 @@ __all__ = (
     "BaseRelationshipResource",
     "Relationship",
 )
+
+ValidIdentifier = Annotated[str, Field(pattern=IDENTIFIER_REGEX)]
+"""A type that constrains strings to valid OPTIMADE identifiers (e.g., property names, ID strings)."""
 
 
 class DataType(Enum):
