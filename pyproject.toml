@@ -81,9 +81,9 @@ http-client = [
 ]
 
 ase = ["ase~=3.22"]
-cif = ["numpy~=1.22"]
-pymatgen = ["pymatgen>=2022", "pandas~=2.2"]
-jarvis = ["jarvis-tools>=2023.1.8"]
+cif = ["numpy>=1.22,<3.0"]
+pymatgen = ["pymatgen>=2022,!=2024.6.10,!=2024.6.4", "tabulate~=0.8", "pandas~=2.2"]
+jarvis = ["jarvis-tools>=2023.1.8,!=2024.4.20,!=2024.4.30"]
 client = ["optimade[cif]"]
 
 # General
