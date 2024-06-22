@@ -1,5 +1,20 @@
 # Changelog
 
+## [v1.0.6](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.6) (2024-06-22)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.5...v1.0.6)
+
+**Closed issues:**
+
+- Publish on PyPI using a Trusted Publisher [\#2085](https://github.com/Materials-Consortia/optimade-python-tools/issues/2085)
+
+**Merged pull requests:**
+
+- Validate property names against identifier regular expression [\#2097](https://github.com/Materials-Consortia/optimade-python-tools/pull/2097) ([merkys](https://github.com/merkys))
+- Add a validator CLI option to set the `--random-seed` for deterministic validation [\#2096](https://github.com/Materials-Consortia/optimade-python-tools/pull/2096) ([merkys](https://github.com/merkys))
+- Try to add ignores for elasticsearch and pymatgen [\#2091](https://github.com/Materials-Consortia/optimade-python-tools/pull/2091) ([ml-evs](https://github.com/ml-evs))
+- Update dependency management and CI/CD workflows [\#2087](https://github.com/Materials-Consortia/optimade-python-tools/pull/2087) ([CasperWA](https://github.com/CasperWA))
+
 ## [v1.0.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.5) (2024-06-11)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.4...v1.0.5)
