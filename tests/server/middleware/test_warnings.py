@@ -34,7 +34,9 @@ def test_showwarning_overload(
     # Make sure a "normal" warning is treated as usual
     warnings.warn(warning_message, UserWarning)
     assert len(add_warning_middleware._warnings) == 1
-    assert len(recwarn.list) >= 2  # Ensure at least two warnings were raised (the ones we just added)
+    assert (
+        len(recwarn.list) >= 2
+    )  # Ensure at least two warnings were raised (the ones we just added)
     assert recwarn.pop(OptimadeWarning)
     assert recwarn.pop(UserWarning)
 
@@ -68,7 +70,9 @@ def test_showwarning_debug(both_clients, recwarn):
         assert "meta" in warning
         for meta_field in ("filename", "lineno", "line"):
             assert meta_field in warning["meta"]
-        assert len(recwarn.list) >= 1  # Ensure at least one warning was raised (the one we just added)
+        assert (
+            len(recwarn.list) >= 1
+        )  # Ensure at least one warning was raised (the one we just added)
         assert recwarn.pop(OptimadeWarning)
     finally:
         CONFIG.debug = org_debug
