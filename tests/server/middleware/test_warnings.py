@@ -68,7 +68,7 @@ def test_showwarning_debug(both_clients, recwarn):
         assert "meta" in warning
         for meta_field in ("filename", "lineno", "line"):
             assert meta_field in warning["meta"]
-        assert len(recwarn.list) == 1
+        assert len(recwarn.list) == 1, "\n\n".join(str(_) for _ in recwarn.list)
         assert recwarn.pop(OptimadeWarning)
     finally:
         CONFIG.debug = org_debug
