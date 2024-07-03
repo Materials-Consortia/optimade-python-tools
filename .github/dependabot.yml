@@ -24,6 +24,12 @@ updates:
     python-dependencies:
       applies-to: version-updates
       dependency-type: production
+    python-dependencies-dev:
+      applies-to: version-updates
+      dependency-type: development
+    python-dependencies-security:
+      applies-to: security-updates
+      dependency-type: production
 - package-ecosystem: gitsubmodule
   directory: "/"
   schedule:
