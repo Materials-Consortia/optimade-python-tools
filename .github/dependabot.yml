@@ -16,8 +16,6 @@ updates:
   ignore:
   - dependency-name: "elasticsearch*"
     versions: [ ">=8" ]
-  - dependency-name: "pymatgen"
-    versions: [ "==2024.6.10", "==2024.6.4" ]
   - dependency-name: "jarvis-tools"
     versions: [ "==2024.4.20", "==2024.4.30" ]
   groups:
