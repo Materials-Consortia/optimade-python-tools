@@ -1,4 +1,4 @@
-aiida-core==2.5.2
+aiida-core==2.6.1
 ase==3.23.0
 jarvis-tools==2024.5.10
 numpy>=1.20
