@@ -40,12 +40,21 @@ def insert_from_jsonl(jsonl_path: Path) -> None:
     batch = defaultdict(list)
     batch_size: int = 1000
 
-    with open(Path(__file__).parent.joinpath(jsonl_path)) as handle:
+    # Attempt to treat path as absolute, otherwise join with root directory
+    if not jsonl_path.is_file():
+        _jsonl_path = Path(__file__).parent.joinpath(jsonl_path)
+        if not _jsonl_path.is_file():
+            raise FileNotFoundError(
+                f"Could not find file {jsonl_path} or {_jsonl_path}"
+            )
+        jsonl_path = _jsonl_path
+
+    with open(jsonl_path) as handle:
         header = handle.readline()
         header_jsonl = json.loads(header)
         assert header_jsonl.get(
             "x-optimade"
-        ), "No x-optimade-api-version in header, not sure if this is a JSONL file"
+        ), "No x-optimade header, not sure if this is a JSONL file"
 
         for json_str in handle:
             try:
