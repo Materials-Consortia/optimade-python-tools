@@ -10,6 +10,7 @@ import os
 import warnings
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Optional
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -81,7 +82,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
     from optimade.utils import insert_from_jsonl
 
-    def _insert_test_data():
+    def _insert_test_data(endpoint: Optional[str] = None):
         import bson.json_util
         from bson.objectid import ObjectId
 
@@ -109,8 +110,11 @@ if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
                     )
             LOGGER.debug("Done inserting test %s!", endpoint_name)
 
-        for name, collection in ENTRY_COLLECTIONS.items():
-            load_entries(name, collection)
+        if endpoint:
+            load_entries(endpoint, ENTRY_COLLECTIONS[endpoint])
+        else:
+            for name, collection in ENTRY_COLLECTIONS.items():
+                load_entries(name, collection)
 
     if CONFIG.insert_from_jsonl:
         jsonl_path = Path(CONFIG.insert_from_jsonl)
@@ -122,6 +126,7 @@ if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
 
         insert_from_jsonl(jsonl_path)
         LOGGER.debug("Inserted data from JSONL file: %s", jsonl_path)
+        _insert_test_data("links")
     else:
         _insert_test_data()
 
