@@ -415,6 +415,15 @@ class ServerConfig(BaseSettings):
         ),
     ] = True
 
+    @field_validator("insert_from_jsonl", mode="before")
+    @classmethod
+    def check_jsonl_path(cls, value: Any) -> Optional[Path]:
+        """Check that the path to the JSONL file is valid."""
+        if value in ("null", ""):
+            return None
+
+        return value
+
     @field_validator("implementation", mode="before")
     @classmethod
     def set_implementation_version(cls, value: Any) -> dict[str, Any]:
