@@ -170,6 +170,16 @@ class ServerConfig(BaseSettings):
         ),
     ] = True
 
+    insert_from_jsonl: Annotated[
+        Optional[Path],
+        Field(
+            description=(
+                "The absolute path to an OPTIMADE JSONL file to use to initialize the database. "
+                "A unique index will be created over the ID to avoid duplication over multiple runs."
+            )
+        ),
+    ] = None
+
     use_real_mongo: Annotated[
         Optional[bool],
         Field(description="DEPRECATED: force usage of MongoDB over any other backend."),
@@ -404,6 +414,15 @@ class ServerConfig(BaseSettings):
             ),
         ),
     ] = True
+
+    @field_validator("insert_from_jsonl", mode="before")
+    @classmethod
+    def check_jsonl_path(cls, value: Any) -> Optional[Path]:
+        """Check that the path to the JSONL file is valid."""
+        if value in ("null", ""):
+            return None
+
+        return value
 
     @field_validator("implementation", mode="before")
     @classmethod

@@ -6,8 +6,11 @@ with OPTIMADE providers that can be used in server or client code.
 import contextlib
 import json
 from collections.abc import Container, Iterable
+from pathlib import Path
+from traceback import print_exc
 from typing import TYPE_CHECKING, Optional
 
+import bson.json_util
 from requests.exceptions import SSLError
 
 if TYPE_CHECKING:
@@ -21,6 +24,69 @@ PROVIDER_LIST_URLS = (
     "https://providers.optimade.org/v1/links",
     "https://raw.githubusercontent.com/Materials-Consortia/providers/master/src/links/v1/providers.json",
 )
+
+
+def insert_from_jsonl(jsonl_path: Path) -> None:
+    """Insert OPTIMADE JSON lines data into the database.
+
+    Arguments:
+        jsonl_path: Path to the JSON lines file.
+
+    """
+    from collections import defaultdict
+
+    from optimade.server.routers import ENTRY_COLLECTIONS
+
+    batch = defaultdict(list)
+    batch_size: int = 1000
+
+    # Attempt to treat path as absolute, otherwise join with root directory
+    if not jsonl_path.is_file():
+        _jsonl_path = Path(__file__).parent.joinpath(jsonl_path)
+        if not _jsonl_path.is_file():
+            raise FileNotFoundError(
+                f"Could not find file {jsonl_path} or {_jsonl_path}"
+            )
+        jsonl_path = _jsonl_path
+
+    with open(jsonl_path) as handle:
+        header = handle.readline()
+        header_jsonl = json.loads(header)
+        assert header_jsonl.get(
+            "x-optimade"
+        ), "No x-optimade header, not sure if this is a JSONL file"
+
+        for json_str in handle:
+            try:
+                entry = bson.json_util.loads(json_str)
+            except json.JSONDecodeError:
+                print(f"Could not read entry as JSON: {json_str}")
+                print_exc()
+                continue
+            try:
+                id = entry.get("id", None)
+                _type = entry.get("type", None)
+                if id is None or _type == "info":
+                    # assume this is an info endpoint for pre-1.2
+                    continue
+
+                inp_data = entry["attributes"]
+                inp_data["id"] = id
+                # Append the data to the batch
+                batch[_type].append(inp_data)
+            except Exception as exc:
+                print(f"Error with entry {entry}: {exc}")
+                print_exc()
+                continue
+
+            if len(batch[_type]) >= batch_size:
+                ENTRY_COLLECTIONS[_type].insert(batch[_type])
+                batch[_type] = []
+
+        # Insert any remaining data
+        for entry_type in batch:
+            ENTRY_COLLECTIONS[entry_type].insert(batch[entry_type])
+            batch[entry_type] = []
 
 
 def mongo_id_for_database(database_id: str, database_type: str) -> str:

@@ -16,6 +16,7 @@
     },
     "mongo_count_timeout": 0,
     "index_base_url": "http://localhost:5001",
+    "insert_from_jsonl": "optimade/server/data/test_data.jsonl",
     "provider_fields": {
         "structures": [
             "band_gap",
@@ -26,7 +27,6 @@
     "aliases": {
         "structures": {
             "id": "task_id",
-            "immutable_id": "_id",
             "chemical_formula_descriptive": "pretty_formula",
             "chemical_formula_reduced": "pretty_formula",
             "chemical_formula_anonymous": "formula_anonymous"

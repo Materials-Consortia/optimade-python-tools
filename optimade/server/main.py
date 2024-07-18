@@ -9,6 +9,8 @@ To implement your own server see the documentation at https://optimade.org/optim
 import os
 import warnings
 from contextlib import asynccontextmanager
+from pathlib import Path
+from typing import Optional
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -77,36 +79,58 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 )
 
 
-if CONFIG.insert_test_data:
-    import bson.json_util
-    from bson.objectid import ObjectId
+if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
+    from optimade.utils import insert_from_jsonl
 
-    import optimade.server.data as data
-    from optimade.server.routers import ENTRY_COLLECTIONS
-    from optimade.server.routers.utils import get_providers
+    def _insert_test_data(endpoint: Optional[str] = None):
+        import bson.json_util
+        from bson.objectid import ObjectId
 
-    def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
-        LOGGER.debug("Loading test %s...", endpoint_name)
+        import optimade.server.data as data
+        from optimade.server.routers import ENTRY_COLLECTIONS
+        from optimade.server.routers.utils import get_providers
 
-        endpoint_collection.insert(getattr(data, endpoint_name, []))
-        if (
-            CONFIG.database_backend.value in ("mongomock", "mongodb")
-            and endpoint_name == "links"
-        ):
-            LOGGER.debug(
-                "Adding Materials-Consortia providers to links from optimade.org"
-            )
-            providers = get_providers(add_mongo_id=True)
-            for doc in providers:
-                endpoint_collection.collection.replace_one(  # type: ignore[attr-defined]
-                    filter={"_id": ObjectId(doc["_id"]["$oid"])},
-                    replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
-                    upsert=True,
+        def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
+            LOGGER.debug("Loading test %s...", endpoint_name)
+
+            endpoint_collection.insert(getattr(data, endpoint_name, []))
+            if (
+                CONFIG.database_backend.value in ("mongomock", "mongodb")
+                and endpoint_name == "links"
+            ):
+                LOGGER.debug(
+                    "Adding Materials-Consortia providers to links from optimade.org"
                 )
-        LOGGER.debug("Done inserting test %s!", endpoint_name)
+                providers = get_providers(add_mongo_id=True)
+                for doc in providers:
+                    endpoint_collection.collection.replace_one(  # type: ignore[attr-defined]
+                        filter={"_id": ObjectId(doc["_id"]["$oid"])},
+                        replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
+                        upsert=True,
+                    )
+            LOGGER.debug("Done inserting test %s!", endpoint_name)
 
-    for name, collection in ENTRY_COLLECTIONS.items():
-        load_entries(name, collection)
+        if endpoint:
+            load_entries(endpoint, ENTRY_COLLECTIONS[endpoint])
+        else:
+            for name, collection in ENTRY_COLLECTIONS.items():
+                load_entries(name, collection)
+
+    if CONFIG.insert_from_jsonl:
+        jsonl_path = Path(CONFIG.insert_from_jsonl)
+        LOGGER.debug("Inserting data from JSONL file: %s", jsonl_path)
+        if not jsonl_path.exists():
+            raise RuntimeError(
+                f"Requested JSONL file does not exist: {jsonl_path}. Please specify an absolute group."
+            )
+
+        insert_from_jsonl(jsonl_path)
+
+        LOGGER.debug("Inserted data from JSONL file: %s", jsonl_path)
+        if CONFIG.insert_test_data:
+            _insert_test_data("links")
+    elif CONFIG.insert_test_data:
+        _insert_test_data()
 
 # Add CORS middleware first
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
