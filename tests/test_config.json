@@ -16,7 +16,6 @@
     },
     "mongo_count_timeout": 0,
     "index_base_url": "http://localhost:5001",
-    "insert_test_data": true,
     "insert_from_jsonl": "optimade/server/data/test_data.jsonl",
     "provider_fields": {
         "structures": [

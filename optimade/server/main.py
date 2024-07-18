@@ -125,9 +125,11 @@ if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
             )
 
         insert_from_jsonl(jsonl_path)
+
         LOGGER.debug("Inserted data from JSONL file: %s", jsonl_path)
-        _insert_test_data("links")
-    else:
+        if CONFIG.insert_test_data:
+            _insert_test_data("links")
+    elif CONFIG.insert_test_data:
         _insert_test_data()
 
 # Add CORS middleware first

@@ -230,14 +230,16 @@ jobs:
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
-        OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
+        OPTIMADE_INSERT_TEST_DATA: false  # Must be specified as previous steps will have already inserted the test data
+        OPTIMADE_INSERT_JSONL_PATH: ''    # Must be specified as previous steps will have already inserted the test data
 
     - name: Run tests for validator only to assess coverage (MongoDB)
       if: matrix.python-version == '3.11'
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
-        OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
+        OPTIMADE_INSERT_TEST_DATA: false  # Must be specified as previous steps will have already inserted the test data
+        OPTIMADE_INSERT_JSONL_PATH: ''    # Must be specified as previous steps will have already inserted the test data
 
     - name: Run the OPTIMADE Client CLI
       if: matrix.python-version == '3.11'
