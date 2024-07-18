@@ -1,5 +1,16 @@
 # Changelog
 
+## [v1.1.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.0) (2024-07-18)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.6...v1.1.0)
+
+**Merged pull requests:**
+
+- Remove tabulate related pins for pymatgen & aiida-core inconsistencies [\#2108](https://github.com/Materials-Consortia/optimade-python-tools/pull/2108) ([ml-evs](https://github.com/ml-evs))
+- Extend dependabot groups for development and security [\#2107](https://github.com/Materials-Consortia/optimade-python-tools/pull/2107) ([CasperWA](https://github.com/CasperWA))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2105](https://github.com/Materials-Consortia/optimade-python-tools/pull/2105) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+- Add ability to insert from JSONL file rather than example test data [\#2094](https://github.com/Materials-Consortia/optimade-python-tools/pull/2094) ([ml-evs](https://github.com/ml-evs))
+
 ## [v1.0.6](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.0.6) (2024-06-22)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.5...v1.0.6)
