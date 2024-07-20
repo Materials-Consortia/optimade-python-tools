@@ -10,7 +10,6 @@ from pathlib import Path
 from traceback import print_exc
 from typing import TYPE_CHECKING, Optional
 
-import bson.json_util
 from requests.exceptions import SSLError
 
 if TYPE_CHECKING:
@@ -34,6 +33,8 @@ def insert_from_jsonl(jsonl_path: Path) -> None:
 
     """
     from collections import defaultdict
+
+    import bson.json_util
 
     from optimade.server.routers import ENTRY_COLLECTIONS
 
