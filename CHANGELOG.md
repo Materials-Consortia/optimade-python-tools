@@ -1,5 +1,19 @@
 # Changelog
 
+## [v1.1.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.1) (2024-07-20)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.0...v1.1.1)
+
+**Fixed bugs:**
+
+- CD broken for v1.0.6+ [\#2115](https://github.com/Materials-Consortia/optimade-python-tools/issues/2115)
+
+**Merged pull requests:**
+
+- Move bson import for dependency compatibility [\#2118](https://github.com/Materials-Consortia/optimade-python-tools/pull/2118) ([ml-evs](https://github.com/ml-evs))
+- Increase timeout for Fly validation in CI [\#2117](https://github.com/Materials-Consortia/optimade-python-tools/pull/2117) ([ml-evs](https://github.com/ml-evs))
+- Install build before building PyPI distribution [\#2116](https://github.com/Materials-Consortia/optimade-python-tools/pull/2116) ([ml-evs](https://github.com/ml-evs))
+
 ## [v1.1.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.0) (2024-07-18)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.0.6...v1.1.0)
