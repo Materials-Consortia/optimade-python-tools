@@ -146,6 +146,34 @@ class EntryAdapter:
             }
         )
 
+    @classmethod
+    def from_url(cls, url: str) -> Any:
+        """Convert OPTIMADE URL into the target entry type.
+
+        Parameters:
+            url (str): The OPTIMADE URL to convert.
+
+        Returns:
+            The converted URL.
+
+        """
+        import requests
+
+        try:
+            response = requests.get(url, timeout=100)
+            json_response = response.json()
+
+            data: dict = json_response.get("data", {})
+            if isinstance(data, list):
+                raise RuntimeError(f"returned a list of {len(data)} entries.")
+
+            return cls(data)
+
+        except Exception as exc:
+            raise RuntimeError(
+                f"Could not retrieve single OPTIMADE entry from URL {url}"
+            ) from exc
+
     @staticmethod
     def _get_model_attributes(
         starting_instances: Union[tuple[BaseModel, ...], list[BaseModel]], name: str
