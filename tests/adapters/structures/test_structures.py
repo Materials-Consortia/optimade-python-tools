@@ -3,6 +3,9 @@
 from typing import TYPE_CHECKING
 
 import pytest
+from pydantic import ValidationError
+
+from optimade.adapters.structures import Structure
 
 try:
     import aiida  # noqa: F401
@@ -17,8 +20,6 @@ else:
 
 if TYPE_CHECKING:
     from typing import Any, Union
-
-    from optimade.adapters.structures import Structure
 
 
 def test_instantiate(RAW_STRUCTURES: "list[dict[str, Any]]") -> None:
@@ -270,3 +271,29 @@ def test_two_way_conversion_with_implicit_type(
         compare_lossy_conversion(
             structure["attributes"], reconverted_structure["attributes"]
         )
+
+
+def test_load_good_structure_from_url(RAW_STRUCTURES, mock_requests_get):
+    for raw_structure in RAW_STRUCTURES:
+        mock_requests_get({"data": raw_structure})
+        structure = Structure.from_url("https://example.com/v1/structures/1")
+        assert structure
+
+
+def test_load_bad_structure_from_url(raw_structure, mock_requests_get):
+    mock_requests_get({}, status_code=400)
+    with pytest.raises(RuntimeError):
+        Structure.from_url("https://example.com/v1/structures/1")
+
+    mock_requests_get({"data": raw_structure}, status_code=400)
+    with pytest.raises(RuntimeError):
+        Structure.from_url("https://example.com/v1/structures/1")
+
+    mock_requests_get({"data": [raw_structure, raw_structure]})
+    with pytest.raises(RuntimeError):
+        Structure.from_url("https://example.com/v1/structures/1")
+
+    raw_structure["id"] = None
+    mock_requests_get({"data": raw_structure})
+    with pytest.raises(ValidationError):
+        Structure.from_url("https://example.com/v1/structures/1")
