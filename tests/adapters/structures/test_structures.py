@@ -289,6 +289,10 @@ def test_load_bad_structure_from_url(raw_structure, mock_requests_get):
     with pytest.raises(RuntimeError):
         Structure.from_url("https://example.com/v1/structures/1")
 
+    mock_requests_get(["bad_json_data"])
+    with pytest.raises(RuntimeError):
+        Structure.from_url("https://example.com/v1/structures/1")
+
     mock_requests_get({"data": [raw_structure, raw_structure]})
     with pytest.raises(RuntimeError):
         Structure.from_url("https://example.com/v1/structures/1")

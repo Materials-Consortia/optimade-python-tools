@@ -1,3 +1,4 @@
+from json import JSONDecodeError
 from unittest.mock import Mock
 
 import pytest
@@ -10,7 +11,17 @@ def mock_requests_get(monkeypatch):
 
     def _mock_requests_get(json_data, status_code=200):
         mock_response = Mock()
-        mock_response.json.return_value = json_data
+        if not isinstance(json_data, dict):
+
+            def mock_raise():
+                raise JSONDecodeError(
+                    msg="Unable to interpret response as JSON", doc="", pos=0
+                )
+
+            mock_response.json = mock_raise
+        else:
+            mock_response.json.return_value = json_data
+
         mock_response.status_code = status_code
 
         def mock_get(*args, **kwargs):
