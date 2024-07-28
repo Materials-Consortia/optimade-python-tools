@@ -20,6 +20,7 @@ and [`StructureResource`][optimade.models.structures.StructureResource]s, respec
 """
 
 import re
+from json import JSONDecodeError
 from typing import Any, Callable, Optional, Union
 
 from pydantic import BaseModel
@@ -145,6 +146,39 @@ class EntryAdapter:
                 "type": "structures",
             }
         )
+
+    @classmethod
+    def from_url(cls, url: str) -> Any:
+        """Convert OPTIMADE URL into the target entry type.
+
+        Parameters:
+            url (str): The OPTIMADE URL to convert.
+
+        Returns:
+            The converted URL.
+
+        """
+        import requests
+
+        response = requests.get(url, timeout=100)
+        if response.status_code != 200:
+            raise RuntimeError(
+                f"Could not retrieve OPTIMADE entry from URL {url} returned {response.status_code}"
+            )
+
+        try:
+            json_response = response.json()
+
+        except JSONDecodeError as exc:
+            raise RuntimeError(
+                f"Could not retrieve OPTIMADE entry from URL {url}: did not contain valid JSON response."
+            ) from exc
+
+        data: dict = json_response.get("data", {})
+        if isinstance(data, list):
+            raise RuntimeError(f"returned a list of {len(data)} entries.")
+
+        return cls(data)
 
     @staticmethod
     def _get_model_attributes(
