@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Optional
 
 import httpx
-import numpy as np
 import pytest
 
 from optimade.client.cli import _get
@@ -519,9 +518,13 @@ def test_list_properties(
 
 
 @pytest.mark.parametrize(
-    "trial_counts", [1, 2] + [int(x) for x in np.logspace(1, 10, 102)]
+    "trial_counts", [1, 2] + [int(10 ** (9 * (1 + n) / 100)) for n in range(100)]
 )
 def test_binary_search_internals(trial_counts):
+    """Test that the internal binary search algorithm converges to the correct value
+    across a logspace (including edge cases 1 and 2) up to 10**9.
+
+    """
     cli = OptimadeClient(
         base_urls=TEST_URLS,
     )
