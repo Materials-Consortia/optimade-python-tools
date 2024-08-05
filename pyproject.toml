@@ -107,7 +107,8 @@ dev = [
    "mypy~=1.0",
    "pre-commit~=3.0",
    "invoke~=2.0",
-   "types-all==1.0.0",
+   "types-requests",
+   "types-pyyaml",
    "ruff~=0.1",
    "optimade[docs,testing,client,http-client]"
 ]

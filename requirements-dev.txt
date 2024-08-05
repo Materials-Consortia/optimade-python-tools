@@ -1,10 +1,10 @@
 build==1.2.1
 invoke==2.2.0
 jsondiff==2.2.0
-mypy==1.11.0
+mypy==1.11.1
 pre-commit==3.8.0
 pytest==8.3.2
 pytest-cov==5.0.0
-ruff==0.5.5
+ruff==0.5.6
 types-pyyaml
 types-requests
