@@ -1,13 +1,10 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
 
 from optimade.filtertransformers import BaseTransformer, Quantity
 from optimade.server.mappers import BaseResourceMapper
-
-if TYPE_CHECKING:  # pragma: no cover
-    from typing import Any, Optional, Union
 
 __all__ = ("ElasticTransformer",)
 
