@@ -3507,7 +3507,7 @@ trees into Elasticsearch queries.</p>
             <span class="n">query</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">bool</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">must</span><span class="o">=</span><span class="n">queries</span><span class="p">)),</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -3725,7 +3725,7 @@ trees into Elasticsearch queries.</p>
 
 
 <h3 id="optimade.filtertransformers.elasticsearch.ElasticTransformer.__default__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">__default__</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">__default__</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
 
 <a href="#optimade.filtertransformers.elasticsearch.ElasticTransformer.__default__" class="headerlink" title="Permanent link">&para;</a></h3>
 
@@ -3738,7 +3738,7 @@ trees into Elasticsearch queries.</p>
               <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">295</span>
 <span class="normal">296</span>
-<span class="normal">297</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="normal">297</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
