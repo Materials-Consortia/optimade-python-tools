@@ -29,7 +29,7 @@ class classproperty(property):
         self.__doc__ = func.__doc__
         self.__wrapped__ = func
 
-    def __get__(self, _, owner):
+    def __get__(self, _: Any, owner: Optional[type] = None) -> Any:
         return self.__wrapped__(owner)
 
 

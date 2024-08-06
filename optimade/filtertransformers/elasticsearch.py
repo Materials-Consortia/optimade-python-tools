@@ -1,10 +1,13 @@
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING
 
 from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
 
 from optimade.filtertransformers import BaseTransformer, Quantity
 from optimade.server.mappers import BaseResourceMapper
+
+if TYPE_CHECKING:  # pragma: no cover
+    from typing import Any, Optional, Union
 
 __all__ = ("ElasticTransformer",)
 
@@ -292,7 +295,7 @@ class ElasticTransformer(BaseTransformer):
             query=dict(bool=dict(must=queries)),
         )
 
-    def __default__(self, tree, children, *args, **kwargs):
+    def __default__(self, data: Any, children: Any, meta: Any) -> Any:
         """Default behavior for rules that only replace one symbol with another"""
         return children[0]
 
