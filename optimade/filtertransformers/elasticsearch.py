@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
@@ -292,7 +292,7 @@ class ElasticTransformer(BaseTransformer):
             query=dict(bool=dict(must=queries)),
         )
 
-    def __default__(self, tree, children, *args, **kwargs):
+    def __default__(self, data: Any, children: Any, meta: Any) -> Any:
         """Default behavior for rules that only replace one symbol with another"""
         return children[0]
 
