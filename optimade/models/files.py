@@ -1,6 +1,6 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 from datetime import datetime
-from typing import Dict, Optional, Set, Tuple
+from typing import Optional
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
@@ -11,7 +11,7 @@ __all__ = (
 )
 
 
-CORRELATED_FILE_FIELDS: Tuple[Set[str], ...]
+CORRELATED_FILE_FIELDS: tuple[set[str], ...]
 
 
 class FileResourceAttributes(EntryResourceAttributes):
@@ -142,7 +142,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    checksums: Optional[Dict[str, str]] = OptimadeField(
+    checksums: Optional[dict[str, str]] = OptimadeField(
         ...,
         description="""Dictionary providing checksums of file contents.
 * **Type**: dictionary with keys identifying checksum functions and values (strings) giving the actual checksums
@@ -217,7 +217,7 @@ class FileResource(EntryResource):
 
 - **Examples**:
     - `"structures"`""",
-        regex="^files$",
+        pattern="^files$",
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )

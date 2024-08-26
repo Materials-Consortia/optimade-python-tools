@@ -218,22 +218,12 @@ class ServerConfig(BaseSettings):
     mongo_uri: Annotated[str, Field(description="URI for the Mongo server")] = (
         "localhost:27017"
     )
-
-    page_limit: int = Field(20, description="Default number of resources per page")
-    page_limit_max: int = Field(
-        500, description="Max allowed number of resources per page"
-    )
-    default_db: str = Field(
-        "test_server",
-        description=(
-            "ID of /links endpoint resource for the chosen default OPTIMADE implementation (only "
-            "relevant for the index meta-database)"
-        )
-    )
-    files_collection: str = Field(
-        "files",
-        description="Mongo collection name for /files endpoint resources",
-    )
+    files_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for /files endpoint resources",
+        ),
+    ] = "files"
     links_collection: Annotated[
         str, Field(description="Mongo collection name for /links endpoint resources")
     ] = "links"
