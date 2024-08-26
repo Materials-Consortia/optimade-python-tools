@@ -10,7 +10,7 @@ on:
         type: boolean
       checkout_ref:
         description: 'The git ref to checkout and use as source.'
-        default: master
+        default: main
         required: false
         type: string
 

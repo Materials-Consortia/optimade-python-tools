@@ -1,12 +1,12 @@
-name: CI/CD - New updates to `master`
+name: CI/CD - New updates to `main`
 
 on:
   push:
     branches:
-      - master
+      - main
 
 env:
-  DEFAULT_REPO_BRANCH: master
+  DEFAULT_REPO_BRANCH: main
   GIT_USER_NAME: OPTIMADE Developers
   GIT_USER_EMAIL: "dev@optimade.org"
 
@@ -109,7 +109,7 @@ jobs:
         submodules: true
 
     - name: Set up Fly
-      uses: superfly/flyctl-actions/setup-flyctl@master
+      uses: superfly/flyctl-actions/setup-flyctl@main
 
     - name: Combine requirements for builder
       run: cat requirements-server.txt >> requirements.txt
