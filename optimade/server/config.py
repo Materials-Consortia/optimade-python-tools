@@ -218,6 +218,12 @@ class ServerConfig(BaseSettings):
     mongo_uri: Annotated[str, Field(description="URI for the Mongo server")] = (
         "localhost:27017"
     )
+    files_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for /files endpoint resources",
+        ),
+    ] = "files"
     links_collection: Annotated[
         str, Field(description="Mongo collection name for /links endpoint resources")
     ] = "links"
@@ -315,7 +321,7 @@ class ServerConfig(BaseSettings):
         ),
     ] = {}
     aliases: Annotated[
-        dict[Literal["links", "references", "structures"], dict[str, str]],
+        dict[Literal["links", "references", "structures", "files"], dict[str, str]],
         Field(
             description=(
                 "A mapping between field names in the database with their corresponding "
@@ -324,7 +330,7 @@ class ServerConfig(BaseSettings):
         ),
     ] = {}
     length_aliases: Annotated[
-        dict[Literal["links", "references", "structures"], dict[str, str]],
+        dict[Literal["links", "references", "structures", "files"], dict[str, str]],
         Field(
             description=(
                 "A mapping between a list property (or otherwise) and an integer property "
