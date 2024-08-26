@@ -21,7 +21,6 @@ These conversion functions both rely on the [NumPy](https://numpy.org/) library.
 Warning:
     Currently, the PDBx/mmCIF conversion function is not parsing as a complete PDBx/mmCIF file.
 """
-from typing import Dict
 
 try:
     import numpy as np
@@ -46,7 +45,7 @@ from optimade.models import StructureResource as OptimadeStructure
 __all__ = ("get_pdb", "get_pdbx_mmcif")
 
 
-def get_pdbx_mmcif(  # pylint: disable=too-many-locals
+def get_pdbx_mmcif(
     optimade_structure: OptimadeStructure,
 ) -> str:
     """Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure.
@@ -164,8 +163,9 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     else:
         sites = attributes.cartesian_site_positions
 
-    species: Dict[str, OptimadeStructureSpecies] = {
-        species.name: species for species in attributes.species  # type: ignore[union-attr]
+    species: dict[str, OptimadeStructureSpecies] = {
+        species.name: species
+        for species in attributes.species  # type: ignore[union-attr]
     }
 
     for site_number in range(attributes.nsites):  # type: ignore[arg-type]
@@ -197,7 +197,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     return cif
 
 
-def get_pdb(  # pylint: disable=too-many-locals
+def get_pdb(
     optimade_structure: OptimadeStructure,
 ) -> str:
     """Write Protein Data Bank (PDB) structure in the old PDB format from OPTIMADE structure.
@@ -240,7 +240,7 @@ def get_pdb(  # pylint: disable=too-many-locals
 
     pdb += "MODEL     1\n"
 
-    species: Dict[str, OptimadeStructureSpecies] = {
+    species: dict[str, OptimadeStructureSpecies] = {
         species.name: species
         for species in attributes.species  # type:ignore[union-attr]
     }

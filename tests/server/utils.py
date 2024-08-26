@@ -1,17 +1,33 @@
 import json
 import re
 import warnings
-from typing import Iterable, Optional, Type, Union
+from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
+import httpx
 import pytest
+import requests
 from fastapi.testclient import TestClient
-from requests import Response
-from starlette import testclient
 
-import optimade.models.jsonapi as jsonapi
 from optimade import __api_version__
 from optimade.models import ResponseMeta
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+    from typing import Optional, Protocol, Type, Union
+
+    from starlette import testclient
+
+    import optimade.models.jsonapi as jsonapi
+
+    class ClientFactoryInner(Protocol):
+        def __call__(
+            self,
+            version: "Optional[str]" = None,
+            server: str = "regular",
+            raise_server_exceptions: bool = True,
+            add_empty_endpoint: bool = False,
+        ) -> "OptimadeTestClient": ...
 
 
 class OptimadeTestClient(TestClient):
@@ -24,13 +40,13 @@ class OptimadeTestClient(TestClient):
 
     def __init__(
         self,
-        app: Union[testclient.ASGI2App, testclient.ASGI3App],
+        app: "Union[testclient.ASGI2App, testclient.ASGI3App]",
         base_url: str = "http://example.org",
         raise_server_exceptions: bool = True,
         root_path: str = "",
         version: str = "",
     ) -> None:
-        super(OptimadeTestClient, self).__init__(
+        super().__init__(
             app=app,
             base_url=base_url,
             raise_server_exceptions=raise_server_exceptions,
@@ -49,12 +65,13 @@ class OptimadeTestClient(TestClient):
                 version = f"/v{__api_version__.split('.')[0]}"
         self.version = version
 
-    def request(  # pylint: disable=too-many-locals
+    def request(
         self,
         method: str,
-        url: str,
+        url: httpx._types.URLTypes,
         **kwargs,
-    ) -> Response:
+    ) -> httpx.Response:
+        url = str(url)
         if (
             re.match(r"/?v[0-9](.[0-9]){0,2}/", url) is None
             and not urlparse(url).scheme
@@ -62,7 +79,7 @@ class OptimadeTestClient(TestClient):
             while url.startswith("/"):
                 url = url[1:]
             url = f"{self.version}/{url}"
-        return super(OptimadeTestClient, self).request(
+        return super().request(
             method=method,
             url=url,
             **kwargs,
@@ -72,14 +89,13 @@ class OptimadeTestClient(TestClient):
 class BaseEndpointTests:
     """Base class for common tests of endpoints"""
 
-    request_str: Optional[str] = None
-    response_cls: Optional[Type[jsonapi.Response]] = None
-
-    response: Optional[Response] = None
-    json_response: Optional[dict] = None
+    request_str: "Optional[str]" = None
+    response_cls: "Optional[Type[jsonapi.Response]]" = None
+    response: "Optional[httpx.Response]" = None
+    json_response: "Optional[dict]" = None
 
     @staticmethod
-    def check_keys(keys: list, response_subset: Iterable):
+    def check_keys(keys: list, response_subset: "Iterable[str]"):
         for key in keys:
             assert (
                 key in response_subset
@@ -95,9 +111,11 @@ class BaseEndpointTests:
     def test_meta_response(self):
         """General test for `meta` property in response"""
         assert "meta" in self.json_response
-        meta_required_keys = ResponseMeta.schema()["required"]
+        meta_required_keys = ResponseMeta.model_json_schema(mode="validation")[
+            "required"
+        ]
         meta_optional_keys = list(
-            set(ResponseMeta.schema()["properties"].keys()) - set(meta_required_keys)
+            set(ResponseMeta.model_fields) - set(meta_required_keys)
         )
         implemented_optional_keys = [
             "time_stamp",
@@ -105,7 +123,7 @@ class BaseEndpointTests:
             "provider",
             "data_available",
             "implementation",
-            "schema",
+            # "optimade_schema",
             # TODO: These keys are not implemented in the example server implementations
             # Add them in when they are.
             # "last_id",
@@ -119,7 +137,7 @@ class BaseEndpointTests:
 
     def test_serialize_response(self):
         assert self.response_cls is not None, "Response class unset for this endpoint"
-        self.response_cls(**self.json_response)  # pylint: disable=not-callable
+        self.response_cls(**self.json_response)
 
 
 class EndpointTests(BaseEndpointTests):
@@ -158,11 +176,11 @@ class IndexEndpointTests(BaseEndpointTests):
         self.json_response = None
 
 
-def client_factory():
+def client_factory() -> "ClientFactoryInner":
     """Return TestClient for OPTIMADE server"""
 
     def inner(
-        version: Optional[str] = None,
+        version: "Optional[str]" = None,
         server: str = "regular",
         raise_server_exceptions: bool = True,
         add_empty_endpoint: bool = False,
@@ -189,7 +207,6 @@ def client_factory():
         server_module.add_optional_versioned_base_urls(app)
 
         if add_empty_endpoint:
-
             from fastapi import APIRouter
             from fastapi.responses import PlainTextResponse
             from starlette.routing import Route
@@ -221,10 +238,9 @@ def client_factory():
 class NoJsonEndpointTests:
     """A simplified mixin class for tests on non-JSON endpoints."""
 
-    request_str: Optional[str] = None
-    response_cls: Optional[Type] = None
-
-    response: Optional[Response] = None
+    request_str: "Optional[str]" = None
+    response_cls: "Optional[Type]" = None
+    response: "Optional[httpx.Response]" = None
 
     @pytest.fixture(autouse=True)
     def get_response(self, both_clients):
@@ -238,3 +254,46 @@ class NoJsonEndpointTests:
         assert (
             self.response.status_code == 200
         ), f"Request to {self.request_str} failed: {self.response.content}"
+
+
+class HttpxTestClient(httpx.Client):
+    """An HTTP client wrapper that calls the regular test server."""
+
+    client = client_factory()(server="regular")
+
+    def request(
+        self,
+        method: str,
+        url: httpx._types.URLTypes,
+        **kwargs,
+    ) -> httpx.Response:
+        return self.client.request(method, url)
+
+
+class RequestsTestClient(requests.Session):
+    """An HTTP client wrapper that calls the regular test server."""
+
+    client = client_factory()(server="regular")
+
+    def request(
+        self,
+        method,
+        url,
+        *args,
+        **kwargs,
+    ) -> requests.Response:
+        return self.client.request(method, url)
+
+
+class AsyncHttpxTestClient(httpx.AsyncClient):
+    """An async HTTP client wrapper that calls the regular test server."""
+
+    client = client_factory()(server="regular")
+
+    async def request(
+        self,
+        method: str,
+        url: httpx._types.URLTypes,
+        **kwargs,
+    ) -> httpx.Response:
+        return self.client.request(method, url)

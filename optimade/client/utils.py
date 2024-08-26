@@ -1,7 +1,7 @@
 import sys
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field
-from typing import Dict, List, Set, Union
+from typing import Union
 
 from rich.console import Console
 from rich.progress import (
@@ -34,22 +34,22 @@ class TooManyRequestsException(RecoverableHTTPError):
 class QueryResults:
     """A container dataclass for the results from a given query."""
 
-    data: Union[Dict, List[Dict]] = field(default_factory=list, init=False)  # type: ignore[assignment]
-    errors: List[str] = field(default_factory=list, init=False)
-    links: Dict = field(default_factory=dict, init=False)
-    included: List[Dict] = field(default_factory=list, init=False)
-    meta: Dict = field(default_factory=dict, init=False)
+    data: Union[dict, list[dict]] = field(default_factory=list, init=False)  # type: ignore[assignment]
+    errors: list[str] = field(default_factory=list, init=False)
+    links: dict = field(default_factory=dict, init=False)
+    included: list[dict] = field(default_factory=list, init=False)
+    meta: dict = field(default_factory=dict, init=False)
 
     @property
-    def included_index(self) -> Set[str]:
+    def included_index(self) -> set[str]:
         if not getattr(self, "_included_index", None):
-            self._included_index: Set[str] = set()
+            self._included_index: set[str] = set()
         return self._included_index
 
-    def dict(self):
+    def asdict(self):
         return asdict(self)
 
-    def update(self, page_results: Dict) -> None:
+    def update(self, page_results: dict) -> None:
         """Combine the results from one page with the existing results for a given query.
 
         Parameters:
@@ -115,6 +115,10 @@ class OptimadeClientProgress(Progress):
             auto_refresh=True,
             refresh_per_second=10,
         )
+
+    def print(self, *args, **kwargs):
+        if not self.disable:
+            super().print(*args, **kwargs)
 
 
 @contextmanager

@@ -1,8 +1,15 @@
 import warnings
+from collections.abc import Iterable
 from functools import lru_cache
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Type, Union
+from typing import Any, Optional, Union
 
 from optimade.models.entries import EntryResource
+
+# A number that approximately tracks the number of types with mappers
+# so that the global caches can be set to the correct size.
+# See https://github.com/Materials-Consortia/optimade-python-tools/issues/1434
+# for the details.
+NUM_ENTRY_TYPES = 4
 
 __all__ = ("BaseResourceMapper",)
 
@@ -22,13 +29,12 @@ class classproperty(property):
         self.__doc__ = func.__doc__
         self.__wrapped__ = func
 
-    def __get__(self, _, owner):
+    def __get__(self, _: Any, owner: Optional[type] = None) -> Any:
         return self.__wrapped__(owner)
 
 
 class BaseResourceMapper:
-    """
-    Generic Resource Mapper that defines and performs the mapping
+    """Generic Resource Mapper that defines and performs the mapping
     between objects in the database and the resource objects defined by
     the specification.
 
@@ -60,19 +66,19 @@ class BaseResourceMapper:
     except (ImportError, ModuleNotFoundError):
         PROVIDERS = {}
 
-    KNOWN_PROVIDER_PREFIXES: Set[str] = set(
+    KNOWN_PROVIDER_PREFIXES: set[str] = {
         prov["id"] for prov in PROVIDERS.get("data", [])
-    )
-    ALIASES: Tuple[Tuple[str, str], ...] = ()
-    LENGTH_ALIASES: Tuple[Tuple[str, str], ...] = ()
-    PROVIDER_FIELDS: Tuple[str, ...] = ()
-    ENTRY_RESOURCE_CLASS: Type[EntryResource] = EntryResource
-    RELATIONSHIP_ENTRY_TYPES: Set[str] = {"references", "structures"}
-    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: Set[str] = {"id", "type", "relationships", "links"}
+    }
+    ALIASES: tuple[tuple[str, str], ...] = ()
+    LENGTH_ALIASES: tuple[tuple[str, str], ...] = ()
+    PROVIDER_FIELDS: tuple[str, ...] = ()
+    ENTRY_RESOURCE_CLASS: type[EntryResource] = EntryResource
+    RELATIONSHIP_ENTRY_TYPES: set[str] = {"references", "structures"}
+    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set[str] = {"id", "type", "relationships", "links"}
 
     @classmethod
-    @lru_cache(maxsize=1)
-    def all_aliases(cls) -> Iterable[Tuple[str, str]]:
+    @lru_cache(maxsize=NUM_ENTRY_TYPES)
+    def all_aliases(cls) -> Iterable[tuple[str, str]]:
         """Returns all of the associated aliases for this entry type,
         including those defined by the server config. The first member
         of each tuple is the OPTIMADE-compliant field name, the second
@@ -87,16 +93,22 @@ class BaseResourceMapper:
         return (
             tuple(
                 (f"_{CONFIG.provider.prefix}_{field}", field)
+                if not field.startswith("_")
+                else (field, field)
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
                 if isinstance(field, str)
             )
             + tuple(
                 (f"_{CONFIG.provider.prefix}_{field['name']}", field["name"])
+                if not field["name"].startswith("_")
+                else (field["name"], field["name"])
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, [])
                 if isinstance(field, dict)
             )
             + tuple(
                 (f"_{CONFIG.provider.prefix}_{field}", field)
+                if not field.startswith("_")
+                else (field, field)
                 for field in cls.PROVIDER_FIELDS
             )
             + tuple(CONFIG.aliases.get(cls.ENDPOINT, {}).items())
@@ -105,7 +117,7 @@ class BaseResourceMapper:
 
     @classproperty
     @lru_cache(maxsize=1)
-    def SUPPORTED_PREFIXES(cls) -> Set[str]:
+    def SUPPORTED_PREFIXES(cls) -> set[str]:
         """A set of prefixes handled by this entry type.
 
         !!! note
@@ -120,7 +132,7 @@ class BaseResourceMapper:
         return {CONFIG.provider.prefix}
 
     @classproperty
-    def ALL_ATTRIBUTES(cls) -> Set[str]:
+    def ALL_ATTRIBUTES(cls) -> set[str]:
         """Returns all attributes served by this entry."""
         from optimade.server.config import CONFIG
 
@@ -136,33 +148,31 @@ class BaseResourceMapper:
                 for field in CONFIG.provider_fields.get(cls.ENDPOINT, ())
                 if isinstance(field, dict)
             )
-            .union(set(cls.get_optimade_field(field) for field in cls.PROVIDER_FIELDS))
+            .union({cls.get_optimade_field(field) for field in cls.PROVIDER_FIELDS})
         )
 
     @classproperty
-    def ENTRY_RESOURCE_ATTRIBUTES(cls) -> Dict[str, Any]:
+    def ENTRY_RESOURCE_ATTRIBUTES(cls) -> dict[str, Any]:
         """Returns the dictionary of attributes defined by the underlying entry resource class."""
         from optimade.server.schemas import retrieve_queryable_properties
 
-        return retrieve_queryable_properties(cls.ENTRY_RESOURCE_CLASS.schema())
+        return retrieve_queryable_properties(cls.ENTRY_RESOURCE_CLASS)
 
     @classproperty
-    @lru_cache(maxsize=1)
+    @lru_cache(maxsize=NUM_ENTRY_TYPES)
     def ENDPOINT(cls) -> str:
         """Returns the expected endpoint for this mapper, corresponding
         to the `type` property of the resource class.
 
         """
-        return (
-            cls.ENTRY_RESOURCE_CLASS.schema()
-            .get("properties", {})
-            .get("type", {})
-            .get("default", "")
-        )
+        endpoint = cls.ENTRY_RESOURCE_CLASS.model_fields["type"].default
+        if not endpoint and not isinstance(endpoint, str):
+            raise ValueError("Type not set for this entry type!")
+        return endpoint
 
     @classmethod
-    @lru_cache(maxsize=1)
-    def all_length_aliases(cls) -> Tuple[Tuple[str, str], ...]:
+    @lru_cache(maxsize=NUM_ENTRY_TYPES)
+    def all_length_aliases(cls) -> tuple[tuple[str, str], ...]:
         """Returns all of the associated length aliases for this class,
         including those defined by the server config.
 
@@ -300,7 +310,7 @@ class BaseResourceMapper:
         return cls.get_optimade_field(field)
 
     @classmethod
-    @lru_cache(maxsize=1)
+    @lru_cache(maxsize=NUM_ENTRY_TYPES)
     def get_required_fields(cls) -> set:
         """Get REQUIRED response fields.
 
@@ -329,7 +339,7 @@ class BaseResourceMapper:
         """
         mapping = ((real, alias) for alias, real in cls.all_aliases())
         newdoc = {}
-        reals = {real for alias, real in cls.all_aliases()}
+        reals = {real for _, real in cls.all_aliases()}
         for key in doc:
             if key not in reals:
                 newdoc[key] = doc[key]
@@ -357,7 +367,11 @@ class BaseResourceMapper:
     @classmethod
     def deserialize(
         cls, results: Union[dict, Iterable[dict]]
-    ) -> Union[List[EntryResource], EntryResource]:
+    ) -> Union[list[EntryResource], EntryResource]:
+        """Converts the raw database entries for this class into serialized models,
+        mapping the data along the way.
+
+        """
         if isinstance(results, dict):
             return cls.ENTRY_RESOURCE_CLASS(**cls.map_back(results))
 

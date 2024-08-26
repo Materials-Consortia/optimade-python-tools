@@ -18,7 +18,7 @@ def parser():
 def transformer():
     from optimade.server.mappers import StructureMapper
 
-    return ElasticTransformer(mapper=StructureMapper())
+    return ElasticTransformer(mapper=StructureMapper)
 
 
 test_queries = [

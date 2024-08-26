@@ -1,4 +1,5 @@
-""" Test Data to be used with the OPTIMADE server """
+"""Test Data to be used with the OPTIMADE server"""
+
 from pathlib import Path
 
 import bson.json_util

@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Type, Union
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
@@ -97,12 +97,12 @@ class ElasticTransformer(BaseTransformer):
         ">=": "gte",
     }
 
-    _quantity_type: Type[ElasticsearchQuantity] = ElasticsearchQuantity
+    _quantity_type: type[ElasticsearchQuantity] = ElasticsearchQuantity
 
     def __init__(
         self,
-        mapper: Type[BaseResourceMapper],
-        quantities: Optional[Dict[str, Quantity]] = None,
+        mapper: type[BaseResourceMapper],
+        quantities: Optional[dict[str, Quantity]] = None,
     ):
         if quantities is not None:
             self.quantities = quantities
@@ -143,7 +143,7 @@ class ElasticTransformer(BaseTransformer):
                 return quantity
 
         if nested is not None:
-            return "%s.%s" % (nested.backend_field, quantity.name)  # type: ignore[union-attr]
+            return f"{nested.backend_field}.{quantity.name}"  # type: ignore[union-attr]
 
         return quantity.backend_field  # type: ignore[union-attr, return-value]
 
@@ -188,7 +188,7 @@ class ElasticTransformer(BaseTransformer):
             # != queries must also include an existence check
             # Note that for MongoDB, `$exists` will include null-valued fields,
             # where as in ES `exists` excludes them.
-            # pylint: disable=invalid-unary-operand-type
+
             return ~Q(query_type, **{field: value}) & Q("exists", field=field)
 
     def _has_query_op(self, quantities, op, predicate_zip_list):
@@ -292,7 +292,7 @@ class ElasticTransformer(BaseTransformer):
             query=dict(bool=dict(must=queries)),
         )
 
-    def __default__(self, tree, children, *args, **kwargs):
+    def __default__(self, data: Any, children: Any, meta: Any) -> Any:
         """Default behavior for rules that only replace one symbol with another"""
         return children[0]
 
@@ -330,7 +330,7 @@ class ElasticTransformer(BaseTransformer):
     @v_args(inline=True)
     def constant_first_comparison(self, value, op, quantity):
         # constant_first_comparison: constant OPERATOR ( non_string_value | ...not_implemented_string )
-        if not isinstance(quantity, Quantity):
+        if not isinstance(quantity, ElasticsearchQuantity):
             raise TypeError("Only quantities can be compared to constant values.")
 
         return self._query_op(quantity, self._reversed_operator_map[op], value)
@@ -349,7 +349,6 @@ class ElasticTransformer(BaseTransformer):
             op = "="
 
         def query(quantity):
-
             # This is only the case if quantity is an "other" provider's field,
             # in which case, we should treat it as unknown and try to do a null query
             if isinstance(quantity, str):
@@ -373,7 +372,7 @@ class ElasticTransformer(BaseTransformer):
             if value == "KNOWN":
                 return query
             elif value == "UNKNOWN":
-                return ~query  # pylint: disable=invalid-unary-operand-type
+                return ~query
             raise NotImplementedError
 
         return query
@@ -462,6 +461,9 @@ class ElasticTransformer(BaseTransformer):
     @v_args(inline=True)
     def number(self, number):
         # number: SIGNED_INT | SIGNED_FLOAT
+        if TYPE_CHECKING:  # pragma: no cover
+            type_: Union[type[int], type[float]]
+
         if number.type == "SIGNED_INT":
             type_ = int
         elif number.type == "SIGNED_FLOAT":

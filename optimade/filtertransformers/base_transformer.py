@@ -7,13 +7,16 @@ for turning filters parsed by lark into backend-specific queries.
 
 import abc
 import warnings
-from typing import Any, Dict, Optional, Type
+from typing import TYPE_CHECKING, Any, Optional
 
 from lark import Transformer, Tree, v_args
 
 from optimade.exceptions import BadRequest
 from optimade.server.mappers import BaseResourceMapper
 from optimade.warnings import UnknownProviderProperty
+
+if TYPE_CHECKING:  # pragma: no cover
+    from typing import Union
 
 __all__ = (
     "BaseTransformer",
@@ -79,8 +82,8 @@ class BaseTransformer(Transformer, abc.ABC):
 
     """
 
-    mapper: Optional[Type[BaseResourceMapper]] = None
-    operator_map: Dict[str, Optional[str]] = {
+    mapper: Optional[type[BaseResourceMapper]] = None
+    operator_map: dict[str, Optional[str]] = {
         "<": None,
         "<=": None,
         ">": None,
@@ -100,12 +103,10 @@ class BaseTransformer(Transformer, abc.ABC):
         "!=": "!=",
     }
 
-    _quantity_type: Type[Quantity] = Quantity
+    _quantity_type: type[Quantity] = Quantity
     _quantities = None
 
-    def __init__(
-        self, mapper: Optional[Type[BaseResourceMapper]] = None
-    ):  # pylint: disable=super-init-not-called
+    def __init__(self, mapper: Optional[type[BaseResourceMapper]] = None):
         """Initialise the transformer object, optionally loading in a
         resource mapper for use when post-processing.
 
@@ -113,16 +114,17 @@ class BaseTransformer(Transformer, abc.ABC):
         self.mapper = mapper
 
     @property
-    def backend_mapping(self) -> Dict[str, Quantity]:
+    def backend_mapping(self) -> dict[str, Quantity]:
         """A mapping between backend field names (aliases) and the corresponding
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] object.
         """
         return {
-            quantity.backend_field: quantity for _, quantity in self.quantities.items()  # type: ignore[misc]
+            quantity.backend_field: quantity  # type: ignore[misc]
+            for _, quantity in self.quantities.items()
         }
 
     @property
-    def quantities(self) -> Dict[str, Quantity]:
+    def quantities(self) -> dict[str, Quantity]:
         """A mapping from the OPTIMADE field name to the corresponding
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects.
         """
@@ -132,10 +134,10 @@ class BaseTransformer(Transformer, abc.ABC):
         return self._quantities
 
     @quantities.setter
-    def quantities(self, quantities: Dict[str, Quantity]) -> None:
+    def quantities(self, quantities: dict[str, Quantity]) -> None:
         self._quantities = quantities
 
-    def _build_quantities(self) -> Dict[str, Quantity]:
+    def _build_quantities(self) -> dict[str, Quantity]:
         """Creates a dictionary of field names mapped to
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects from the
         fields registered by the mapper.
@@ -285,6 +287,9 @@ class BaseTransformer(Transformer, abc.ABC):
     @v_args(inline=True)
     def number(self, number):
         """number: SIGNED_INT | SIGNED_FLOAT"""
+        if TYPE_CHECKING:  # pragma: no cover
+            type_: Union[type[int], type[float]]
+
         if number.type == "SIGNED_INT":
             type_ = int
         elif number.type == "SIGNED_FLOAT":

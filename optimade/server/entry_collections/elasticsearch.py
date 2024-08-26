@@ -1,11 +1,12 @@
 import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
+from typing import Any, Optional
 
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG
-from optimade.server.entry_collections import EntryCollection
+from optimade.server.entry_collections import EntryCollection, PaginationMechanism
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
 
@@ -19,11 +20,13 @@ if CONFIG.database_backend.value == "elastic":
 
 
 class ElasticCollection(EntryCollection):
+    pagination_mechanism = PaginationMechanism("page_offset")
+
     def __init__(
         self,
         name: str,
-        resource_cls: Type[EntryResource],
-        resource_mapper: Type[BaseResourceMapper],
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         client: Optional["Elasticsearch"] = None,
     ):
         """Initialize the ElasticCollection for the given parameters.
@@ -76,7 +79,7 @@ class ElasticCollection(EntryCollection):
         LOGGER.debug(f"Created Elastic index for {self.name!r} with parameters {body}")
 
     @property
-    def predefined_index(self) -> Dict[str, Any]:
+    def predefined_index(self) -> dict[str, Any]:
         """Loads and returns the default pre-defined index."""
         with open(Path(__file__).parent.joinpath("elastic_indexes.json")) as f:
             index = json.load(f)
@@ -84,8 +87,8 @@ class ElasticCollection(EntryCollection):
 
     @staticmethod
     def create_elastic_index_from_mapper(
-        resource_mapper: Type[BaseResourceMapper], fields: Iterable[str]
-    ) -> Dict[str, Any]:
+        resource_mapper: type[BaseResourceMapper], fields: Iterable[str]
+    ) -> dict[str, Any]:
         """Create a fallback elastic index based on a resource mapper.
 
         Arguments:
@@ -108,7 +111,7 @@ class ElasticCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return Search(using=self.client, index=self.name).execute().hits.total.value
 
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource]) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
@@ -121,7 +124,7 @@ class ElasticCollection(EntryCollection):
 
         def get_id(item):
             if self.name == "links":
-                id_ = "%s-%s" % (item["id"], item["type"])
+                id_ = f"{item['id']}-{item['type']}"
             elif "id" in item:
                 id_ = item["id"]
             elif "_id" in item:
@@ -146,8 +149,8 @@ class ElasticCollection(EntryCollection):
         )
 
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry=False
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+        self, criteria: dict[str, Any], single_entry=False
+    ) -> tuple[list[dict[str, Any]], int, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -165,7 +168,9 @@ class ElasticCollection(EntryCollection):
         if criteria.get("filter", False):
             search = search.query(criteria["filter"])
 
-        page_offset = criteria.get("skip", 0)
+        page_offset = criteria.get("skip", None)
+        page_above = criteria.get("page_above", None)
+
         limit = criteria.get("limit", CONFIG.page_limit)
 
         all_aliased_fields = [
@@ -184,18 +189,30 @@ class ElasticCollection(EntryCollection):
 
         search = search.sort(*elastic_sort)
 
-        search = search[page_offset : page_offset + limit]
+        if page_offset:
+            search = search[page_offset : page_offset + limit]
+
+        elif page_above:
+            search = search.extra(search_after=page_above, limit=limit)
+
+        else:
+            search = search[0:limit]
+            page_offset = 0
+
         search = search.extra(track_total_hits=True)
         response = search.execute()
 
         results = [hit.to_dict() for hit in response.hits]
 
+        more_data_available = False
         if not single_entry:
             data_returned = response.hits.total.value
-            more_data_available = page_offset + limit < data_returned
+            if page_above is not None:
+                more_data_available = len(results) == limit and data_returned != limit
+            else:
+                more_data_available = page_offset + limit < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = len(results)
-            more_data_available = False
 
         return results, data_returned, more_data_available

@@ -1,14 +1,18 @@
 import dataclasses
 import json
+from typing import TYPE_CHECKING
 
 import pytest
 
 from optimade.validator import ImplementationValidator
 
+if TYPE_CHECKING:
+    from .utils import OptimadeTestClient
+
 pytestmark = pytest.mark.filterwarnings("ignore")
 
 
-def test_with_validator(both_fake_remote_clients):
+def test_with_validator(both_fake_remote_clients: "OptimadeTestClient") -> None:
     from optimade.server.main_index import app
 
     validator = ImplementationValidator(
@@ -20,7 +24,24 @@ def test_with_validator(both_fake_remote_clients):
     assert validator.valid
 
 
-def test_with_validator_json_response(both_fake_remote_clients, capsys):
+def test_with_validator_skip_optional(
+    both_fake_remote_clients: "OptimadeTestClient",
+) -> None:
+    from optimade.server.main_index import app
+
+    validator = ImplementationValidator(
+        client=both_fake_remote_clients,
+        index=both_fake_remote_clients.app == app,
+        run_optional_tests=False,
+    )
+
+    validator.validate_implementation()
+    assert validator.valid
+
+
+def test_with_validator_json_response(
+    both_fake_remote_clients: "OptimadeTestClient", capsys: pytest.CaptureFixture
+) -> None:
     """Test that the validator writes compliant JSON when requested."""
     from optimade.server.main_index import app
 
@@ -43,7 +64,9 @@ def test_with_validator_json_response(both_fake_remote_clients, capsys):
     assert validator.valid
 
 
-def test_as_type_with_validator(client, capsys):
+def test_as_type_with_validator(
+    client: "OptimadeTestClient", capsys: pytest.CaptureFixture
+) -> None:
     from unittest.mock import Mock, patch
 
     test_urls = {
@@ -74,7 +97,7 @@ def test_as_type_with_validator(client, capsys):
             assert dataclasses.asdict(validator.results) == json_response
 
 
-def test_query_value_formatting(client):
+def test_query_value_formatting() -> None:
     from optimade.models.optimade_json import DataType
 
     format_value_fn = ImplementationValidator._format_test_value
@@ -90,7 +113,9 @@ def test_query_value_formatting(client):
 
 
 @pytest.mark.parametrize("server", ["regular", "index"])
-def test_versioned_base_urls(client, index_client, server: str):
+def test_versioned_base_urls(
+    client: "OptimadeTestClient", index_client: "OptimadeTestClient", server: str
+) -> None:
     """Test all expected versioned base URLs responds with 200
 
     This depends on the routers for each kind of server.
@@ -124,7 +149,9 @@ def test_versioned_base_urls(client, index_client, server: str):
 
 
 @pytest.mark.parametrize("server", ["regular", "index"])
-def test_meta_schema_value_obeys_index(client, index_client, server: str):
+def test_meta_schema_value_obeys_index(
+    client: "OptimadeTestClient", index_client: "OptimadeTestClient", server: str
+) -> None:
     """Test that the reported `meta->schema` is correct for index/non-index
     servers.
     """
@@ -138,7 +165,6 @@ def test_meta_schema_value_obeys_index(client, index_client, server: str):
     }
 
     for version in BASE_URL_PREFIXES.values():
-
         # Mimic the effect of the relevant server's startup
         CONFIG.is_index = server == "index"
         response = clients[server].get(url=version + "/links")

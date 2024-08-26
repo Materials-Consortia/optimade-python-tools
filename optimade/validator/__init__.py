@@ -1,5 +1,5 @@
-""" This module contains the ImplementationValidator class and corresponding command line tools. """
-# pylint: disable=import-outside-toplevel
+"""This module contains the ImplementationValidator class and corresponding command line tools."""
+
 import warnings
 
 from optimade import __api_version__, __version__
@@ -14,6 +14,7 @@ def validate():  # pragma: no cover
     import argparse
     import json
     import os
+    import random
     import sys
     import traceback
 
@@ -37,8 +38,6 @@ def validate():  # pragma: no cover
     )
     parser.add_argument(
         "base_url",
-        nargs="?",
-        default="http://localhost:5000/v0",
         help=(
             "The base URL of the OPTIMADE implementation to point at, "
             "e.g. 'http://example.com/optimade/v1' or 'http://localhost:5000/v1'"
@@ -122,6 +121,13 @@ def validate():  # pragma: no cover
         help=f"Read timeout to use for each individual request (DEFAULT: {DEFAULT_READ_TIMEOUT} s)",
     )
 
+    parser.add_argument(
+        "--random-seed",
+        type=int,
+        default=None,
+        help="Set seed for random number generator for reproducible runs.",
+    )
+
     args = vars(parser.parse_args())
 
     if os.environ.get("OPTIMADE_VERBOSITY") is not None:
@@ -147,6 +153,9 @@ def validate():  # pragma: no cover
         warnings.warn(
             "The `--page_limit` flag is now deprecated and will not be used by the validator."
         )
+
+    if args["random_seed"] is not None:
+        random.seed(args["random_seed"])
 
     validator = ImplementationValidator(
         base_url=args["base_url"],

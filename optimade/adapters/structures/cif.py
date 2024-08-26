@@ -16,7 +16,6 @@ Note:
 
 This conversion function relies on the [NumPy](https://numpy.org/) library.
 """
-from typing import Dict
 
 from optimade.adapters.structures.utils import (
     cell_to_cellpar,
@@ -40,7 +39,7 @@ except ImportError:
 __all__ = ("get_cif",)
 
 
-def get_cif(  # pylint: disable=too-many-locals,too-many-branches
+def get_cif(
     optimade_structure: OptimadeStructure,
 ) -> str:
     """Get CIF file as string from OPTIMADE structure.
@@ -123,11 +122,12 @@ def get_cif(  # pylint: disable=too-many-locals,too-many-branches
     else:
         sites = attributes.cartesian_site_positions
 
-    species: Dict[str, OptimadeStructureSpecies] = {
-        species.name: species for species in attributes.species  # type: ignore[union-attr]
+    species: dict[str, OptimadeStructureSpecies] = {
+        species.name: species
+        for species in attributes.species  # type: ignore[union-attr]
     }
 
-    symbol_occurences: Dict[str, int] = {}
+    symbol_occurences: dict[str, int] = {}
     for site_number in range(attributes.nsites):  # type: ignore[arg-type]
         species_name = attributes.species_at_sites[site_number]  # type: ignore[index]
         site = sites[site_number]

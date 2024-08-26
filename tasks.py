@@ -3,7 +3,7 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING, Optional, Union
 
 from invoke import task
 from jsondiff import diff
@@ -15,9 +15,11 @@ if TYPE_CHECKING:
 TOP_DIR = Path(__file__).parent.resolve()
 
 
-def update_file(filename: str, sub_line: Tuple[str, str], strip: Optional[str] = None):
+def update_file(
+    filename: Union[Path, str], sub_line: tuple[str, str], strip: Optional[str] = None
+):
     """Utility function for tasks to read, update, and write files"""
-    with open(filename, "r") as handle:
+    with open(filename) as handle:
         lines = [
             re.sub(sub_line[0], sub_line[1], line.rstrip(strip)) for line in handle
         ]
@@ -119,7 +121,7 @@ def setver(_, ver=""):
         (r'"version": ".*",', f'"version": "{ver}",'),
     )
 
-    print("Bumped version to {}".format(ver))
+    print(f"Bumped version to {ver}")
 
 
 @task(help={"ver": "OPTIMADE API version to set"}, post=[update_openapijson])
@@ -191,7 +193,7 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
     def write_file(full_path: Path, content: str):
         """Write file with `content` to `full_path`"""
         if full_path.exists():
-            with open(full_path, "r") as handle:
+            with open(full_path) as handle:
                 cached_content = handle.read()
             if content == cached_content:
                 del cached_content
@@ -273,7 +275,7 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
         # Check if there have been any changes.
         # List changes if yes.
         if TYPE_CHECKING:
-            context: "Context" = context
+            context: "Context" = context  # type: ignore[no-redef]
 
         # NOTE: grep returns an exit code of 1 if it doesn't find anything
         # (which will be good in this case).
@@ -306,7 +308,7 @@ def swagger_validator(_, fname):
             print(f"\033[31m{line}\033[0m")
 
     swagger_url = "https://validator.swagger.io/validator/debug"
-    with open(fname, "r") as f:
+    with open(fname) as f:
         schema = json.load(f)
     response = requests.post(swagger_url, json=schema)
 

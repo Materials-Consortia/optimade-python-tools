@@ -45,6 +45,12 @@ class OptimadeWarning(Warning):
         return self.detail if self.detail is not None else ""
 
 
+class LocalOptimadeWarning(OptimadeWarning):
+    """A warning that is specific to a local implementation of the OPTIMADE API
+    and should not appear in the server log or response.
+    """
+
+
 class FieldValueNotRecognized(OptimadeWarning):
     """A field or value used in the request is not recognised by this implementation."""
 
@@ -57,7 +63,7 @@ class QueryParamNotUsed(OptimadeWarning):
     """A query parameter is not used in this request."""
 
 
-class MissingExpectedField(OptimadeWarning):
+class MissingExpectedField(LocalOptimadeWarning):
     """A field was provided with a null value when a related field was provided
     with a value."""
 

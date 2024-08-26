@@ -7,7 +7,8 @@ For more information on the AiiDA code see [their website](http://www.aiida.net)
 
 This conversion function relies on the [`aiida-core`](https://github.com/aiidateam/aiida-core) package.
 """
-from typing import List, Optional
+
+from typing import Optional
 from warnings import warn
 
 from optimade.adapters.structures.utils import pad_cell, species_from_species_at_sites
@@ -48,7 +49,7 @@ def get_aiida_structure_data(optimade_structure: OptimadeStructure) -> Structure
     structure = StructureData(cell=lattice_vectors)
 
     # If species not provided, infer data from species_at_sites
-    species: Optional[List[OptimadeStructureSpecies]] = attributes.species
+    species: Optional[list[OptimadeStructureSpecies]] = attributes.species
     if not species:
         species = species_from_species_at_sites(attributes.species_at_sites)  # type: ignore[arg-type]
 

@@ -1,15 +1,20 @@
+# pre-commit.ci configuration
+ci:
+    autofix_prs: false
+    autoupdate_branch: 'master'
+    autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+    autoupdate_schedule: monthly
+    # Both of these require `invoke` to be installed in the environment
+    skip: [json-diff, update-docs-api-reference]
+    submodules: true
+
 default_language_version:
-  python: python3.8
+  python: python3.9
 
+# pre-commit hooks
 repos:
-  - repo: https://github.com/ambv/black
-    rev: 22.10.0
-    hooks:
-    - id: black
-      name: Blacken
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.6.0
     hooks:
     - id: check-symlinks
     - id: check-yaml
@@ -23,10 +28,19 @@ repos:
     - id: trailing-whitespace
       args: [--markdown-linebreak-ext=md]
 
-  - repo: https://github.com/pycqa/flake8
-    rev: '6.0.0'
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.17.0
     hooks:
-    - id: flake8
+    - id: pyupgrade
+      args: ["--py39-plus"]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: 'v0.5.6'
+
+    hooks:
+    - id: ruff
+      args: [--fix, --exit-non-zero-on-fix]
+    - id: ruff-format
 
   - repo: local
     hooks:
@@ -45,14 +59,10 @@ repos:
       description: Update the API Reference documentation whenever a Python file is touched in the code base.
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.991
+    rev: v1.11.1
     hooks:
       - id: mypy
         name: "MyPy"
-        additional_dependencies: ["types-all", "pydantic~=1.10"]
-
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
-    hooks:
-      - id: isort
-        name: "isort"
+        additional_dependencies: ["types-requests", "types-pyyaml", "pydantic~=2.0"]
+        exclude: ^tests/.*$
+        args: [--check-untyped-defs]

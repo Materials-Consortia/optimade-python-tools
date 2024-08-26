@@ -1,5 +1,4 @@
 {
-    "config_file": "~/.optimade.json",
     "debug": false,
     "insert_test_data": true,
     "mongo_database": "optimade",
@@ -13,7 +12,7 @@
     "base_url": null,
     "implementation": {
         "name": "OPTIMADE Python Tools",
-        "version": "0.20.1",
+        "version": "1.1.1",
         "source_url": "https://github.com/Materials-Consortia/optimade-python-tools",
         "maintainer": {"email": "dev@optimade.org"}
     },
@@ -29,5 +28,7 @@
     "length_aliases": {},
     "index_links_path": "./optimade/server/index_links.json",
     "log_level": "info",
-    "log_dir": "/var/log/optimade/"
+    "log_dir": "/var/log/optimade/",
+    "validate_query_parameters": true,
+    "validate_api_response": true
 }

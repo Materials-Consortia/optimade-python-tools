@@ -123,7 +123,9 @@ def test_scaled_cell_consistency(structures):
 def test_species_from_species_at_sites():
     """Test that species can be inferred from species_at_sites"""
     species_at_sites = ["Si"]
-    assert [d.dict() for d in species_from_species_at_sites(species_at_sites)] == [
+    assert [
+        d.model_dump() for d in species_from_species_at_sites(species_at_sites)
+    ] == [
         {
             "name": "Si",
             "concentration": [1.0],
@@ -137,7 +139,7 @@ def test_species_from_species_at_sites():
 
     species_at_sites = ["Si", "Si", "O", "O", "O", "O"]
     assert sorted(
-        [d.dict() for d in species_from_species_at_sites(species_at_sites)],
+        [d.model_dump() for d in species_from_species_at_sites(species_at_sites)],
         key=lambda _: _["name"],
     ) == sorted(
         [
@@ -161,4 +163,20 @@ def test_species_from_species_at_sites():
             },
         ],
         key=lambda _: _["name"],
+    )
+
+
+def test_elements_ratios_from_sites():
+    import numpy as np
+
+    from optimade.adapters.structures.utils import elements_ratios_from_species_at_sites
+
+    assert np.allclose(elements_ratios_from_species_at_sites(["Si"]), [1.0])
+    assert np.allclose(elements_ratios_from_species_at_sites(["Si", "Ge"]), [0.5, 0.5])
+    assert np.allclose(
+        elements_ratios_from_species_at_sites(["Si", "Si", "Ge"]), [1 / 3, 2 / 3]
+    )
+    assert np.allclose(
+        elements_ratios_from_species_at_sites(["Si", "Si", "Ge", "C", "C"]),
+        [0.4, 0.2, 0.4],
     )

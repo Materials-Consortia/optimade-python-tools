@@ -5,11 +5,13 @@ These middleware are based on [Starlette](https://www.starlette.io)'s `BaseHTTPM
 See the specific Starlette [documentation page](https://www.starlette.io/middleware/) for more
 information on it's middleware implementation.
 """
+
 import json
 import re
 import urllib.parse
 import warnings
-from typing import Generator, Iterable, List, Optional, TextIO, Type, Union
+from collections.abc import Generator, Iterable
+from typing import Optional, TextIO, Union
 
 from starlette.datastructures import URL as StarletteURL
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -22,6 +24,7 @@ from optimade.server.config import CONFIG
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
 from optimade.warnings import (
     FieldValueNotRecognized,
+    LocalOptimadeWarning,
     OptimadeWarning,
     QueryParamNotUsed,
     TooManyValues,
@@ -110,7 +113,7 @@ class HandleApiHint(BaseHTTPMiddleware):
     """Handle `api_hint` query parameter."""
 
     @staticmethod
-    def handle_api_hint(api_hint: List[str]) -> Union[None, str]:
+    def handle_api_hint(api_hint: list[str]) -> Union[None, str]:
         """Handle `api_hint` parameter value.
 
         There are several scenarios that can play out, when handling the `api_hint`
@@ -307,12 +310,12 @@ class AddWarnings(BaseHTTPMiddleware):
 
     """
 
-    _warnings: List[Warnings]
+    _warnings: list[Warnings]
 
     def showwarning(
         self,
         message: Union[Warning, str],
-        category: Type[Warning],
+        category: type[Warning],
         filename: str,
         lineno: int,
         file: Optional[TextIO] = None,
@@ -361,6 +364,9 @@ class AddWarnings(BaseHTTPMiddleware):
             warnings._showwarning_orig(message, category, filename, lineno, file, line)  # type: ignore[attr-defined]
             return
 
+        if isinstance(message, LocalOptimadeWarning):
+            return
+
         # Format warning
         try:
             title = str(message.title)
@@ -384,7 +390,6 @@ class AddWarnings(BaseHTTPMiddleware):
                     # When a warning is logged during Python shutdown, linecache
                     # and the import machinery don't work anymore
                     line = None
-                    linecache = None  # type: ignore[assignment]
             meta = {
                 "filename": filename,
                 "lineno": lineno,
@@ -398,7 +403,7 @@ class AddWarnings(BaseHTTPMiddleware):
             new_warning = Warnings(title=title, detail=detail)
 
         # Add new warning to self._warnings
-        self._warnings.append(new_warning.dict(exclude_unset=True))
+        self._warnings.append(new_warning.model_dump(exclude_unset=True))
 
         # Show warning message as normal in sys.stderr
         warnings._showwarnmsg_impl(  # type: ignore[attr-defined]
