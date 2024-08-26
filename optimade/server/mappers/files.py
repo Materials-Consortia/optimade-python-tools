@@ -5,5 +5,4 @@ __all__ = ("FileMapper",)
 
 
 class FileMapper(BaseResourceMapper):
-
     ENTRY_RESOURCE_CLASS = FileResource
