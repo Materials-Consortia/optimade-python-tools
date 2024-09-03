@@ -1,5 +1,23 @@
 # Changelog
 
+## [v1.1.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.2) (2024-09-03)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.1...v1.1.2)
+
+**Fixed bugs:**
+
+- Fly.io deployment failing [\#2141](https://github.com/Materials-Consortia/optimade-python-tools/issues/2141)
+
+**Merged pull requests:**
+
+- Update docs build to accomodate mkdocs-autoref\>=1.2 [\#2143](https://github.com/Materials-Consortia/optimade-python-tools/pull/2143) ([ml-evs](https://github.com/ml-evs))
+- Update deployment workflow for fly.io [\#2142](https://github.com/Materials-Consortia/optimade-python-tools/pull/2142) ([CasperWA](https://github.com/CasperWA))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2140](https://github.com/Materials-Consortia/optimade-python-tools/pull/2140) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+- Migrate default repository branch to `main` [\#2136](https://github.com/Materials-Consortia/optimade-python-tools/pull/2136) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `ad0e214` to `e90caba` [\#2131](https://github.com/Materials-Consortia/optimade-python-tools/pull/2131) ([dependabot[bot]](https://github.com/apps/dependabot))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2127](https://github.com/Materials-Consortia/optimade-python-tools/pull/2127) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+- Add `.from_url` method to base adapter for easily loading a single entry [\#2122](https://github.com/Materials-Consortia/optimade-python-tools/pull/2122) ([ml-evs](https://github.com/ml-evs))
+
 ## [v1.1.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.1) (2024-07-20)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.0...v1.1.1)
