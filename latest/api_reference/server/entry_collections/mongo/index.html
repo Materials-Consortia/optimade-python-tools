@@ -2874,10 +2874,10 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="optimade.server.entry_collections.EntryCollection" optional hover>EntryCollection</autoref></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.entry_collections.EntryCollection" href="../entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</a></code></p>
 
 
-      <p>Class for querying MongoDB collections (implemented by either pymongo or mongomock)
+        <p>Class for querying MongoDB collections (implemented by either pymongo or mongomock)
 containing serialized <a class="autorefs autorefs-internal" href="../../../models/entries/#optimade.models.entries.EntryResource"><code>EntryResource</code></a>s objects.</p>
 
               <details class="quote">
@@ -3230,7 +3230,7 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 
     <div class="doc doc-contents ">
 
-      <p>Get the set of all fields handled in this collection,
+        <p>Get the set of all fields handled in this collection,
 from attribute fields in the schema, provider fields and top-level OPTIMADE fields.</p>
 <p>The set of all fields are lazily created and then cached.
 This means the set is created the first time the property is requested and then cached.</p>
@@ -3247,7 +3247,7 @@ This means the set is created the first time the property is requested and then 
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="set" optional>set</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code>set[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3278,7 +3278,7 @@ This means the set is created the first time the property is requested and then 
 
     <div class="doc doc-contents ">
 
-      <p>The default pagination mechansim to use with a given collection,
+        <p>The default pagination mechansim to use with a given collection,
 if the user does not provide any pagination query parameters.</p>
     </div>
 
@@ -3297,7 +3297,7 @@ if the user does not provide any pagination query parameters.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Initialize the MongoCollection for the given parameters.</p>
+        <p>Initialize the MongoCollection for the given parameters.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3314,7 +3314,7 @@ if the user does not provide any pagination query parameters.</p>
           <tr class="doc-section-item">
             <td><code>name</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3328,7 +3328,7 @@ if the user does not provide any pagination query parameters.</p>
           <tr class="doc-section-item">
             <td><code>resource_cls</code></td>
             <td>
-                  <code><autoref identifier="type" optional>type</autoref>[<autoref identifier="optimade.models.EntryResource" optional hover>EntryResource</autoref>]</code>
+                  <code>type[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3342,7 +3342,7 @@ if the user does not provide any pagination query parameters.</p>
           <tr class="doc-section-item">
             <td><code>resource_mapper</code></td>
             <td>
-                  <code><autoref identifier="type" optional>type</autoref>[<autoref identifier="optimade.server.mappers.BaseResourceMapper" optional hover>BaseResourceMapper</autoref>]</code>
+                  <code>type[<a class="autorefs autorefs-internal" title="optimade.server.mappers.BaseResourceMapper" href="../../mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3357,7 +3357,7 @@ format changes between deserialization and response.</p>
           <tr class="doc-section-item">
             <td><code>database</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3365,7 +3365,7 @@ format changes between deserialization and response.</p>
               </div>
             </td>
             <td>
-                  <code><autoref identifier="optimade.server.config.CONFIG.mongo_database" optional hover>mongo_database</autoref></code>
+                  <code><span title="optimade.server.config.CONFIG.mongo_database">mongo_database</span></code>
             </td>
           </tr>
       </tbody>
@@ -3445,7 +3445,7 @@ format changes between deserialization and response.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Returns the total number of entries in the collection.</p>
+        <p>Returns the total number of entries in the collection.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
@@ -3471,7 +3471,7 @@ format changes between deserialization and response.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Returns the number of entries matching the query specified
+        <p>Returns the number of entries matching the query specified
 by the keyword arguments, or <code>None</code> if the count timed out.</p>
 
 
@@ -3489,7 +3489,7 @@ by the keyword arguments, or <code>None</code> if the count timed out.</p>
           <tr class="doc-section-item">
             <td><code>**kwargs</code></td>
             <td>
-                  <code><autoref identifier="typing.Any" optional hover>Any</autoref></code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3567,7 +3567,7 @@ to the <code>pymongo.collection.Collection.count_documents</code> method.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Fetches results and indicates if more data is available.</p>
+        <p>Fetches results and indicates if more data is available.</p>
 <p>Also gives the total number of data available in the absence of <code>page_limit</code>.
 See <a class="autorefs autorefs-internal" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams"><code>EntryListingQueryParams</code></a>
 for more information.</p>
@@ -3589,7 +3589,7 @@ for more information.</p>
           <tr class="doc-section-item">
             <td><code>params</code></td>
             <td>
-                  <code><autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="optimade.server.query_params.EntryListingQueryParams" optional hover>EntryListingQueryParams</autoref>, <autoref identifier="optimade.server.query_params.SingleEntryQueryParams" optional hover>SingleEntryQueryParams</autoref>]</code>
+                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a>, <a class="autorefs autorefs-internal" title="optimade.server.query_params.SingleEntryQueryParams" href="../../query_params/#optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3615,7 +3615,7 @@ for more information.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>], <autoref identifier="list" optional>list</autoref>[<autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>]]]]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[dict[str, <span title="typing.Any">Any</span>], list[dict[str, <span title="typing.Any">Any</span>]]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3625,7 +3625,7 @@ for more information.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="int" optional>int</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[int]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3838,7 +3838,7 @@ for more information.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Get the set of attribute fields</p>
+        <p>Get the set of attribute fields</p>
 <p>Return only the <em>first-level</em> attribute fields from the schema of the resource class,
 resolving references along the way if needed.</p>
 
@@ -3861,7 +3861,7 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="set" optional>set</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code>set[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3940,7 +3940,7 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
 
     <div class="doc doc-contents ">
 
-      <p>Provides url query pagination parameters that will be used in the next
+        <p>Provides url query pagination parameters that will be used in the next
 link.</p>
 
 
@@ -3958,7 +3958,7 @@ link.</p>
           <tr class="doc-section-item">
             <td><code>results</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>], <autoref identifier="list" optional>list</autoref>[<autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>]]]]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[dict[str, <span title="typing.Any">Any</span>], list[dict[str, <span title="typing.Any">Any</span>]]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3972,7 +3972,7 @@ link.</p>
           <tr class="doc-section-item">
             <td><code>params</code></td>
             <td>
-                  <code><autoref identifier="optimade.server.query_params.EntryListingQueryParams" optional hover>EntryListingQueryParams</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3998,7 +3998,7 @@ link.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code>dict[str, list[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4099,7 +4099,7 @@ link.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Parse and interpret the backend-agnostic query parameter models into a dictionary
+        <p>Parse and interpret the backend-agnostic query parameter models into a dictionary
 that can be used by MongoDB.</p>
 <p>This Mongo-specific method calls the base <code>EntryCollection.handle_query_params</code> method
 and adds additional handling of the MongoDB ObjectID type.</p>
@@ -4119,7 +4119,7 @@ and adds additional handling of the MongoDB ObjectID type.</p>
           <tr class="doc-section-item">
             <td><code>params</code></td>
             <td>
-                  <code><autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="optimade.server.query_params.EntryListingQueryParams" optional hover>EntryListingQueryParams</autoref>, <autoref identifier="optimade.server.query_params.SingleEntryQueryParams" optional hover>SingleEntryQueryParams</autoref>]</code>
+                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a>, <a class="autorefs autorefs-internal" title="optimade.server.query_params.SingleEntryQueryParams" href="../../query_params/#optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4145,7 +4145,7 @@ and adds additional handling of the MongoDB ObjectID type.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="Forbidden" optional>Forbidden</autoref></code>
+                  <code>Forbidden</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4155,7 +4155,7 @@ and adds additional handling of the MongoDB ObjectID type.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="BadRequest" optional>BadRequest</autoref></code>
+                  <code>BadRequest</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4179,7 +4179,7 @@ or response format.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>]</code>
+                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4282,7 +4282,7 @@ or response format.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Add the given entries to the underlying database.</p>
+        <p>Add the given entries to the underlying database.</p>
 
 
 <details class="warning" open>
@@ -4304,7 +4304,7 @@ or response format.</p>
           <tr class="doc-section-item">
             <td><code>data</code></td>
             <td>
-                  <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="optimade.models.EntryResource" optional hover>EntryResource</autoref>]</code>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4358,7 +4358,7 @@ or response format.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Handles any sort parameters passed to the collection,
+        <p>Handles any sort parameters passed to the collection,
 resolving aliases and dealing with any invalid fields.</p>
 
 
@@ -4373,7 +4373,7 @@ resolving aliases and dealing with any invalid fields.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.exceptions.BadRequest" optional hover>BadRequest</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4396,7 +4396,7 @@ resolving aliases and dealing with any invalid fields.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="collections.abc.Iterable" optional hover>Iterable</autoref>[<autoref identifier="tuple" optional>tuple</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="int" optional>int</autoref>]]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, int]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4406,7 +4406,7 @@ resolving aliases and dealing with any invalid fields.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="collections.abc.Iterable" optional hover>Iterable</autoref>[<autoref identifier="tuple" optional>tuple</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="int" optional>int</autoref>]]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, int]]</code>
             </td>
             <td>
               <div class="doc-md-description">

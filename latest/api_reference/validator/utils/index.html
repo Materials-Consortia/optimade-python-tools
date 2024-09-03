@@ -2812,7 +2812,7 @@
 <a id="optimade.validator.utils"></a>
     <div class="doc doc-contents first">
 
-      <p>This submodule contains utility methods and models
+        <p>This submodule contains utility methods and models
 used by the validator. The two main features being:</p>
 <ol>
 <li>The <code>@test_case</code> decorator can be used to decorate validation
@@ -3081,7 +3081,7 @@ used by the validator. The two main features being:</p>
 
     <div class="doc doc-contents ">
 
-      <p>Initialises the Client with the given <code>base_url</code> without testing
+        <p>Initialises the Client with the given <code>base_url</code> without testing
 if it is valid.</p>
 
 
@@ -3099,7 +3099,7 @@ if it is valid.</p>
           <tr class="doc-section-item">
             <td><code>base_url</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3120,7 +3120,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
           <tr class="doc-section-item">
             <td><code>max_retries</code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3134,7 +3134,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
           <tr class="doc-section-item">
             <td><code>headers</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[dict[str, str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3148,7 +3148,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
           <tr class="doc-section-item">
             <td><code>timeout</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="float" optional>float</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[float]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3156,13 +3156,13 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
               </div>
             </td>
             <td>
-                  <code><autoref identifier="optimade.validator.utils.DEFAULT_CONN_TIMEOUT" optional hover>DEFAULT_CONN_TIMEOUT</autoref></code>
+                  <code><span title="optimade.validator.utils.DEFAULT_CONN_TIMEOUT">DEFAULT_CONN_TIMEOUT</span></code>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td><code>read_timeout</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="float" optional>float</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[float]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3170,7 +3170,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
               </div>
             </td>
             <td>
-                  <code><autoref identifier="optimade.validator.utils.DEFAULT_READ_TIMEOUT" optional hover>DEFAULT_READ_TIMEOUT</autoref></code>
+                  <code><span title="optimade.validator.utils.DEFAULT_READ_TIMEOUT">DEFAULT_READ_TIMEOUT</span></code>
             </td>
           </tr>
       </tbody>
@@ -3268,7 +3268,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
 
     <div class="doc doc-contents ">
 
-      <p>Makes the given request, with a number of retries if being rate limited. The
+        <p>Makes the given request, with a number of retries if being rate limited. The
 request will be prepended with the <code>base_url</code> unless the request appears to be an
 absolute URL (i.e. starts with <code>http://</code> or <code>https://</code>).</p>
 
@@ -3287,7 +3287,7 @@ absolute URL (i.e. starts with <code>http://</code> or <code>https://</code>).</
           <tr class="doc-section-item">
             <td><code>request</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3313,7 +3313,7 @@ absolute URL (i.e. starts with <code>http://</code> or <code>https://</code>).</
       <tbody>
           <tr class="doc-section-item">
 <td><code>response</code></td>            <td>
-                  <code><autoref identifier="requests.models.Response" optional hover>Response</autoref></code>
+                  <code><span title="requests.models.Response">Response</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3336,7 +3336,7 @@ absolute URL (i.e. starts with <code>http://</code> or <code>https://</code>).</
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="SystemExit" optional>SystemExit</autoref></code>
+                  <code>SystemExit</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3346,7 +3346,7 @@ absolute URL (i.e. starts with <code>http://</code> or <code>https://</code>).</
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.validator.utils.ResponseError" optional hover>ResponseError</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.validator.utils.ResponseError" href="#optimade.validator.utils.ResponseError">ResponseError</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3512,10 +3512,10 @@ the <code>MAX_RETRIES</code> attempts.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="Exception" optional>Exception</autoref></code></p>
+              Bases: <code>Exception</code></p>
 
 
-      <p>This exception should be raised when validation throws an unexpected error.
+        <p>This exception should be raised when validation throws an unexpected error.
 These should be counted separately from <code>ResponseError</code>'s and <code>ValidationError</code>'s.</p>
 
               <details class="quote">
@@ -3549,10 +3549,10 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="Exception" optional>Exception</autoref></code></p>
+              Bases: <code>Exception</code></p>
 
 
-      <p>This exception should be raised for a manual hardcoded test failure.</p>
+        <p>This exception should be raised for a manual hardcoded test failure.</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/validator/utils.py</code></summary>
@@ -3578,7 +3578,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
 
     <div class="doc doc-contents ">
 
-      <p>Print but sad.</p>
+        <p>Print but sad.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
@@ -3604,7 +3604,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
 
     <div class="doc doc-contents ">
 
-      <p>Print but louder.</p>
+        <p>Print but louder.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
@@ -3630,7 +3630,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
 
     <div class="doc doc-contents ">
 
-      <p>Print but happy.</p>
+        <p>Print but happy.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
@@ -3656,7 +3656,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
 
     <div class="doc doc-contents ">
 
-      <p>Print but angry.</p>
+        <p>Print but angry.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
@@ -3682,7 +3682,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
 
     <div class="doc doc-contents ">
 
-      <p>Wrapper for test case functions, which pretty-prints any errors
+        <p>Wrapper for test case functions, which pretty-prints any errors
 depending on verbosity level, collates the number and severity of
 test failures, returns the response and summary string to the caller.
 Any additional positional or keyword arguments are passed directly
@@ -3705,7 +3705,7 @@ to the docstring for <code>wrapper(...)</code> below.</p>
           <tr class="doc-section-item">
             <td><code>test_fn</code></td>
             <td>
-                  <code><autoref identifier="typing.Callable" optional hover>Callable</autoref>[..., <autoref identifier="tuple" optional>tuple</autoref>[<autoref identifier="typing.Any" optional hover>Any</autoref>, <autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Callable">Callable</span>[..., tuple[<span title="typing.Any">Any</span>, str]]</code>
             </td>
             <td>
               <div class="doc-md-description">

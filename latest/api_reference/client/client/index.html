@@ -3082,7 +3082,7 @@
 <a id="optimade.client.client"></a>
     <div class="doc doc-contents first">
 
-      <p>This module implements OPTIMADE client functionality for:</p>
+        <p>This module implements OPTIMADE client functionality for:</p>
 <ul>
 <li>making web requests to filter and harvest resources from OPTIMADE APIs,</li>
 <li>query multiple providers simultaneously.</li>
@@ -3113,7 +3113,7 @@
     <div class="doc doc-contents ">
 
 
-      <p>This class implemements a client for executing the same queries
+        <p>This class implemements a client for executing the same queries
 across multiple OPTIMADE APIs simultaneously, paging and caching the
 results.</p>
 <p>By default, all registered OPTIMADE providers will be queried
@@ -5610,7 +5610,7 @@ and provider.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Used internally when querying via <code>client.structures.get()</code> to set the
+        <p>Used internally when querying via <code>client.structures.get()</code> to set the
 chosen endpoint. Should be reset to <code>None</code> outside of all <code>get()</code> calls.</p>
     </div>
 
@@ -5633,7 +5633,7 @@ chosen endpoint. Should be reset to <code>None</code> outside of all <code>get()
 
     <div class="doc doc-contents ">
 
-      <p>Whether or not to fallover if <code>use_async</code> is true yet asynchronous mode
+        <p>Whether or not to fallover if <code>use_async</code> is true yet asynchronous mode
 is impossible due to, e.g., a running event loop.</p>
     </div>
 
@@ -5656,7 +5656,7 @@ is impossible due to, e.g., a running event loop.</p>
 
     <div class="doc doc-contents ">
 
-      <p>A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
+        <p>A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
 the results from each base URL for that particular filter.</p>
     </div>
 
@@ -5678,7 +5678,7 @@ the results from each base URL for that particular filter.</p>
 
     <div class="doc doc-contents ">
 
-      <p>A list (or any iterable) of OPTIMADE base URLs to query.</p>
+        <p>A list (or any iterable) of OPTIMADE base URLs to query.</p>
     </div>
 
 </div>
@@ -5700,7 +5700,7 @@ the results from each base URL for that particular filter.</p>
 
     <div class="doc doc-contents ">
 
-      <p>A list of callbacks to execute after each successful request, used
+        <p>A list of callbacks to execute after each successful request, used
 to e.g., write to a file, add results to a database or perform additional
 filtering.</p>
 <p>The callbacks will receive the request URL and the results extracted
@@ -5731,7 +5731,7 @@ callback in the stack will be used.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Enable binary search count for databases that do not support <code>meta-&gt;data_returned</code>.</p>
+        <p>Enable binary search count for databases that do not support <code>meta-&gt;data_returned</code>.</p>
     </div>
 
 </div>
@@ -5753,7 +5753,7 @@ callback in the stack will be used.</p>
 
     <div class="doc doc-contents ">
 
-      <p>A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
+        <p>A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
 the number of results from each base URL for that particular filter.</p>
     </div>
 
@@ -5776,7 +5776,7 @@ the number of results from each base URL for that particular filter.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Additional HTTP headers.</p>
+        <p>Additional HTTP headers.</p>
     </div>
 
 </div>
@@ -5798,7 +5798,7 @@ the number of results from each base URL for that particular filter.</p>
 
     <div class="doc doc-contents ">
 
-      <p>The timeout to use for each HTTP request.</p>
+        <p>The timeout to use for each HTTP request.</p>
     </div>
 
 </div>
@@ -5819,7 +5819,7 @@ the number of results from each base URL for that particular filter.</p>
 
     <div class="doc doc-contents ">
 
-      <p>The maximum number of times to repeat a failed query before giving up.</p>
+        <p>The maximum number of times to repeat a failed query before giving up.</p>
     </div>
 
 </div>
@@ -5841,7 +5841,7 @@ the number of results from each base URL for that particular filter.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Maximum number of results to downlod per provider. If None, will
+        <p>Maximum number of results to downlod per provider. If None, will
 download all.</p>
     </div>
 
@@ -5864,7 +5864,7 @@ download all.</p>
 
     <div class="doc doc-contents ">
 
-      <p>A dictionary containing list of properties served by each database,
+        <p>A dictionary containing list of properties served by each database,
 broken down by entry type, then database.</p>
     </div>
 
@@ -5886,7 +5886,7 @@ broken down by entry type, then database.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Whether to disable progress bar printing.</p>
+        <p>Whether to disable progress bar printing.</p>
     </div>
 
 </div>
@@ -5908,7 +5908,7 @@ broken down by entry type, then database.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Whether to skip SSL verification.</p>
+        <p>Whether to skip SSL verification.</p>
     </div>
 
 </div>
@@ -5929,7 +5929,7 @@ broken down by entry type, then database.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Whether or not to make all requests asynchronously using asyncio.</p>
+        <p>Whether or not to make all requests asynchronously using asyncio.</p>
     </div>
 
 </div>
@@ -5947,7 +5947,7 @@ broken down by entry type, then database.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Allows entry endpoints to be queried via attribute access, using the
+        <p>Allows entry endpoints to be queried via attribute access, using the
 allowed list for this module.</p>
 <p>Should also pass through any <code>extensions/&lt;example&gt;</code> endpoints.</p>
 <p>Any non-entry-endpoint name requested will be passed to the
@@ -6038,7 +6038,7 @@ original <code>__getattribute__</code>.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Create the OPTIMADE client object.</p>
+        <p>Create the OPTIMADE client object.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -6055,7 +6055,7 @@ original <code>__getattribute__</code>.</p>
           <tr class="doc-section-item">
             <td><code>base_urls</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="collections.abc.Iterable" optional hover>Iterable</autoref>[<autoref identifier="str" optional>str</autoref>]]]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[str, <span title="collections.abc.Iterable">Iterable</span>[str]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6069,7 +6069,7 @@ original <code>__getattribute__</code>.</p>
           <tr class="doc-section-item">
             <td><code>max_results_per_provider</code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6084,7 +6084,7 @@ from each provider (-1 or 0 indicate unlimited).</p>
           <tr class="doc-section-item">
             <td><code>headers</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="dict" optional>dict</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[dict]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6098,7 +6098,7 @@ from each provider (-1 or 0 indicate unlimited).</p>
           <tr class="doc-section-item">
             <td><code>http_timeout</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="httpx.Timeout" optional hover>Timeout</autoref>, <autoref identifier="float" optional>float</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[<span title="httpx.Timeout">Timeout</span>, float]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6114,7 +6114,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p>
           <tr class="doc-section-item">
             <td><code>max_attempts</code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6128,7 +6128,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p>
           <tr class="doc-section-item">
             <td><code>use_async</code></td>
             <td>
-                  <code><autoref identifier="bool" optional>bool</autoref></code>
+                  <code>bool</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6142,7 +6142,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p>
           <tr class="doc-section-item">
             <td><code>exclude_providers</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6156,7 +6156,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p>
           <tr class="doc-section-item">
             <td><code>include_providers</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6170,7 +6170,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p>
           <tr class="doc-section-item">
             <td><code>exclude_databases</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6184,7 +6184,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p>
           <tr class="doc-section-item">
             <td><code>http_client</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="type" optional>type</autoref>[<autoref identifier="httpx.AsyncClient" optional hover>AsyncClient</autoref>], <autoref identifier="type" optional>type</autoref>[<autoref identifier="requests.Session" optional hover>Session</autoref>]]]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[type[<span title="httpx.AsyncClient">AsyncClient</span>], type[<span title="requests.Session">Session</span>]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6198,7 +6198,7 @@ will replace all timeouts (connect, read, write and pool) with this value.</p>
           <tr class="doc-section-item">
             <td><code>callbacks</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="list" optional>list</autoref>[<autoref identifier="typing.Callable" optional hover>Callable</autoref>[[<autoref identifier="str" optional>str</autoref>, <autoref identifier="dict" optional>dict</autoref>], <autoref identifier="typing.Union" optional hover>Union</autoref>[None, <autoref identifier="dict" optional>dict</autoref>]]]]</code>
+                  <code><span title="typing.Optional">Optional</span>[list[<span title="typing.Callable">Callable</span>[[str, dict], <span title="typing.Union">Union</span>[None, dict]]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6214,7 +6214,7 @@ docstring for more details.</p>
           <tr class="doc-section-item">
             <td><code>verbosity</code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6480,7 +6480,7 @@ docstring for more details.</p>
 
     <div class="doc doc-contents ">
 
-      <p>In cases where <code>data_returned</code> is not available (due to database limitations or
+        <p>In cases where <code>data_returned</code> is not available (due to database limitations or
 otherwise), iteratively probe the final page of results available for a filter using
 binary search.</p>
 <p>Note: These queries always happen synchronously across APIs, but can be executed
@@ -6501,7 +6501,7 @@ asynchronously within a single API.</p>
           <tr class="doc-section-item">
             <td><code>filter</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6515,7 +6515,7 @@ asynchronously within a single API.</p>
           <tr class="doc-section-item">
             <td><code>endpoint</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6529,7 +6529,7 @@ asynchronously within a single API.</p>
           <tr class="doc-section-item">
             <td><code>base_url</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6543,7 +6543,7 @@ asynchronously within a single API.</p>
           <tr class="doc-section-item">
             <td><code>results</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="dict" optional>dict</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[dict]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6569,7 +6569,7 @@ asynchronously within a single API.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6656,7 +6656,7 @@ asynchronously within a single API.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Counts the number of results for the filter, requiring
+        <p>Counts the number of results for the filter, requiring
 only 1 request per provider by making use of the <code>meta-&gt;data_returned</code>
 key. If missing, attempts will be made to perform an exponential/binary
 search over pagination to count the results.</p>
@@ -6673,7 +6673,7 @@ search over pagination to count the results.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="RuntimeError" optional>RuntimeError</autoref></code>
+                  <code>RuntimeError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6696,7 +6696,7 @@ search over pagination to count the results.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="int" optional>int</autoref>]]]]</code>
+                  <code>dict[str, dict[str, dict[str, <span title="typing.Optional">Optional</span>[int]]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6859,7 +6859,7 @@ search over pagination to count the results.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Gets the results from the endpoint and filter across the
+        <p>Gets the results from the endpoint and filter across the
 defined OPTIMADE APIs.</p>
 
 
@@ -6877,7 +6877,7 @@ defined OPTIMADE APIs.</p>
           <tr class="doc-section-item">
             <td><code>filter</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6891,7 +6891,7 @@ defined OPTIMADE APIs.</p>
           <tr class="doc-section-item">
             <td><code>endpoint</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6905,7 +6905,7 @@ defined OPTIMADE APIs.</p>
           <tr class="doc-section-item">
             <td><code>response_fields</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6920,7 +6920,7 @@ from the server.</p>
           <tr class="doc-section-item">
             <td><code>sort</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6946,7 +6946,7 @@ from the server.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="RuntimeError" optional>RuntimeError</autoref></code>
+                  <code>RuntimeError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6969,7 +6969,7 @@ from the server.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="dict" optional>dict</autoref>]]]</code>
+                  <code>dict[str, dict[str, dict[str, dict]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7116,7 +7116,7 @@ from the server.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Executes the query synchronously on one API.</p>
+        <p>Executes the query synchronously on one API.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -7133,7 +7133,7 @@ from the server.</p>
           <tr class="doc-section-item">
             <td><code>endpoint</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7147,7 +7147,7 @@ from the server.</p>
           <tr class="doc-section-item">
             <td><code>filter</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7161,7 +7161,7 @@ from the server.</p>
           <tr class="doc-section-item">
             <td><code>response_fields</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7176,7 +7176,7 @@ from the server.</p>
           <tr class="doc-section-item">
             <td><code>sort</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7190,7 +7190,7 @@ from the server.</p>
           <tr class="doc-section-item">
             <td><code>page_limit</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="int" optional>int</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[int]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7205,7 +7205,7 @@ conjunction with <code>paginate</code>).</p>
           <tr class="doc-section-item">
             <td><code>paginate</code></td>
             <td>
-                  <code><autoref identifier="bool" optional>bool</autoref></code>
+                  <code>bool</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7221,7 +7221,7 @@ after one page.</p>
           <tr class="doc-section-item">
             <td><code>other_params</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[dict[str, <span title="typing.Any">Any</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7247,7 +7247,7 @@ after one page.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="optimade.client.utils.QueryResults" optional hover>QueryResults</autoref>]</code>
+                  <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.client.utils.QueryResults" href="../utils/#optimade.client.utils.QueryResults">QueryResults</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7380,7 +7380,7 @@ after one page.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Executes the query asynchronously on one API.</p>
+        <p>Executes the query asynchronously on one API.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This method currently makes non-blocking requests
@@ -7405,7 +7405,7 @@ async requests to other APIs.</p>
           <tr class="doc-section-item">
             <td><code>endpoint</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7419,7 +7419,7 @@ async requests to other APIs.</p>
           <tr class="doc-section-item">
             <td><code>filter</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7433,7 +7433,7 @@ async requests to other APIs.</p>
           <tr class="doc-section-item">
             <td><code>response_fields</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[list[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7448,7 +7448,7 @@ from the server.</p>
           <tr class="doc-section-item">
             <td><code>sort</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7462,7 +7462,7 @@ from the server.</p>
           <tr class="doc-section-item">
             <td><code>page_limit</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="int" optional>int</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[int]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7477,7 +7477,7 @@ conjunction with <code>paginate</code>).</p>
           <tr class="doc-section-item">
             <td><code>paginate</code></td>
             <td>
-                  <code><autoref identifier="bool" optional>bool</autoref></code>
+                  <code>bool</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7493,7 +7493,7 @@ after one page.</p>
           <tr class="doc-section-item">
             <td><code>other_params</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[dict[str, <span title="typing.Any">Any</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7519,7 +7519,7 @@ after one page.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="optimade.client.utils.QueryResults" optional hover>QueryResults</autoref>]</code>
+                  <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.client.utils.QueryResults" href="../utils/#optimade.client.utils.QueryResults">QueryResults</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7662,7 +7662,7 @@ after one page.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Returns the list of properties reported at <code>/info/&lt;entry_type&gt;</code>
+        <p>Returns the list of properties reported at <code>/info/&lt;entry_type&gt;</code>
 for the given entry type, for each database.</p>
 
             <details class="quote">
@@ -7751,7 +7751,7 @@ for the given entry type, for each database.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Searches for the query substring within the listed properties
+        <p>Searches for the query substring within the listed properties
 served by each database.</p>
 
 
@@ -7769,7 +7769,7 @@ served by each database.</p>
           <tr class="doc-section-item">
             <td><code>query</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7783,7 +7783,7 @@ served by each database.</p>
           <tr class="doc-section-item">
             <td><code>entry_type</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7809,7 +7809,7 @@ served by each database.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code>dict[str, list[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -7819,7 +7819,7 @@ served by each database.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code>dict[str, list[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">

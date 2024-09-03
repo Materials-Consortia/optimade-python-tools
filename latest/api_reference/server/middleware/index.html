@@ -2866,7 +2866,7 @@
 <a id="optimade.server.middleware"></a>
     <div class="doc doc-contents first">
 
-      <p>Custom ASGI app middleware.</p>
+        <p>Custom ASGI app middleware.</p>
 <p>These middleware are based on <a href="https://www.starlette.io">Starlette</a>'s <code>BaseHTTPMiddleware</code>.
 See the specific Starlette <a href="https://www.starlette.io/middleware/">documentation page</a> for more
 information on it's middleware implementation.</p>
@@ -2897,7 +2897,7 @@ information on it's middleware implementation.</p>
 
     <div class="doc doc-contents ">
 
-      <p>A tuple of all the middleware classes that implement certain required
+        <p>A tuple of all the middleware classes that implement certain required
 features of the OPTIMADE specification, e.g. warnings and URL
 versioning.</p>
 <div class="admonition note">
@@ -2946,10 +2946,10 @@ in the <em>reverse</em> order to <code>OPTIMADE_MIDDLEWARE</code>.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="starlette.middleware.base.BaseHTTPMiddleware" optional hover>BaseHTTPMiddleware</autoref></code></p>
+              Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
 
 
-      <p>Add <a class="autorefs autorefs-internal" href="../../warnings/#optimade.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>s to the response.</p>
+        <p>Add <a class="autorefs autorefs-internal" href="../../warnings/#optimade.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>s to the response.</p>
 <p>All sub-classes of <a class="autorefs autorefs-internal" href="../../warnings/#optimade.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>
 will also be added to the response's
 <a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> list.</p>
@@ -2990,9 +2990,9 @@ appears <em>first</em>. More information can be found in the docstring of
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.middleware.AddWarnings._warnings" optional hover>_warnings</autoref></code></td>
+            <td><code><span title="optimade.server.middleware.AddWarnings._warnings">_warnings</span></code></td>
             <td>
-                  <code><autoref identifier="List" optional>List</autoref>[<autoref identifier="optimade.models.Warnings" optional hover>Warnings</autoref>]</code>
+                  <code>List[<a class="autorefs autorefs-internal" title="optimade.models.Warnings" href="../../../all_models/#optimade.models.Warnings">Warnings</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3427,7 +3427,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 
     <div class="doc doc-contents ">
 
-      <p>Return generator for string in chunks of size <code>chunk_size</code>.</p>
+        <p>Return generator for string in chunks of size <code>chunk_size</code>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3444,7 +3444,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
           <tr class="doc-section-item">
             <td><code>content</code></td>
             <td>
-                  <code><autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="bytes" optional>bytes</autoref>]</code>
+                  <code><span title="typing.Union">Union</span>[str, bytes]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3458,7 +3458,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
           <tr class="doc-section-item">
             <td><code>chunk_size</code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3484,7 +3484,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="collections.abc.Generator" optional hover>Generator</autoref></code>
+                  <code><span title="collections.abc.Generator">Generator</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3543,7 +3543,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 
     <div class="doc doc-contents ">
 
-      <p>Hook to write a warning to a file using the built-in <code>warnings</code> lib.</p>
+        <p>Hook to write a warning to a file using the built-in <code>warnings</code> lib.</p>
 <p>In <a href="https://docs.python.org/3/library/warnings.html">the documentation</a>
 for the built-in <code>warnings</code> library, there are a few recommended ways of
 customizing the printing of warning messages.</p>
@@ -3578,7 +3578,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
           <tr class="doc-section-item">
             <td><code>message</code></td>
             <td>
-                  <code><autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="Warning" optional>Warning</autoref>, <autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Union">Union</span>[Warning, str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3592,7 +3592,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
           <tr class="doc-section-item">
             <td><code>category</code></td>
             <td>
-                  <code><autoref identifier="type" optional>type</autoref>[<autoref identifier="Warning" optional>Warning</autoref>]</code>
+                  <code>type[Warning]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3606,7 +3606,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
           <tr class="doc-section-item">
             <td><code>filename</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3620,7 +3620,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
           <tr class="doc-section-item">
             <td><code>lineno</code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3634,7 +3634,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
           <tr class="doc-section-item">
             <td><code>file</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="typing.TextIO" optional hover>TextIO</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="typing.TextIO">TextIO</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3648,7 +3648,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
           <tr class="doc-section-item">
             <td><code>line</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3884,10 +3884,10 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="starlette.middleware.base.BaseHTTPMiddleware" optional hover>BaseHTTPMiddleware</autoref></code></p>
+              Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
 
 
-      <p>If a non-supported versioned base URL is supplied return <code>553 Version Not Supported</code>.</p>
+        <p>If a non-supported versioned base URL is supplied return <code>553 Version Not Supported</code>.</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/middleware.py</code></summary>
@@ -3986,7 +3986,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 
     <div class="doc doc-contents ">
 
-      <p>Check URL path for versioned part.</p>
+        <p>Check URL path for versioned part.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -4003,7 +4003,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
           <tr class="doc-section-item">
             <td><code>url</code></td>
             <td>
-                  <code><autoref identifier="starlette.datastructures.URL" optional hover>URL</autoref></code>
+                  <code><span title="starlette.datastructures.URL">URL</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4029,7 +4029,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.exceptions.VersionNotSupported" optional hover>VersionNotSupported</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.VersionNotSupported" href="../../exceptions/#optimade.exceptions.VersionNotSupported">VersionNotSupported</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4117,10 +4117,10 @@ and the version part is not supported by the implementation.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="starlette.middleware.base.BaseHTTPMiddleware" optional hover>BaseHTTPMiddleware</autoref></code></p>
+              Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
 
 
-      <p>Ensure all query parameters are followed by an equal sign (<code>=</code>).</p>
+        <p>Ensure all query parameters are followed by an equal sign (<code>=</code>).</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/middleware.py</code></summary>
@@ -4235,7 +4235,7 @@ and the version part is not supported by the implementation.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Check parsed URL query part for parameters not followed by <code>=</code>.</p>
+        <p>Check parsed URL query part for parameters not followed by <code>=</code>.</p>
 <p>URL query parameters are considered to be split by ampersand (<code>&amp;</code>)
 and semi-colon (<code>;</code>).</p>
 
@@ -4254,7 +4254,7 @@ and semi-colon (<code>;</code>).</p>
           <tr class="doc-section-item">
             <td><code>url_query</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4280,7 +4280,7 @@ and semi-colon (<code>;</code>).</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.exceptions.BadRequest" optional hover>BadRequest</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4303,7 +4303,7 @@ and semi-colon (<code>;</code>).</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="set" optional>set</autoref></code>
+                  <code>set</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4313,7 +4313,7 @@ and semi-colon (<code>;</code>).</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="set" optional>set</autoref></code>
+                  <code>set</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4323,7 +4323,7 @@ and semi-colon (<code>;</code>).</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="set" optional>set</autoref></code>
+                  <code>set</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4333,7 +4333,7 @@ and semi-colon (<code>;</code>).</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="set" optional>set</autoref></code>
+                  <code>set</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4434,10 +4434,10 @@ and semi-colon (<code>;</code>).</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="starlette.middleware.base.BaseHTTPMiddleware" optional hover>BaseHTTPMiddleware</autoref></code></p>
+              Bases: <code><span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span></code></p>
 
 
-      <p>Handle <code>api_hint</code> query parameter.</p>
+        <p>Handle <code>api_hint</code> query parameter.</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/middleware.py</code></summary>
@@ -4786,7 +4786,7 @@ and semi-colon (<code>;</code>).</p>
 
     <div class="doc doc-contents ">
 
-      <p>Handle <code>api_hint</code> parameter value.</p>
+        <p>Handle <code>api_hint</code> parameter value.</p>
 <p>There are several scenarios that can play out, when handling the <code>api_hint</code>
 query parameter:</p>
 <p>If several <code>api_hint</code> query parameters have been used, or a "standard" JSON
@@ -4820,7 +4820,7 @@ supported major version will be returned and tried for the request.</p>
           <tr class="doc-section-item">
             <td><code>api_hint</code></td>
             <td>
-                  <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code>list[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4846,7 +4846,7 @@ supported major version will be returned and tried for the request.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.exceptions.VersionNotSupported" optional hover>VersionNotSupported</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.VersionNotSupported" href="../../exceptions/#optimade.exceptions.VersionNotSupported">VersionNotSupported</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4870,7 +4870,7 @@ supported major version of the implementation.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="typing.Union" optional hover>Union</autoref>[None, <autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Union">Union</span>[None, str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5067,7 +5067,7 @@ supported major version of the implementation.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Determine whether a request is for a versioned base URL.</p>
+        <p>Determine whether a request is for a versioned base URL.</p>
 <p>First, simply check whether a <code>/vMAJOR(.MINOR.PATCH)</code> part exists in the URL.
 If not, return <code>False</code>, else, remove unversioned base URL from the URL and check again.
 Return <code>bool</code> of final result.</p>
@@ -5087,7 +5087,7 @@ Return <code>bool</code> of final result.</p>
           <tr class="doc-section-item">
             <td><code>url</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5113,7 +5113,7 @@ Return <code>bool</code> of final result.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="bool" optional>bool</autoref></code>
+                  <code>bool</code>
             </td>
             <td>
               <div class="doc-md-description">

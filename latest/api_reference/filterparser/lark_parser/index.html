@@ -2722,7 +2722,7 @@
 <a id="optimade.filterparser.lark_parser"></a>
     <div class="doc doc-contents first">
 
-      <p>This submodule implements the <a class="autorefs autorefs-internal" href="#optimade.filterparser.lark_parser.LarkParser"><code>LarkParser</code></a> class,
+        <p>This submodule implements the <a class="autorefs autorefs-internal" href="#optimade.filterparser.lark_parser.LarkParser"><code>LarkParser</code></a> class,
 which uses the lark library to parse filter strings with a defined OPTIMADE filter grammar
 into <code>Lark.Tree</code> objects for use by the filter transformers.</p>
 
@@ -2751,7 +2751,7 @@ into <code>Lark.Tree</code> objects for use by the filter transformers.</p>
     <div class="doc doc-contents ">
 
 
-      <p>This class wraps a versioned OPTIMADE grammar and allows
+        <p>This class wraps a versioned OPTIMADE grammar and allows
 it to be parsed into Lark tree objects.</p>
 
               <details class="quote">
@@ -2915,7 +2915,7 @@ it to be parsed into Lark tree objects.</p>
 
     <div class="doc doc-contents ">
 
-      <p>For a given version and variant, try to load the corresponding grammar.</p>
+        <p>For a given version and variant, try to load the corresponding grammar.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -2932,7 +2932,7 @@ it to be parsed into Lark tree objects.</p>
           <tr class="doc-section-item">
             <td><code>version</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="tuple" optional>tuple</autoref>[<autoref identifier="int" optional>int</autoref>, <autoref identifier="int" optional>int</autoref>, <autoref identifier="int" optional>int</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[tuple[int, int, int]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2946,7 +2946,7 @@ it to be parsed into Lark tree objects.</p>
           <tr class="doc-section-item">
             <td><code>variant</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2972,7 +2972,7 @@ it to be parsed into Lark tree objects.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.filterparser.lark_parser.ParserError" optional hover>ParserError</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.filterparser.lark_parser.ParserError" href="#optimade.filterparser.lark_parser.ParserError">ParserError</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3070,7 +3070,7 @@ grammar does not exist.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Parse a filter string into a <code>lark.Tree</code>.</p>
+        <p>Parse a filter string into a <code>lark.Tree</code>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3087,7 +3087,7 @@ grammar does not exist.</p>
           <tr class="doc-section-item">
             <td><code>filter_</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3113,7 +3113,7 @@ grammar does not exist.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.exceptions.BadRequest" optional hover>BadRequest</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3136,7 +3136,7 @@ grammar does not exist.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="lark.Tree" optional hover>Tree</autoref></code>
+                  <code><span title="lark.Tree">Tree</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3217,10 +3217,10 @@ grammar does not exist.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="Exception" optional>Exception</autoref></code></p>
+              Bases: <code>Exception</code></p>
 
 
-      <p>Triggered by critical parsing errors that should lead
+        <p>Triggered by critical parsing errors that should lead
 to 500 Server Error HTTP statuses.</p>
 
               <details class="quote">
@@ -3251,7 +3251,7 @@ to 500 Server Error HTTP statuses.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Find grammar files within this package's grammar directory,
+        <p>Find grammar files within this package's grammar directory,
 returning a dictionary broken down by scraped grammar version
 (major, minor, patch) and variant (a string tag).</p>
 
@@ -3267,7 +3267,7 @@ returning a dictionary broken down by scraped grammar version
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="tuple" optional>tuple</autoref>[<autoref identifier="int" optional>int</autoref>, <autoref identifier="int" optional>int</autoref>, <autoref identifier="int" optional>int</autoref>], <autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="pathlib.Path" optional hover>Path</autoref>]]</code>
+                  <code>dict[tuple[int, int, int], dict[str, <span title="pathlib.Path">Path</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">

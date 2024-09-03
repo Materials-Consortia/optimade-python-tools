@@ -2788,10 +2788,10 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="abc.ABC" optional hover>ABC</autoref></code></p>
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
 
 
-      <p>A base class for query parameters that provides validation via the <code>check_params</code> method.</p>
+        <p>A base class for query parameters that provides validation via the <code>check_params</code> method.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -2805,9 +2805,9 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.BaseQueryParams.unsupported_params" optional hover>unsupported_params</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.BaseQueryParams.unsupported_params">unsupported_params</span></code></td>
             <td>
-                  <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code>list[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2989,7 +2989,7 @@ are not implemented by the server, e.g., cursor-based pagination.</p>
 
     <div class="doc doc-contents ">
 
-      <p>This method checks whether all the query parameters that are specified
+        <p>This method checks whether all the query parameters that are specified
 in the URL string are implemented in the relevant <code>*QueryParams</code> class.</p>
 <p>This method handles four cases:</p>
 <ul>
@@ -3019,7 +3019,7 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
           <tr class="doc-section-item">
             <td><code>query_params</code></td>
             <td>
-                  <code><autoref identifier="collections.abc.Iterable" optional hover>Iterable</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3203,10 +3203,10 @@ does not have a valid prefix.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="optimade.server.query_params.BaseQueryParams" optional hover>BaseQueryParams</autoref></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
 
 
-      <p>Common query params for all Entry listing endpoints.</p>
+        <p>Common query params for all Entry listing endpoints.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -3220,9 +3220,9 @@ does not have a valid prefix.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.filter" optional hover>filter</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.filter">filter</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3231,9 +3231,9 @@ does not have a valid prefix.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.response_format" optional hover>response_format</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.response_format">response_format</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3244,9 +3244,9 @@ Defaults to the format string 'json', which specifies the standard output format
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.email_address" optional hover>email_address</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.email_address">email_address</span></code></td>
             <td>
-                  <code><autoref identifier="pydantic.EmailStr" optional hover>EmailStr</autoref></code>
+                  <code><span title="pydantic.EmailStr">EmailStr</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3257,9 +3257,9 @@ The email SHOULD be that of a person and not an automatic system.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.response_fields" optional hover>response_fields</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.response_fields">response_fields</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3271,9 +3271,9 @@ Other OPTIONAL fields MUST NOT be returned when this parameter is present.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.sort" optional hover>sort</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.sort">sort</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3294,9 +3294,9 @@ An example is shown in the section Entry Listing Info Endpoints.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.page_limit" optional hover>page_limit</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_limit">page_limit</span></code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3311,9 +3311,9 @@ The default limit value is up to the API implementation to decide.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.page_offset" optional hover>page_offset</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_offset">page_offset</span></code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3323,9 +3323,9 @@ The default limit value is up to the API implementation to decide.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.page_number" optional hover>page_number</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_number">page_number</span></code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3336,9 +3336,9 @@ It is RECOMMENDED that the first page has number 1, i.e., that <code>page_number
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.page_cursor" optional hover>page_cursor</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_cursor">page_cursor</span></code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3347,9 +3347,9 @@ It is RECOMMENDED that the first page has number 1, i.e., that <code>page_number
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.page_above" optional hover>page_above</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_above">page_above</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3360,9 +3360,9 @@ increasing <code>id</code>, so <code>page_above</code> value refers to an <code>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.page_below" optional hover>page_below</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_below">page_below</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3371,9 +3371,9 @@ increasing <code>id</code>, so <code>page_above</code> value refers to an <code>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.include" optional hover>include</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.include">include</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3392,9 +3392,9 @@ field <code>included</code>, as per the definition of <code>included</code>, see
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.EntryListingQueryParams.api_hint" optional hover>api_hint</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.EntryListingQueryParams.api_hint">api_hint</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3826,7 +3826,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 
     <div class="doc doc-contents ">
 
-      <p>This method checks whether all the query parameters that are specified
+        <p>This method checks whether all the query parameters that are specified
 in the URL string are implemented in the relevant <code>*QueryParams</code> class.</p>
 <p>This method handles four cases:</p>
 <ul>
@@ -3856,7 +3856,7 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
           <tr class="doc-section-item">
             <td><code>query_params</code></td>
             <td>
-                  <code><autoref identifier="collections.abc.Iterable" optional hover>Iterable</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4040,10 +4040,10 @@ does not have a valid prefix.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="optimade.server.query_params.BaseQueryParams" optional hover>BaseQueryParams</autoref></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
 
 
-      <p>Common query params for single entry endpoints.</p>
+        <p>Common query params for single entry endpoints.</p>
 
 
 <p><span class="doc-section-title">Attributes:</span></p>
@@ -4057,9 +4057,9 @@ does not have a valid prefix.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.SingleEntryQueryParams.response_format" optional hover>response_format</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.response_format">response_format</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4070,9 +4070,9 @@ Defaults to the format string 'json', which specifies the standard output format
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.SingleEntryQueryParams.email_address" optional hover>email_address</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.email_address">email_address</span></code></td>
             <td>
-                  <code><autoref identifier="pydantic.EmailStr" optional hover>EmailStr</autoref></code>
+                  <code><span title="pydantic.EmailStr">EmailStr</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4083,9 +4083,9 @@ The email SHOULD be that of a person and not an automatic system.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.SingleEntryQueryParams.response_fields" optional hover>response_fields</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.response_fields">response_fields</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4097,9 +4097,9 @@ Other OPTIONAL fields MUST NOT be returned when this parameter is present.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.SingleEntryQueryParams.include" optional hover>include</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.include">include</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4118,9 +4118,9 @@ field <code>included</code>, as per the definition of <code>included</code>, see
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.server.query_params.SingleEntryQueryParams.api_hint" optional hover>api_hint</autoref></code></td>
+            <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.api_hint">api_hint</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4328,7 +4328,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
 
     <div class="doc doc-contents ">
 
-      <p>This method checks whether all the query parameters that are specified
+        <p>This method checks whether all the query parameters that are specified
 in the URL string are implemented in the relevant <code>*QueryParams</code> class.</p>
 <p>This method handles four cases:</p>
 <ul>
@@ -4358,7 +4358,7 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
           <tr class="doc-section-item">
             <td><code>query_params</code></td>
             <td>
-                  <code><autoref identifier="collections.abc.Iterable" optional hover>Iterable</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">

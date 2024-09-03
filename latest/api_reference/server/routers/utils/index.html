@@ -2790,10 +2790,10 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="fastapi.responses.JSONResponse" optional hover>JSONResponse</autoref></code></p>
+              Bases: <code><span title="fastapi.responses.JSONResponse">JSONResponse</span></code></p>
 
 
-      <p>This class simply patches <code>fastapi.responses.JSONResponse</code> to use the
+        <p>This class simply patches <code>fastapi.responses.JSONResponse</code> to use the
 JSON:API 'application/vnd.api+json' MIME type.</p>
 
               <details class="quote">
@@ -2846,7 +2846,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Get base URL for current server</p>
+        <p>Get base URL for current server</p>
 <p>Take the base URL from the config file, if it exists, otherwise use the request.</p>
 
             <details class="quote">
@@ -2905,7 +2905,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Generalized /{entry} endpoint getter</p>
+        <p>Generalized /{entry} endpoint getter</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
@@ -3033,7 +3033,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Filters the included relationships and makes the appropriate compound request
+        <p>Filters the included relationships and makes the appropriate compound request
 to include them in the response.</p>
 
 
@@ -3051,7 +3051,7 @@ to include them in the response.</p>
           <tr class="doc-section-item">
             <td><code>results</code></td>
             <td>
-                  <code><autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="optimade.models.EntryResource" optional hover>EntryResource</autoref>, <autoref identifier="list" optional>list</autoref>[<autoref identifier="optimade.models.EntryResource" optional hover>EntryResource</autoref>], <autoref identifier="dict" optional>dict</autoref>, <autoref identifier="list" optional>list</autoref>[<autoref identifier="dict" optional>dict</autoref>]]</code>
+                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>, list[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>], dict, list[dict]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3065,7 +3065,7 @@ to include them in the response.</p>
           <tr class="doc-section-item">
             <td><code>ENTRY_COLLECTIONS</code></td>
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="optimade.server.entry_collections.EntryCollection" optional hover>EntryCollection</autoref>]</code>
+                  <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.server.entry_collections.EntryCollection" href="../../entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3080,7 +3080,7 @@ based on endpoint type.</p>
           <tr class="doc-section-item">
             <td><code>include_param</code></td>
             <td>
-                  <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code>list[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3107,7 +3107,7 @@ based on endpoint type.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="optimade.models.EntryResource" optional hover>EntryResource</autoref>, <autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>]]]</code>
+                  <code>list[<span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>, dict[str, <span title="typing.Any">Any</span>]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3309,7 +3309,7 @@ of resource objects for that entry type.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</p>
+        <p>Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</p>
 <p>Fallback order if providers.optimade.org is not available:</p>
 <ol>
 <li>Try Materials-Consortia/providers on GitHub.</li>
@@ -3333,7 +3333,7 @@ of resource objects for that entry type.</p>
           <tr class="doc-section-item">
             <td><code>add_mongo_id</code></td>
             <td>
-                  <code><autoref identifier="bool" optional>bool</autoref></code>
+                  <code>bool</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3360,7 +3360,7 @@ ObjectID.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="list" optional>list</autoref></code>
+                  <code>list</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3525,7 +3525,7 @@ ObjectID.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Handle query parameter <code>response_fields</code>.</p>
+        <p>Handle query parameter <code>response_fields</code>.</p>
 <p>It is assumed that all fields are under <code>attributes</code>.
 This is due to all other top-level fields are REQUIRED in the response.</p>
 
@@ -3544,7 +3544,7 @@ This is due to all other top-level fields are REQUIRED in the response.</p>
           <tr class="doc-section-item">
             <td><code>exclude_fields</code></td>
             <td>
-                  <code><autoref identifier="set" optional>set</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code>set[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3558,7 +3558,7 @@ This is due to all other top-level fields are REQUIRED in the response.</p>
           <tr class="doc-section-item">
             <td><code>include_fields</code></td>
             <td>
-                  <code><autoref identifier="set" optional>set</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code>set[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3585,7 +3585,7 @@ set to null if missing in the entry.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>]]</code>
+                  <code>list[dict[str, <span title="typing.Any">Any</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3595,7 +3595,7 @@ set to null if missing in the entry.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="dict" optional>dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="typing.Any" optional hover>Any</autoref>]]</code>
+                  <code>list[dict[str, <span title="typing.Any">Any</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3712,7 +3712,7 @@ set to null if missing in the entry.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Helper to initialize the meta values</p>
+        <p>Helper to initialize the meta values</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
@@ -3802,7 +3802,7 @@ set to null if missing in the entry.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Produce a MongoDB ObjectId for a database</p>
+        <p>Produce a MongoDB ObjectId for a database</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/utils.py</code></summary>

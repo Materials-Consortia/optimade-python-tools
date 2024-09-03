@@ -2790,7 +2790,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>A tuple of all pairs of exceptions and handler functions that allow for
+        <p>A tuple of all pairs of exceptions and handler functions that allow for
 appropriate responses to be returned in certain scenarios according to the
 OPTIMADE specification.</p>
 <p>To use these in FastAPI app code:</p>
@@ -2816,7 +2816,7 @@ OPTIMADE specification.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Handle an exception</p>
+        <p>Handle an exception</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -2833,7 +2833,7 @@ OPTIMADE specification.</p>
           <tr class="doc-section-item">
             <td><code>request</code></td>
             <td>
-                  <code><autoref identifier="fastapi.Request" optional hover>Request</autoref></code>
+                  <code><span title="fastapi.Request">Request</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2847,7 +2847,7 @@ OPTIMADE specification.</p>
           <tr class="doc-section-item">
             <td><code>exc</code></td>
             <td>
-                  <code><autoref identifier="Exception" optional>Exception</autoref></code>
+                  <code>Exception</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2861,7 +2861,7 @@ OPTIMADE specification.</p>
           <tr class="doc-section-item">
             <td><code>status_code</code></td>
             <td>
-                  <code><autoref identifier="int" optional>int</autoref></code>
+                  <code>int</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2875,7 +2875,7 @@ OPTIMADE specification.</p>
           <tr class="doc-section-item">
             <td><code>errors</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="list" optional>list</autoref>[<autoref identifier="optimade.models.OptimadeError" optional hover>OptimadeError</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[list[<a class="autorefs autorefs-internal" title="optimade.models.OptimadeError" href="../../../all_models/#optimade.models.OptimadeError">OptimadeError</a>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2902,7 +2902,7 @@ OPTIMADE specification.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.server.routers.utils.JSONAPIResponse" optional hover>JSONAPIResponse</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.server.routers.utils.JSONAPIResponse" href="../routers/utils/#optimade.server.routers.utils.JSONAPIResponse">JSONAPIResponse</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3053,7 +3053,7 @@ OPTIMADE specification.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Catch all Python Exceptions not handled by other exception handlers</p>
+        <p>Catch all Python Exceptions not handled by other exception handlers</p>
 <p>Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
 
 
@@ -3071,7 +3071,7 @@ OPTIMADE specification.</p>
           <tr class="doc-section-item">
             <td><code>request</code></td>
             <td>
-                  <code><autoref identifier="fastapi.Request" optional hover>Request</autoref></code>
+                  <code><span title="fastapi.Request">Request</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3085,7 +3085,7 @@ OPTIMADE specification.</p>
           <tr class="doc-section-item">
             <td><code>exc</code></td>
             <td>
-                  <code><autoref identifier="Exception" optional>Exception</autoref></code>
+                  <code>Exception</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3111,7 +3111,7 @@ OPTIMADE specification.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.server.routers.utils.JSONAPIResponse" optional hover>JSONAPIResponse</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.server.routers.utils.JSONAPIResponse" href="../routers/utils/#optimade.server.routers.utils.JSONAPIResponse">JSONAPIResponse</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3168,7 +3168,7 @@ OPTIMADE specification.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Handle an error raised by Lark during filter transformation</p>
+        <p>Handle an error raised by Lark during filter transformation</p>
 <p>All errors raised during filter transformation are wrapped in the Lark <code>VisitError</code>.
 According to the OPTIMADE specification, these errors are repurposed to be 501 NotImplementedErrors.</p>
 <p>For special exceptions, like <a class="autorefs autorefs-internal" href="../../exceptions/#optimade.exceptions.BadRequest"><code>BadRequest</code></a>, we pass-through to
@@ -3190,7 +3190,7 @@ return a 501 NotImplementedError.</p>
           <tr class="doc-section-item">
             <td><code>request</code></td>
             <td>
-                  <code><autoref identifier="fastapi.Request" optional hover>Request</autoref></code>
+                  <code><span title="fastapi.Request">Request</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3204,7 +3204,7 @@ return a 501 NotImplementedError.</p>
           <tr class="doc-section-item">
             <td><code>exc</code></td>
             <td>
-                  <code><autoref identifier="lark.exceptions.VisitError" optional hover>VisitError</autoref></code>
+                  <code><span title="lark.exceptions.VisitError">VisitError</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3230,7 +3230,7 @@ return a 501 NotImplementedError.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.server.routers.utils.JSONAPIResponse" optional hover>JSONAPIResponse</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.server.routers.utils.JSONAPIResponse" href="../routers/utils/#optimade.server.routers.utils.JSONAPIResponse">JSONAPIResponse</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3333,7 +3333,7 @@ return a 501 NotImplementedError.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Handle a general HTTP Exception from Starlette</p>
+        <p>Handle a general HTTP Exception from Starlette</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3350,7 +3350,7 @@ return a 501 NotImplementedError.</p>
           <tr class="doc-section-item">
             <td><code>request</code></td>
             <td>
-                  <code><autoref identifier="fastapi.Request" optional hover>Request</autoref></code>
+                  <code><span title="fastapi.Request">Request</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3364,7 +3364,7 @@ return a 501 NotImplementedError.</p>
           <tr class="doc-section-item">
             <td><code>exc</code></td>
             <td>
-                  <code><autoref identifier="typing.Union" optional hover>Union</autoref>[<autoref identifier="fastapi.exceptions.StarletteHTTPException" optional hover>StarletteHTTPException</autoref>, <autoref identifier="optimade.exceptions.OptimadeHTTPException" optional hover>OptimadeHTTPException</autoref>]</code>
+                  <code><span title="typing.Union">Union</span>[<span title="fastapi.exceptions.StarletteHTTPException">StarletteHTTPException</span>, <a class="autorefs autorefs-internal" title="optimade.exceptions.OptimadeHTTPException" href="../../exceptions/#optimade.exceptions.OptimadeHTTPException">OptimadeHTTPException</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3390,7 +3390,7 @@ return a 501 NotImplementedError.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.server.routers.utils.JSONAPIResponse" optional hover>JSONAPIResponse</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.server.routers.utils.JSONAPIResponse" href="../routers/utils/#optimade.server.routers.utils.JSONAPIResponse">JSONAPIResponse</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3449,7 +3449,7 @@ return a 501 NotImplementedError.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Handle a standard NotImplementedError Python exception</p>
+        <p>Handle a standard NotImplementedError Python exception</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3466,7 +3466,7 @@ return a 501 NotImplementedError.</p>
           <tr class="doc-section-item">
             <td><code>request</code></td>
             <td>
-                  <code><autoref identifier="fastapi.Request" optional hover>Request</autoref></code>
+                  <code><span title="fastapi.Request">Request</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3480,7 +3480,7 @@ return a 501 NotImplementedError.</p>
           <tr class="doc-section-item">
             <td><code>exc</code></td>
             <td>
-                  <code><autoref identifier="NotImplementedError" optional>NotImplementedError</autoref></code>
+                  <code>NotImplementedError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3506,7 +3506,7 @@ return a 501 NotImplementedError.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.server.routers.utils.JSONAPIResponse" optional hover>JSONAPIResponse</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.server.routers.utils.JSONAPIResponse" href="../routers/utils/#optimade.server.routers.utils.JSONAPIResponse">JSONAPIResponse</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3571,7 +3571,7 @@ return a 501 NotImplementedError.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Handle a request validation error from FastAPI</p>
+        <p>Handle a request validation error from FastAPI</p>
 <p><code>RequestValidationError</code> is a specialization of a general pydantic <code>ValidationError</code>.
 Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
 
@@ -3590,7 +3590,7 @@ Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.s
           <tr class="doc-section-item">
             <td><code>request</code></td>
             <td>
-                  <code><autoref identifier="fastapi.Request" optional hover>Request</autoref></code>
+                  <code><span title="fastapi.Request">Request</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3604,7 +3604,7 @@ Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.s
           <tr class="doc-section-item">
             <td><code>exc</code></td>
             <td>
-                  <code><autoref identifier="fastapi.exceptions.RequestValidationError" optional hover>RequestValidationError</autoref></code>
+                  <code><span title="fastapi.exceptions.RequestValidationError">RequestValidationError</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3630,7 +3630,7 @@ Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.s
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.server.routers.utils.JSONAPIResponse" optional hover>JSONAPIResponse</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.server.routers.utils.JSONAPIResponse" href="../routers/utils/#optimade.server.routers.utils.JSONAPIResponse">JSONAPIResponse</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3693,7 +3693,7 @@ Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.s
 
     <div class="doc doc-contents ">
 
-      <p>Handle a general pydantic validation error</p>
+        <p>Handle a general pydantic validation error</p>
 <p>The pydantic <code>ValidationError</code> usually contains a list of errors,
 this function extracts them and wraps them in the OPTIMADE specific error resource.</p>
 
@@ -3712,7 +3712,7 @@ this function extracts them and wraps them in the OPTIMADE specific error resour
           <tr class="doc-section-item">
             <td><code>request</code></td>
             <td>
-                  <code><autoref identifier="fastapi.Request" optional hover>Request</autoref></code>
+                  <code><span title="fastapi.Request">Request</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3726,7 +3726,7 @@ this function extracts them and wraps them in the OPTIMADE specific error resour
           <tr class="doc-section-item">
             <td><code>exc</code></td>
             <td>
-                  <code><autoref identifier="pydantic.ValidationError" optional hover>ValidationError</autoref></code>
+                  <code><span title="pydantic.ValidationError">ValidationError</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3752,7 +3752,7 @@ this function extracts them and wraps them in the OPTIMADE specific error resour
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.server.routers.utils.JSONAPIResponse" optional hover>JSONAPIResponse</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.server.routers.utils.JSONAPIResponse" href="../routers/utils/#optimade.server.routers.utils.JSONAPIResponse">JSONAPIResponse</a></code>
             </td>
             <td>
               <div class="doc-md-description">

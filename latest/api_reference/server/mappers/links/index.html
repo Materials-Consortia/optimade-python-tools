@@ -2928,7 +2928,7 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="optimade.server.mappers.entries.BaseResourceMapper" optional hover>BaseResourceMapper</autoref></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper" href="../entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a></code></p>
 
 
               <details class="quote">
@@ -2992,7 +2992,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>Returns all attributes served by this entry.</p>
+        <p>Returns all attributes served by this entry.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
@@ -3054,7 +3054,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>Returns the expected endpoint for this mapper, corresponding
+        <p>Returns the expected endpoint for this mapper, corresponding
 to the <code>type</code> property of the resource class.</p>
 
             <details class="quote">
@@ -3097,7 +3097,7 @@ to the <code>type</code> property of the resource class.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Returns the dictionary of attributes defined by the underlying entry resource class.</p>
+        <p>Returns the dictionary of attributes defined by the underlying entry resource class.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
@@ -3133,7 +3133,7 @@ to the <code>type</code> property of the resource class.</p>
 
     <div class="doc doc-contents ">
 
-      <p>A set of prefixes handled by this entry type.</p>
+        <p>A set of prefixes handled by this entry type.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This implementation only includes the provider prefix,
@@ -3195,7 +3195,7 @@ domain-specific terms).</p>
 
     <div class="doc doc-contents ">
 
-      <p>Return aliased field name.</p>
+        <p>Return aliased field name.</p>
 <div class="admonition warning">
 <p class="admonition-title">Deprecated</p>
 <p>This method is deprecated could be removed without further warning. Please use
@@ -3217,7 +3217,7 @@ domain-specific terms).</p>
           <tr class="doc-section-item">
             <td><code>field</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3243,7 +3243,7 @@ domain-specific terms).</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3319,7 +3319,7 @@ domain-specific terms).</p>
 
     <div class="doc doc-contents ">
 
-      <p>Return de-aliased field name, if it exists,
+        <p>Return de-aliased field name, if it exists,
 otherwise return the input field name.</p>
 <div class="admonition warning">
 <p class="admonition-title">Deprecated</p>
@@ -3342,7 +3342,7 @@ otherwise return the input field name.</p>
           <tr class="doc-section-item">
             <td><code>field</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3368,7 +3368,7 @@ otherwise return the input field name.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3446,7 +3446,7 @@ otherwise return the input field name.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Returns all of the associated aliases for this entry type,
+        <p>Returns all of the associated aliases for this entry type,
 including those defined by the server config. The first member
 of each tuple is the OPTIMADE-compliant field name, the second
 is the backend-specific field name.</p>
@@ -3463,7 +3463,7 @@ is the backend-specific field name.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="collections.abc.Iterable" optional hover>Iterable</autoref>[<autoref identifier="tuple" optional>tuple</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3573,7 +3573,7 @@ is the backend-specific field name.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Returns all of the associated length aliases for this class,
+        <p>Returns all of the associated length aliases for this class,
 including those defined by the server config.</p>
 
 
@@ -3588,7 +3588,7 @@ including those defined by the server config.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="tuple" optional>tuple</autoref>[<autoref identifier="tuple" optional>tuple</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="str" optional>str</autoref>], ...]</code>
+                  <code>tuple[tuple[str, str], ...]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3651,7 +3651,7 @@ including those defined by the server config.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Converts the raw database entries for this class into serialized models,
+        <p>Converts the raw database entries for this class into serialized models,
 mapping the data along the way.</p>
 
             <details class="quote">
@@ -3701,7 +3701,7 @@ mapping the data along the way.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Return the field name configured for the particular
+        <p>Return the field name configured for the particular
 underlying database for the passed OPTIMADE field name, that would
 be used in an API filter.</p>
 <p>Aliases are read from
@@ -3725,7 +3725,7 @@ will return <code>kinds.mass</code>.</p>
           <tr class="doc-section-item">
             <td><code>optimade_field</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3761,7 +3761,7 @@ will return <code>kinds.mass</code>.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3863,7 +3863,7 @@ will return <code>kinds.mass</code>.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Return the corresponding OPTIMADE field name for the underlying database field,
+        <p>Return the corresponding OPTIMADE field name for the underlying database field,
 ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 <p>Aliases are read from
 <a class="autorefs autorefs-internal" href="../entries/#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
@@ -3883,7 +3883,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
           <tr class="doc-section-item">
             <td><code>backend_field</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3919,7 +3919,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4007,7 +4007,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Get REQUIRED response fields.</p>
+        <p>Get REQUIRED response fields.</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -4021,7 +4021,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="set" optional>set</autoref></code>
+                  <code>set</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4075,7 +4075,7 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Returns the length alias for the particular field,
+        <p>Returns the length alias for the particular field,
 or <code>None</code> if no such alias is found.</p>
 
 
@@ -4093,7 +4093,7 @@ or <code>None</code> if no such alias is found.</p>
           <tr class="doc-section-item">
             <td><code>field</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4119,7 +4119,7 @@ or <code>None</code> if no such alias is found.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4180,7 +4180,7 @@ or <code>None</code> if no such alias is found.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Map properties from MongoDB to OPTIMADE</p>
+        <p>Map properties from MongoDB to OPTIMADE</p>
 <p>:param doc: A resource object in MongoDB format
 :type doc: dict</p>
 <p>:return: A resource object in OPTIMADE format

@@ -2902,10 +2902,10 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="optimade.filtertransformers.BaseTransformer" optional hover>BaseTransformer</autoref></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.filtertransformers.BaseTransformer" href="../base_transformer/#optimade.filtertransformers.base_transformer.BaseTransformer">BaseTransformer</a></code></p>
 
 
-      <p>Transformer that transforms <code>v0.10.1</code>/<code>v1.0</code> grammar parse
+        <p>Transformer that transforms <code>v0.10.1</code>/<code>v1.0</code> grammar parse
 trees into Elasticsearch queries.</p>
 <p>Uses elasticsearch_dsl and will produce an <code>elasticsearch_dsl.Q</code> instance.</p>
 
@@ -3713,7 +3713,7 @@ trees into Elasticsearch queries.</p>
 
     <div class="doc doc-contents ">
 
-      <p>A mapping between backend field names (aliases) and the corresponding
+        <p>A mapping between backend field names (aliases) and the corresponding
 <a class="autorefs autorefs-internal" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> object.</p>
     </div>
 
@@ -3732,7 +3732,7 @@ trees into Elasticsearch queries.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Default behavior for rules that only replace one symbol with another</p>
+        <p>Default behavior for rules that only replace one symbol with another</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/elasticsearch.py</code></summary>
@@ -3758,7 +3758,7 @@ trees into Elasticsearch queries.</p>
 
     <div class="doc doc-contents ">
 
-      <p>comparison: constant_first_comparison | property_first_comparison</p>
+        <p>comparison: constant_first_comparison | property_first_comparison</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -3788,7 +3788,7 @@ trees into Elasticsearch queries.</p>
 
     <div class="doc doc-contents ">
 
-      <p>constant: string | number</p>
+        <p>constant: string | number</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -3818,7 +3818,7 @@ trees into Elasticsearch queries.</p>
 
     <div class="doc doc-contents ">
 
-      <p>non_string_value: number | property</p>
+        <p>non_string_value: number | property</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -3848,7 +3848,7 @@ trees into Elasticsearch queries.</p>
 
     <div class="doc doc-contents ">
 
-      <p>not_implemented_string: value</p>
+        <p>not_implemented_string: value</p>
 
 
 <p><span class="doc-section-title">Raises:</span></p>
@@ -3862,7 +3862,7 @@ trees into Elasticsearch queries.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="NotImplementedError" optional>NotImplementedError</autoref></code>
+                  <code>NotImplementedError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3912,7 +3912,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 
     <div class="doc doc-contents ">
 
-      <p>Post-process the query according to the rules defined for
+        <p>Post-process the query according to the rules defined for
 the backend, returning the backend-specific query.</p>
 
             <details class="quote">
@@ -3945,7 +3945,7 @@ the backend, returning the backend-specific query.</p>
 
     <div class="doc doc-contents ">
 
-      <p>property: IDENTIFIER ( "." IDENTIFIER )*</p>
+        <p>property: IDENTIFIER ( "." IDENTIFIER )*</p>
 <p>If this transformer has an associated mapper, the property
 will be compared to possible relationship entry types and
 for any supported provider prefixes. If there is a match,
@@ -3964,7 +3964,7 @@ this rule will return a string and not a dereferenced
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.exceptions.BadRequest" optional hover>BadRequest</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4094,7 +4094,7 @@ of the above rules.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Transform the query using the Lark <code>Transformer</code> then run the
+        <p>Transform the query using the Lark <code>Transformer</code> then run the
 backend-specific post-processing methods.</p>
 
             <details class="quote">
@@ -4127,7 +4127,7 @@ backend-specific post-processing methods.</p>
 
     <div class="doc doc-contents ">
 
-      <p>value: string | number | property</p>
+        <p>value: string | number | property</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4167,10 +4167,10 @@ backend-specific post-processing methods.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="optimade.filtertransformers.Quantity" optional hover>Quantity</autoref></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.filtertransformers.Quantity" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity">Quantity</a></code></p>
 
 
-      <p>Elasticsearch-specific extension of the underlying
+        <p>Elasticsearch-specific extension of the underlying
 <a class="autorefs autorefs-internal" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> class.</p>
 
 
@@ -4185,9 +4185,9 @@ backend-specific post-processing methods.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.name" optional hover>name</autoref></code></td>
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.name">name</span></code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4196,9 +4196,9 @@ backend-specific post-processing methods.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.backend_field" optional hover>backend_field</autoref></code></td>
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.backend_field">backend_field</span></code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4208,9 +4208,9 @@ backend-specific post-processing methods.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.elastic_mapping_type" optional hover>elastic_mapping_type</autoref></code></td>
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.elastic_mapping_type">elastic_mapping_type</span></code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="elasticsearch_dsl.Field" optional hover>Field</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="elasticsearch_dsl.Field">Field</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4220,9 +4220,9 @@ mapping type was used in the Elasticsearch index.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.length_quantity" optional hover>length_quantity</autoref></code></td>
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.length_quantity">length_quantity</span></code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" optional hover>ElasticsearchQuantity</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4233,9 +4233,9 @@ LENGTH operator will only be supported for quantities with this attribute.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.has_only_quantity" optional hover>has_only_quantity</autoref></code></td>
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.has_only_quantity">has_only_quantity</span></code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" optional hover>ElasticsearchQuantity</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4248,9 +4248,9 @@ with this attribute.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.nested_quantity" optional hover>nested_quantity</autoref></code></td>
+            <td><code><span title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity.nested_quantity">nested_quantity</span></code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" optional hover>ElasticsearchQuantity</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4434,7 +4434,7 @@ work for quantities that share the same nested object quantity.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Initialise the quantity from its name, aliases and mapping type.</p>
+        <p>Initialise the quantity from its name, aliases and mapping type.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -4451,7 +4451,7 @@ work for quantities that share the same nested object quantity.</p>
           <tr class="doc-section-item">
             <td><code>name</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4465,7 +4465,7 @@ work for quantities that share the same nested object quantity.</p>
           <tr class="doc-section-item">
             <td><code>backend_field</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4480,7 +4480,7 @@ work for quantities that share the same nested object quantity.</p>
           <tr class="doc-section-item">
             <td><code>elastic_mapping_type</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="elasticsearch_dsl.Field" optional hover>Field</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="elasticsearch_dsl.Field">Field</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4495,7 +4495,7 @@ mapping type was used in the Elasticsearch index.</p>
           <tr class="doc-section-item">
             <td><code>length_quantity</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" optional hover>ElasticsearchQuantity</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4511,7 +4511,7 @@ LENGTH operator will only be supported for quantities with this attribute.</p>
           <tr class="doc-section-item">
             <td><code>has_only_quantity</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" optional hover>ElasticsearchQuantity</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4529,7 +4529,7 @@ with this attribute.</p>
           <tr class="doc-section-item">
             <td><code>nested_quantity</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" optional hover>ElasticsearchQuantity</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="optimade.filtertransformers.elasticsearch.ElasticsearchQuantity" href="#optimade.filtertransformers.elasticsearch.ElasticsearchQuantity">ElasticsearchQuantity</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">

@@ -3684,7 +3684,7 @@
 
     <div class="doc doc-contents ">
 
-      <p>This singleton loads the config from a hierarchy of sources (see
+        <p>This singleton loads the config from a hierarchy of sources (see
 <a class="autorefs autorefs-internal" href="#optimade.server.config.ServerConfig.settings_customise_sources"><code>customise_sources</code></a>)
 and makes it importable in the server code.</p>
     </div>
@@ -3707,7 +3707,7 @@ and makes it importable in the server code.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Default configuration file path.</p>
+        <p>Default configuration file path.</p>
 <p>This variable is used as the fallback value if the environment variable
 <code>OPTIMADE_CONFIG_FILE</code> is not set.</p>
 <div class="admonition note">
@@ -3733,10 +3733,10 @@ and makes it importable in the server code.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="pydantic_settings.PydanticBaseSettingsSource" optional hover>PydanticBaseSettingsSource</autoref></code></p>
+              Bases: <code><span title="pydantic_settings.PydanticBaseSettingsSource">PydanticBaseSettingsSource</span></code></p>
 
 
-      <p>Configuration file settings source.</p>
+        <p>Configuration file settings source.</p>
 <p>Based on the example in the
 <a href="https://docs.pydantic.dev/latest/concepts/pydantic_settings/#customise-settings-sources">pydantic documentation</a>,
 this class defines loading ServerConfig settings from a configuration file.</p>
@@ -3929,7 +3929,7 @@ this class defines loading ServerConfig settings from a configuration file.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Must be defined according to parent abstract class.</p>
+        <p>Must be defined according to parent abstract class.</p>
 <p>It does not make sense to use it for this class, since 'extra' is set to
 'allow'. We will instead just parse and take every key/field specified in the
 config file.</p>
@@ -3972,7 +3972,7 @@ config file.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Parse the config file and return a dictionary of its content.</p>
+        <p>Parse the config file and return a dictionary of its content.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -4092,10 +4092,10 @@ config file.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="enum.Enum" optional hover>Enum</autoref></code></p>
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
 
 
-      <p>Replication of logging LogLevels</p>
+        <p>Replication of logging LogLevels</p>
 <ul>
 <li><code>notset</code></li>
 <li><code>debug</code></li>
@@ -4298,10 +4298,10 @@ config file.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="pydantic_settings.BaseSettings" optional hover>BaseSettings</autoref></code></p>
+              Bases: <code><span title="pydantic_settings.BaseSettings">BaseSettings</span></code></p>
 
 
-      <p>This class stores server config parameters in a way that
+        <p>This class stores server config parameters in a way that
 can be easily extended for new config file types.</p>
 
               <details class="quote">
@@ -5711,7 +5711,7 @@ can be easily extended for new config file types.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Check that the path to the JSONL file is valid.</p>
+        <p>Check that the path to the JSONL file is valid.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -5751,7 +5751,7 @@ can be easily extended for new config file types.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Set defaults and modify bypassed value(s)</p>
+        <p>Set defaults and modify bypassed value(s)</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -5805,7 +5805,7 @@ can be easily extended for new config file types.</p>
 
     <div class="doc doc-contents ">
 
-      <p><strong>Priority of config settings sources</strong>:</p>
+        <p><strong>Priority of config settings sources</strong>:</p>
 <ol>
 <li>Passed arguments upon initialization of
     <a class="autorefs autorefs-internal" href="#optimade.server.config.ServerConfig"><code>ServerConfig</code></a>.</li>
@@ -5905,7 +5905,7 @@ can be easily extended for new config file types.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Overrides the <code>database_backend</code> setting with MongoDB and
+        <p>Overrides the <code>database_backend</code> setting with MongoDB and
 raises a deprecation warning.</p>
 
             <details class="quote">
@@ -5986,10 +5986,10 @@ raises a deprecation warning.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="enum.Enum" optional hover>Enum</autoref></code></p>
+              Bases: <code><span title="enum.Enum">Enum</span></code></p>
 
 
-      <p>Enumeration of supported database backends</p>
+        <p>Enumeration of supported database backends</p>
 <ul>
 <li><code>elastic</code>: <a href="https://www.elastic.co/">Elasticsearch</a>.</li>
 <li><code>mongodb</code>: <a href="https://www.mongodb.com/">MongoDB</a>.</li>

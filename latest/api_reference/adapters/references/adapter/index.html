@@ -2784,10 +2784,10 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><autoref identifier="optimade.adapters.base.EntryAdapter" optional hover>EntryAdapter</autoref></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="optimade.adapters.base.EntryAdapter" href="../../base/#optimade.adapters.base.EntryAdapter">EntryAdapter</a></code></p>
 
 
-      <p>Lazy reference resource converter.</p>
+        <p>Lazy reference resource converter.</p>
 <p>Go to <a class="autorefs autorefs-internal" href="../../base/#optimade.adapters.base.EntryAdapter"><code>EntryAdapter</code></a> to see the full list of methods
 and properties.</p>
 
@@ -2803,9 +2803,9 @@ and properties.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.adapters.references.adapter.Reference.ENTRY_RESOURCE" optional hover>ENTRY_RESOURCE</autoref></code></td>
+            <td><code><span title="optimade.adapters.references.adapter.Reference.ENTRY_RESOURCE">ENTRY_RESOURCE</span></code></td>
             <td>
-                  <code><autoref identifier="optimade.models.ReferenceResource" optional hover>ReferenceResource</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.ReferenceResource" href="../../../../all_models/#optimade.models.ReferenceResource">ReferenceResource</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2815,9 +2815,9 @@ and properties.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.adapters.references.adapter.Reference._type_converters" optional hover>_type_converters</autoref></code></td>
+            <td><code><span title="optimade.adapters.references.adapter.Reference._type_converters">_type_converters</span></code></td>
             <td>
-                  <code><autoref identifier="Dict" optional>Dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="Callable" optional>Callable</autoref>]</code>
+                  <code>Dict[str, Callable]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2827,9 +2827,9 @@ and properties.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><autoref identifier="optimade.adapters.references.adapter.Reference.as_&lt;_type_converters&gt;" optional hover>as_&lt;_type_converters&gt;</autoref></code></td>
+            <td><code><span title="optimade.adapters.references.adapter.Reference.as_<_type_converters>">as_&lt;_type_converters&gt;</span></code></td>
             <td>
-                  <code><autoref identifier="Dict" optional>Dict</autoref>[<autoref identifier="str" optional>str</autoref>, <autoref identifier="Callable" optional>Callable</autoref>]</code>
+                  <code>Dict[str, Callable]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2906,7 +2906,7 @@ and properties.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Get OPTIMADE entry.</p>
+        <p>Get OPTIMADE entry.</p>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -2920,7 +2920,7 @@ and properties.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="optimade.models.entries.EntryResource" optional hover>EntryResource</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.entries.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2947,7 +2947,7 @@ and properties.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Get converted entry or attribute from OPTIMADE entry.</p>
+        <p>Get converted entry or attribute from OPTIMADE entry.</p>
 <p>Support any level of "."-nested OPTIMADE <code>ENTRY_RESOURCE</code> attributes, e.g.,
 <code>attributes.species</code> for <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResource"><code>StuctureResource</code></a>.</p>
 
@@ -2957,7 +2957,7 @@ and properties.</p>
   <p>All nested attributes must individually be subclasses of <code>pydantic.BaseModel</code>,
 i.e., one can not access nested attributes in lists by passing a "."-nested <code>name</code> to this method,
 e.g., <code>attributes.species.name</code> or <code>attributes.species[0].name</code> will not work for variable <code>name</code>.</p>
-</details>      <p>Order:</p>
+</details>        <p>Order:</p>
 <ul>
 <li>Try to return converted entry if using <code>as_&lt;_type_converters key&gt;</code>.</li>
 <li>Try to return OPTIMADE <code>ENTRY_RESOURCE</code> (nested) attribute.</li>
@@ -2980,7 +2980,7 @@ e.g., <code>attributes.species.name</code> or <code>attributes.species[0].name</
           <tr class="doc-section-item">
             <td><code>name</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3006,7 +3006,7 @@ e.g., <code>attributes.species.name</code> or <code>attributes.species[0].name</
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="AttributeError" optional>AttributeError</autoref></code>
+                  <code>AttributeError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3160,7 +3160,7 @@ See above for the description of the order in which an attribute is tested for v
           <tr class="doc-section-item">
             <td><code>entry</code></td>
             <td>
-                  <code><autoref identifier="dict" optional>dict</autoref></code>
+                  <code>dict</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3224,7 +3224,7 @@ See above for the description of the order in which an attribute is tested for v
 
     <div class="doc doc-contents ">
 
-      <p>Convert OPTIMADE entry to desired format.</p>
+        <p>Convert OPTIMADE entry to desired format.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3241,7 +3241,7 @@ See above for the description of the order in which an attribute is tested for v
           <tr class="doc-section-item">
             <td><code>format</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3267,7 +3267,7 @@ See above for the description of the order in which an attribute is tested for v
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="AttributeError" optional>AttributeError</autoref></code>
+                  <code>AttributeError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3290,7 +3290,7 @@ See above for the description of the order in which an attribute is tested for v
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="typing.Any" optional hover>Any</autoref></code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3381,7 +3381,7 @@ See above for the description of the order in which an attribute is tested for v
 
     <div class="doc doc-contents ">
 
-      <p>Convert OPTIMADE URL into the target entry type.</p>
+        <p>Convert OPTIMADE URL into the target entry type.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3398,7 +3398,7 @@ See above for the description of the order in which an attribute is tested for v
           <tr class="doc-section-item">
             <td><code>url</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3424,7 +3424,7 @@ See above for the description of the order in which an attribute is tested for v
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="typing.Any" optional hover>Any</autoref></code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3521,7 +3521,7 @@ See above for the description of the order in which an attribute is tested for v
 
     <div class="doc doc-contents ">
 
-      <p>Convert desired format to OPTIMADE format.</p>
+        <p>Convert desired format to OPTIMADE format.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3538,7 +3538,7 @@ See above for the description of the order in which an attribute is tested for v
           <tr class="doc-section-item">
             <td><code>data</code></td>
             <td>
-                  <code><autoref identifier="typing.Any" optional hover>Any</autoref></code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3552,7 +3552,7 @@ See above for the description of the order in which an attribute is tested for v
           <tr class="doc-section-item">
             <td><code>format</code></td>
             <td>
-                  <code><autoref identifier="str" optional>str</autoref></code>
+                  <code>str</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3578,7 +3578,7 @@ See above for the description of the order in which an attribute is tested for v
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="AttributeError" optional>AttributeError</autoref></code>
+                  <code>AttributeError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3601,7 +3601,7 @@ See above for the description of the order in which an attribute is tested for v
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="typing.Any" optional hover>Any</autoref></code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">

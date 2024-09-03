@@ -2708,7 +2708,7 @@
 <a id="optimade.utils"></a>
     <div class="doc doc-contents first">
 
-      <p>This submodule implements some useful utilities for dealing
+        <p>This submodule implements some useful utilities for dealing
 with OPTIMADE providers that can be used in server or client code.</p>
 
 
@@ -2734,7 +2734,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Iterate through all databases reported by registered OPTIMADE providers.</p>
+        <p>Iterate through all databases reported by registered OPTIMADE providers.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -2751,7 +2751,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
           <tr class="doc-section-item">
             <td><code>include_providers</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="collections.abc.Container" optional hover>Container</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2765,7 +2765,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
           <tr class="doc-section-item">
             <td><code>exclude_providers</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="collections.abc.Container" optional hover>Container</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2779,7 +2779,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
           <tr class="doc-section-item">
             <td><code>exclude_databases</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="collections.abc.Container" optional hover>Container</autoref>[<autoref identifier="str" optional>str</autoref>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="collections.abc.Container">Container</span>[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2805,7 +2805,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="collections.abc.Iterable" optional hover>Iterable</autoref>[<autoref identifier="str" optional>str</autoref>]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2948,7 +2948,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
     <div class="doc doc-contents ">
 
-      <p>For a provider, return a list of available child databases.</p>
+        <p>For a provider, return a list of available child databases.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -2965,7 +2965,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
           <tr class="doc-section-item">
             <td><code>provider</code></td>
             <td>
-                  <code><autoref identifier="optimade.models.links.LinksResource" optional hover>LinksResource</autoref></code>
+                  <code><a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2979,7 +2979,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
           <tr class="doc-section-item">
             <td><code>obey_aggregate</code></td>
             <td>
-                  <code><autoref identifier="bool" optional>bool</autoref></code>
+                  <code>bool</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2994,7 +2994,7 @@ aggregation.</p>
           <tr class="doc-section-item">
             <td><code>headers</code></td>
             <td>
-                  <code><autoref identifier="typing.Optional" optional hover>Optional</autoref>[<autoref identifier="dict" optional>dict</autoref>]</code>
+                  <code><span title="typing.Optional">Optional</span>[dict]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3020,7 +3020,7 @@ aggregation.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="optimade.models.links.LinksResource" optional hover>LinksResource</autoref>]</code>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3030,7 +3030,7 @@ aggregation.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="list" optional>list</autoref>[<autoref identifier="optimade.models.links.LinksResource" optional hover>LinksResource</autoref>]</code>
+                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.links.LinksResource" href="../models/links/#optimade.models.links.LinksResource">LinksResource</a>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3053,7 +3053,7 @@ aggregation.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="RuntimeError" optional>RuntimeError</autoref></code>
+                  <code>RuntimeError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3217,7 +3217,7 @@ invalid, or the request otherwise fails.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</p>
+        <p>Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</p>
 <p>Fallback order if providers.optimade.org is not available:</p>
 <ol>
 <li>Try Materials-Consortia/providers on GitHub.</li>
@@ -3241,7 +3241,7 @@ invalid, or the request otherwise fails.</p>
           <tr class="doc-section-item">
             <td><code>add_mongo_id</code></td>
             <td>
-                  <code><autoref identifier="bool" optional>bool</autoref></code>
+                  <code>bool</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3268,7 +3268,7 @@ ObjectID.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><autoref identifier="list" optional>list</autoref></code>
+                  <code>list</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3433,7 +3433,7 @@ ObjectID.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Insert OPTIMADE JSON lines data into the database.</p>
+        <p>Insert OPTIMADE JSON lines data into the database.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3450,7 +3450,7 @@ ObjectID.</p>
           <tr class="doc-section-item">
             <td><code>jsonl_path</code></td>
             <td>
-                  <code><autoref identifier="pathlib.Path" optional hover>Path</autoref></code>
+                  <code><span title="pathlib.Path">Path</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3608,7 +3608,7 @@ ObjectID.</p>
 
     <div class="doc doc-contents ">
 
-      <p>Produce a MongoDB ObjectId for a database</p>
+        <p>Produce a MongoDB ObjectId for a database</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/utils.py</code></summary>
