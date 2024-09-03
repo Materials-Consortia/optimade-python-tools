@@ -109,7 +109,7 @@ jobs:
         submodules: true
 
     - name: Set up Fly
-      uses: superfly/flyctl-actions/setup-flyctl@main
+      uses: superfly/flyctl-actions/setup-flyctl@v1
 
     - name: Combine requirements for builder
       run: cat requirements-server.txt >> requirements.txt
