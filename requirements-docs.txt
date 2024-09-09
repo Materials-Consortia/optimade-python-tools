@@ -3,4 +3,4 @@ mkdocs==1.6.1
 mkdocs-autorefs==1.2.0
 mkdocs-awesome-pages-plugin==2.9.3
 mkdocs-material==9.5.34
-mkdocstrings[python]==0.26.0
+mkdocstrings[python]==0.26.1
