@@ -236,10 +236,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -489,10 +495,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -739,10 +751,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -907,10 +925,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -1157,10 +1181,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -1698,19 +1728,11 @@
       "EntryInfoResponse": {
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EntryInfoResource"
-              }
-            ],
+            "$ref": "#/components/schemas/EntryInfoResource",
             "description": "OPTIMADE information for an entry endpoint."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -1843,11 +1865,7 @@
             "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EntryResourceAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EntryResourceAttributes",
             "description": "A dictionary, containing key-value pairs representing the entry's properties, except for `type` and `id`.\nDatabase-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes)."
           },
           "relationships": {
@@ -2057,11 +2075,7 @@
             "description": "Outputted Data"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information."
           },
           "errors": {
@@ -2263,19 +2277,11 @@
       "InfoResponse": {
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseInfoResource"
-              }
-            ],
+            "$ref": "#/components/schemas/BaseInfoResource",
             "description": "The implementations /info data."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -2446,11 +2452,7 @@
             "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LinksResourceAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/LinksResourceAttributes",
             "description": "A dictionary containing key-value pairs representing the Links resource's properties."
           },
           "relationships": {
@@ -2521,11 +2523,7 @@
             "description": "JSON API links object, pointing to a homepage URL for this implementation"
           },
           "link_type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LinkType"
-              }
-            ],
+            "$ref": "#/components/schemas/LinkType",
             "title": "Link Type",
             "description": "The type of the linked relation.\nMUST be one of these values: 'child', 'root', 'external', 'providers'."
           },
@@ -2589,11 +2587,7 @@
             "description": "List of unique OPTIMADE links resource objects."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -3415,11 +3409,7 @@
             "description": "List of unique OPTIMADE references entry resource objects."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -3508,11 +3498,7 @@
             "description": "A single references entry resource."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -3722,11 +3708,7 @@
       "ResponseMeta": {
         "properties": {
           "query": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMetaQuery"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMetaQuery",
             "description": "Information on the Query that was requested"
           },
           "api_version": {
@@ -4456,11 +4438,7 @@
             "description": "List of unique OPTIMADE structures entry resource objects."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -4549,11 +4527,7 @@
             "description": "A single structures entry resource."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
