@@ -3,4 +3,4 @@ elasticsearch-dsl==7.4.1
 fastapi==0.115.0
 mongomock==4.2.0.post1
 pymongo==4.10.1
-starlette==0.39.2
+starlette==0.38.6
