@@ -67,7 +67,7 @@ mongo = ["pymongo~=4.0", "mongomock~=4.1"]
 server = [
     "uvicorn[standard]~=0.19",
     "fastapi>=0.103.1",
-    "starlette >= 0.38.2, < 0.39.0", # Pin starlette to avoid breaking changes in 0.38.3, seemingly related to using private aspects of the httpx API in the test client https://github.com/encode/starlette/issues/2673
+    "starlette >= 0.38.2, < 0.40.0", # Pin starlette to avoid breaking changes in 0.38.3, seemingly related to using private aspects of the httpx API in the test client https://github.com/encode/starlette/issues/2673
     "pyyaml~=6.0",
     "optimade[mongo]",
 ]

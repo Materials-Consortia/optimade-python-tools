@@ -3,4 +3,4 @@ ase==3.23.0
 jarvis-tools==2024.8.30
 numpy>=1.20
 pymatgen==2024.8.9; python_version == '3.9'
-pymatgen==2024.9.17.1; python_version > '3.9'
+pymatgen==2024.10.3; python_version > '3.9'
