@@ -107,7 +107,7 @@ testing = [
 
 dev = [
    "mypy~=1.0",
-   "pre-commit~=3.0",
+   "pre-commit>=3,<5",
    "invoke~=2.0",
    "types-requests",
    "types-pyyaml",
