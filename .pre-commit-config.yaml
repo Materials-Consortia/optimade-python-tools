@@ -9,7 +9,7 @@ ci:
     submodules: true
 
 default_language_version:
-  python: python3.9
+  python: python3.10
 
 # pre-commit hooks
 repos:
@@ -32,7 +32,6 @@ repos:
     rev: v3.17.0
     hooks:
     - id: pyupgrade
-      args: ["--py39-plus"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: 'v0.6.3'
