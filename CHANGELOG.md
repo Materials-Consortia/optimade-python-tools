@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.1.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.4) (2024-10-07)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.3...v1.1.4)
+
 ## [v1.1.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.3) (2024-09-16)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.2...v1.1.3)
