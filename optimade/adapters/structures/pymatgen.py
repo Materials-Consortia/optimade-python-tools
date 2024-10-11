@@ -8,7 +8,6 @@ This conversion function relies on the [pymatgen](https://github.com/materialspr
 For more information on the pymatgen code see [their documentation](https://pymatgen.org).
 """
 
-from typing import Optional, Union
 from warnings import warn
 
 from optimade.adapters.structures.utils import (
@@ -39,7 +38,7 @@ __all__ = (
 )
 
 
-def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Molecule]:
+def get_pymatgen(optimade_structure: OptimadeStructure) -> Structure | Molecule:
     """Get pymatgen `Structure` or `Molecule` from OPTIMADE structure.
 
     This function will return either a pymatgen `Structure` or `Molecule` based
@@ -109,7 +108,7 @@ def _get_molecule(optimade_structure: OptimadeStructure) -> Molecule:
 
 def _pymatgen_species(
     nsites: int,
-    species: Optional[list[OptimadeStructureSpecies]],
+    species: list[OptimadeStructureSpecies] | None,
     species_at_sites: list[str],
 ) -> list[dict[str, float]]:
     """

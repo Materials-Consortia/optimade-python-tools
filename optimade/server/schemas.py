@@ -42,7 +42,7 @@ try:
     """
     from optimade.exceptions import POSSIBLE_ERRORS
 
-    ERROR_RESPONSES: Optional[dict[int, dict[str, Any]]] = {
+    ERROR_RESPONSES: dict[int, dict[str, Any]] | None = {
         err.status_code: {"model": ErrorResponse, "description": err.title}
         for err in POSSIBLE_ERRORS
     }
@@ -52,8 +52,8 @@ except ModuleNotFoundError:
 
 def retrieve_queryable_properties(
     schema: type[EntryResource],
-    queryable_properties: Optional[Iterable[str]] = None,
-    entry_type: Optional[str] = None,
+    queryable_properties: Iterable[str] | None = None,
+    entry_type: str | None = None,
 ) -> "QueryableProperties":
     """Recursively loops through a pydantic model, returning a dictionary of all the
     OPTIMADE-queryable properties of that model.

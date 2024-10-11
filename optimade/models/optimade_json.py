@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import Annotated, Any, Literal, Optional, Union
+from typing import Annotated, Any, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
 
@@ -50,9 +50,7 @@ class DataType(Enum):
         return sorted(_.value for _ in cls)
 
     @classmethod
-    def from_python_type(
-        cls, python_type: Union[type, str, object]
-    ) -> Optional["DataType"]:
+    def from_python_type(cls, python_type: type | str | object) -> Optional["DataType"]:
         """Get OPTIMADE data type from a Python type"""
         mapping = {
             "bool": cls.BOOLEAN,
@@ -221,7 +219,7 @@ class Provider(BaseModel):
     ]
 
     homepage: Annotated[
-        Optional[jsonapi.JsonLinkType],
+        jsonapi.JsonLinkType | None,
         StrictField(
             description="a [JSON API links object](http://jsonapi.org/format/1.0#document-links) "
             "pointing to homepage of the database provider, either "
@@ -242,37 +240,37 @@ class Implementation(BaseModel):
     """Information on the server implementation"""
 
     name: Annotated[
-        Optional[str], StrictField(description="name of the implementation")
+        str | None, StrictField(description="name of the implementation")
     ] = None
 
     version: Annotated[
-        Optional[str],
+        str | None,
         StrictField(description="version string of the current implementation"),
     ] = None
 
     homepage: Annotated[
-        Optional[jsonapi.JsonLinkType],
+        jsonapi.JsonLinkType | None,
         StrictField(
             description="A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the homepage of the implementation.",
         ),
     ] = None
 
     source_url: Annotated[
-        Optional[jsonapi.JsonLinkType],
+        jsonapi.JsonLinkType | None,
         StrictField(
             description="A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation source, either downloadable archive or version control system.",
         ),
     ] = None
 
     maintainer: Annotated[
-        Optional[ImplementationMaintainer],
+        ImplementationMaintainer | None,
         StrictField(
             description="A dictionary providing details about the maintainer of the implementation.",
         ),
     ] = None
 
     issue_tracker: Annotated[
-        Optional[jsonapi.JsonLinkType],
+        jsonapi.JsonLinkType | None,
         StrictField(
             description="A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation's issue tracker.",
         ),
@@ -313,7 +311,7 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
 
     # start of "SHOULD" fields for meta response
     optimade_schema: Annotated[
-        Optional[jsonapi.JsonLinkType],
+        jsonapi.JsonLinkType | None,
         StrictField(
             alias="schema",
             description="""A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) that points to a schema for the response.
@@ -324,14 +322,14 @@ Hence, if the `meta` field of the JSON API links object is provided and contains
     ] = None
 
     time_stamp: Annotated[
-        Optional[datetime],
+        datetime | None,
         StrictField(
             description="A timestamp containing the date and time at which the query was executed.",
         ),
     ] = None
 
     data_returned: Annotated[
-        Optional[int],
+        int | None,
         StrictField(
             description="An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination.",
             ge=0,
@@ -339,7 +337,7 @@ Hence, if the `meta` field of the JSON API links object is provided and contains
     ] = None
 
     provider: Annotated[
-        Optional[Provider],
+        Provider | None,
         StrictField(
             description="information on the database provider of the implementation."
         ),
@@ -347,28 +345,28 @@ Hence, if the `meta` field of the JSON API links object is provided and contains
 
     # start of "MAY" fields for meta response
     data_available: Annotated[
-        Optional[int],
+        int | None,
         StrictField(
             description="An integer containing the total number of data resource objects available in the database for the endpoint.",
         ),
     ] = None
 
     last_id: Annotated[
-        Optional[str],
+        str | None,
         StrictField(description="a string containing the last ID returned"),
     ] = None
 
     response_message: Annotated[
-        Optional[str], StrictField(description="response string from the server")
+        str | None, StrictField(description="response string from the server")
     ] = None
 
     implementation: Annotated[
-        Optional[Implementation],
+        Implementation | None,
         StrictField(description="a dictionary describing the server implementation"),
     ] = None
 
     warnings: Annotated[
-        Optional[list[Warnings]],
+        list[Warnings] | None,
         StrictField(
             description="""A list of warning resource objects representing non-critical errors or warnings.
 A warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `"warning"`.
@@ -419,7 +417,7 @@ class BaseRelationshipResource(jsonapi.BaseResource):
     """Minimum requirements to represent a relationship resource"""
 
     meta: Annotated[
-        Optional[BaseRelationshipMeta],
+        BaseRelationshipMeta | None,
         StrictField(
             description="Relationship meta field. MUST contain 'description' if supplied.",
         ),
@@ -430,6 +428,6 @@ class Relationship(jsonapi.Relationship):
     """Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."""
 
     data: Annotated[
-        Optional[Union[BaseRelationshipResource, list[BaseRelationshipResource]]],
+        BaseRelationshipResource | list[BaseRelationshipResource] | None,
         StrictField(description="Resource linkage", uniqueItems=True),
     ] = None

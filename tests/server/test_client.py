@@ -4,7 +4,6 @@ import json
 import warnings
 from functools import partial
 from pathlib import Path
-from typing import Optional
 
 import httpx
 import pytest
@@ -416,7 +415,7 @@ def test_client_global_data_callback(async_http_client, http_client, use_async):
 
 @pytest.mark.parametrize("use_async", [True, False])
 def test_client_page_skip_callback(async_http_client, http_client, use_async):
-    def page_skip_callback(_: str, results: dict) -> Optional[dict]:
+    def page_skip_callback(_: str, results: dict) -> dict | None:
         """A test callback that skips to the final page of results."""
         if len(results["data"]) > 16:
             return {"next": f"{TEST_URL}/structures?page_offset=16"}
@@ -440,7 +439,7 @@ def test_client_mutable_data_callback(async_http_client, http_client, use_async)
     container: dict[str, str] = {}
 
     def mutable_database_callback(
-        _: str, results: dict, db: Optional[dict[str, str]] = None
+        _: str, results: dict, db: dict[str, str] | None = None
     ) -> None:
         """A test callback that creates a flat dictionary of results via mutable args."""
 

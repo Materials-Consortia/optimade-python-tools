@@ -16,7 +16,7 @@ from optimade.server.mappers import BaseResourceMapper
 from optimade.warnings import UnknownProviderProperty
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import Union
+    pass
 
 __all__ = (
     "BaseTransformer",
@@ -43,13 +43,13 @@ class Quantity:
     """
 
     name: str
-    backend_field: Optional[str]
+    backend_field: str | None
     length_quantity: Optional["Quantity"]
 
     def __init__(
         self,
         name: str,
-        backend_field: Optional[str] = None,
+        backend_field: str | None = None,
         length_quantity: Optional["Quantity"] = None,
     ):
         """Initialise the `quantity` from it's name and aliases.
@@ -82,8 +82,8 @@ class BaseTransformer(Transformer, abc.ABC):
 
     """
 
-    mapper: Optional[type[BaseResourceMapper]] = None
-    operator_map: dict[str, Optional[str]] = {
+    mapper: type[BaseResourceMapper] | None = None
+    operator_map: dict[str, str | None] = {
         "<": None,
         "<=": None,
         ">": None,
@@ -106,7 +106,7 @@ class BaseTransformer(Transformer, abc.ABC):
     _quantity_type: type[Quantity] = Quantity
     _quantities = None
 
-    def __init__(self, mapper: Optional[type[BaseResourceMapper]] = None):
+    def __init__(self, mapper: type[BaseResourceMapper] | None = None):
         """Initialise the transformer object, optionally loading in a
         resource mapper for use when post-processing.
 
@@ -288,7 +288,7 @@ class BaseTransformer(Transformer, abc.ABC):
     def number(self, number):
         """number: SIGNED_INT | SIGNED_FLOAT"""
         if TYPE_CHECKING:  # pragma: no cover
-            type_: Union[type[int], type[float]]
+            type_: type[int] | type[float]
 
         if number.type == "SIGNED_INT":
             type_ = int

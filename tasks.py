@@ -3,7 +3,7 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING
 
 from invoke import task
 from jsondiff import diff
@@ -16,7 +16,7 @@ TOP_DIR = Path(__file__).parent.resolve()
 
 
 def update_file(
-    filename: Union[Path, str], sub_line: tuple[str, str], strip: Optional[str] = None
+    filename: Path | str, sub_line: tuple[str, str], strip: str | None = None
 ):
     """Utility function for tasks to read, update, and write files"""
     with open(filename) as handle:
