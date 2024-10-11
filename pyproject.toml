@@ -13,7 +13,6 @@ dynamic = ["version"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -24,7 +23,7 @@ classifiers = [
     "Topic :: Database :: Database Engines/Servers",
     "Topic :: Database :: Front-Ends",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "lark~=1.1",
     "pydantic[email]~=2.2",
