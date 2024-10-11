@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 import pytest
 from pydantic import BaseModel, Field, ValidationError

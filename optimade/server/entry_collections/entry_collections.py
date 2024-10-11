@@ -3,7 +3,7 @@ import re
 import warnings
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
-from typing import Any, Optional, Union
+from typing import Any
 
 from lark import Transformer
 
@@ -128,7 +128,7 @@ class EntryCollection(ABC):
         """
 
     @abstractmethod
-    def count(self, **kwargs: Any) -> Optional[int]:
+    def count(self, **kwargs: Any) -> int | None:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
@@ -138,10 +138,10 @@ class EntryCollection(ABC):
         """
 
     def find(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
     ) -> tuple[
-        Optional[Union[dict[str, Any], list[dict[str, Any]]]],
-        Optional[int],
+        dict[str, Any] | list[dict[str, Any]] | None,
+        int | None,
         bool,
         set[str],
         set[str],
@@ -203,7 +203,7 @@ class EntryCollection(ABC):
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
 
-        results: Optional[Union[list[dict[str, Any]], dict[str, Any]]] = None
+        results: list[dict[str, Any]] | dict[str, Any] | None = None
 
         if raw_results:
             results = [self.resource_mapper.map_back(doc) for doc in raw_results]
@@ -233,7 +233,7 @@ class EntryCollection(ABC):
     @abstractmethod
     def _run_db_query(
         self, criteria: dict[str, Any], single_entry: bool = False
-    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
+    ) -> tuple[list[dict[str, Any]], int | None, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -301,7 +301,7 @@ class EntryCollection(ABC):
         return set(annotation.model_fields)  # type: ignore[attr-defined]
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
     ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
@@ -468,7 +468,7 @@ class EntryCollection(ABC):
     def get_next_query_params(
         self,
         params: EntryListingQueryParams,
-        results: Optional[Union[dict[str, Any], list[dict[str, Any]]]],
+        results: dict[str, Any] | list[dict[str, Any]] | None,
     ) -> dict[str, list[str]]:
         """Provides url query pagination parameters that will be used in the next
         link.

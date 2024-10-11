@@ -1,6 +1,6 @@
 from abc import ABC
 from collections.abc import Iterable
-from typing import Annotated, Optional
+from typing import Annotated
 from warnings import warn
 
 from fastapi import Query
@@ -195,7 +195,7 @@ class EntryListingQueryParams(BaseQueryParams):
             ),
         ] = "json",
         email_address: Annotated[
-            Optional[EmailStr],
+            EmailStr | None,
             Query(
                 description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
             ),
@@ -336,7 +336,7 @@ class SingleEntryQueryParams(BaseQueryParams):
             ),
         ] = "json",
         email_address: Annotated[
-            Optional[EmailStr],
+            EmailStr | None,
             Query(
                 description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
             ),

@@ -20,8 +20,9 @@ and [`StructureResource`][optimade.models.structures.StructureResource]s, respec
 """
 
 import re
+from collections.abc import Callable
 from json import JSONDecodeError
-from typing import Any, Callable, Optional, Union
+from typing import Any
 
 from pydantic import BaseModel
 
@@ -106,7 +107,7 @@ class EntryAdapter:
         return self._converted[format]
 
     @classmethod
-    def ingest_from(cls, data: Any, format: Optional[str] = None) -> Any:
+    def ingest_from(cls, data: Any, format: str | None = None) -> Any:
         """Convert desired format to OPTIMADE format.
 
         Parameters:
@@ -182,7 +183,7 @@ class EntryAdapter:
 
     @staticmethod
     def _get_model_attributes(
-        starting_instances: Union[tuple[BaseModel, ...], list[BaseModel]], name: str
+        starting_instances: tuple[BaseModel, ...] | list[BaseModel], name: str
     ) -> Any:
         """Helper method for retrieving the OPTIMADE model's attribute, supporting "."-nested attributes"""
         for res in starting_instances:

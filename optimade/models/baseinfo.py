@@ -1,5 +1,5 @@
 import re
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Literal
 
 from pydantic import AnyHttpUrl, BaseModel, field_validator, model_validator
 
@@ -101,7 +101,7 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
         ),
     ]
     is_index: Annotated[
-        Optional[bool],
+        bool | None,
         StrictField(
             description="If true, this is an index meta-database base URL (see section Index Meta-Database). "
             "If this member is not provided, the client MUST assume this is not an index meta-database base URL "

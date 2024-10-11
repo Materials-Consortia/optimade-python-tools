@@ -18,7 +18,8 @@ import sys
 import time
 import traceback as tb
 import urllib.parse
-from typing import Any, Callable, Optional
+from collections.abc import Callable
+from typing import Any
 
 import requests
 from pydantic import Field, ValidationError
@@ -89,7 +90,7 @@ class ValidatorResults:
     )
     verbosity: int = 0
 
-    def add_success(self, summary: str, success_type: Optional[str] = None):
+    def add_success(self, summary: str, success_type: str | None = None):
         """Register a validation success to the results class.
 
         Parameters:
@@ -117,9 +118,7 @@ class ValidatorResults:
         elif self.verbosity == 0:
             pretty_print(".", end="", flush=True)  # type: ignore[operator]
 
-    def add_failure(
-        self, summary: str, message: str, failure_type: Optional[str] = None
-    ):
+    def add_failure(self, summary: str, message: str, failure_type: str | None = None):
         """Register a validation failure to the results class with
         corresponding summary, message and type.
 
@@ -168,9 +167,9 @@ class Client:  # pragma: no cover
         self,
         base_url: str,
         max_retries: int = 5,
-        headers: Optional[dict[str, str]] = None,
-        timeout: Optional[float] = DEFAULT_CONN_TIMEOUT,
-        read_timeout: Optional[float] = DEFAULT_READ_TIMEOUT,
+        headers: dict[str, str] | None = None,
+        timeout: float | None = DEFAULT_CONN_TIMEOUT,
+        read_timeout: float | None = DEFAULT_READ_TIMEOUT,
     ) -> None:
         """Initialises the Client with the given `base_url` without testing
         if it is valid.
@@ -193,8 +192,8 @@ class Client:  # pragma: no cover
 
         """
         self.base_url: str = base_url
-        self.last_request: Optional[str] = None
-        self.response: Optional[requests.Response] = None
+        self.last_request: str | None = None
+        self.response: requests.Response | None = None
         self.max_retries = max_retries
         self.headers = headers or {}
         if "User-Agent" not in self.headers:
@@ -290,7 +289,7 @@ def test_case(test_fn: Callable[..., tuple[Any, str]]):
     def wrapper(
         validator,
         *args,
-        request: Optional[str] = None,
+        request: str | None = None,
         optional: bool = False,
         multistage: bool = False,
         **kwargs,
@@ -371,7 +370,7 @@ def test_case(test_fn: Callable[..., tuple[Any, str]]):
                     if not isinstance(result, ValidationError):
                         message += traceback.split("\n")
 
-                failure_type: Optional[str] = None
+                failure_type: str | None = None
                 if isinstance(result, InternalError):
                     summary = f"{display_request} - {test_fn.__name__} - failed with internal error"
                     failure_type = "internal"
@@ -410,13 +409,13 @@ class ValidatorLinksResponse(Success):
 class ValidatorEntryResponseOne(Success):
     meta: ResponseMeta = Field(...)
     data: EntryResource = Field(...)
-    included: Optional[list[dict[str, Any]]] = Field(None)  # type: ignore[assignment]
+    included: list[dict[str, Any]] | None = Field(None)  # type: ignore[assignment]
 
 
 class ValidatorEntryResponseMany(Success):
     meta: ResponseMeta = Field(...)
     data: list[EntryResource] = Field(...)
-    included: Optional[list[dict[str, Any]]] = Field(None)  # type: ignore[assignment]
+    included: list[dict[str, Any]] | None = Field(None)  # type: ignore[assignment]
 
 
 class ValidatorReferenceResponseOne(ValidatorEntryResponseOne):

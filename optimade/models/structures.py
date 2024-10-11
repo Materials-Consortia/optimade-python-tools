@@ -1,7 +1,7 @@
 import re
 import warnings
 from enum import Enum, IntEnum
-from typing import TYPE_CHECKING, Annotated, Literal, Optional, Union
+from typing import TYPE_CHECKING, Annotated, Literal, Optional
 
 from pydantic import BaseModel, BeforeValidator, Field, field_validator, model_validator
 
@@ -120,7 +120,7 @@ Note that concentrations are uncorrelated between different site (even of the sa
     ]
 
     mass: Annotated[
-        Optional[list[float]],
+        list[float] | None,
         OptimadeField(
             description="""If present MUST be a list of floats expressed in a.m.u.
 Elements denoting vacancies MUST have masses equal to 0.""",
@@ -131,7 +131,7 @@ Elements denoting vacancies MUST have masses equal to 0.""",
     ] = None
 
     original_name: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
@@ -142,7 +142,7 @@ Note: With regards to "source database", we refer to the immediate source being 
     ] = None
 
     attached: Annotated[
-        Optional[list[str]],
+        list[str] | None,
         OptimadeField(
             description="""If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or "X" for a non-chemical element.""",
             support=SupportLevel.OPTIONAL,
@@ -151,7 +151,7 @@ Note: With regards to "source database", we refer to the immediate source being 
     ] = None
 
     nattached: Annotated[
-        Optional[list[int]],
+        list[int] | None,
         OptimadeField(
             description="""If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.""",
             support=SupportLevel.OPTIONAL,
@@ -161,8 +161,8 @@ Note: With regards to "source database", we refer to the immediate source being 
 
     @field_validator("concentration", "mass", mode="after")
     def validate_concentration_and_mass(
-        cls, value: Optional[list[float]], info: "ValidationInfo"
-    ) -> Optional[list[float]]:
+        cls, value: list[float] | None, info: "ValidationInfo"
+    ) -> list[float] | None:
         if not value:
             return value
 
@@ -181,8 +181,8 @@ Note: With regards to "source database", we refer to the immediate source being 
     @field_validator("attached", "nattached", mode="after")
     @classmethod
     def validate_minimum_list_length(
-        cls, value: Optional[Union[list[str], list[int]]]
-    ) -> Optional[Union[list[str], list[int]]]:
+        cls, value: list[str] | list[int] | None
+    ) -> list[str] | list[int] | None:
         if value is not None and len(value) < 1:
             raise ValueError(
                 "The list's length MUST be 1 or more, instead it was found to be "
@@ -285,7 +285,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
     elements: Annotated[
-        Optional[list[str]],
+        list[str] | None,
         OptimadeField(
             description="""The chemical symbols of the different elements present in the structure.
 
@@ -313,7 +313,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     ] = None
 
     nelements: Annotated[
-        Optional[int],
+        int | None,
         OptimadeField(
             description="""Number of different elements in the structure as an integer.
 
@@ -337,7 +337,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     ] = None
 
     elements_ratios: Annotated[
-        Optional[list[float]],
+        list[float] | None,
         OptimadeField(
             description="""Relative proportions of different elements in the structure.
 
@@ -364,7 +364,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     ] = None
 
     chemical_formula_descriptive: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""The chemical formula for a structure as a string in a form chosen by the API implementation.
 
@@ -394,7 +394,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     ] = None
 
     chemical_formula_reduced: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.
 The proportion number MUST be omitted if it is 1.
@@ -426,7 +426,7 @@ The proportion number MUST be omitted if it is 1.
     ] = None
 
     chemical_formula_hill: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""The chemical formula for a structure in [Hill form](https://dx.doi.org/10.1021/ja02046a005) with element symbols followed by integer chemical proportion numbers. The proportion number MUST be omitted if it is 1.
 
@@ -459,7 +459,7 @@ The proportion number MUST be omitted if it is 1.
     ] = None
 
     chemical_formula_anonymous: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""The anonymous formula is the `chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.
 
@@ -483,7 +483,7 @@ The proportion number MUST be omitted if it is 1.
     ] = None
 
     dimension_types: Annotated[
-        Optional[list[Periodicity]],
+        list[Periodicity] | None,
         OptimadeField(
             min_length=3,
             max_length=3,
@@ -511,7 +511,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     ] = None
 
     nperiodic_dimensions: Annotated[
-        Optional[int],
+        int | None,
         OptimadeField(
             description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.
 
@@ -535,7 +535,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     ] = None
 
     lattice_vectors: Annotated[
-        Optional[list[Vector3D_unknown]],
+        list[Vector3D_unknown] | None,
         OptimadeField(
             min_length=3,
             max_length=3,
@@ -565,7 +565,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     ] = None
 
     cartesian_site_positions: Annotated[
-        Optional[list[Vector3D]],
+        list[Vector3D] | None,
         OptimadeField(
             description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
@@ -588,7 +588,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     ] = None
 
     nsites: Annotated[
-        Optional[int],
+        int | None,
         OptimadeField(
             description="""An integer specifying the length of the `cartesian_site_positions` property.
 
@@ -610,7 +610,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     ] = None
 
     species: Annotated[
-        Optional[list[Species]],
+        list[Species] | None,
         OptimadeField(
             description="""A list describing the species of the sites of this structure.
 Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).
@@ -681,7 +681,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
     ] = None
 
     species_at_sites: Annotated[
-        Optional[list[str]],
+        list[str] | None,
         OptimadeField(
             description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).
 The properties of the species are found in the property `species`.
@@ -707,7 +707,7 @@ The properties of the species are found in the property `species`.
     ] = None
 
     assemblies: Annotated[
-        Optional[list[Assembly]],
+        list[Assembly] | None,
         OptimadeField(
             description="""A description of groups of sites that are statistically correlated.
 
@@ -871,8 +871,8 @@ The properties of the species are found in the property `species`.
     @field_validator("chemical_formula_reduced", "chemical_formula_hill", mode="after")
     @classmethod
     def check_ordered_formula(
-        cls, value: Optional[str], info: "ValidationInfo"
-    ) -> Optional[str]:
+        cls, value: str | None, info: "ValidationInfo"
+    ) -> str | None:
         if value is None:
             return value
 
@@ -904,7 +904,7 @@ The properties of the species are found in the property `species`.
 
     @field_validator("chemical_formula_anonymous", mode="after")
     @classmethod
-    def check_anonymous_formula(cls, value: Optional[str]) -> Optional[str]:
+    def check_anonymous_formula(cls, value: str | None) -> str | None:
         if value is None:
             return value
 
@@ -934,8 +934,8 @@ The properties of the species are found in the property `species`.
     )
     @classmethod
     def check_reduced_formulae(
-        cls, value: Optional[str], info: "ValidationInfo"
-    ) -> Optional[str]:
+        cls, value: str | None, info: "ValidationInfo"
+    ) -> str | None:
         if value is None:
             return value
 
@@ -950,9 +950,7 @@ The properties of the species are found in the property `species`.
 
     @field_validator("elements", mode="after")
     @classmethod
-    def elements_must_be_alphabetical(
-        cls, value: Optional[list[str]]
-    ) -> Optional[list[str]]:
+    def elements_must_be_alphabetical(cls, value: list[str] | None) -> list[str] | None:
         if value is None:
             return value
 
@@ -962,9 +960,7 @@ The properties of the species are found in the property `species`.
 
     @field_validator("elements_ratios", mode="after")
     @classmethod
-    def ratios_must_sum_to_one(
-        cls, value: Optional[list[float]]
-    ) -> Optional[list[float]]:
+    def ratios_must_sum_to_one(cls, value: list[float] | None) -> list[float] | None:
         if value is None:
             return value
 
@@ -1005,10 +1001,9 @@ The properties of the species are found in the property `species`.
     @classmethod
     def null_values_for_whole_vector(
         cls,
-        value: Optional[
-            Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]
-        ],
-    ) -> Optional[Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]]:
+        value: None
+        | (Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]),
+    ) -> Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)] | None:
         if value is None:
             return value
 
@@ -1061,9 +1056,7 @@ The properties of the species are found in the property `species`.
 
     @field_validator("species", mode="after")
     @classmethod
-    def validate_species(
-        cls, value: Optional[list[Species]]
-    ) -> Optional[list[Species]]:
+    def validate_species(cls, value: list[Species] | None) -> list[Species] | None:
         if value is None:
             return value
 

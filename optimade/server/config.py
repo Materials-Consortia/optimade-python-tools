@@ -3,7 +3,7 @@ import os
 import warnings
 from enum import Enum
 from pathlib import Path
-from typing import Annotated, Any, Literal, Optional, Union
+from typing import Annotated, Any, Literal
 
 import yaml
 from pydantic import AnyHttpUrl, Field, field_validator, model_validator
@@ -171,7 +171,7 @@ class ServerConfig(BaseSettings):
     ] = True
 
     insert_from_jsonl: Annotated[
-        Optional[Path],
+        Path | None,
         Field(
             description=(
                 "The absolute path to an OPTIMADE JSONL file to use to initialize the database. "
@@ -181,7 +181,7 @@ class ServerConfig(BaseSettings):
     ] = None
 
     use_real_mongo: Annotated[
-        Optional[bool],
+        bool | None,
         Field(description="DEPRECATED: force usage of MongoDB over any other backend."),
     ] = None
 
@@ -193,7 +193,7 @@ class ServerConfig(BaseSettings):
     ] = SupportedBackend.MONGOMOCK
 
     elastic_hosts: Annotated[
-        Optional[Union[str, list[str], dict[str, Any], list[dict[str, Any]]]],
+        str | list[str] | dict[str, Any] | list[dict[str, Any]] | None,
         Field(
             description="Host settings to pass through to the `Elasticsearch` class."
         ),
@@ -249,7 +249,7 @@ class ServerConfig(BaseSettings):
         ),
     ] = "test_server"
     root_path: Annotated[
-        Optional[str],
+        str | None,
         Field(
             description=(
                 "Sets the FastAPI app `root_path` parameter. This can be used to serve the"
@@ -261,7 +261,7 @@ class ServerConfig(BaseSettings):
         ),
     ] = None
     base_url: Annotated[
-        Optional[str], Field(description="Base URL for this implementation")
+        str | None, Field(description="Base URL for this implementation")
     ] = None
     implementation: Annotated[
         Implementation,
@@ -279,7 +279,7 @@ class ServerConfig(BaseSettings):
         homepage="https://optimade.org/optimade-python-tools",
     )
     index_base_url: Annotated[
-        Optional[AnyHttpUrl],
+        AnyHttpUrl | None,
         Field(
             description=(
                 "An optional link to the base URL for the index meta-database of the "
@@ -305,7 +305,7 @@ class ServerConfig(BaseSettings):
     provider_fields: Annotated[
         dict[
             Literal["links", "references", "structures"],
-            list[Union[str, dict[Literal["name", "type", "unit", "description"], str]]],
+            list[str | dict[Literal["name", "type", "unit", "description"], str]],
         ],
         Field(
             description=(
@@ -347,7 +347,7 @@ class ServerConfig(BaseSettings):
     ] = Path(__file__).parent.joinpath("index_links.json")
 
     is_index: Annotated[
-        Optional[bool],
+        bool | None,
         Field(
             description=(
                 "A runtime setting to dynamically switch between index meta-database and "
@@ -359,7 +359,7 @@ class ServerConfig(BaseSettings):
     ] = False
 
     schema_url: Annotated[
-        Optional[Union[str, AnyHttpUrl]],
+        str | AnyHttpUrl | None,
         Field(
             description=(
                 "A URL that will be provided in the `meta->schema` field for every response"
@@ -368,7 +368,7 @@ class ServerConfig(BaseSettings):
     ] = f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade.json"
 
     custom_landing_page: Annotated[
-        Optional[Union[str, Path]],
+        str | Path | None,
         Field(
             description=(
                 "The location of a custom landing page (Jinja template) to use for the API."
@@ -377,7 +377,7 @@ class ServerConfig(BaseSettings):
     ] = None
 
     index_schema_url: Annotated[
-        Optional[Union[str, AnyHttpUrl]],
+        str | AnyHttpUrl | None,
         Field(
             description=(
                 "A URL that will be provided in the `meta->schema` field for every "
@@ -396,7 +396,7 @@ class ServerConfig(BaseSettings):
         ),
     ] = Path("/var/log/optimade/")
     validate_query_parameters: Annotated[
-        Optional[bool],
+        bool | None,
         Field(
             description=(
                 "If True, the server will check whether the query parameters given in the "
@@ -406,7 +406,7 @@ class ServerConfig(BaseSettings):
     ] = True
 
     validate_api_response: Annotated[
-        Optional[bool],
+        bool | None,
         Field(
             description=(
                 "If False, data from the database will not undergo validation before being"
@@ -417,7 +417,7 @@ class ServerConfig(BaseSettings):
 
     @field_validator("insert_from_jsonl", mode="before")
     @classmethod
-    def check_jsonl_path(cls, value: Any) -> Optional[Path]:
+    def check_jsonl_path(cls, value: Any) -> Path | None:
         """Check that the path to the JSONL file is valid."""
         if value in ("null", ""):
             return None

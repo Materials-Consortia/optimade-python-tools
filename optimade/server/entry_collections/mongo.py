@@ -1,4 +1,4 @@
-from typing import Any, Optional, Union
+from typing import Any
 
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
@@ -68,7 +68,7 @@ class MongoCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return self.collection.estimated_document_count()
 
-    def count(self, **kwargs: Any) -> Union[int, None]:
+    def count(self, **kwargs: Any) -> int | None:
         """Returns the number of entries matching the query specified
         by the keyword arguments, or `None` if the count timed out.
 
@@ -104,7 +104,7 @@ class MongoCollection(EntryCollection):
         self.collection.insert_many(data)
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
     ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
@@ -143,7 +143,7 @@ class MongoCollection(EntryCollection):
 
     def _run_db_query(
         self, criteria: dict[str, Any], single_entry: bool = False
-    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
+    ) -> tuple[list[dict[str, Any]], int | None, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:

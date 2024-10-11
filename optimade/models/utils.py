@@ -5,7 +5,7 @@ import re
 import warnings
 from enum import Enum
 from functools import reduce
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 from pydantic import Field
 from pydantic_core import PydanticUndefined
@@ -40,7 +40,7 @@ class SupportLevel(Enum):
 def StrictField(
     default: "Any" = PydanticUndefined,
     *,
-    description: Optional[str] = None,
+    description: str | None = None,
     **kwargs: "Any",
 ) -> Any:
     """A wrapper around `pydantic.Field` that does the following:
@@ -123,9 +123,9 @@ def StrictField(
 def OptimadeField(
     default: "Any" = PydanticUndefined,
     *,
-    support: Optional[Union[str, SupportLevel]] = None,
-    queryable: Optional[Union[str, SupportLevel]] = None,
-    unit: Optional[str] = None,
+    support: str | SupportLevel | None = None,
+    queryable: str | SupportLevel | None = None,
+    unit: str | None = None,
     **kwargs,
 ) -> Any:
     """A wrapper around `pydantic.Field` that adds OPTIMADE-specific

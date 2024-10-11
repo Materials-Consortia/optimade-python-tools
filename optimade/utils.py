@@ -176,7 +176,7 @@ def get_providers(add_mongo_id: bool = False) -> list:
 def get_child_database_links(
     provider: LinksResource,
     obey_aggregate: bool = True,
-    headers: Optional[dict] = None,
+    headers: dict | None = None,
     skip_ssl: bool = False,
 ) -> list[LinksResource]:
     """For a provider, return a list of available child databases.
@@ -243,9 +243,9 @@ def get_child_database_links(
 
 
 def get_all_databases(
-    include_providers: Optional[Container[str]] = None,
-    exclude_providers: Optional[Container[str]] = None,
-    exclude_databases: Optional[Container[str]] = None,
+    include_providers: Container[str] | None = None,
+    exclude_providers: Container[str] | None = None,
+    exclude_databases: Container[str] | None = None,
     progress: "Optional[rich.Progress]" = None,
     skip_ssl: bool = False,
 ) -> Iterable[str]:
