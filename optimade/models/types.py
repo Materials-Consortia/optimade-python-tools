@@ -1,3 +1,4 @@
+from types import UnionType
 from typing import Annotated, Optional, Union, get_args
 
 from pydantic import Field
@@ -23,7 +24,7 @@ SemanticVersion = Annotated[
 
 AnnotatedType = type(ChemicalSymbol)
 OptionalType = type(Optional[str])
-UnionType = type(Union[str, int])
+_UnionType = type(Union[str, int])
 NoneType = type(None)
 
 
@@ -39,7 +40,7 @@ def _get_origin_type(annotation: type) -> type:
     """
     # If the annotation is a Union, get the first non-None type (this includes
     # Optional[T])
-    if isinstance(annotation, (OptionalType, UnionType)):
+    if isinstance(annotation, (OptionalType, UnionType, _UnionType)):
         for arg in get_args(annotation):
             if arg not in (None, NoneType):
                 annotation = arg
@@ -50,7 +51,7 @@ def _get_origin_type(annotation: type) -> type:
         annotation = get_args(annotation)[0]
 
     # Recursively unpack annotation, if it is a Union, Optional, or Annotated type
-    while isinstance(annotation, (OptionalType, UnionType, AnnotatedType)):
+    while isinstance(annotation, (OptionalType, UnionType, _UnionType, AnnotatedType)):
         annotation = _get_origin_type(annotation)
 
     # Special case for Literal
