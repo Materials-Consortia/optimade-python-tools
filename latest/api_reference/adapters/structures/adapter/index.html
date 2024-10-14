@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2762,6 +2762,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2784,7 +2789,7 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.adapters.base.EntryAdapter" href="../../base/#optimade.adapters.base.EntryAdapter">EntryAdapter</a></code></p>
+              Bases: <code>EntryAdapter</code></p>
 
 
         <p>Lazy structure resource converter.</p>
@@ -2805,7 +2810,7 @@ and properties.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.adapters.structures.adapter.Structure.ENTRY_RESOURCE">ENTRY_RESOURCE</span></code></td>
             <td>
-                  <code>type[<a class="autorefs autorefs-internal" title="optimade.models.StructureResource" href="../../../../all_models/#optimade.models.StructureResource">StructureResource</a>]</code>
+                  <code>type[StructureResource]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2817,7 +2822,7 @@ and properties.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.adapters.structures.adapter.Structure._type_converters">_type_converters</span></code></td>
             <td>
-                  <code>dict[str, <span title="typing.Callable">Callable</span>]</code>
+                  <code>dict[str, Callable]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2838,7 +2843,7 @@ and properties.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.adapters.structures.adapter.Structure._type_ingesters">_type_ingesters</span></code></td>
             <td>
-                  <code>dict[str, <span title="typing.Callable">Callable</span>]</code>
+                  <code>dict[str, Callable]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2849,7 +2854,7 @@ and properties.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.adapters.structures.adapter.Structure.as_<_type_converters>">as_&lt;_type_converters&gt;</span></code></td>
             <td>
-                  <code>dict[str, <span title="typing.Callable">Callable</span>]</code>
+                  <code>dict[str, Callable]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2860,7 +2865,7 @@ and properties.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.adapters.structures.adapter.Structure.from_<_type_converters>">from_&lt;_type_converters&gt;</span></code></td>
             <td>
-                  <code>dict[str, <span title="typing.Callable">Callable</span>]</code>
+                  <code>dict[str, Callable]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2872,6 +2877,11 @@ model.</p>
           </tr>
       </tbody>
     </table>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/adapters/structures/adapter.py</code></summary>
@@ -3019,7 +3029,7 @@ model.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.models.entries.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a></code>
+                  <code>EntryResource</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3077,7 +3087,9 @@ e.g., <code>attributes.species.name</code> or <code>attributes.species[0].name</
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>name</code></td>
+            <td>
+                <code>name</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -3257,7 +3269,9 @@ See above for the description of the order in which an attribute is tested for v
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>entry</code></td>
+            <td>
+                <code>entry</code>
+            </td>
             <td>
                   <code>dict</code>
             </td>
@@ -3338,7 +3352,9 @@ See above for the description of the order in which an attribute is tested for v
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>format</code></td>
+            <td>
+                <code>format</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -3389,7 +3405,7 @@ See above for the description of the order in which an attribute is tested for v
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="typing.Any">Any</span></code>
+                  <code>Any</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3495,7 +3511,9 @@ See above for the description of the order in which an attribute is tested for v
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>url</code></td>
+            <td>
+                <code>url</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -3523,7 +3541,7 @@ See above for the description of the order in which an attribute is tested for v
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="typing.Any">Any</span></code>
+                  <code>Any</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3635,9 +3653,11 @@ See above for the description of the order in which an attribute is tested for v
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>data</code></td>
             <td>
-                  <code><span title="typing.Any">Any</span></code>
+                <code>data</code>
+            </td>
+            <td>
+                  <code>Any</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3649,7 +3669,9 @@ See above for the description of the order in which an attribute is tested for v
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>format</code></td>
+            <td>
+                <code>format</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -3700,7 +3722,7 @@ See above for the description of the order in which an attribute is tested for v
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="typing.Any">Any</span></code>
+                  <code>Any</code>
             </td>
             <td>
               <div class="doc-md-description">

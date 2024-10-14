@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2768,6 +2768,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2790,11 +2795,16 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="fastapi.responses.JSONResponse">JSONResponse</span></code></p>
+              Bases: <code>JSONResponse</code></p>
 
 
         <p>This class simply patches <code>fastapi.responses.JSONResponse</code> to use the
 JSON:API 'application/vnd.api+json' MIME type.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
@@ -3049,9 +3059,11 @@ to include them in the response.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>results</code></td>
             <td>
-                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>, list[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>], dict, list[dict]]</code>
+                <code>results</code>
+            </td>
+            <td>
+                  <code>Union[EntryResource, list[EntryResource], dict, list[dict]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3063,9 +3075,11 @@ to include them in the response.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>ENTRY_COLLECTIONS</code></td>
             <td>
-                  <code>dict[str, <a class="autorefs autorefs-internal" title="optimade.server.entry_collections.EntryCollection" href="../../entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</a>]</code>
+                <code>ENTRY_COLLECTIONS</code>
+            </td>
+            <td>
+                  <code>dict[str, EntryCollection]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3078,7 +3092,9 @@ based on endpoint type.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>include_param</code></td>
+            <td>
+                <code>include_param</code>
+            </td>
             <td>
                   <code>list[str]</code>
             </td>
@@ -3107,7 +3123,7 @@ based on endpoint type.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[<span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>, dict[str, <span title="typing.Any">Any</span>]]]</code>
+                  <code>list[Union[EntryResource, dict[str, Any]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3331,7 +3347,9 @@ of resource objects for that entry type.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>add_mongo_id</code></td>
+            <td>
+                <code>add_mongo_id</code>
+            </td>
             <td>
                   <code>bool</code>
             </td>
@@ -3542,7 +3560,9 @@ This is due to all other top-level fields are REQUIRED in the response.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>exclude_fields</code></td>
+            <td>
+                <code>exclude_fields</code>
+            </td>
             <td>
                   <code>set[str]</code>
             </td>
@@ -3556,7 +3576,9 @@ This is due to all other top-level fields are REQUIRED in the response.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>include_fields</code></td>
+            <td>
+                <code>include_fields</code>
+            </td>
             <td>
                   <code>set[str]</code>
             </td>
@@ -3585,7 +3607,7 @@ set to null if missing in the entry.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[dict[str, <span title="typing.Any">Any</span>]]</code>
+                  <code>list[dict[str, Any]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3595,7 +3617,7 @@ set to null if missing in the entry.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code>list[dict[str, <span title="typing.Any">Any</span>]]</code>
+                  <code>list[dict[str, Any]]</code>
             </td>
             <td>
               <div class="doc-md-description">

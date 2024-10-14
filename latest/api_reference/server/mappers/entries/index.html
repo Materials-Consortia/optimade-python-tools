@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2924,6 +2924,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2992,7 +2997,7 @@ e.g. <code>(("elements", "custom_elements_field"))</code>.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_CLASS">ENTRY_RESOURCE_CLASS</span></code></td>
             <td>
-                  <code>type[<a class="autorefs autorefs-internal" title="optimade.models.entries.EntryResource" href="../../../models/entries/#optimade.models.entries.EntryResource">EntryResource</a>]</code>
+                  <code>type[EntryResource]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3050,7 +3055,7 @@ resource class and the server configuration.</p>
           <tr class="doc-section-item">
             <td><code><a class="autorefs autorefs-internal" title="optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES" href="#optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES">ENTRY_RESOURCE_ATTRIBUTES</a></code></td>
             <td>
-                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
+                  <code>dict[str, Any]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3073,6 +3078,11 @@ the <code>type</code> in the schema of the entry resource class.</p>
           </tr>
       </tbody>
     </table>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>
@@ -4010,7 +4020,9 @@ domain-specific terms).</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>field</code></td>
+            <td>
+                <code>field</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -4135,7 +4147,9 @@ otherwise return the input field name.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>field</code></td>
+            <td>
+                <code>field</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -4258,7 +4272,7 @@ is the backend-specific field name.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, str]]</code>
+                  <code>Iterable[tuple[str, str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4518,7 +4532,9 @@ will return <code>kinds.mass</code>.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>optimade_field</code></td>
+            <td>
+                <code>optimade_field</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -4676,7 +4692,9 @@ ready to be used to construct the OPTIMADE-compliant JSON response.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>backend_field</code></td>
+            <td>
+                <code>backend_field</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -4886,7 +4904,9 @@ or <code>None</code> if no such alias is found.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>field</code></td>
+            <td>
+                <code>field</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -4914,7 +4934,7 @@ or <code>None</code> if no such alias is found.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="typing.Optional">Optional</span>[str]</code>
+                  <code>Optional[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4995,7 +5015,9 @@ Finally, the <code>type</code> is given the value of the specified <code>cls.END
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>doc</code></td>
+            <td>
+                <code>doc</code>
+            </td>
             <td>
                   <code>dict</code>
             </td>
@@ -5155,6 +5177,11 @@ Finally, the <code>type</code> is given the value of the specified <code>cls.END
 rather than instances.</p>
 <p>Modelled on this <a href="https://stackoverflow.com/a/5192374">StackOverflow answer</a>
 with some tweaks to allow mkdocstrings to do its thing.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/mappers/entries.py</code></summary>

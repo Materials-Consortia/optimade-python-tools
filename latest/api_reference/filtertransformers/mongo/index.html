@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2944,6 +2944,11 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.</p>
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2966,7 +2971,7 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.filtertransformers.base_transformer.BaseTransformer" href="../base_transformer/#optimade.filtertransformers.base_transformer.BaseTransformer">BaseTransformer</a></code></p>
+              Bases: <code>BaseTransformer</code></p>
 
 
         <p>A filter transformer for the MongoDB backend.</p>
@@ -3021,6 +3026,11 @@ various field-related configuration.</p>
           </tr>
       </tbody>
     </table>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
@@ -4659,7 +4669,9 @@ replacement to the dictionary.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>filter_</code></td>
+            <td>
+                <code>filter_</code>
+            </td>
             <td>
             </td>
             <td>
@@ -4672,7 +4684,9 @@ replacement to the dictionary.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>condition</code></td>
+            <td>
+                <code>condition</code>
+            </td>
             <td>
                   <code>callable</code>
             </td>
@@ -4689,7 +4703,9 @@ as would be returned by iterating over <code>filter_.items()</code>.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>replacement</code></td>
+            <td>
+                <code>replacement</code>
+            </td>
             <td>
                   <code>callable</code>
             </td>

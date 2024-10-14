@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2888,6 +2888,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2910,11 +2915,16 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="abc.ABC">ABC</span></code></p>
+              Bases: <code>ABC</code></p>
 
 
         <p>Backend-agnostic base class for querying collections of
 <a class="autorefs autorefs-internal" href="../../../models/entries/#optimade.models.entries.EntryResource"><code>EntryResource</code></a>s.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
@@ -3882,9 +3892,11 @@ if the user does not provide any pagination query parameters.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>resource_cls</code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a></code>
+                <code>resource_cls</code>
+            </td>
+            <td>
+                  <code>EntryResource</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3897,9 +3909,11 @@ that is stored by the collection.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>resource_mapper</code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.server.mappers.BaseResourceMapper" href="../../mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a></code>
+                <code>resource_mapper</code>
+            </td>
+            <td>
+                  <code>BaseResourceMapper</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3913,9 +3927,11 @@ deserialization and response.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>transformer</code></td>
             <td>
-                  <code><span title="lark.Transformer">Transformer</span></code>
+                <code>transformer</code>
+            </td>
+            <td>
+                  <code>Transformer</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4058,9 +4074,11 @@ by the keyword arguments.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>**kwargs</code></td>
             <td>
-                  <code><span title="typing.Any">Any</span></code>
+                <code>**kwargs</code>
+            </td>
+            <td>
+                  <code>Any</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4130,9 +4148,11 @@ for more information.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>params</code></td>
             <td>
-                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a>, <a class="autorefs autorefs-internal" title="optimade.server.query_params.SingleEntryQueryParams" href="../../query_params/#optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</a>]</code>
+                <code>params</code>
+            </td>
+            <td>
+                  <code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4158,7 +4178,7 @@ for more information.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[dict[str, <span title="typing.Any">Any</span>], list[dict[str, <span title="typing.Any">Any</span>]]]]</code>
+                  <code>Optional[Union[dict[str, Any], list[dict[str, Any]]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4168,7 +4188,7 @@ for more information.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="typing.Optional">Optional</span>[int]</code>
+                  <code>Optional[int]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4499,9 +4519,11 @@ link.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>results</code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Union">Union</span>[dict[str, <span title="typing.Any">Any</span>], list[dict[str, <span title="typing.Any">Any</span>]]]]</code>
+                <code>results</code>
+            </td>
+            <td>
+                  <code>Optional[Union[dict[str, Any], list[dict[str, Any]]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4513,9 +4535,11 @@ link.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>params</code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a></code>
+                <code>params</code>
+            </td>
+            <td>
+                  <code>EntryListingQueryParams</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4664,9 +4688,11 @@ which will need modification for modified for other backends.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>params</code></td>
             <td>
-                  <code><span title="typing.Union">Union</span>[<a class="autorefs autorefs-internal" title="optimade.server.query_params.EntryListingQueryParams" href="../../query_params/#optimade.server.query_params.EntryListingQueryParams">EntryListingQueryParams</a>, <a class="autorefs autorefs-internal" title="optimade.server.query_params.SingleEntryQueryParams" href="../../query_params/#optimade.server.query_params.SingleEntryQueryParams">SingleEntryQueryParams</a>]</code>
+                <code>params</code>
+            </td>
+            <td>
+                  <code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4692,7 +4718,7 @@ which will need modification for modified for other backends.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.Forbidden" href="../../../exceptions/#optimade.exceptions.Forbidden">Forbidden</a></code>
+                  <code>Forbidden</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4702,7 +4728,7 @@ which will need modification for modified for other backends.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
+                  <code>BadRequest</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4726,7 +4752,7 @@ or response format.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>dict[str, <span title="typing.Any">Any</span>]</code>
+                  <code>dict[str, Any]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4988,9 +5014,11 @@ or response format.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>data</code></td>
             <td>
-                  <code>list[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>]</code>
+                <code>data</code>
+            </td>
+            <td>
+                  <code>list[EntryResource]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5053,7 +5081,7 @@ resolving aliases and dealing with any invalid fields.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
+                  <code>BadRequest</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5076,7 +5104,7 @@ resolving aliases and dealing with any invalid fields.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, int]]</code>
+                  <code>Iterable[tuple[str, int]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5086,7 +5114,7 @@ resolving aliases and dealing with any invalid fields.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[tuple[str, int]]</code>
+                  <code>Iterable[tuple[str, int]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5237,10 +5265,15 @@ resolving aliases and dealing with any invalid fields.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="enum.Enum">Enum</span></code></p>
+              Bases: <code>Enum</code></p>
 
 
         <p>The supported pagination mechanisms.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
@@ -5310,7 +5343,9 @@ resolving aliases and dealing with any invalid fields.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>name</code></td>
+            <td>
+                <code>name</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -5324,9 +5359,11 @@ resolving aliases and dealing with any invalid fields.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>resource_cls</code></td>
             <td>
-                  <code>type[<a class="autorefs autorefs-internal" title="optimade.models.EntryResource" href="../../../../all_models/#optimade.models.EntryResource">EntryResource</a>]</code>
+                <code>resource_cls</code>
+            </td>
+            <td>
+                  <code>type[EntryResource]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5338,9 +5375,11 @@ resolving aliases and dealing with any invalid fields.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>resource_mapper</code></td>
             <td>
-                  <code>type[<a class="autorefs autorefs-internal" title="optimade.server.mappers.BaseResourceMapper" href="../../mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a>]</code>
+                <code>resource_mapper</code>
+            </td>
+            <td>
+                  <code>type[BaseResourceMapper]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5366,7 +5405,7 @@ resolving aliases and dealing with any invalid fields.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.server.entry_collections.entry_collections.EntryCollection" href="#optimade.server.entry_collections.entry_collections.EntryCollection">EntryCollection</a></code>
+                  <code>EntryCollection</code>
             </td>
             <td>
               <div class="doc-md-description">

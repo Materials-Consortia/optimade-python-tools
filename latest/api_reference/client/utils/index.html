@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2742,6 +2742,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2764,10 +2769,15 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="rich.progress.Progress">Progress</span></code></p>
+              Bases: <code>Progress</code></p>
 
 
         <p>A wrapper around <code>Rich.Progress</code> that defines the OPTIMADE client progressbars.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/client/utils.py</code></summary>
@@ -2854,6 +2864,11 @@
 
 
         <p>A container dataclass for the results from a given query.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/client/utils.py</code></summary>
@@ -3029,7 +3044,9 @@
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>page_results</code></td>
+            <td>
+                <code>page_results</code>
+            </td>
             <td>
                   <code>dict</code>
             </td>
@@ -3173,6 +3190,11 @@
         <p>Base class for any HTTP issues that may be recoverable by just
 repeating the query.</p>
 
+
+
+
+
+
               <details class="quote">
                 <summary>Source code in <code>optimade/client/utils.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
@@ -3200,10 +3222,15 @@ repeating the query.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.client.utils.RecoverableHTTPError" href="#optimade.client.utils.RecoverableHTTPError">RecoverableHTTPError</a></code></p>
+              Bases: <code>RecoverableHTTPError</code></p>
 
 
         <p>For when the underlying HTTP request returns 429: Too Many Requests.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/client/utils.py</code></summary>

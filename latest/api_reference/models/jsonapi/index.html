@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -4082,6 +4082,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -4123,7 +4128,7 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>Members of the attributes object ("attributes") represent information about the resource object in which it's defined.
@@ -4132,6 +4137,11 @@ The keys for Attributes MUST NOT be:
     links
     id
     type</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -4268,10 +4278,15 @@ The keys for Attributes MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>Minimum requirements to represent a Resource</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -4382,10 +4397,15 @@ The keys for Attributes MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>An error response</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -4710,10 +4730,15 @@ The keys for Attributes MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>A Links object specific to Error objects</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -4790,10 +4815,15 @@ The keys for Attributes MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>an object containing references to the source of the error</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -4904,10 +4934,15 @@ The keys for Attributes MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>An object describing the server's implementation</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -5004,10 +5039,15 @@ The keys for Attributes MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>A link <strong>MUST</strong> be represented as either: a string containing the link's URL or a link object.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -5109,10 +5149,15 @@ The keys for Attributes MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>Non-standard meta-information that can not be represented as an attribute or relationship.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -5179,10 +5224,15 @@ The keys for Attributes MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>Representation references from the resource object in which it's defined to other resource objects.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -5367,12 +5417,17 @@ The keys for Attributes MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>A resource object <strong>MAY</strong> contain references to other resource objects ("relationships").
 Relationships may be to-one or to-many.
 Relationships can be specified by including a member in a resource's links object.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -5543,13 +5598,18 @@ Relationships can be specified by including a member in a resource's links objec
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>Members of the relationships object ("relationships") represent references from the resource object in which it's defined to other resource objects.
 Keys MUST NOT be:
     type
     id</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -5658,10 +5718,15 @@ Keys MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.models.jsonapi.BaseResource" href="#optimade.models.jsonapi.BaseResource">BaseResource</a></code></p>
+              Bases: <code>BaseResource</code></p>
 
 
         <p>Resource objects appear in a JSON API document to represent resources.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -5894,10 +5959,15 @@ Keys MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>A Resource Links object</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -5974,10 +6044,15 @@ Keys MUST NOT be:
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>A top-level response.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>
@@ -6312,10 +6387,15 @@ microseconds, as filters may return unexpected results.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+              Bases: <code>BaseModel</code></p>
 
 
         <p>A set of Links objects, possibly including pagination</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/jsonapi.py</code></summary>

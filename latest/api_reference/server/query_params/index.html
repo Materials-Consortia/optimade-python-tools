@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2766,6 +2766,11 @@
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2788,7 +2793,7 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="abc.ABC">ABC</span></code></p>
+              Bases: <code>ABC</code></p>
 
 
         <p>A base class for query parameters that provides validation via the <code>check_params</code> method.</p>
@@ -2819,6 +2824,11 @@ are not implemented by the server, e.g., cursor-based pagination.</p>
           </tr>
       </tbody>
     </table>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/query_params.py</code></summary>
@@ -3017,9 +3027,11 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>query_params</code></td>
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+                <code>query_params</code>
+            </td>
+            <td>
+                  <code>Iterable[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3203,7 +3215,7 @@ does not have a valid prefix.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
+              Bases: <code>BaseQueryParams</code></p>
 
 
         <p>Common query params for all Entry listing endpoints.</p>
@@ -3246,7 +3258,7 @@ Defaults to the format string 'json', which specifies the standard output format
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.email_address">email_address</span></code></td>
             <td>
-                  <code><span title="pydantic.EmailStr">EmailStr</span></code>
+                  <code>EmailStr</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3406,6 +3418,11 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
           </tr>
       </tbody>
     </table>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/query_params.py</code></summary>
@@ -3854,9 +3871,11 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>query_params</code></td>
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+                <code>query_params</code>
+            </td>
+            <td>
+                  <code>Iterable[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4040,7 +4059,7 @@ does not have a valid prefix.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
+              Bases: <code>BaseQueryParams</code></p>
 
 
         <p>Common query params for single entry endpoints.</p>
@@ -4072,7 +4091,7 @@ Defaults to the format string 'json', which specifies the standard output format
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.email_address">email_address</span></code></td>
             <td>
-                  <code><span title="pydantic.EmailStr">EmailStr</span></code>
+                  <code>EmailStr</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4132,6 +4151,11 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
           </tr>
       </tbody>
     </table>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/query_params.py</code></summary>
@@ -4356,9 +4380,11 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>query_params</code></td>
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+                <code>query_params</code>
+            </td>
+            <td>
+                  <code>Iterable[str]</code>
             </td>
             <td>
               <div class="doc-md-description">

@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2709,6 +2709,11 @@ against the specification via the pydantic models implemented in this package.</
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2752,7 +2757,7 @@ available endpoints.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.validator.validator.ImplementationValidator.valid">valid</span></code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[bool]</code>
+                  <code>Optional[bool]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2770,6 +2775,11 @@ available endpoints.</p>
   <p>Only works for current version of the specification as defined
 by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.models"><code>optimade.models</code></a>.</p>
 </details>
+
+
+
+
+
               <details class="quote">
                 <summary>Source code in <code>optimade/validator/validator.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  41</span>
@@ -5815,9 +5825,11 @@ for required endpoints.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>client</code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Any">Any</span>]</code>
+                <code>client</code>
+            </td>
+            <td>
+                  <code>Optional[Any]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5831,9 +5843,11 @@ response from the implementation. If <code>None</code>, then
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>base_url</code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[str]</code>
+                <code>base_url</code>
+            </td>
+            <td>
+                  <code>Optional[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5847,7 +5861,9 @@ base of the OPTIMADE implementation.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>verbosity</code></td>
+            <td>
+                <code>verbosity</code>
+            </td>
             <td>
                   <code>int</code>
             </td>
@@ -5862,7 +5878,9 @@ base of the OPTIMADE implementation.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>respond_json</code></td>
+            <td>
+                <code>respond_json</code>
+            </td>
             <td>
                   <code>bool</code>
             </td>
@@ -5877,7 +5895,9 @@ results of validation to stdout.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>page_limit</code></td>
+            <td>
+                <code>page_limit</code>
+            </td>
             <td>
                   <code>int</code>
             </td>
@@ -5891,7 +5911,9 @@ results of validation to stdout.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_retries</code></td>
+            <td>
+                <code>max_retries</code>
+            </td>
             <td>
                   <code>int</code>
             </td>
@@ -5906,7 +5928,9 @@ attempts to make for a request before failing.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>run_optional_tests</code></td>
+            <td>
+                <code>run_optional_tests</code>
+            </td>
             <td>
                   <code>bool</code>
             </td>
@@ -5921,7 +5945,9 @@ OPTIMADE features.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>fail_fast</code></td>
+            <td>
+                <code>fail_fast</code>
+            </td>
             <td>
                   <code>bool</code>
             </td>
@@ -5936,9 +5962,11 @@ of a mandatory test.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>as_type</code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[str]</code>
+                <code>as_type</code>
+            </td>
+            <td>
+                  <code>Optional[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5952,7 +5980,9 @@ to be pointed to the corresponding endpoint.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>index</code></td>
+            <td>
+                <code>index</code>
+            </td>
             <td>
                   <code>bool</code>
             </td>
@@ -5966,7 +5996,9 @@ to be pointed to the corresponding endpoint.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>minimal</code></td>
+            <td>
+                <code>minimal</code>
+            </td>
             <td>
                   <code>bool</code>
             </td>
@@ -5980,9 +6012,11 @@ to be pointed to the corresponding endpoint.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>http_headers</code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[dict[str, str]]</code>
+                <code>http_headers</code>
+            </td>
+            <td>
+                  <code>Optional[dict[str, str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5994,7 +6028,9 @@ to be pointed to the corresponding endpoint.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>timeout</code></td>
+            <td>
+                <code>timeout</code>
+            </td>
             <td>
                   <code>float</code>
             </td>
@@ -6004,11 +6040,13 @@ to be pointed to the corresponding endpoint.</p>
               </div>
             </td>
             <td>
-                  <code><span title="optimade.validator.utils.DEFAULT_CONN_TIMEOUT">DEFAULT_CONN_TIMEOUT</span></code>
+                  <code>DEFAULT_CONN_TIMEOUT</code>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>read_timeout</code></td>
+            <td>
+                <code>read_timeout</code>
+            </td>
             <td>
                   <code>float</code>
             </td>
@@ -6018,7 +6056,7 @@ to be pointed to the corresponding endpoint.</p>
               </div>
             </td>
             <td>
-                  <code><span title="optimade.validator.utils.DEFAULT_READ_TIMEOUT">DEFAULT_READ_TIMEOUT</span></code>
+                  <code>DEFAULT_READ_TIMEOUT</code>
             </td>
           </tr>
       </tbody>

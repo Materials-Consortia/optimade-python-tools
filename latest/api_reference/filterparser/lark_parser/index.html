@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2728,6 +2728,11 @@ into <code>Lark.Tree</code> objects for use by the filter transformers.</p>
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2753,6 +2758,11 @@ into <code>Lark.Tree</code> objects for use by the filter transformers.</p>
 
         <p>This class wraps a versioned OPTIMADE grammar and allows
 it to be parsed into Lark tree objects.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/filterparser/lark_parser.py</code></summary>
@@ -2930,9 +2940,11 @@ it to be parsed into Lark tree objects.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>version</code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[tuple[int, int, int]]</code>
+                <code>version</code>
+            </td>
+            <td>
+                  <code>Optional[tuple[int, int, int]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2944,7 +2956,9 @@ it to be parsed into Lark tree objects.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>variant</code></td>
+            <td>
+                <code>variant</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -2972,7 +2986,7 @@ it to be parsed into Lark tree objects.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.filterparser.lark_parser.ParserError" href="#optimade.filterparser.lark_parser.ParserError">ParserError</a></code>
+                  <code>ParserError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3085,7 +3099,9 @@ grammar does not exist.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>filter_</code></td>
+            <td>
+                <code>filter_</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -3113,7 +3129,7 @@ grammar does not exist.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.exceptions.BadRequest" href="../../exceptions/#optimade.exceptions.BadRequest">BadRequest</a></code>
+                  <code>BadRequest</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3136,7 +3152,7 @@ grammar does not exist.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="lark.Tree">Tree</span></code>
+                  <code>Tree</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3223,6 +3239,11 @@ grammar does not exist.</p>
         <p>Triggered by critical parsing errors that should lead
 to 500 Server Error HTTP statuses.</p>
 
+
+
+
+
+
               <details class="quote">
                 <summary>Source code in <code>optimade/filterparser/lark_parser.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
@@ -3267,7 +3288,7 @@ returning a dictionary broken down by scraped grammar version
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>dict[tuple[int, int, int], dict[str, <span title="pathlib.Path">Path</span>]]</code>
+                  <code>dict[tuple[int, int, int], dict[str, Path]]</code>
             </td>
             <td>
               <div class="doc-md-description">

@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2827,6 +2827,11 @@ used by the validator. The two main features being:</p>
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2848,6 +2853,11 @@ used by the validator. The two main features being:</p>
 
 
     <div class="doc doc-contents ">
+
+
+
+
+
 
 
               <details class="quote">
@@ -3097,7 +3107,9 @@ if it is valid.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>base_url</code></td>
+            <td>
+                <code>base_url</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -3118,7 +3130,9 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>max_retries</code></td>
+            <td>
+                <code>max_retries</code>
+            </td>
             <td>
                   <code>int</code>
             </td>
@@ -3132,9 +3146,11 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>headers</code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[dict[str, str]]</code>
+                <code>headers</code>
+            </td>
+            <td>
+                  <code>Optional[dict[str, str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3146,9 +3162,11 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>timeout</code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[float]</code>
+                <code>timeout</code>
+            </td>
+            <td>
+                  <code>Optional[float]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3156,13 +3174,15 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
               </div>
             </td>
             <td>
-                  <code><span title="optimade.validator.utils.DEFAULT_CONN_TIMEOUT">DEFAULT_CONN_TIMEOUT</span></code>
+                  <code>DEFAULT_CONN_TIMEOUT</code>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code>read_timeout</code></td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[float]</code>
+                <code>read_timeout</code>
+            </td>
+            <td>
+                  <code>Optional[float]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3170,7 +3190,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
               </div>
             </td>
             <td>
-                  <code><span title="optimade.validator.utils.DEFAULT_READ_TIMEOUT">DEFAULT_READ_TIMEOUT</span></code>
+                  <code>DEFAULT_READ_TIMEOUT</code>
             </td>
           </tr>
       </tbody>
@@ -3285,7 +3305,9 @@ absolute URL (i.e. starts with <code>http://</code> or <code>https://</code>).</
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>request</code></td>
+            <td>
+                <code>request</code>
+            </td>
             <td>
                   <code>str</code>
             </td>
@@ -3313,7 +3335,7 @@ absolute URL (i.e. starts with <code>http://</code> or <code>https://</code>).</
       <tbody>
           <tr class="doc-section-item">
 <td><code>response</code></td>            <td>
-                  <code><span title="requests.models.Response">Response</span></code>
+                  <code>Response</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3346,7 +3368,7 @@ absolute URL (i.e. starts with <code>http://</code> or <code>https://</code>).</
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="optimade.validator.utils.ResponseError" href="#optimade.validator.utils.ResponseError">ResponseError</a></code>
+                  <code>ResponseError</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3518,6 +3540,11 @@ the <code>MAX_RETRIES</code> attempts.</p>
         <p>This exception should be raised when validation throws an unexpected error.
 These should be counted separately from <code>ResponseError</code>'s and <code>ValidationError</code>'s.</p>
 
+
+
+
+
+
               <details class="quote">
                 <summary>Source code in <code>optimade/validator/utils.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
@@ -3553,6 +3580,11 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
 
 
         <p>This exception should be raised for a manual hardcoded test failure.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/validator/utils.py</code></summary>
@@ -3703,9 +3735,11 @@ to the docstring for <code>wrapper(...)</code> below.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code>test_fn</code></td>
             <td>
-                  <code><span title="typing.Callable">Callable</span>[..., tuple[<span title="typing.Any">Any</span>, str]]</code>
+                <code>test_fn</code>
+            </td>
+            <td>
+                  <code>Callable[..., tuple[Any, str]]</code>
             </td>
             <td>
               <div class="doc-md-description">

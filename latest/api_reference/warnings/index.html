@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.39">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
     
     
       
@@ -2785,6 +2785,11 @@ OPTIMADE API.</p>
 
 
 
+
+
+
+
+
   <div class="doc doc-children">
 
 
@@ -2807,10 +2812,15 @@ OPTIMADE API.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.warnings.OptimadeWarning" href="#optimade.warnings.OptimadeWarning">OptimadeWarning</a></code></p>
+              Bases: <code>OptimadeWarning</code></p>
 
 
         <p>A field or value used in the request is not recognised by this implementation.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/warnings.py</code></summary>
@@ -2853,11 +2863,16 @@ OPTIMADE API.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.warnings.OptimadeWarning" href="#optimade.warnings.OptimadeWarning">OptimadeWarning</a></code></p>
+              Bases: <code>OptimadeWarning</code></p>
 
 
         <p>A warning that is specific to a local implementation of the OPTIMADE API
 and should not appear in the server log or response.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/warnings.py</code></summary>
@@ -2904,11 +2919,16 @@ and should not appear in the server log or response.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.warnings.LocalOptimadeWarning" href="#optimade.warnings.LocalOptimadeWarning">LocalOptimadeWarning</a></code></p>
+              Bases: <code>LocalOptimadeWarning</code></p>
 
 
         <p>A field was provided with a null value when a related field was provided
 with a value.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/warnings.py</code></summary>
@@ -2957,6 +2977,11 @@ with a value.</p>
 
 
         <p>Base Warning for the <code>optimade</code> package</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/warnings.py</code></summary>
@@ -3047,10 +3072,15 @@ with a value.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.warnings.OptimadeWarning" href="#optimade.warnings.OptimadeWarning">OptimadeWarning</a></code></p>
+              Bases: <code>OptimadeWarning</code></p>
 
 
         <p>A query parameter is not used in this request.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/warnings.py</code></summary>
@@ -3093,11 +3123,16 @@ with a value.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.warnings.OptimadeWarning" href="#optimade.warnings.OptimadeWarning">OptimadeWarning</a></code></p>
+              Bases: <code>OptimadeWarning</code></p>
 
 
         <p>A timestamp has been used in a filter that contains microseconds and is thus not
 RFC 3339 compliant. This may cause undefined behaviour in the query results.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/warnings.py</code></summary>
@@ -3146,10 +3181,15 @@ RFC 3339 compliant. This may cause undefined behaviour in the query results.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.warnings.OptimadeWarning" href="#optimade.warnings.OptimadeWarning">OptimadeWarning</a></code></p>
+              Bases: <code>OptimadeWarning</code></p>
 
 
         <p>A field or query parameter has too many values to be handled by this implementation.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/warnings.py</code></summary>
@@ -3192,11 +3232,16 @@ RFC 3339 compliant. This may cause undefined behaviour in the query results.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.warnings.OptimadeWarning" href="#optimade.warnings.OptimadeWarning">OptimadeWarning</a></code></p>
+              Bases: <code>OptimadeWarning</code></p>
 
 
         <p>A provider-specific property has been requested via <code>response_fields</code> or as in a <code>filter</code> that is not
 recognised by this implementation.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/warnings.py</code></summary>
@@ -3245,11 +3290,16 @@ recognised by this implementation.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.warnings.OptimadeWarning" href="#optimade.warnings.OptimadeWarning">OptimadeWarning</a></code></p>
+              Bases: <code>OptimadeWarning</code></p>
 
 
         <p>A provider-specific query parameter has been requested in the query with a prefix not
 recognised by this implementation.</p>
+
+
+
+
+
 
               <details class="quote">
                 <summary>Source code in <code>optimade/warnings.py</code></summary>
