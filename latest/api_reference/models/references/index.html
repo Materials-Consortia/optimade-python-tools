@@ -3548,7 +3548,7 @@
     <span class="p">]</span>
 
     <span class="n">firstname</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;First name of the person.&quot;&quot;&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -3557,7 +3557,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">lastname</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Last name of the person.&quot;&quot;&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -3582,7 +3582,7 @@
 
 
 <h3 id="optimade.models.references.Person.firstname" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">firstname</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;First name of the person.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">firstname</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;First name of the person.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3602,7 +3602,7 @@
 
 
 <h3 id="optimade.models.references.Person.lastname" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">lastname</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Last name of the person.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">lastname</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Last name of the person.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3842,7 +3842,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResource.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">ResourceLinks</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResourceLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3862,7 +3862,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResource.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3902,7 +3902,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResource.relationships" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">EntryRelationships</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).</span><span class="se">\n</span><span class="s1">The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EntryRelationships</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).</span><span class="se">\n</span><span class="s1">The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4267,7 +4267,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">authors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]],</span>
+        <span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of person objects containing the authors of the reference.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4276,7 +4276,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">editors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]],</span>
+        <span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of person objects containing the editors of the reference.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4285,7 +4285,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">doi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The digital object identifier of the reference.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4294,7 +4294,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">],</span>
+        <span class="n">AnyUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The URL of the reference.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4303,7 +4303,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">address</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4312,7 +4312,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">annote</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4321,7 +4321,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">booktitle</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4330,7 +4330,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">chapter</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4339,7 +4339,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">crossref</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4348,7 +4348,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">edition</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4357,7 +4357,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">howpublished</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4366,7 +4366,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">institution</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4375,7 +4375,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">journal</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4384,7 +4384,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">key</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4393,7 +4393,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">month</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4402,7 +4402,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">note</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4411,7 +4411,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">number</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4420,7 +4420,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">organization</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4429,7 +4429,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">pages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4438,7 +4438,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">publisher</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4447,7 +4447,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">school</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4456,7 +4456,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">series</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4465,7 +4465,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">title</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4474,7 +4474,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">bib_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Type of the reference, corresponding to the **type** property in the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4483,7 +4483,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">volume</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4492,7 +4492,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">year</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
@@ -4517,7 +4517,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.address" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">address</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">address</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4537,7 +4537,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.annote" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">annote</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">annote</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4557,7 +4557,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.authors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">authors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of person objects containing the authors of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">authors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of person objects containing the authors of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4577,7 +4577,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.bib_type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">bib_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Type of the reference, corresponding to the **type** property in the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">bib_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Type of the reference, corresponding to the **type** property in the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4597,7 +4597,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.booktitle" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">booktitle</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">booktitle</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4617,7 +4617,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.chapter" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">chapter</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">chapter</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4637,7 +4637,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.crossref" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">crossref</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">crossref</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4657,7 +4657,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.doi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">doi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The digital object identifier of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">doi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The digital object identifier of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4677,7 +4677,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.edition" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">edition</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">edition</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4697,7 +4697,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.editors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">editors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of person objects containing the editors of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">editors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of person objects containing the editors of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4717,7 +4717,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.howpublished" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">howpublished</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">howpublished</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4737,7 +4737,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.immutable_id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">immutable_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The entry</span><span class="se">\&#39;</span><span class="s1">s immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to &quot;the latest version&quot; of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.</span><span class="se">\n\n</span><span class="s1">- **Type**: string.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n</span><span class="s1">    - `&quot;8bd3e750-b477-41a0-9b11-3a799f21b44f&quot;`</span><span class="se">\n</span><span class="s1">    - `&quot;fjeiwoj,54;@=%&lt;&gt;#32&quot;` (Strings that are not URL-safe are allowed.)&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">immutable_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The entry</span><span class="se">\&#39;</span><span class="s1">s immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to &quot;the latest version&quot; of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.</span><span class="se">\n\n</span><span class="s1">- **Type**: string.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n</span><span class="s1">    - `&quot;8bd3e750-b477-41a0-9b11-3a799f21b44f&quot;`</span><span class="se">\n</span><span class="s1">    - `&quot;fjeiwoj,54;@=%&lt;&gt;#32&quot;` (Strings that are not URL-safe are allowed.)&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4757,7 +4757,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.institution" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">institution</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">institution</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4777,7 +4777,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.journal" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">journal</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">journal</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4797,7 +4797,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.key" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">key</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">key</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4817,7 +4817,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.last_modified" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">last_modified</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Date and time representing when the entry was last modified.</span><span class="se">\n\n</span><span class="s1">- **Type**: timestamp.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n</span><span class="s1">    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.</span><span class="se">\n\n</span><span class="s1">- **Example**:</span><span class="se">\n</span><span class="s1">    - As part of JSON response format: `&quot;2007-04-05T14:30:20Z&quot;` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">last_modified</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Date and time representing when the entry was last modified.</span><span class="se">\n\n</span><span class="s1">- **Type**: timestamp.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n</span><span class="s1">    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.</span><span class="se">\n\n</span><span class="s1">- **Example**:</span><span class="se">\n</span><span class="s1">    - As part of JSON response format: `&quot;2007-04-05T14:30:20Z&quot;` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4856,7 +4856,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.month" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">month</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">month</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4876,7 +4876,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.note" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">note</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">note</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4896,7 +4896,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.number" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">number</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">number</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4916,7 +4916,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.organization" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">organization</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">organization</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4936,7 +4936,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.pages" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">pages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">pages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4956,7 +4956,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.publisher" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">publisher</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">publisher</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4976,7 +4976,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.school" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">school</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">school</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4996,7 +4996,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.series" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">series</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">series</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5016,7 +5016,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.title" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5036,7 +5036,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The URL of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">AnyUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The URL of the reference.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5056,7 +5056,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.volume" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">volume</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">volume</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5076,7 +5076,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.year" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">year</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">year</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Meaning of property matches the BiBTeX specification.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>

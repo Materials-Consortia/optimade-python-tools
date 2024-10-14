@@ -2757,7 +2757,7 @@ available endpoints.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.validator.validator.ImplementationValidator.valid">valid</span></code></td>
             <td>
-                  <code>Optional[bool]</code>
+                  <code>bool | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4280,9 +4280,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 <span class="normal">1536</span>
 <span class="normal">1537</span>
 <span class="normal">1538</span>
-<span class="normal">1539</span>
-<span class="normal">1540</span>
-<span class="normal">1541</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationValidator</span><span class="p">:</span>
+<span class="normal">1539</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ImplementationValidator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class used to make a series of checks against a particular</span>
 <span class="sd">    OPTIMADE implementation over HTTP.</span>
 
@@ -4300,22 +4298,22 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">valid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+    <span class="n">valid</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">base_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
         <span class="n">respond_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
         <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">run_optional_tests</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">fail_fast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">as_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">as_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">minimal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">http_headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">http_headers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_CONN_TIMEOUT</span><span class="p">,</span>
         <span class="n">read_timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_READ_TIMEOUT</span><span class="p">,</span>
     <span class="p">):</span>
@@ -4596,7 +4594,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
         <span class="bp">self</span><span class="o">.</span><span class="n">print_summary</span><span class="p">()</span>
 
     <span class="nd">@test_case</span>
-    <span class="k">def</span> <span class="nf">_recurse_through_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_recurse_through_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endp</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;For a given endpoint (`endp`), get the entry type</span>
 <span class="sd">        and supported fields, testing that all mandatory fields</span>
 <span class="sd">        are supported, then test queries on every property according</span>
@@ -4747,7 +4745,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
     <span class="nd">@test_case</span>
     <span class="k">def</span> <span class="nf">_get_archetypal_entry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">endp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a random entry from the first page of results for this</span>
 <span class="sd">        endpoint.</span>
 
@@ -4788,7 +4786,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
     <span class="nd">@test_case</span>
     <span class="k">def</span> <span class="nf">_check_response_fields</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">endp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the response field query parameter is obeyed.</span>
 
 <span class="sd">        Parameters:</span>
@@ -4837,7 +4835,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
         <span class="n">sortable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">endp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">chosen_entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;For the given property, property type and chose entry, this method</span>
 <span class="sd">        runs a series of queries for each field in the entry, testing that the</span>
 <span class="sd">        initial document is returned where expected.</span>
@@ -4949,7 +4947,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
         <span class="n">endp</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">chosen_entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">query_optional</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;This method constructs appropriate queries using all operators</span>
 <span class="sd">        for a certain field and applies some tests:</span>
 
@@ -5196,9 +5194,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
         <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2"> passed filter tests&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_test_info_or_links_endpoint</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="kc">False</span><span class="p">],</span> <span class="nb">dict</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_test_info_or_links_endpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Requests an info or links endpoint and attempts to deserialize</span>
 <span class="sd">        the response.</span>
 
@@ -5306,7 +5302,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
     <span class="nd">@test_case</span>
     <span class="k">def</span> <span class="nf">_test_data_available_matches_data_returned</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">deserialized</span><span class="p">:</span> <span class="n">Any</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;In the case where no query is requested, `data_available`</span>
 <span class="sd">        must equal `data_returned` in the meta response, which is tested</span>
 <span class="sd">        here.</span>
@@ -5433,7 +5429,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
     <span class="k">def</span> <span class="nf">_test_versions_headers</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">content_type</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
-        <span class="n">expected_parameter</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+        <span class="n">expected_parameter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tests that the `Content-Type` field of the `/versions` header contains</span>
 <span class="sd">        the passed parameter.</span>
@@ -5539,8 +5535,8 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span>
         <span class="n">check_next_link</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
-        <span class="n">previous_links</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="n">previous_links</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Test that a multi-entry endpoint obeys the page limit by</span>
 <span class="sd">        following pagination links up to a depth of `check_next_link`.</span>
 
@@ -5655,7 +5651,7 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">response</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span>
         <span class="n">response_cls</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-        <span class="n">request</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">request</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Try to create the appropriate pydantic model from the response.</span>
 
@@ -5690,8 +5686,8 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
     <span class="nd">@test_case</span>
     <span class="k">def</span> <span class="nf">_get_available_endpoints</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">base_info</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">base_info</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Tries to get `entry_types_by_format` from base info response</span>
 <span class="sd">        even if it could not be deserialized.</span>
 
@@ -5747,8 +5743,8 @@ by <a class="autorefs autorefs-internal" href="../../../all_models/#optimade.mod
 
     <span class="nd">@test_case</span>
     <span class="k">def</span> <span class="nf">_get_endpoint</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expected_status_code</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">request_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expected_status_code</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Response</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the response from the endpoint specified by `request_str`.</span>
 <span class="sd">        function is wrapped by the `test_case` decorator</span>
 
@@ -5829,7 +5825,7 @@ for required endpoints.</p>
                 <code>client</code>
             </td>
             <td>
-                  <code>Optional[Any]</code>
+                  <code>Any | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5847,7 +5843,7 @@ response from the implementation. If <code>None</code>, then
                 <code>base_url</code>
             </td>
             <td>
-                  <code>Optional[str]</code>
+                  <code>str | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5966,7 +5962,7 @@ of a mandatory test.</p>
                 <code>as_type</code>
             </td>
             <td>
-                  <code>Optional[str]</code>
+                  <code>str | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6016,7 +6012,7 @@ to be pointed to the corresponding endpoint.</p>
                 <code>http_headers</code>
             </td>
             <td>
-                  <code>Optional[dict[str, str]]</code>
+                  <code>dict[str, str] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -6186,18 +6182,18 @@ to be pointed to the corresponding endpoint.</p>
 <span class="normal">180</span>
 <span class="normal">181</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">base_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">client</span><span class="p">:</span> <span class="n">Any</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">respond_json</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
     <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
     <span class="n">run_optional_tests</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">fail_fast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">as_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">as_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">minimal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">http_headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">http_headers</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_CONN_TIMEOUT</span><span class="p">,</span>
     <span class="n">read_timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">DEFAULT_READ_TIMEOUT</span><span class="p">,</span>
 <span class="p">):</span>
