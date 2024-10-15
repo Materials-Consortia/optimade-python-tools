@@ -1,6 +1,15 @@
 # Changelog
 
-## [v1.1.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.4) (2024-10-07)
+## [v1.1.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.5) (2024-10-15)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.4...v1.1.5)
+
+**Closed issues:**
+
+- Deprecate Python 3.9 [\#2149](https://github.com/Materials-Consortia/optimade-python-tools/issues/2149)
+- `mongomock` as a production dependency [\#2146](https://github.com/Materials-Consortia/optimade-python-tools/issues/2146)
+
+## [v1.1.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.4) (2024-10-11)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.3...v1.1.4)
 
