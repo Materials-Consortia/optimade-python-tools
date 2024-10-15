@@ -2888,7 +2888,7 @@ OPTIMADE specification.</p>
                 <code>errors</code>
             </td>
             <td>
-                  <code>list[OptimadeError] | None</code>
+                  <code>Optional[list[OptimadeError]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2928,8 +2928,7 @@ OPTIMADE specification.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/exception_handlers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
-<span class="normal">18</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span>
@@ -2988,11 +2987,12 @@ OPTIMADE specification.</p>
 <span class="normal">74</span>
 <span class="normal">75</span>
 <span class="normal">76</span>
-<span class="normal">77</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">general_exception</span><span class="p">(</span>
+<span class="normal">77</span>
+<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">general_exception</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">exc</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">,</span>
     <span class="n">status_code</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>  <span class="c1"># A status_code in `exc` will take precedence</span>
-    <span class="n">errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle an exception</span>
 
@@ -3141,8 +3141,7 @@ OPTIMADE specification.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/exception_handlers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">207</span>
-<span class="normal">208</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
 <span class="normal">209</span>
 <span class="normal">210</span>
 <span class="normal">211</span>
@@ -3154,7 +3153,8 @@ OPTIMADE specification.</p>
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
-<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">general_exception_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
+<span class="normal">220</span>
+<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">general_exception_handler</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Catch all Python Exceptions not handled by other exception handlers</span>
 
 <span class="sd">    Pass-through directly to [`general_exception()`][optimade.server.exception_handlers.general_exception].</span>
@@ -3264,8 +3264,7 @@ return a 501 NotImplementedError.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/exception_handlers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">148</span>
-<span class="normal">149</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">149</span>
 <span class="normal">150</span>
 <span class="normal">151</span>
 <span class="normal">152</span>
@@ -3300,7 +3299,8 @@ return a 501 NotImplementedError.</p>
 <span class="normal">181</span>
 <span class="normal">182</span>
 <span class="normal">183</span>
-<span class="normal">184</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">grammar_not_implemented_handler</span><span class="p">(</span>
+<span class="normal">184</span>
+<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">grammar_not_implemented_handler</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">VisitError</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle an error raised by Lark during filter transformation</span>
@@ -3389,7 +3389,7 @@ return a 501 NotImplementedError.</p>
                 <code>exc</code>
             </td>
             <td>
-                  <code>StarletteHTTPException | OptimadeHTTPException</code>
+                  <code>Union[StarletteHTTPException, OptimadeHTTPException]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3428,8 +3428,7 @@ return a 501 NotImplementedError.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/exception_handlers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">80</span>
-<span class="normal">81</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span>
 <span class="normal">84</span>
@@ -3442,9 +3441,10 @@ return a 501 NotImplementedError.</p>
 <span class="normal">91</span>
 <span class="normal">92</span>
 <span class="normal">93</span>
-<span class="normal">94</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">http_exception_handler</span><span class="p">(</span>
+<span class="normal">94</span>
+<span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">http_exception_handler</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
-    <span class="n">exc</span><span class="p">:</span> <span class="n">StarletteHTTPException</span> <span class="o">|</span> <span class="n">OptimadeHTTPException</span><span class="p">,</span>
+    <span class="n">exc</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">StarletteHTTPException</span><span class="p">,</span> <span class="n">OptimadeHTTPException</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle a general HTTP Exception from Starlette</span>
 
@@ -3548,8 +3548,7 @@ return a 501 NotImplementedError.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/exception_handlers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">187</span>
-<span class="normal">188</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">188</span>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span>
@@ -3565,7 +3564,8 @@ return a 501 NotImplementedError.</p>
 <span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
-<span class="normal">204</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">not_implemented_handler</span><span class="p">(</span>
+<span class="normal">204</span>
+<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">not_implemented_handler</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="ne">NotImplementedError</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle a standard NotImplementedError Python exception</span>
@@ -3676,8 +3676,7 @@ Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.s
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/exception_handlers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
-<span class="normal"> 98</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 98</span>
 <span class="normal"> 99</span>
 <span class="normal">100</span>
 <span class="normal">101</span>
@@ -3692,7 +3691,8 @@ Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.s
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
-<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">request_validation_exception_handler</span><span class="p">(</span>
+<span class="normal">113</span>
+<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">request_validation_exception_handler</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">RequestValidationError</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle a request validation error from FastAPI</span>
@@ -3802,8 +3802,7 @@ this function extracts them and wraps them in the OPTIMADE specific error resour
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/exception_handlers.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">116</span>
-<span class="normal">117</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span>
@@ -3831,7 +3830,8 @@ this function extracts them and wraps them in the OPTIMADE specific error resour
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
-<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validation_exception_handler</span><span class="p">(</span>
+<span class="normal">145</span>
+<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">validation_exception_handler</span><span class="p">(</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span> <span class="n">ValidationError</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">JSONAPIResponse</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle a general pydantic validation error</span>

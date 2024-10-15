@@ -3804,7 +3804,7 @@ for more information.</p>
                 <code>params</code>
             </td>
             <td>
-                  <code>EntryListingQueryParams | SingleEntryQueryParams</code>
+                  <code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3830,7 +3830,7 @@ for more information.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>dict[str, Any] | list[dict[str, Any]] | None</code>
+                  <code>Optional[Union[dict[str, Any], list[dict[str, Any]]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3840,7 +3840,7 @@ for more information.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code>int | None</code>
+                  <code>Optional[int]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3945,10 +3945,10 @@ for more information.</p>
 <span class="normal">229</span>
 <span class="normal">230</span>
 <span class="normal">231</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">find</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span> <span class="o">|</span> <span class="n">SingleEntryQueryParams</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
-    <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]],</span>
+    <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="nb">bool</span><span class="p">,</span>
     <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -4010,7 +4010,7 @@ for more information.</p>
             <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unrecognised OPTIMADE field(s) in requested `response_fields`: </span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">.&quot;</span>
         <span class="p">)</span>
 
-    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">raw_results</span><span class="p">:</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">raw_results</span><span class="p">]</span>
@@ -4175,7 +4175,7 @@ link.</p>
                 <code>results</code>
             </td>
             <td>
-                  <code>dict[str, Any] | list[dict[str, Any]] | None</code>
+                  <code>Optional[Union[dict[str, Any], list[dict[str, Any]]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4268,7 +4268,7 @@ link.</p>
 <span class="normal">503</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_next_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
-    <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides url query pagination parameters that will be used in the next</span>
 <span class="sd">    link.</span>
@@ -4344,7 +4344,7 @@ which will need modification for modified for other backends.</p>
                 <code>params</code>
             </td>
             <td>
-                  <code>EntryListingQueryParams | SingleEntryQueryParams</code>
+                  <code>Union[EntryListingQueryParams, SingleEntryQueryParams]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4524,7 +4524,7 @@ or response format.</p>
 <span class="normal">407</span>
 <span class="normal">408</span>
 <span class="normal">409</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">handle_query_params</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span> <span class="o">|</span> <span class="n">SingleEntryQueryParams</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryListingQueryParams</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">    that can be used by the specific backend.</span>

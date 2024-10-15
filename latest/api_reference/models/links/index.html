@@ -3614,7 +3614,7 @@
 
 
 <h3 id="optimade.models.links.LinksResource.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResourceLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">ResourceLinks</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3634,7 +3634,7 @@
 
 
 <h3 id="optimade.models.links.LinksResource.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Meta</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3674,7 +3674,7 @@
 
 
 <h3 id="optimade.models.links.LinksResource.relationships" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EntryRelationships</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).</span><span class="se">\n</span><span class="s1">The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">EntryRelationships</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).</span><span class="se">\n</span><span class="s1">The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3849,14 +3849,14 @@
         <span class="p">),</span>
     <span class="p">]</span>
     <span class="n">base_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">JsonLinkType</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;JSON API links object, pointing to the base URL for this implementation&quot;</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">homepage</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">JsonLinkType</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;JSON API links object, pointing to a homepage URL for this implementation&quot;</span><span class="p">,</span>
         <span class="p">),</span>
@@ -3872,7 +3872,7 @@
     <span class="p">]</span>
 
     <span class="n">aggregate</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Aggregate</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="n">Aggregate</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
             <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Aggregate&quot;</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.</span>
@@ -3889,7 +3889,7 @@
     <span class="p">]</span> <span class="o">=</span> <span class="n">Aggregate</span><span class="o">.</span><span class="n">OK</span>
 
     <span class="n">no_aggregate_reason</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.</span>
 <span class="s2">It SHOULD NOT be present if `aggregate`=`ok`.&quot;&quot;&quot;</span><span class="p">,</span>
@@ -3913,7 +3913,7 @@
 
 
 <h3 id="optimade.models.links.LinksResourceAttributes.aggregate" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">aggregate</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Aggregate</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Aggregate</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.</span><span class="se">\n</span><span class="s1">This flag SHOULD NOT be indicated for links where `link_type` is not `child`.</span><span class="se">\n\n</span><span class="s1">If not specified, clients MAY assume that the value is `ok`.</span><span class="se">\n</span><span class="s1">If specified, and the value is anything different than `ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).</span><span class="se">\n\n</span><span class="s1">Specific values indicate the reason why the server is providing the suggestion.</span><span class="se">\n</span><span class="s1">A client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).</span><span class="se">\n\n</span><span class="s1">If specified, it MUST be one of the values listed in section Link Aggregate Options.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Aggregate</span><span class="o">.</span><span class="n">OK</span></code>
+            <code class="highlight language-python"><span class="n">aggregate</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Aggregate</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Aggregate</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.</span><span class="se">\n</span><span class="s1">This flag SHOULD NOT be indicated for links where `link_type` is not `child`.</span><span class="se">\n\n</span><span class="s1">If not specified, clients MAY assume that the value is `ok`.</span><span class="se">\n</span><span class="s1">If specified, and the value is anything different than `ok`, the client MUST assume that the server is suggesting not to follow the link during aggregation by default (also if the value is not among the known ones, in case a future specification adds new accepted values).</span><span class="se">\n\n</span><span class="s1">Specific values indicate the reason why the server is providing the suggestion.</span><span class="se">\n</span><span class="s1">A client MAY follow the link anyway if it has reason to do so (e.g., if the client is looking for all test databases, it MAY follow the links marked with `aggregate`=`test`).</span><span class="se">\n\n</span><span class="s1">If specified, it MUST be one of the values listed in section Link Aggregate Options.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Aggregate</span><span class="o">.</span><span class="n">OK</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3933,7 +3933,7 @@
 
 
 <h3 id="optimade.models.links.LinksResourceAttributes.base_url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">base_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;JSON API links object, pointing to the base URL for this implementation&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">base_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">JsonLinkType</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;JSON API links object, pointing to the base URL for this implementation&#39;</span><span class="p">)]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3971,7 +3971,7 @@
 
 
 <h3 id="optimade.models.links.LinksResourceAttributes.homepage" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">homepage</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;JSON API links object, pointing to a homepage URL for this implementation&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">homepage</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">JsonLinkType</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;JSON API links object, pointing to a homepage URL for this implementation&#39;</span><span class="p">)]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4048,7 +4048,7 @@
 
 
 <h3 id="optimade.models.links.LinksResourceAttributes.no_aggregate_reason" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">no_aggregate_reason</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.</span><span class="se">\n</span><span class="s1">It SHOULD NOT be present if `aggregate`=`ok`.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">no_aggregate_reason</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.</span><span class="se">\n</span><span class="s1">It SHOULD NOT be present if `aggregate`=`ok`.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>

@@ -2880,9 +2880,9 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 <span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_base_url</span><span class="p">(</span>
-    <span class="n">parsed_url_request</span><span class="p">:</span> <span class="p">(</span>
-        <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span> <span class="o">|</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span> <span class="o">|</span> <span class="n">StarletteURL</span> <span class="o">|</span> <span class="nb">str</span>
-    <span class="p">),</span>
+    <span class="n">parsed_url_request</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span><span class="p">,</span> <span class="n">StarletteURL</span><span class="p">,</span> <span class="nb">str</span>
+    <span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get base URL for current server</span>
 
@@ -3063,7 +3063,7 @@ to include them in the response.</p>
                 <code>results</code>
             </td>
             <td>
-                  <code>EntryResource | list[EntryResource] | dict | list[dict]</code>
+                  <code>Union[EntryResource, list[EntryResource], dict, list[dict]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3123,7 +3123,7 @@ based on endpoint type.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>list[EntryResource | dict[str, Any]]</code>
+                  <code>list[Union[EntryResource, dict[str, Any]]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3223,10 +3223,10 @@ of resource objects for that entry type.</p>
 <span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_included_relationships</span><span class="p">(</span>
-    <span class="n">results</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span>
     <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryCollection</span><span class="p">],</span>
     <span class="n">include_param</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Filters the included relationships and makes the appropriate compound request</span>
 <span class="sd">    to include them in the response.</span>
 
@@ -3285,7 +3285,7 @@ of resource objects for that entry type.</p>
 
     <span class="n">included</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
-        <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span>
     <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">:</span>
         <span class="n">compound_filter</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
@@ -3674,7 +3674,7 @@ set to null if missing in the entry.</p>
 <span class="normal">127</span>
 <span class="normal">128</span>
 <span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">handle_response_fields</span><span class="p">(</span>
-    <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">results</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span> <span class="n">EntryResource</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="nb">dict</span><span class="p">],</span>
     <span class="n">exclude_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">include_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -3773,11 +3773,11 @@ set to null if missing in the entry.</p>
 <span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">meta_values</span><span class="p">(</span>
-    <span class="n">url</span><span class="p">:</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span> <span class="o">|</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span> <span class="o">|</span> <span class="n">StarletteURL</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">data_returned</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span><span class="p">,</span> <span class="n">StarletteURL</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">data_returned</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="n">data_available</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">more_data_available</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResponseMeta</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper to initialize the meta values&quot;&quot;&quot;</span>

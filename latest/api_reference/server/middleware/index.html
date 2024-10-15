@@ -3256,12 +3256,12 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 
     <span class="k">def</span> <span class="nf">showwarning</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">message</span><span class="p">:</span> <span class="ne">Warning</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="ne">Warning</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
         <span class="n">category</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
         <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">lineno</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">file</span><span class="p">:</span> <span class="n">TextIO</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">line</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">line</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Hook to write a warning to a file using the built-in `warnings` lib.</span>
@@ -3353,7 +3353,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
 
 <span class="sd">        Parameters:</span>
@@ -3456,7 +3456,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
                 <code>content</code>
             </td>
             <td>
-                  <code>str | bytes</code>
+                  <code>Union[str, bytes]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3526,7 +3526,7 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 <span class="normal">425</span>
 <span class="normal">426</span>
 <span class="normal">427</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">chunk_it_up</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">],</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return generator for string in chunks of size `chunk_size`.</span>
 
 <span class="sd">    Parameters:</span>
@@ -3594,7 +3594,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
                 <code>message</code>
             </td>
             <td>
-                  <code>Warning | str</code>
+                  <code>Union[Warning, str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3658,7 +3658,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
                 <code>file</code>
             </td>
             <td>
-                  <code>TextIO | None</code>
+                  <code>Optional[TextIO]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3674,7 +3674,7 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
                 <code>line</code>
             </td>
             <td>
-                  <code>str | None</code>
+                  <code>Optional[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3788,12 +3788,12 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 <span class="normal">410</span>
 <span class="normal">411</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">showwarning</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">message</span><span class="p">:</span> <span class="ne">Warning</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">message</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="ne">Warning</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">category</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Warning</span><span class="p">],</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">lineno</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">file</span><span class="p">:</span> <span class="n">TextIO</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">line</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TextIO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">line</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Hook to write a warning to a file using the built-in `warnings` lib.</span>
@@ -4647,7 +4647,7 @@ and semi-colon (<code>;</code>).</p>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle `api_hint` query parameter.&quot;&quot;&quot;</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
 
 <span class="sd">        There are several scenarios that can play out, when handling the `api_hint`</span>
@@ -4917,7 +4917,7 @@ supported major version of the implementation.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code>None | str</code>
+                  <code>Union[None, str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5012,7 +5012,7 @@ supported major version of the implementation.</p>
 <span class="normal">194</span>
 <span class="normal">195</span>
 <span class="normal">196</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@staticmethod</span>
-<span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">handle_api_hint</span><span class="p">(</span><span class="n">api_hint</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle `api_hint` parameter value.</span>
 
 <span class="sd">    There are several scenarios that can play out, when handling the `api_hint`</span>

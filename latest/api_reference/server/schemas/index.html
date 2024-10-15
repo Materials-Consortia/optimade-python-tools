@@ -2741,7 +2741,7 @@ OPTIMADE-queryable properties of that model.</p>
                 <code>queryable_properties</code>
             </td>
             <td>
-                  <code>Iterable[str] | None</code>
+                  <code>Optional[Iterable[str]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2757,7 +2757,7 @@ OPTIMADE-queryable properties of that model.</p>
                 <code>entry_type</code>
             </td>
             <td>
-                  <code>str | None</code>
+                  <code>Optional[str]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2915,8 +2915,8 @@ lookup schemas for any config-defined fields.</p>
 <span class="normal">148</span>
 <span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">retrieve_queryable_properties</span><span class="p">(</span>
     <span class="n">schema</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
-    <span class="n">queryable_properties</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">queryable_properties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">entry_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;QueryableProperties&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively loops through a pydantic model, returning a dictionary of all the</span>
 <span class="sd">    OPTIMADE-queryable properties of that model.</span>
