@@ -98,7 +98,11 @@ Each release of the `optimade` package from this repository only targets one ver
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.1.0/optimade.rst">v1.1.0</a></td>
-        <td align="center"><code>optimade~=0.16</code></td>
+        <td align="center"><code>optimade>=0.16,<1.2</code></td>
+    </tr>
+    <tr>
+        <td align="center"><a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.2.0/optimade.rst">v1.2.0</a></td>
+        <td align="center"><code>optimade>=1.2.0</code></td>
     </tr>
 </tbody>
 </table>
