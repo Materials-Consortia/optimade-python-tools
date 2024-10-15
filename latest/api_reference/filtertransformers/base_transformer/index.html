@@ -3310,7 +3310,7 @@ parts of the grammar in a backend non-specific way.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.filtertransformers.base_transformer.BaseTransformer.operator_map">operator_map</span></code></td>
             <td>
-                  <code>dict[str, Optional[str]]</code>
+                  <code>dict[str, str | None]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3322,7 +3322,7 @@ to their backend-specific versions.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.filtertransformers.base_transformer.BaseTransformer.mapper">mapper</span></code></td>
             <td>
-                  <code>Optional[type[BaseResourceMapper]]</code>
+                  <code>type[BaseResourceMapper] | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3646,8 +3646,8 @@ various field-related configuration.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">operator_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">operator_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -3670,7 +3670,7 @@ various field-related configuration.</p>
     <span class="n">_quantity_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">Quantity</span>
     <span class="n">_quantities</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
 <span class="sd">        resource mapper for use when post-processing.</span>
 
@@ -3852,7 +3852,7 @@ various field-related configuration.</p>
     <span class="k">def</span> <span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;number: SIGNED_INT | SIGNED_FLOAT&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-            <span class="n">type_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">type</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
+            <span class="n">type_</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_INT&quot;</span><span class="p">:</span>
             <span class="n">type_</span> <span class="o">=</span> <span class="nb">int</span>
@@ -4036,7 +4036,7 @@ resource mapper for use when post-processing.</p>
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
-<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
 <span class="sd">    resource mapper for use when post-processing.</span>
 
@@ -4425,7 +4425,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="k">def</span> <span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;number: SIGNED_INT | SIGNED_FLOAT&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="n">type_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">type</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
+        <span class="n">type_</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_INT&quot;</span><span class="p">:</span>
         <span class="n">type_</span> <span class="o">=</span> <span class="nb">int</span>
@@ -5024,7 +5024,7 @@ backend-specific post-processing methods.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.filtertransformers.base_transformer.Quantity.backend_field">backend_field</span></code></td>
             <td>
-                  <code>Optional[str]</code>
+                  <code>str | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5117,13 +5117,13 @@ can then decide whether to use this for all "LENGTH" queries.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">backend_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">backend_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the `quantity` from it&#39;s name and aliases.</span>
@@ -5202,7 +5202,7 @@ can then decide whether to use this for all "LENGTH" queries.</p>
                 <code>backend_field</code>
             </td>
             <td>
-                  <code>Optional[str]</code>
+                  <code>str | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -5260,7 +5260,7 @@ can then decide whether to use this for all "LENGTH" queries.</p>
 <span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">backend_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the `quantity` from it&#39;s name and aliases.</span>

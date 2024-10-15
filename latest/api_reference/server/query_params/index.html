@@ -3731,7 +3731,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
             <span class="p">),</span>
         <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
         <span class="n">email_address</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-            <span class="n">Optional</span><span class="p">[</span><span class="n">EmailStr</span><span class="p">],</span>
+            <span class="n">EmailStr</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">Query</span><span class="p">(</span>
                 <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An email address of the user making the request.</span><span class="se">\n</span><span class="s2">The email SHOULD be that of a person and not an automatic system.</span><span class="se">\n</span><span class="s2">Example: `http://example.com/v1/structures?email_address=user@example.com`&quot;</span><span class="p">,</span>
             <span class="p">),</span>
@@ -4295,7 +4295,7 @@ For example, if a client appends <code>api_hint=v1.0</code> to the query string,
             <span class="p">),</span>
         <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
         <span class="n">email_address</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-            <span class="n">Optional</span><span class="p">[</span><span class="n">EmailStr</span><span class="p">],</span>
+            <span class="n">EmailStr</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">Query</span><span class="p">(</span>
                 <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An email address of the user making the request.</span><span class="se">\n</span><span class="s2">The email SHOULD be that of a person and not an automatic system.</span><span class="se">\n</span><span class="s2">Example: `http://example.com/v1/structures?email_address=user@example.com`&quot;</span><span class="p">,</span>
             <span class="p">),</span>
