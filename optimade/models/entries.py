@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Annotated, Any, ClassVar, Literal
 
-from pydantic import BaseModel, ValidationInfo, field_validator
+from pydantic import BaseModel, field_validator, model_validator
 
 from optimade.models.jsonapi import Attributes, Meta, Relationships, Resource
 from optimade.models.optimade_json import (
@@ -217,19 +217,21 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
         ),
     ] = None
 
-    @field_validator("meta", mode="before")
-    def check_meta(cls, meta: Any, info: ValidationInfo) -> dict | None:
+    @model_validator(mode="before")
+    def check_meta(cls, data: Any) -> dict | None:
         """Validator to check whether the per-entry `meta` field is valid,
         including stripping out any per-property metadata for properties that
         do not otherwise appear in the model.
 
         """
+
+        meta = data.get("meta")
         if not meta:
-            return meta
+            return data
 
         if property_metadata := meta.pop("property_metadata", None):
             # check that all the fields under property metadata are in attributes
-            attributes = info.data.get("attributes", {})
+            attributes = data.get("attributes", {})
             property_error_fields: list[str] = []
             for subfield in property_metadata:
                 if subfield not in attributes:
@@ -237,7 +239,7 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
 
             if property_error_fields:
                 raise ValueError(
-                    f"The keys under the field `property_metadata` need to match with the field names in attributes. The field(s) {property_error_fields} are however not present in attributes."
+                    f"The keys under the field `property_metadata` need to match with the field names in attributes. The field(s) {property_error_fields} are however not present in attributes {attributes}"
                 )
 
         meta["property_metadata"] = property_metadata
@@ -253,7 +255,8 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
                 f"The keys under the field `meta` need to be prefixed if not otherwise defined. The field(s) {meta_error_fields} are not defined for per-entry `meta`."
             )
 
-        return meta
+        data["meta"] = meta
+        return data
 
 
 class EntryInfoProperty(BaseModel):
