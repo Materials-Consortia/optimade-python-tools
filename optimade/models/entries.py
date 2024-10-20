@@ -131,16 +131,19 @@ class EntryMetadata(Meta):
         the subfields are prefixed correctly.
 
         """
-        from optimade.server.mappers.entries import BaseResourceMapper
+        error_fields: list[str] = []
 
         if value is not None and isinstance(value, dict):
             for field in value:
                 if property_metadata := value.get(field):
                     for subfield in property_metadata:
-                        BaseResourceMapper.check_starts_with_supported_prefix(
-                            subfield,
-                            "Currently no OPTIMADE fields have been defined for the per attribute metadata, thus only prefixed database- and domain-specific fields are allowed",
-                        )
+                        if not subfield.startswith("_"):
+                            error_fields.append(subfield)
+
+        if error_fields:
+            raise ValueError(
+                f"The keys under the field `property_metadata` need to be prefixed. The field(s) {error_fields} are not prefixed."
+            )
         return value
 
 
@@ -221,9 +224,6 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
         do not otherwise appear in the model.
 
         """
-
-        from optimade.server.mappers.entries import BaseResourceMapper
-
         if not meta:
             return meta
 
@@ -245,7 +245,7 @@ The OPTIONAL human-readable description of the relationship MAY be provided in t
         meta_error_fields: list[str] = []
         for field in meta:
             if field not in EntryMetadata.model_fields:
-                if not BaseResourceMapper.starts_with_supported_prefix(field):
+                if not field.startswith("_"):
                     meta_error_fields.append(field)
 
         if meta_error_fields:
