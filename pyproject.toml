@@ -13,9 +13,9 @@ dynamic = ["version"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Topic :: Database",
@@ -23,11 +23,11 @@ classifiers = [
     "Topic :: Database :: Database Engines/Servers",
     "Topic :: Database :: Front-Ends",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "lark~=1.1",
-    "pydantic~=1.10,>=1.10.2,!=1.10.7",
-    "email_validator>=1.2",
+    "pydantic[email]~=2.2",
+    "pydantic-settings~=2.0",
     "requests~=2.28",
 ]
 
@@ -66,6 +66,7 @@ mongo = ["pymongo~=4.0", "mongomock~=4.1"]
 server = [
     "uvicorn[standard]~=0.19",
     "fastapi>=0.103.1",
+    "starlette ~= 0.38, >= 0.38.3",
     "pyyaml~=6.0",
     "optimade[mongo]",
 ]
@@ -73,65 +74,63 @@ server = [
 # Client minded
 aiida = ["aiida-core~=2.1"]
 
-http_client = [
+http-client = [
     "httpx~=0.23",
     "rich~=13.0",
     "click~=8.1",
 ]
 
 ase = ["ase~=3.22"]
-cif = ["numpy>=1.20"]
-# we don't support pydantic v2 yet, but pymatgen has a (uncessary IMO) tight coupling to mp-api which now enforces it
-# as "true" users of pydantic, if we can't update our stuff to v2 (including all the fieldinfo hacks) then we will
-# probably just have to hard pin or remove pymatgen support
-pymatgen = [
-    "pymatgen>=2022",
-    "mp-api<=0.36",
-    "emmet-core<=0.68"
-]
-jarvis = ["jarvis-tools>=2023.1.8"]
+cif = ["numpy>=1.22,<3.0"]
+pymatgen = ["pymatgen>=2022", "pandas~=2.2"]
+jarvis = ["jarvis-tools>=2023.1.8,!=2024.4.20,!=2024.4.30"]
 client = ["optimade[cif]"]
 
 # General
 docs = [
-    "mike~=1.1",
-    "mkdocs~=1.4",
+    "mike~=2.0",
+    "mkdocs~=1.6",
+    "mkdocs-autorefs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.8",
     "mkdocs-material~=9.0",
-    "mkdocstrings[python-legacy]~=0.20",
+    "mkdocstrings[python]~=0.26",
 ]
 
 testing = [
     "build~=1.0",
     "jsondiff~=2.0",
-    "pytest~=7.2",
-    "pytest-cov~=4.0",
+    "pytest>=7.2,<9.0",
+    "pytest-cov>=4,<6",
     "optimade[server]",
 ]
 
 dev = [
-   "black~=23.1",
-   "isort~=5.12",
    "mypy~=1.0",
-   "pre-commit~=3.0",
+   "pre-commit>=3,<5",
    "invoke~=2.0",
-   "types-all==1.0.0",
-   "ruff~=0.0",
-   "optimade[docs,testing,client,http_client]"
+   "types-requests",
+   "types-pyyaml",
+   "ruff~=0.1",
+   "optimade[docs,testing,client,http-client]"
 ]
 
-all = ["optimade[dev,elastic,aiida,ase,pymatgen,jarvis,http_client,client]"]
+http_client = [
+   "optimade[http-client]"
+]
 
+all = ["optimade[dev,elastic,aiida,ase,pymatgen,jarvis,http-client,client]"]
 
 [tool.ruff]
-select = ["E", "F", "I", "W", "Q"]
-ignore = ["E501", "E402"]
-fixable = ["A", "B", "C", "D", "E", "F", "I"]
-unfixable = []
 extend-exclude = [
     "providers",
 ]
 target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "Q"]
+ignore = ["E501", "E402"]
+fixable = ["A", "B", "C", "D", "E", "F", "I"]
+unfixable = []
 per-file-ignores = {}
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
@@ -142,6 +141,8 @@ ignore_missing_imports = true
 follow_imports = "skip"
 
 [tool.pytest.ini_options]
+testpaths = "tests"
+addopts = "-rs"
 filterwarnings = [
     "error",
     "ignore:.*flaky.*:UserWarning",
@@ -157,10 +158,12 @@ filterwarnings = [
     "ignore:.*has an unrecognised prefix.*:",
     "ignore:.*pkg_resources is deprecated as an API*:DeprecationWarning",
     "ignore:.*Deprecated call to `pkg_resources.declare_namespace*:DeprecationWarning",
+    "ignore:.*datetime.datetime.utcfromtimestamp()*:DeprecationWarning",  # Raised indirectly by elasticsearch-DSL for Python 3.12
+    "ignore:.*ast.Num is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:.*ast.Str is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:.*ast.* is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:\\nPyarrow will become a required dependency of pandas.*:DeprecationWarning", # Raised indirectly by pymatgen for Python 3.12
+    "ignore:.*The 'app' shortcut is now deprecated.*:DeprecationWarning", # Raised by httpx for test client code; would rather not force upgrade of httpx to deal with it for now
+    "ignore::pytest.PytestUnraisableExceptionWarning",  # Started raising with pytest 8.2.1, seemingly related to anyio warnings
+    "ignore:.*Unclosed.*:ResourceWarning", # Also started raising with pytest 8.2.1, seemingly related to anyio warnings
 ]
-testpaths = "tests"
-addopts = "-rs"
-
-[tool.isort]
-known_first_party = "optimade"
-profile = "black"

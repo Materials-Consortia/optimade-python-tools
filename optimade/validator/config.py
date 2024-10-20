@@ -1,4 +1,4 @@
-""" This submodule defines constant values and definitions
+"""This submodule defines constant values and definitions
 from the OPTIMADE specification for use by the validator.
 
 The `VALIDATOR_CONFIG` object can be imported and modified
@@ -10,7 +10,8 @@ the hardcoded values.
 from collections.abc import Container
 from typing import Any
 
-from pydantic import BaseSettings, Field
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 from optimade.models import (
     DataType,
@@ -33,7 +34,7 @@ __all__ = ("ValidatorConfig", "VALIDATOR_CONFIG")
 
 _ENTRY_SCHEMAS = {
     endp: retrieve_queryable_properties(
-        ENTRY_INFO_SCHEMAS[endp](), ("id", "type", "attributes")
+        ENTRY_INFO_SCHEMAS[endp], ("id", "type", "attributes")
     )
     for endp in ENTRY_INFO_SCHEMAS
 }

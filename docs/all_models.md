@@ -11,3 +11,6 @@ For example, the three OPTIMADE entry types, `structures`, `references` and `lin
 As well as validating data types when creating instances of these models, this package defines several OPTIMADE-specific validators that ensure consistency between fields (e.g., the value of `nsites` matches the number of positions provided in `cartesian_site_positions`).
 
 ::: optimade.models
+    options:
+      show_submodules: true
+      show_if_no_docstring: true

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "OPTIMADE API - Index meta-database",
-    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v0.25.3) v0.25.3.",
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\nThis is the \"special\" index meta-database.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.4) v1.1.4.",
     "version": "1.1.0"
   },
   "paths": {
@@ -106,164 +106,170 @@
         "operationId": "get_links_links_get",
         "parameters": [
           {
-            "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "title": "Filter",
-              "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
-              "default": ""
-            },
             "name": "filter",
-            "in": "query"
-          },
-          {
-            "description": "The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "string",
-              "title": "Response Format",
-              "description": "The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
-              "default": "json"
+              "description": "A filter string, in the format described in section API Filtering Format Specification of the specification.",
+              "default": "",
+              "title": "Filter"
             },
+            "description": "A filter string, in the format described in section API Filtering Format Specification of the specification."
+          },
+          {
             "name": "response_format",
-            "in": "query"
-          },
-          {
-            "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "string",
-              "format": "email",
-              "title": "Email Address",
-              "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": ""
+              "description": "The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
+              "default": "json",
+              "title": "Response Format"
             },
+            "description": "The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`"
+          },
+          {
             "name": "email_address",
-            "in": "query"
-          },
-          {
-            "description": "A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
+            "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
-              "title": "Response Fields",
-              "description": "A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
-              "default": ""
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
+              "title": "Email Address"
             },
+            "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
+          },
+          {
             "name": "response_fields",
-            "in": "query"
-          },
-          {
-            "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query.\nIf it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an entry listing endpoint, then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`.\nIf a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name.\nThe set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification.\nThe field `sortable` is in addition to each property description and other OPTIONAL fields.\nAn example is shown in the section Entry Listing Info Endpoints.",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "string",
               "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
-              "title": "Sort",
-              "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query.\nIf it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an entry listing endpoint, then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`.\nIf a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name.\nThe set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification.\nThe field `sortable` is in addition to each property description and other OPTIONAL fields.\nAn example is shown in the section Entry Listing Info Endpoints.",
-              "default": ""
+              "description": "A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
+              "default": "",
+              "title": "Response Fields"
             },
+            "description": "A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`"
+          },
+          {
             "name": "sort",
-            "in": "query"
-          },
-          {
-            "description": "Sets a numerical limit on the number of entries returned.\nSee [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination).\nThe API implementation MUST return no more than the number specified.\nIt MAY return fewer.\nThe database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned).\nThe default limit value is up to the API implementation to decide.\nExample: `http://example.com/optimade/v1/structures?page_limit=100`",
+            "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "minimum": 0.0,
-              "title": "Page Limit",
-              "description": "Sets a numerical limit on the number of entries returned.\nSee [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination).\nThe API implementation MUST return no more than the number specified.\nIt MAY return fewer.\nThe database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned).\nThe default limit value is up to the API implementation to decide.\nExample: `http://example.com/optimade/v1/structures?page_limit=100`",
-              "default": 20
+              "type": "string",
+              "pattern": "([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+              "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query.\nIf it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an entry listing endpoint, then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`.\nIf a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name.\nThe set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification.\nThe field `sortable` is in addition to each property description and other OPTIONAL fields.\nAn example is shown in the section Entry Listing Info Endpoints.",
+              "default": "",
+              "title": "Sort"
             },
+            "description": "If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query.\nIf it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an entry listing endpoint, then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`.\nIf a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name.\nThe set of field names, with `sortable` equal to `true` are allowed to be used in the \"sort fields\" list according to its definition in the JSON API 1.0 specification.\nThe field `sortable` is in addition to each property description and other OPTIONAL fields.\nAn example is shown in the section Entry Listing Info Endpoints."
+          },
+          {
             "name": "page_limit",
-            "in": "query"
-          },
-          {
-            "description": "RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.\nExample: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&page_limit=100`.",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "minimum": 0.0,
-              "title": "Page Offset",
-              "description": "RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.\nExample: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&page_limit=100`.",
-              "default": 0
+              "minimum": 0,
+              "description": "Sets a numerical limit on the number of entries returned.\nSee [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination).\nThe API implementation MUST return no more than the number specified.\nIt MAY return fewer.\nThe database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned).\nThe default limit value is up to the API implementation to decide.\nExample: `http://example.com/optimade/v1/structures?page_limit=100`",
+              "default": 20,
+              "title": "Page Limit"
             },
+            "description": "Sets a numerical limit on the number of entries returned.\nSee [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination).\nThe API implementation MUST return no more than the number specified.\nIt MAY return fewer.\nThe database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned).\nThe default limit value is up to the API implementation to decide.\nExample: `http://example.com/optimade/v1/structures?page_limit=100`"
+          },
+          {
             "name": "page_offset",
-            "in": "query"
-          },
-          {
-            "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "title": "Page Number",
-              "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`."
+              "minimum": 0,
+              "description": "RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.\nExample: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&page_limit=100`.",
+              "default": 0,
+              "title": "Page Offset"
             },
+            "description": "RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.\nExample: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&page_limit=100`."
+          },
+          {
             "name": "page_number",
-            "in": "query"
-          },
-          {
-            "description": "RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "integer",
-              "minimum": 0.0,
-              "title": "Page Cursor",
-              "description": "RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.",
-              "default": 0
+              "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
+              "title": "Page Number"
             },
+            "description": "RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`."
+          },
+          {
             "name": "page_cursor",
-            "in": "query"
-          },
-          {
-            "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
+            "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "title": "Page Above",
-              "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`."
+              "type": "integer",
+              "minimum": 0,
+              "description": "RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.",
+              "default": 0,
+              "title": "Page Cursor"
             },
+            "description": "RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED."
+          },
+          {
             "name": "page_above",
-            "in": "query"
-          },
-          {
-            "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "string",
-              "title": "Page Below",
-              "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED."
+              "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
+              "title": "Page Above"
             },
+            "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`."
+          },
+          {
             "name": "page_below",
-            "in": "query"
-          },
-          {
-            "description": "A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).\nIf relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`.\nThis means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.\nNote, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.\n\n> **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "string",
-              "title": "Include",
-              "description": "A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).\nIf relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`.\nThis means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.\nNote, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.\n\n> **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
-              "default": "references"
+              "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
+              "title": "Page Below"
             },
-            "name": "include",
-            "in": "query"
+            "description": "RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED."
           },
           {
-            "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).\nIf relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`.\nThis means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.\nNote, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.\n\n> **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.",
+              "default": "references",
+              "title": "Include"
+            },
+            "description": "A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.\n\nThe value of `include` MUST be a comma-separated list of \"relationship paths\", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).\nIf relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`.\nThis means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.\nNote, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.\n\n> **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`."
+          },
+          {
+            "name": "api_hint",
+            "in": "query",
             "required": false,
             "schema": {
               "type": "string",
               "pattern": "(v[0-9]+(\\.[0-9]+)?)?",
-              "title": "Api Hint",
               "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
-              "default": ""
+              "default": "",
+              "title": "Api Hint"
             },
-            "name": "api_hint",
-            "in": "query"
+            "description": "If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0."
           }
         ],
         "responses": {
@@ -376,6 +382,7 @@
   "components": {
     "schemas": {
       "Aggregate": {
+        "type": "string",
         "enum": [
           "ok",
           "test",
@@ -387,6 +394,7 @@
       },
       "Attributes": {
         "properties": {},
+        "additionalProperties": true,
         "type": "object",
         "title": "Attributes",
         "description": "Members of the attributes object (\"attributes\") represent information about the resource object in which it's defined.\nThe keys for Attributes MUST NOT be:\n    relationships\n    links\n    id\n    type"
@@ -395,9 +403,8 @@
         "properties": {
           "url": {
             "type": "string",
-            "maxLength": 65536,
             "minLength": 1,
-            "pattern": ".+/v[0-1](\\.[0-9]+)*/?$",
+            "pattern": "^.+/v[0-1](\\.[0-9]+)*/?$",
             "format": "uri",
             "title": "Url",
             "description": "A string specifying a versioned base URL that MUST adhere to the rules in section Base URL"
@@ -407,7 +414,7 @@
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "title": "Version",
             "description": "A string containing the full version number of the API served at that versioned base URL.\nThe version number string MUST NOT be prefixed by, e.g., 'v'.\nExamples: `1.0.0`, `1.0.0-rc.2`.",
-            "example": [
+            "examples": [
               "0.10.1",
               "1.0.0-rc.2",
               "1.2.3-rc.5+develop"
@@ -430,6 +437,7 @@
             "description": "OPTIONAL human-readable description of the relationship."
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "description"
@@ -450,12 +458,14 @@
             "description": "Resource type"
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/BaseRelationshipMeta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "Relationship meta field. MUST contain 'description' if supplied."
           }
         },
@@ -482,21 +492,25 @@
       "EntryRelationships": {
         "properties": {
           "references": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ReferenceRelationship"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "References",
             "description": "Object containing links to relationships with entries of the `references` type."
           },
           "structures": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/StructureRelationship"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Structures",
             "description": "Object containing links to relationships with entries of the `structures` type."
           }
         },
@@ -521,39 +535,40 @@
             "x-optimade-support": "must"
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ResourceLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "a links object containing links related to the resource."
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
-                "$ref": "#/components/schemas/EntryMetadata"
+                "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
-            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
+            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EntryResourceAttributes"
-              }
-            ],
-            "title": "Attributes",
+            "$ref": "#/components/schemas/EntryResourceAttributes",
             "description": "A dictionary, containing key-value pairs representing the entry's properties, except for `type` and `id`.\nDatabase-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes)."
           },
           "relationships": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/EntryRelationships"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Relationships",
             "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
           }
         },
@@ -569,21 +584,36 @@
       "EntryResourceAttributes": {
         "properties": {
           "immutable_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Immutable Id",
             "description": "The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to \"the latest version\" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.\n\n- **Type**: string.\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n\n- **Examples**:\n    - `\"8bd3e750-b477-41a0-9b11-3a799f21b44f\"`\n    - `\"fjeiwoj,54;@=%<>#32\"` (Strings that are not URL-safe are allowed.)",
             "x-optimade-queryable": "must",
             "x-optimade-support": "optional"
           },
           "last_modified": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Last Modified",
             "description": "Date and time representing when the entry was last modified.\n\n- **Type**: timestamp.\n\n- **Requirements/Conventions**:\n    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.\n    - **Query**: MUST be a queryable property with support for all mandatory filter features.\n    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.\n\n- **Example**:\n    - As part of JSON response format: `\"2007-04-05T14:30:20Z\"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)",
             "x-optimade-queryable": "must",
             "x-optimade-support": "should"
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "last_modified"
@@ -594,55 +624,96 @@
       "Error": {
         "properties": {
           "id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Id",
             "description": "A unique identifier for this particular occurrence of the problem."
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ErrorLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "A links object storing about"
           },
           "status": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Status",
             "description": "the HTTP status code applicable to this problem, expressed as a string value."
           },
           "code": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Code",
             "description": "an application-specific error code, expressed as a string value."
           },
           "title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title",
             "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
           },
           "detail": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Detail",
             "description": "A human-readable explanation specific to this occurrence of the problem."
           },
           "source": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ErrorSource"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Source",
             "description": "An object containing references to the source of the error"
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "a meta object containing non-standard meta-information about the error."
           }
         },
@@ -656,12 +727,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "About",
@@ -684,6 +757,9 @@
                   "$ref": "#/components/schemas/Resource"
                 },
                 "type": "array"
+              },
+              {
+                "type": "null"
               }
             ],
             "uniqueItems": true,
@@ -691,12 +767,7 @@
             "description": "Outputted Data"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
-            "title": "Meta",
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information."
           },
           "errors": {
@@ -709,30 +780,41 @@
             "description": "A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present."
           },
           "included": {
-            "items": {
-              "$ref": "#/components/schemas/Resource"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Resource"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "uniqueItems": true,
             "title": "Included",
             "description": "A list of unique included resources"
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ToplevelLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/JsonApi"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Jsonapi",
             "description": "Information about the JSON API used"
           }
         },
@@ -747,12 +829,26 @@
       "ErrorSource": {
         "properties": {
           "pointer": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Pointer",
             "description": "a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. \"/data\" for a primary data object, or \"/data/attributes/title\" for a specific attribute]."
           },
           "parameter": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Parameter",
             "description": "a string indicating which URI query parameter caused the error."
           }
@@ -764,12 +860,26 @@
       "Implementation": {
         "properties": {
           "name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Name",
             "description": "name of the implementation"
           },
           "version": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Version",
             "description": "version string of the current implementation"
           },
@@ -777,12 +887,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Homepage",
@@ -792,36 +904,42 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Source Url",
             "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation source, either downloadable archive or version control system."
           },
           "maintainer": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ImplementationMaintainer"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Maintainer",
             "description": "A dictionary providing details about the maintainer of the implementation."
           },
           "issue_tracker": {
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Issue Tracker",
@@ -855,7 +973,7 @@
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "title": "Api Version",
             "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`.",
-            "example": [
+            "examples": [
               "0.10.1",
               "1.0.0-rc.2",
               "1.2.3-rc.5+develop"
@@ -920,42 +1038,59 @@
         "properties": {
           "id": {
             "type": "string",
-            "pattern": "^/$",
+            "enum": [
+              "/"
+            ],
+            "const": "/",
             "title": "Id",
             "default": "/"
           },
           "type": {
             "type": "string",
-            "pattern": "^info$",
+            "enum": [
+              "info"
+            ],
+            "const": "info",
             "title": "Type",
             "default": "info"
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ResourceLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "a links object containing links related to the resource."
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
             "$ref": "#/components/schemas/IndexInfoAttributes"
           },
           "relationships": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/IndexRelationship"
-            },
-            "type": "object",
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/IndexRelationship"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Relationships",
             "description": "Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their 'default' OPTIMADE API database.\nA client SHOULD present this database as the first choice when an end-user chooses this provider."
           }
@@ -973,57 +1108,65 @@
       "IndexInfoResponse": {
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IndexInfoResource"
-              }
-            ],
-            "title": "Data",
+            "$ref": "#/components/schemas/IndexInfoResource",
             "description": "Index meta-database /info data."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
-            "title": "Meta",
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
-            "items": {
-              "$ref": "#/components/schemas/Error"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "uniqueItems": true,
             "title": "Errors",
             "description": "A list of unique errors"
           },
           "included": {
-            "items": {
-              "$ref": "#/components/schemas/Resource"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Resource"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "uniqueItems": true,
             "title": "Included",
             "description": "A list of unique included resources"
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ToplevelLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/JsonApi"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Jsonapi",
             "description": "Information about the JSON API used"
           }
         },
@@ -1032,18 +1175,19 @@
           "data",
           "meta"
         ],
-        "title": "IndexInfoResponse",
-        "description": "errors are not allowed"
+        "title": "IndexInfoResponse"
       },
       "IndexRelationship": {
         "properties": {
           "data": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/RelatedLinksResource"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Data",
             "description": "[JSON API resource linkage](http://jsonapi.org/format/1.0/#document-links).\nIt MUST be either `null` or contain a single Links identifier object with the fields `id` and `type`"
           }
         },
@@ -1063,12 +1207,14 @@
             "default": "1.0"
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "Non-standard meta information"
           }
         },
@@ -1080,19 +1226,20 @@
         "properties": {
           "href": {
             "type": "string",
-            "maxLength": 65536,
             "minLength": 1,
             "format": "uri",
             "title": "Href",
-            "description": "a string containing the link\u2019s URL."
+            "description": "a string containing the link's URL."
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "a meta object containing non-standard meta-information about the link."
           }
         },
@@ -1104,6 +1251,7 @@
         "description": "A link **MUST** be represented as either: a string containing the link's URL or a link object."
       },
       "LinkType": {
+        "type": "string",
         "enum": [
           "child",
           "root",
@@ -1124,45 +1272,50 @@
           },
           "type": {
             "type": "string",
+            "enum": [
+              "links"
+            ],
+            "const": "links",
             "pattern": "^links$",
             "title": "Type",
             "description": "These objects are described in detail in the section Links Endpoint",
             "default": "links"
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ResourceLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "a links object containing links related to the resource."
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
-                "$ref": "#/components/schemas/EntryMetadata"
+                "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
-            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
+            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LinksResourceAttributes"
-              }
-            ],
-            "title": "Attributes",
+            "$ref": "#/components/schemas/LinksResourceAttributes",
             "description": "A dictionary containing key-value pairs representing the Links resource's properties."
           },
           "relationships": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/EntryRelationships"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Relationships",
             "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
           }
         },
@@ -1191,12 +1344,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Base Url",
@@ -1206,30 +1361,31 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Homepage",
             "description": "JSON API links object, pointing to a homepage URL for this implementation"
           },
           "link_type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LinkType"
-              }
-            ],
+            "$ref": "#/components/schemas/LinkType",
             "title": "Link Type",
             "description": "The type of the linked relation.\nMUST be one of these values: 'child', 'root', 'external', 'providers'."
           },
           "aggregate": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Aggregate"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Aggregate",
@@ -1237,11 +1393,19 @@
             "default": "ok"
           },
           "no_aggregate_reason": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "No Aggregate Reason",
             "description": "An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.\nIt SHOULD NOT be present if `aggregate`=`ok`."
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "name",
@@ -1275,19 +1439,21 @@
             "description": "List of unique OPTIMADE links resource objects."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
-            "title": "Meta",
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
-            "items": {
-              "$ref": "#/components/schemas/Error"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "uniqueItems": true,
             "title": "Errors",
             "description": "A list of unique errors"
@@ -1305,27 +1471,35 @@
                   "type": "object"
                 },
                 "type": "array"
+              },
+              {
+                "type": "null"
               }
             ],
             "uniqueItems": true,
-            "title": "Included"
+            "title": "Included",
+            "description": "A list of unique included OPTIMADE entry resources."
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ToplevelLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "Links associated with the primary data or errors"
           },
           "jsonapi": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/JsonApi"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Jsonapi",
             "description": "Information about the JSON API used"
           }
         },
@@ -1334,11 +1508,11 @@
           "data",
           "meta"
         ],
-        "title": "LinksResponse",
-        "description": "errors are not allowed"
+        "title": "LinksResponse"
       },
       "Meta": {
         "properties": {},
+        "additionalProperties": true,
         "type": "object",
         "title": "Meta",
         "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
@@ -1346,31 +1520,61 @@
       "OptimadeError": {
         "properties": {
           "id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Id",
             "description": "A unique identifier for this particular occurrence of the problem."
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ErrorLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "A links object storing about"
           },
           "status": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Status",
             "description": "the HTTP status code applicable to this problem, expressed as a string value."
           },
           "code": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Code",
             "description": "an application-specific error code, expressed as a string value."
           },
           "title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title",
             "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
           },
@@ -1380,21 +1584,25 @@
             "description": "A human-readable explanation specific to this occurrence of the problem."
           },
           "source": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ErrorSource"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Source",
             "description": "An object containing references to the source of the error"
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "a meta object containing non-standard meta-information about the error."
           }
         },
@@ -1427,12 +1635,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Homepage",
@@ -1451,12 +1661,14 @@
       "ReferenceRelationship": {
         "properties": {
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/RelationshipLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "a links object containing at least one of the following: self, related"
           },
           "data": {
@@ -1469,6 +1681,9 @@
                   "$ref": "#/components/schemas/BaseRelationshipResource"
                 },
                 "type": "array"
+              },
+              {
+                "type": "null"
               }
             ],
             "uniqueItems": true,
@@ -1476,18 +1691,19 @@
             "description": "Resource linkage"
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "a meta object that contains non-standard meta-information about the relationship."
           }
         },
         "type": "object",
-        "title": "ReferenceRelationship",
-        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."
+        "title": "ReferenceRelationship"
       },
       "RelatedLinksResource": {
         "properties": {
@@ -1498,7 +1714,10 @@
           },
           "type": {
             "type": "string",
-            "pattern": "^links$",
+            "enum": [
+              "links"
+            ],
+            "const": "links",
             "title": "Type",
             "default": "links"
           }
@@ -1517,12 +1736,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Self",
@@ -1532,12 +1753,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Related",
@@ -1567,39 +1790,47 @@
             "description": "Resource type"
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ResourceLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "a links object containing links related to the resource."
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Attributes"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Attributes",
             "description": "an attributes object representing some of the resource\u2019s data."
           },
           "relationships": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Relationships"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Relationships",
             "description": "[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)\ndescribing relationships between the resource and other JSON API resources."
           }
         },
@@ -1617,12 +1848,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Self",
@@ -1636,12 +1869,7 @@
       "ResponseMeta": {
         "properties": {
           "query": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMetaQuery"
-              }
-            ],
-            "title": "Query",
+            "$ref": "#/components/schemas/ResponseMetaQuery",
             "description": "Information on the Query that was requested"
           },
           "api_version": {
@@ -1649,7 +1877,7 @@
             "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
             "title": "Api Version",
             "description": "Presently used full version of the OPTIMADE API.\nThe version number string MUST NOT be prefixed by, e.g., \"v\".\nExamples: `1.0.0`, `1.0.0-rc.2`.",
-            "example": [
+            "examples": [
               "0.10.1",
               "1.0.0-rc.2",
               "1.2.3-rc.5+develop"
@@ -1664,72 +1892,121 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Schema",
             "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) that points to a schema for the response.\nIf it is a string, or a dictionary containing no `meta` field, the provided URL MUST point at an [OpenAPI](https://swagger.io/specification/) schema.\nIt is possible that future versions of this specification allows for alternative schema types.\nHence, if the `meta` field of the JSON API links object is provided and contains a field `schema_type` that is not equal to the string `OpenAPI` the client MUST not handle failures to parse the schema or to validate the response against the schema as errors."
           },
           "time_stamp": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Time Stamp",
             "description": "A timestamp containing the date and time at which the query was executed."
           },
           "data_returned": {
-            "type": "integer",
-            "minimum": 0.0,
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Data Returned",
             "description": "An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination."
           },
           "provider": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Provider"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Provider",
             "description": "information on the database provider of the implementation."
           },
           "data_available": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Data Available",
             "description": "An integer containing the total number of data resource objects available in the database for the endpoint."
           },
           "last_id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Last Id",
             "description": "a string containing the last ID returned"
           },
           "response_message": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Response Message",
             "description": "response string from the server"
           },
           "implementation": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Implementation"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Implementation",
             "description": "a dictionary describing the server implementation"
           },
           "warnings": {
-            "items": {
-              "$ref": "#/components/schemas/Warnings"
-            },
-            "type": "array",
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warnings"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "uniqueItems": true,
             "title": "Warnings",
             "description": "A list of warning resource objects representing non-critical errors or warnings.\nA warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `\"warning\"`.\nThe field `detail` MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.\nThe field `status`, representing a HTTP response status code, MUST NOT be present for a warning resource object.\nThis is an exclusive field for error resource objects."
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "required": [
           "query",
@@ -1757,12 +2034,14 @@
       "StructureRelationship": {
         "properties": {
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/RelationshipLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "a links object containing at least one of the following: self, related"
           },
           "data": {
@@ -1775,6 +2054,9 @@
                   "$ref": "#/components/schemas/BaseRelationshipResource"
                 },
                 "type": "array"
+              },
+              {
+                "type": "null"
               }
             ],
             "uniqueItems": true,
@@ -1782,18 +2064,19 @@
             "description": "Resource linkage"
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "a meta object that contains non-standard meta-information about the relationship."
           }
         },
         "type": "object",
-        "title": "StructureRelationship",
-        "description": "Similar to normal JSON API relationship, but with addition of OPTIONAL meta field for a resource."
+        "title": "StructureRelationship"
       },
       "ToplevelLinks": {
         "properties": {
@@ -1801,12 +2084,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Self",
@@ -1816,12 +2101,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Related",
@@ -1831,12 +2118,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "First",
@@ -1846,12 +2135,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Last",
@@ -1861,12 +2152,14 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Prev",
@@ -1876,18 +2169,21 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 65536,
                 "minLength": 1,
                 "format": "uri"
               },
               {
                 "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "Next",
             "description": "The next page of data"
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "title": "ToplevelLinks",
         "description": "A set of Links objects, possibly including pagination"
@@ -1895,26 +2191,49 @@
       "Warnings": {
         "properties": {
           "id": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Id",
             "description": "A unique identifier for this particular occurrence of the problem."
           },
           "links": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ErrorLinks"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Links",
             "description": "A links object storing about"
           },
           "code": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Code",
             "description": "an application-specific error code, expressed as a string value."
           },
           "title": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Title",
             "description": "A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization."
           },
@@ -1924,25 +2243,33 @@
             "description": "A human-readable explanation specific to this occurrence of the problem."
           },
           "source": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/ErrorSource"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Source",
             "description": "An object containing references to the source of the error"
           },
           "meta": {
-            "allOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
               }
             ],
-            "title": "Meta",
             "description": "a meta object containing non-standard meta-information about the error."
           },
           "type": {
             "type": "string",
+            "enum": [
+              "warning"
+            ],
+            "const": "warning",
             "pattern": "^warning$",
             "title": "Type",
             "description": "Warnings must be of type \"warning\"",

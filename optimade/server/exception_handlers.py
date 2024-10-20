@@ -1,6 +1,5 @@
 import traceback
-from collections.abc import Iterable
-from typing import Callable, Optional, Union
+from collections.abc import Callable, Iterable
 
 from fastapi import Request
 from fastapi.encoders import jsonable_encoder
@@ -19,7 +18,7 @@ def general_exception(
     request: Request,
     exc: Exception,
     status_code: int = 500,  # A status_code in `exc` will take precedence
-    errors: Optional[list[OptimadeError]] = None,
+    errors: list[OptimadeError] | None = None,
 ) -> JSONAPIResponse:
     """Handle an exception
 
@@ -80,7 +79,7 @@ def general_exception(
 
 def http_exception_handler(
     request: Request,
-    exc: Union[StarletteHTTPException, OptimadeHTTPException],
+    exc: StarletteHTTPException | OptimadeHTTPException,
 ) -> JSONAPIResponse:
     """Handle a general HTTP Exception from Starlette
 

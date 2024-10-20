@@ -45,7 +45,7 @@ from optimade.models import StructureResource as OptimadeStructure
 __all__ = ("get_pdb", "get_pdbx_mmcif")
 
 
-def get_pdbx_mmcif(  # pylint: disable=too-many-locals
+def get_pdbx_mmcif(
     optimade_structure: OptimadeStructure,
 ) -> str:
     """Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure.
@@ -164,7 +164,8 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
         sites = attributes.cartesian_site_positions
 
     species: dict[str, OptimadeStructureSpecies] = {
-        species.name: species for species in attributes.species  # type: ignore[union-attr]
+        species.name: species
+        for species in attributes.species  # type: ignore[union-attr]
     }
 
     for site_number in range(attributes.nsites):  # type: ignore[arg-type]
@@ -196,7 +197,7 @@ def get_pdbx_mmcif(  # pylint: disable=too-many-locals
     return cif
 
 
-def get_pdb(  # pylint: disable=too-many-locals
+def get_pdb(
     optimade_structure: OptimadeStructure,
 ) -> str:
     """Write Protein Data Bank (PDB) structure in the old PDB format from OPTIMADE structure.

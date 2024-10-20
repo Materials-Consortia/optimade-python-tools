@@ -1,12 +1,19 @@
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Union
 
 import pytest
 
 from optimade.warnings import OptimadeWarning
 
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from requests import Response
+
+    from .utils import OptimadeTestClient
+
 
 @pytest.fixture(scope="session")
-def client():
+def client() -> "OptimadeTestClient":
     """Return TestClient for the regular OPTIMADE server"""
     from .utils import client_factory
 
@@ -14,7 +21,7 @@ def client():
 
 
 @pytest.fixture(scope="session")
-def index_client():
+def index_client() -> "OptimadeTestClient":
     """Return TestClient for the index OPTIMADE server"""
     from .utils import client_factory
 
@@ -22,7 +29,9 @@ def index_client():
 
 
 @pytest.fixture(scope="session", params=["regular"])
-def client_with_empty_extension_endpoint(request):
+def client_with_empty_extension_endpoint(
+    request: pytest.FixtureRequest,
+) -> "OptimadeTestClient":
     """Return TestClient for the regular OPTIMADE server with an additional
     empty test endpoint added at `/extensions/test_empty_body`.
     """
@@ -32,7 +41,7 @@ def client_with_empty_extension_endpoint(request):
 
 
 @pytest.fixture(scope="session", params=["regular", "index"])
-def both_clients(request):
+def both_clients(request: pytest.FixtureRequest) -> "OptimadeTestClient":
     """Return TestClient for both the regular and index OPTIMADE server"""
     from .utils import client_factory
 
@@ -40,7 +49,7 @@ def both_clients(request):
 
 
 @pytest.fixture(scope="session", params=["regular", "index"])
-def both_fake_remote_clients(request):
+def both_fake_remote_clients(request: pytest.FixtureRequest) -> "OptimadeTestClient":
     """Return TestClient for both the regular and index OPTIMADE server, with
     the additional option `raise_server_exceptions` set to `False`, to mimic a
     remote webserver.
@@ -52,7 +61,9 @@ def both_fake_remote_clients(request):
 
 
 @pytest.fixture
-def get_good_response(client, index_client):
+def get_good_response(
+    client: "OptimadeTestClient", index_client: "OptimadeTestClient"
+) -> "Callable[[str, Union[str, OptimadeTestClient], bool], Union[dict, Response]]":
     """Get response with some sanity checks, expecting '200 OK'"""
     import json
 
@@ -62,10 +73,10 @@ def get_good_response(client, index_client):
 
     def inner(
         request: str,
-        server: Union[str, OptimadeTestClient] = "regular",
+        server: str | OptimadeTestClient = "regular",
         return_json: bool = True,
         **kwargs,
-    ) -> Union[dict, Response]:
+    ) -> dict | Response:
         if isinstance(server, str):
             if server == "regular":
                 used_client = client
@@ -131,12 +142,12 @@ def check_response(get_good_response):
 
     def inner(
         request: str,
-        expected_ids: Union[str, list[str]],
+        expected_ids: str | list[str],
         page_limit: int = CONFIG.page_limit,
-        expected_return: Optional[int] = None,
+        expected_return: int | None = None,
         expected_as_is: bool = False,
-        expected_warnings: Optional[list[dict[str, str]]] = None,
-        server: Union[str, OptimadeTestClient] = "regular",
+        expected_warnings: list[dict[str, str]] | None = None,
+        server: str | OptimadeTestClient = "regular",
     ):
         if expected_warnings:
             with pytest.warns(OptimadeWarning):
@@ -168,7 +179,7 @@ def check_response(get_good_response):
                 for key in warn:
                     assert response["meta"]["warnings"][ind][key] == warn[key]
         else:
-            assert "warnings" not in response["meta"]
+            assert "warnings" not in response["meta"], response["meta"]["warnings"]
 
         return response
 
@@ -182,10 +193,10 @@ def check_error_response(client, index_client):
 
     def inner(
         request: str,
-        expected_status: Optional[int] = None,
-        expected_title: Optional[str] = None,
-        expected_detail: Optional[str] = None,
-        server: Union[str, OptimadeTestClient] = "regular",
+        expected_status: int | None = None,
+        expected_title: str | None = None,
+        expected_detail: str | None = None,
+        server: str | OptimadeTestClient = "regular",
     ):
         response = None
         if isinstance(server, str):

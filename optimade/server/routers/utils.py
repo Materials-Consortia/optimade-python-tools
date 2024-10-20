@@ -1,8 +1,7 @@
-# pylint: disable=import-outside-toplevel,too-many-locals
 import re
 import urllib.parse
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
@@ -10,13 +9,7 @@ from starlette.datastructures import URL as StarletteURL
 
 from optimade import __api_version__
 from optimade.exceptions import BadRequest, InternalServerError
-from optimade.models import (
-    EntryResource,
-    EntryResponseMany,
-    EntryResponseOne,
-    ResponseMeta,
-    ToplevelLinks,
-)
+from optimade.models import EntryResource, ResponseMeta, ToplevelLinks
 from optimade.server.config import CONFIG
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -54,11 +47,11 @@ class JSONAPIResponse(JSONResponse):
 
 
 def meta_values(
-    url: Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str],
-    data_returned: Optional[int],
+    url: urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str,
+    data_returned: int | None,
     data_available: int,
     more_data_available: bool,
-    schema: Optional[str] = None,
+    schema: str | None = None,
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
@@ -91,7 +84,7 @@ def meta_values(
 
 
 def handle_response_fields(
-    results: Union[list[EntryResource], EntryResource, list[dict], dict],
+    results: list[EntryResource] | EntryResource | list[dict] | dict,
     exclude_fields: set[str],
     include_fields: set[str],
 ) -> list[dict[str, Any]]:
@@ -117,7 +110,7 @@ def handle_response_fields(
     while results:
         new_entry = results.pop(0)
         try:
-            new_entry = new_entry.dict(exclude_unset=True, by_alias=True)  # type: ignore[union-attr]
+            new_entry = new_entry.model_dump(exclude_unset=True, by_alias=True)  # type: ignore[union-attr]
         except AttributeError:
             pass
 
@@ -144,10 +137,10 @@ def handle_response_fields(
 
 
 def get_included_relationships(
-    results: Union[EntryResource, list[EntryResource], dict, list[dict]],
+    results: EntryResource | list[EntryResource] | dict | list[dict],
     ENTRY_COLLECTIONS: dict[str, EntryCollection],
     include_param: list[str],
-) -> list[Union[EntryResource, dict]]:
+) -> list[EntryResource | dict[str, Any]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
@@ -190,7 +183,7 @@ def get_included_relationships(
             continue
 
         if not isinstance(relationships, dict):
-            relationships = relationships.dict()
+            relationships = relationships.model_dump()
 
         for entry_type in ENTRY_COLLECTIONS:
             # Skip entry type if it is not in `include_param`
@@ -205,7 +198,8 @@ def get_included_relationships(
                         endpoint_includes[entry_type][ref["id"]] = ref
 
     included: dict[
-        str, Union[list[EntryResource], EntryResource, list[dict], dict]
+        str,
+        list[EntryResource] | list[dict[str, Any]],
     ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
@@ -224,16 +218,16 @@ def get_included_relationships(
         ref_results, _, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
         if ref_results is None:
             ref_results = []
-        included[entry_type] = ref_results
+        included[entry_type] = ref_results  # type: ignore[assignment]
 
     # flatten dict by endpoint to list
     return [obj for endp in included.values() for obj in endp]
 
 
 def get_base_url(
-    parsed_url_request: Union[
-        urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str
-    ]
+    parsed_url_request: (
+        urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str
+    ),
 ) -> str:
     """Get base URL for current server
 
@@ -253,10 +247,9 @@ def get_base_url(
 
 def get_entries(
     collection: EntryCollection,
-    response: type[EntryResponseMany],  # noqa
     request: Request,
     params: EntryListingQueryParams,
-) -> dict:
+) -> dict[str, Any]:
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
@@ -292,10 +285,10 @@ def get_entries(
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)  # type: ignore[assignment]
 
-    return dict(
-        links=links,
-        data=results if results else [],
-        meta=meta_values(
+    return {
+        "links": links,
+        "data": results if results else [],
+        "meta": meta_values(
             url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
@@ -304,17 +297,16 @@ def get_entries(
             if not CONFIG.is_index
             else CONFIG.index_schema_url,
         ),
-        included=included,
-    )
+        "included": included,
+    }
 
 
 def get_single_entry(
     collection: EntryCollection,
     entry_id: str,
-    response: type[EntryResponseOne],
     request: Request,
     params: SingleEntryQueryParams,
-) -> dict:
+) -> dict[str, Any]:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
@@ -345,10 +337,10 @@ def get_single_entry(
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
 
-    return dict(
-        links=links,
-        data=results if results else None,
-        meta=meta_values(
+    return {
+        "links": links,
+        "data": results if results else None,
+        "meta": meta_values(
             url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
@@ -357,5 +349,5 @@ def get_single_entry(
             if not CONFIG.is_index
             else CONFIG.index_schema_url,
         ),
-        included=included,
-    )
+        "included": included,
+    }

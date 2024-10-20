@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, Request
 
@@ -25,17 +25,18 @@ structures_coll = create_collection(
 
 @router.get(
     "/structures",
-    response_model=StructureResponseMany if CONFIG.validate_api_response else dict,
+    response_model=StructureResponseMany
+    if CONFIG.validate_api_response
+    else dict[str, Any],
     response_model_exclude_unset=True,
     tags=["Structures"],
     responses=ERROR_RESPONSES,
 )
 def get_structures(
-    request: Request, params: EntryListingQueryParams = Depends()
-) -> Any:
+    request: Request, params: Annotated[EntryListingQueryParams, Depends()]
+) -> dict[str, Any]:
     return get_entries(
         collection=structures_coll,
-        response=StructureResponseMany,
         request=request,
         params=params,
     )
@@ -43,18 +44,21 @@ def get_structures(
 
 @router.get(
     "/structures/{entry_id:path}",
-    response_model=StructureResponseOne if CONFIG.validate_api_response else dict,
+    response_model=StructureResponseOne
+    if CONFIG.validate_api_response
+    else dict[str, Any],
     response_model_exclude_unset=True,
     tags=["Structures"],
     responses=ERROR_RESPONSES,
 )
 def get_single_structure(
-    request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
-) -> Any:
+    request: Request,
+    entry_id: str,
+    params: Annotated[SingleEntryQueryParams, Depends()],
+) -> dict[str, Any]:
     return get_single_entry(
         collection=structures_coll,
         entry_id=entry_id,
-        response=StructureResponseOne,
         request=request,
         params=params,
     )

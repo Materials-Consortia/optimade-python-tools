@@ -1,7 +1,6 @@
 import sys
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field
-from typing import Union
 
 from rich.console import Console
 from rich.progress import (
@@ -34,7 +33,7 @@ class TooManyRequestsException(RecoverableHTTPError):
 class QueryResults:
     """A container dataclass for the results from a given query."""
 
-    data: Union[dict, list[dict]] = field(default_factory=list, init=False)  # type: ignore[assignment]
+    data: dict | list[dict] = field(default_factory=list, init=False)  # type: ignore[assignment]
     errors: list[str] = field(default_factory=list, init=False)
     links: dict = field(default_factory=dict, init=False)
     included: list[dict] = field(default_factory=list, init=False)

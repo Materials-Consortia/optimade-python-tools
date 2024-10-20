@@ -21,6 +21,6 @@ def test_get_attribute_fields():
 
     for entry_name, attributes_model in entry_name_attributes.items():
         assert (
-            set(attributes_model.__fields__.keys())
+            set(attributes_model.model_fields.keys())
             == ENTRY_COLLECTIONS[entry_name].get_attribute_fields()
         )

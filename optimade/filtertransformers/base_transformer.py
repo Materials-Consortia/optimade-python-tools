@@ -7,13 +7,16 @@ for turning filters parsed by lark into backend-specific queries.
 
 import abc
 import warnings
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 from lark import Transformer, Tree, v_args
 
 from optimade.exceptions import BadRequest
 from optimade.server.mappers import BaseResourceMapper
 from optimade.warnings import UnknownProviderProperty
+
+if TYPE_CHECKING:  # pragma: no cover
+    pass
 
 __all__ = (
     "BaseTransformer",
@@ -40,13 +43,13 @@ class Quantity:
     """
 
     name: str
-    backend_field: Optional[str]
+    backend_field: str | None
     length_quantity: Optional["Quantity"]
 
     def __init__(
         self,
         name: str,
-        backend_field: Optional[str] = None,
+        backend_field: str | None = None,
         length_quantity: Optional["Quantity"] = None,
     ):
         """Initialise the `quantity` from it's name and aliases.
@@ -79,8 +82,8 @@ class BaseTransformer(Transformer, abc.ABC):
 
     """
 
-    mapper: Optional[type[BaseResourceMapper]] = None
-    operator_map: dict[str, Optional[str]] = {
+    mapper: type[BaseResourceMapper] | None = None
+    operator_map: dict[str, str | None] = {
         "<": None,
         "<=": None,
         ">": None,
@@ -103,9 +106,7 @@ class BaseTransformer(Transformer, abc.ABC):
     _quantity_type: type[Quantity] = Quantity
     _quantities = None
 
-    def __init__(
-        self, mapper: Optional[type[BaseResourceMapper]] = None
-    ):  # pylint: disable=super-init-not-called
+    def __init__(self, mapper: type[BaseResourceMapper] | None = None):
         """Initialise the transformer object, optionally loading in a
         resource mapper for use when post-processing.
 
@@ -118,7 +119,8 @@ class BaseTransformer(Transformer, abc.ABC):
         [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] object.
         """
         return {
-            quantity.backend_field: quantity for _, quantity in self.quantities.items()  # type: ignore[misc]
+            quantity.backend_field: quantity  # type: ignore[misc]
+            for _, quantity in self.quantities.items()
         }
 
     @property
@@ -285,6 +287,9 @@ class BaseTransformer(Transformer, abc.ABC):
     @v_args(inline=True)
     def number(self, number):
         """number: SIGNED_INT | SIGNED_FLOAT"""
+        if TYPE_CHECKING:  # pragma: no cover
+            type_: type[int] | type[float]
+
         if number.type == "SIGNED_INT":
             type_ = int
         elif number.type == "SIGNED_FLOAT":

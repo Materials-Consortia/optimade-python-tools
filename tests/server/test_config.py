@@ -1,10 +1,13 @@
-# pylint: disable=protected-access,pointless-statement,relative-beyond-top-level
 import json
 import os
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .utils import OptimadeTestClient
 
 
-def test_env_variable():
+def test_env_variable() -> None:
     """Set OPTIMADE_DEBUG environment variable and check CONFIG picks up on it correctly"""
     from optimade.server.config import ServerConfig
 
@@ -25,7 +28,7 @@ def test_env_variable():
             assert os.getenv("OPTIMADE_DEBUG") is None
 
 
-def test_default_config_path(top_dir):
+def test_default_config_path(top_dir: Path) -> None:
     """Make sure the default config path works
     Expected default config path: PATH/TO/USER/HOMEDIR/.optimade.json
     """
@@ -75,7 +78,7 @@ def test_default_config_path(top_dir):
             os.environ["OPTIMADE_CONFIG_FILE"] = org_env_var
 
 
-def test_debug_is_respected_when_off(both_clients):
+def test_debug_is_respected_when_off(both_clients: "OptimadeTestClient") -> None:
     """Make sure traceback is toggleable according to debug mode - here OFF
 
     TODO: This should be moved to a separate test file that tests the exception handlers.
@@ -102,7 +105,7 @@ def test_debug_is_respected_when_off(both_clients):
         CONFIG.debug = org_value
 
 
-def test_debug_is_respected_when_on(both_clients):
+def test_debug_is_respected_when_on(both_clients: "OptimadeTestClient") -> None:
     """Make sure traceback is toggleable according to debug mode - here ON
 
     TODO: This should be moved to a separate test file that tests the exception handlers.
@@ -128,7 +131,7 @@ def test_debug_is_respected_when_on(both_clients):
         CONFIG.debug = org_value
 
 
-def test_yaml_config_file():
+def test_yaml_config_file() -> None:
     """Test loading a YAML config file
 
     First, pass a correctly formatted YAML file that only includes a single YAML document.

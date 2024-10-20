@@ -1,4 +1,3 @@
-# pylint: disable=import-error
 import pytest
 
 from .utils import get_min_ver
@@ -59,7 +58,7 @@ def test_extra_info_keys(RAW_STRUCTURES):
     assert atoms.info["another_key"] == [1, 2, 3]
     assert atoms.info["_key_without_ase_prefix"] == [4, 5, 6]
 
-    roundtrip_structure = Structure.ingest_from(atoms).attributes.dict()
+    roundtrip_structure = Structure.ingest_from(atoms).attributes.model_dump()
     assert roundtrip_structure["_ase_key"] == "some value"
     assert roundtrip_structure["_ase_another_key"] == [1, 2, 3]
 

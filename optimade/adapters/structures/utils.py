@@ -3,8 +3,8 @@ Utility functions to help the conversion functions along.
 
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
+
 from collections.abc import Iterable
-from typing import Optional
 
 from optimade.models.structures import Species as OptimadeStructureSpecies
 from optimade.models.structures import Vector3D
@@ -32,7 +32,7 @@ def valid_lattice_vector(lattice_vec: tuple[Vector3D, Vector3D, Vector3D]):
 
 
 def scaled_cell(
-    cell: tuple[Vector3D, Vector3D, Vector3D]
+    cell: tuple[Vector3D, Vector3D, Vector3D],
 ) -> tuple[Vector3D, Vector3D, Vector3D]:
     """Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).
     This 3x3 matrix can be used to calculate the fractional coordinates from the cartesian_site_positions.
@@ -98,7 +98,7 @@ def fractional_coordinates(
         fractional[:, i] %= 1.0
         fractional[:, i] %= 1.0
 
-    return [tuple(position) for position in fractional]
+    return [tuple(position) for position in fractional]  # type: ignore
 
 
 def cell_to_cellpar(
@@ -158,13 +158,13 @@ def unit_vector(x: Vector3D) -> Vector3D:
         return None  # type: ignore[return-value]
 
     y = np.array(x, dtype="float")
-    return y / np.linalg.norm(y)
+    return y / np.linalg.norm(y)  # type: ignore
 
 
 def cellpar_to_cell(
     cellpar: list[float],
     ab_normal: tuple[int, int, int] = (0, 0, 1),
-    a_direction: Optional[tuple[int, int, int]] = None,
+    a_direction: tuple[int, int, int] | None = None,
 ) -> list[Vector3D]:
     """Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.
 
@@ -219,7 +219,7 @@ def cellpar_to_cell(
     # Define rotated X,Y,Z-system, with Z along ab_normal and X along
     # the projection of a_direction onto the normal plane of Z.
     a_direction_array = np.array(a_direction)
-    Z = unit_vector(ab_normal)
+    Z = unit_vector(ab_normal)  # type: ignore
     X = unit_vector(a_direction_array - np.dot(a_direction_array, Z) * Z)
     Y = np.cross(Z, X)
 
@@ -277,9 +277,9 @@ def cellpar_to_cell(
 
 def _pad_iter_of_iters(
     iterable: Iterable[Iterable],
-    padding: Optional[float] = None,
-    outer: Optional[type] = None,
-    inner: Optional[type] = None,
+    padding: float | None = None,
+    outer: type | None = None,
+    inner: type | None = None,
 ) -> tuple[Iterable[Iterable], bool]:
     """Turn any null/None values into a float in given iterable of iterables"""
     try:
@@ -308,7 +308,7 @@ def _pad_iter_of_iters(
 
 def pad_cell(
     lattice_vectors: tuple[Vector3D, Vector3D, Vector3D],
-    padding: Optional[float] = None,
+    padding: float | None = None,
 ) -> tuple:  # Setting this properly makes MkDocs fail.
     """Turn any `null`/`None` values into a `float` in given `tuple` of
     [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors].

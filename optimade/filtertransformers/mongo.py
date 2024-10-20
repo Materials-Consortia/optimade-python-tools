@@ -3,11 +3,10 @@
 which takes the parsed filter and converts it to a valid pymongo/BSON query.
 """
 
-
 import copy
 import itertools
 import warnings
-from typing import Any, Union
+from typing import Any
 
 from lark import Token, v_args
 
@@ -123,7 +122,7 @@ class MongoTransformer(BaseTransformer):
                 is not None
             ):
                 size_query = {
-                    self.backend_mapping[
+                    self.backend_mapping[  # type: ignore[union-attr]
                         quantity
                     ].length_quantity.backend_field: query.pop("$size")
                 }
@@ -568,7 +567,7 @@ class MongoTransformer(BaseTransformer):
         )
 
 
-def recursive_postprocessing(filter_: Union[dict, list], condition, replacement):
+def recursive_postprocessing(filter_: dict | list, condition, replacement):
     """Recursively descend into the query, checking each dictionary
     (contained in a list, or as an entry in another dictionary) for
     the condition passed. If the condition is true, apply the

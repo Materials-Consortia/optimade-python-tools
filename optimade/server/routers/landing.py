@@ -1,4 +1,4 @@
-""" OPTIMADE landing page router. """
+"""OPTIMADE landing page router."""
 
 from functools import lru_cache
 from pathlib import Path

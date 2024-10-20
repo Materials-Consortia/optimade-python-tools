@@ -1,7 +1,7 @@
 import warnings
 from collections.abc import Iterable
 from functools import lru_cache
-from typing import Any, Optional, Union
+from typing import Any
 
 from optimade.models.entries import EntryResource
 
@@ -29,7 +29,7 @@ class classproperty(property):
         self.__doc__ = func.__doc__
         self.__wrapped__ = func
 
-    def __get__(self, _, owner):
+    def __get__(self, _: Any, owner: type | None = None) -> Any:
         return self.__wrapped__(owner)
 
 
@@ -154,7 +154,7 @@ class BaseResourceMapper:
         """Returns the dictionary of attributes defined by the underlying entry resource class."""
         from optimade.server.schemas import retrieve_queryable_properties
 
-        return retrieve_queryable_properties(cls.ENTRY_RESOURCE_CLASS.schema())
+        return retrieve_queryable_properties(cls.ENTRY_RESOURCE_CLASS)
 
     @classproperty
     @lru_cache(maxsize=NUM_ENTRY_TYPES)
@@ -163,12 +163,10 @@ class BaseResourceMapper:
         to the `type` property of the resource class.
 
         """
-        return (
-            cls.ENTRY_RESOURCE_CLASS.schema()
-            .get("properties", {})
-            .get("type", {})
-            .get("default", "")
-        )
+        endpoint = cls.ENTRY_RESOURCE_CLASS.model_fields["type"].default
+        if not endpoint and not isinstance(endpoint, str):
+            raise ValueError("Type not set for this entry type!")
+        return endpoint
 
     @classmethod
     @lru_cache(maxsize=NUM_ENTRY_TYPES)
@@ -188,7 +186,7 @@ class BaseResourceMapper:
 
     @classmethod
     @lru_cache(maxsize=128)
-    def length_alias_for(cls, field: str) -> Optional[str]:
+    def length_alias_for(cls, field: str) -> str | None:
         """Returns the length alias for the particular field,
         or `None` if no such alias is found.
 
@@ -339,7 +337,7 @@ class BaseResourceMapper:
         """
         mapping = ((real, alias) for alias, real in cls.all_aliases())
         newdoc = {}
-        reals = {real for alias, real in cls.all_aliases()}
+        reals = {real for _, real in cls.all_aliases()}
         for key in doc:
             if key not in reals:
                 newdoc[key] = doc[key]
@@ -366,8 +364,8 @@ class BaseResourceMapper:
 
     @classmethod
     def deserialize(
-        cls, results: Union[dict, Iterable[dict]]
-    ) -> Union[list[EntryResource], EntryResource]:
+        cls, results: dict | Iterable[dict]
+    ) -> list[EntryResource] | EntryResource:
         """Converts the raw database entries for this class into serialized models,
         mapping the data along the way.
 

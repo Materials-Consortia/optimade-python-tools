@@ -1,7 +1,16 @@
 import os
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
+
+if TYPE_CHECKING:
+    from typing import Protocol
+
+    from optimade.server.mappers import BaseResourceMapper
+
+    class MapperInner(Protocol):
+        def __call__(self, name: str) -> type[BaseResourceMapper]: ...
 
 
 def pytest_configure(config):
@@ -17,17 +26,16 @@ def top_dir() -> Path:
 
 
 @pytest.fixture(scope="module")
-def mapper():
+def mapper() -> "MapperInner":
     """Mapper-factory to import a mapper from optimade.server.mappers"""
     from optimade.server import mappers
 
-    def _mapper(name: str) -> mappers.BaseResourceMapper:  # type: ignore[return]
+    def _mapper(name: str) -> type[mappers.BaseResourceMapper]:
         """Return named resource mapper"""
         try:
-            res = getattr(mappers, name)
+            res: type[mappers.BaseResourceMapper] = getattr(mappers, name)
         except AttributeError:
             pytest.fail(f"Could not retrieve {name!r} from optimade.server.mappers.")
-        else:
-            return res
+        return res
 
     return _mapper

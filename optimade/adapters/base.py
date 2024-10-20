@@ -18,12 +18,14 @@ See [`Reference`][optimade.adapters.references.adapter.Reference] and
 resources can be converted to for [`ReferenceResource`][optimade.models.references.ReferenceResource]s
 and [`StructureResource`][optimade.models.structures.StructureResource]s, respectively.
 """
+
 import re
-from typing import Any, Callable, Optional, Union
+from collections.abc import Callable
+from json import JSONDecodeError
+from typing import Any
 
-from pydantic import BaseModel  # pylint: disable=no-name-in-module
+from pydantic import BaseModel
 
-from optimade.adapters.logger import LOGGER
 from optimade.models.entries import EntryResource
 
 
@@ -47,22 +49,21 @@ class EntryAdapter:
     _type_ingesters: dict[str, Callable] = {}
     _type_ingesters_by_type: dict[str, type] = {}
 
-    def __init__(self, entry: dict) -> None:
+    def __init__(self, entry: dict[str, Any]) -> None:
         """
         Parameters:
             entry (dict): A JSON OPTIMADE single resource entry.
         """
-        self._entry: Optional[EntryResource] = None
         self._converted: dict[str, Any] = {}
 
-        self.entry: EntryResource = entry  # type: ignore[assignment]
+        self._entry = self.ENTRY_RESOURCE(**entry)
 
         # Note that these return also the default values for otherwise non-provided properties.
         self._common_converters = {
             # Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson
-            "json": self.entry.json,  # type: ignore[attr-defined]
+            "json": self.entry.model_dump_json,
             # Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict
-            "dict": self.entry.dict,  # type: ignore[attr-defined]
+            "dict": self.entry.model_dump,
         }
 
     @property
@@ -73,22 +74,7 @@ class EntryAdapter:
             The entry resource.
 
         """
-        return self._entry  # type: ignore[return-value]
-
-    @entry.setter
-    def entry(self, value: dict) -> None:
-        """Set OPTIMADE entry.
-
-        If already set, print that this can _only_ be set once.
-
-        Parameters:
-            value (dict): Raw entry to wrap in the relevant pydantic model represented by `ENTRY_RESOURCE`.
-
-        """
-        if self._entry is None:
-            self._entry = self.ENTRY_RESOURCE(**value)
-        else:
-            LOGGER.warning("entry can only be set once and is already set.")
+        return self._entry
 
     def convert(self, format: str) -> Any:
         """Convert OPTIMADE entry to desired format.
@@ -108,8 +94,8 @@ class EntryAdapter:
             and format not in self._common_converters
         ):
             raise AttributeError(
-                f"Non-valid entry type to convert to: {format}\n"
-                f"Valid entry types: {tuple(self._type_converters.keys()) + tuple(self._common_converters.keys())}"
+                f"Non-valid entry type to convert to: {format}\nValid entry types: "
+                f"{tuple(self._type_converters.keys()) + tuple(self._common_converters.keys())}"
             )
 
         if self._converted.get(format, None) is None:
@@ -121,7 +107,7 @@ class EntryAdapter:
         return self._converted[format]
 
     @classmethod
-    def ingest_from(cls, data: Any, format: Optional[str] = None) -> Any:
+    def ingest_from(cls, data: Any, format: str | None = None) -> Any:
         """Convert desired format to OPTIMADE format.
 
         Parameters:
@@ -156,21 +142,54 @@ class EntryAdapter:
 
         return cls(
             {
-                "attributes": cls._type_ingesters[format](data).dict(),
+                "attributes": cls._type_ingesters[format](data).model_dump(),
                 "id": "",
                 "type": "structures",
             }
         )
 
+    @classmethod
+    def from_url(cls, url: str) -> Any:
+        """Convert OPTIMADE URL into the target entry type.
+
+        Parameters:
+            url (str): The OPTIMADE URL to convert.
+
+        Returns:
+            The converted URL.
+
+        """
+        import requests
+
+        response = requests.get(url, timeout=100)
+        if response.status_code != 200:
+            raise RuntimeError(
+                f"Could not retrieve OPTIMADE entry from URL {url} returned {response.status_code}"
+            )
+
+        try:
+            json_response = response.json()
+
+        except JSONDecodeError as exc:
+            raise RuntimeError(
+                f"Could not retrieve OPTIMADE entry from URL {url}: did not contain valid JSON response."
+            ) from exc
+
+        data: dict = json_response.get("data", {})
+        if isinstance(data, list):
+            raise RuntimeError(f"returned a list of {len(data)} entries.")
+
+        return cls(data)
+
     @staticmethod
     def _get_model_attributes(
-        starting_instances: Union[tuple[BaseModel, ...], list[BaseModel]], name: str
+        starting_instances: tuple[BaseModel, ...] | list[BaseModel], name: str
     ) -> Any:
         """Helper method for retrieving the OPTIMADE model's attribute, supporting "."-nested attributes"""
         for res in starting_instances:
             nested_attributes = name.split(".")
             for nested_attribute in nested_attributes:
-                if nested_attribute in getattr(res, "__fields__", {}):
+                if nested_attribute in getattr(res, "model_fields", {}):
                     res = getattr(res, nested_attribute)
                 else:
                     res = None

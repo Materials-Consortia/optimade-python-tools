@@ -1,0 +1,131 @@
+name: CI/CD - New updates to `main`
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DEFAULT_REPO_BRANCH: main
+  GIT_USER_NAME: OPTIMADE Developers
+  GIT_USER_EMAIL: "dev@optimade.org"
+
+jobs:
+  deploy_docs:
+    name: Deploy `latest` documentation
+    if: github.repository_owner == 'Materials-Consortia'
+    runs-on: ubuntu-latest
+    outputs:
+      release_run: ${{ steps.release_check.outputs.release_run }}
+
+    steps:
+    - name: Release check
+      id: release_check
+      run: |
+        COMMIT_MSG="$(gh api /repos/${{ github.repository}}/commits/${{ env.DEFAULT_REPO_BRANCH }} --jq '.commit.message')"
+        if [[ "${COMMIT_MSG}" =~ ^Release\ v.*\ -\ Changelog$ ]]; then
+          echo "In a release - do not run this job !"
+          RELEASE_RUN=true
+        else
+          echo "Not a release - update docs"
+          RELEASE_RUN=false
+        fi
+
+        echo "release_run=${RELEASE_RUN}" >> $GITHUB_OUTPUT
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Checkout repository
+      if: steps.release_check.outputs.release_run == 'false'
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: true
+
+    - name: Set up Python 3.10
+      if: steps.release_check.outputs.release_run == 'false'
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      if: steps.release_check.outputs.release_run == 'false'
+      run: |
+        python -m pip install --upgrade pip
+        pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
+        pip install -e .[all]
+
+    - name: Set up git user
+      if: steps.release_check.outputs.release_run == 'false'
+      run: |
+        git config --global user.name "${{ env.GIT_USER_NAME }}"
+        git config --global user.email "${{ env.GIT_USER_EMAIL }}"
+
+    - name: Check API Reference and landing page
+      if: steps.release_check.outputs.release_run == 'false'
+      run: |
+        invoke create-api-reference-docs --pre-clean
+
+        if [ -n "$(git status --porcelain docs/api_reference)" ]; then
+          echo "The following files in the documentation have not been committed:"
+          git status --porcelain docs/api_reference
+          exit 1
+        fi
+
+    - name: Setup changelog configuration
+      if: steps.release_check.outputs.release_run == 'false'
+      id: changelog_config
+      run: |
+        echo "project=$(echo $GITHUB_REPOSITORY | cut -d/ -f2- )" >> $GITHUB_OUTPUT
+        echo "exclude_labels=duplicate,question,invalid,wontfix,dependency_updates,skip_changelog" >> $GITHUB_OUTPUT
+
+    - name: Update changelog with unreleased changes
+      if: steps.release_check.outputs.release_run == 'false'
+      uses: docker://githubchangeloggenerator/github-changelog-generator:1.16.2
+      with:
+        args: --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token ${{ secrets.RELEASE_PAT_BOT }} --release-branch "${{ env.DEFAULT_REPO_BRANCH }}" --future-release "Unreleased changes" --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
+
+    - name: Deploy documentation
+      if: steps.release_check.outputs.release_run == 'false'
+      run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_REPO_BRANCH }}
+
+  deploy-fly:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'Materials-Consortia'
+
+    environment:
+      name: fly
+      url: https://optimade.fly.dev
+
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: true
+
+    - name: Set up Fly
+      uses: superfly/flyctl-actions/setup-flyctl@v1
+
+    - name: Combine requirements for builder
+      run: cat requirements-server.txt >> requirements.txt
+
+    - name: Deploy to Fly
+      run: flyctl deploy --remote-only -c ./.github/fly.toml
+
+  publish_container_image:
+    name: Publish container image
+    needs: deploy_docs
+    uses: ./.github/workflows/cd_container_image.yml
+    if: needs.deploy_docs.outputs.release_run == 'false'
+    with:
+      release: false
+      checkout_ref: ${{ github.sha }}
+    secrets: inherit
+    permissions:
+      packages: write
+      contents: read

@@ -4,7 +4,6 @@ class that can be pointed at an OPTIMADE implementation and validated
 against the specification via the pydantic models implemented in this package.
 
 """
-# pylint: disable=import-outside-toplevel
 
 import dataclasses
 import json
@@ -13,7 +12,7 @@ import random
 import re
 import sys
 import urllib.parse
-from typing import Any, Optional, Union
+from typing import Any, Literal
 
 import requests
 
@@ -57,22 +56,22 @@ class ImplementationValidator:
 
     """
 
-    valid: Optional[bool]
+    valid: bool | None
 
-    def __init__(  # pylint: disable=too-many-arguments
+    def __init__(
         self,
-        client: Optional[Any] = None,
-        base_url: Optional[str] = None,
+        client: Any | None = None,
+        base_url: str | None = None,
         verbosity: int = 0,
         respond_json: bool = False,
         page_limit: int = 4,
         max_retries: int = 5,
         run_optional_tests: bool = True,
         fail_fast: bool = False,
-        as_type: Optional[str] = None,
+        as_type: str | None = None,
         index: bool = False,
         minimal: bool = False,
-        http_headers: Optional[dict[str, str]] = None,
+        http_headers: dict[str, str] | None = None,
         timeout: float = DEFAULT_CONN_TIMEOUT,
         read_timeout: float = DEFAULT_READ_TIMEOUT,
     ):
@@ -353,7 +352,7 @@ class ImplementationValidator:
         self.print_summary()
 
     @test_case
-    def _recurse_through_endpoint(self, endp: str) -> tuple[Optional[bool], str]:
+    def _recurse_through_endpoint(self, endp: str) -> tuple[bool | None, str]:
         """For a given endpoint (`endp`), get the entry type
         and supported fields, testing that all mandatory fields
         are supported, then test queries on every property according
@@ -504,7 +503,7 @@ class ImplementationValidator:
     @test_case
     def _get_archetypal_entry(
         self, endp: str, properties: list[str]
-    ) -> tuple[Optional[dict[str, Any]], str]:
+    ) -> tuple[dict[str, Any] | None, str]:
         """Get a random entry from the first page of results for this
         endpoint.
 
@@ -545,7 +544,7 @@ class ImplementationValidator:
     @test_case
     def _check_response_fields(
         self, endp: str, fields: list[str]
-    ) -> tuple[Optional[bool], str]:
+    ) -> tuple[bool | None, str]:
         """Check that the response field query parameter is obeyed.
 
         Parameters:
@@ -561,7 +560,7 @@ class ImplementationValidator:
         test_query = f"{endp}?response_fields={','.join(subset_fields)}&page_limit=1"
         response, _ = self._get_endpoint(test_query, multistage=True)
 
-        if response and len(response.json()["data"]) >= 0:
+        if response and len(response.json()["data"]) > 0:
             doc = response.json()["data"][0]
             expected_fields = set(subset_fields)
             expected_fields -= CONF.top_level_non_attribute_fields
@@ -594,7 +593,7 @@ class ImplementationValidator:
         sortable: bool,
         endp: str,
         chosen_entry: dict[str, Any],
-    ) -> tuple[Optional[bool], str]:
+    ) -> tuple[bool | None, str]:
         """For the given property, property type and chose entry, this method
         runs a series of queries for each field in the entry, testing that the
         initial document is returned where expected.
@@ -706,7 +705,7 @@ class ImplementationValidator:
         endp: str,
         chosen_entry: dict[str, Any],
         query_optional: bool,
-    ) -> tuple[Optional[bool], str]:
+    ) -> tuple[bool | None, str]:
         """This method constructs appropriate queries using all operators
         for a certain field and applies some tests:
 
@@ -953,7 +952,7 @@ class ImplementationValidator:
 
         return True, f"{prop} passed filter tests"
 
-    def _test_info_or_links_endpoint(self, request_str: str) -> Union[bool, dict]:
+    def _test_info_or_links_endpoint(self, request_str: str) -> Literal[False] | dict:
         """Requests an info or links endpoint and attempts to deserialize
         the response.
 
@@ -973,7 +972,7 @@ class ImplementationValidator:
                 request=request_str,
             )
             if deserialized:
-                return deserialized.dict()
+                return deserialized.model_dump()
 
         return False
 
@@ -1044,6 +1043,7 @@ class ImplementationValidator:
 
         response, _ = self._get_endpoint(request_str)
 
+        self._test_if_data_empty(response, request_str, optional=True)
         self._test_meta_schema_reporting(response, request_str, optional=True)
         self._test_page_limit(response)
 
@@ -1060,7 +1060,7 @@ class ImplementationValidator:
     @test_case
     def _test_data_available_matches_data_returned(
         self, deserialized: Any
-    ) -> tuple[Optional[bool], str]:
+    ) -> tuple[bool | None, str]:
         """In the case where no query is requested, `data_available`
         must equal `data_returned` in the meta response, which is tested
         here.
@@ -1187,7 +1187,7 @@ class ImplementationValidator:
     def _test_versions_headers(
         self,
         content_type: dict[str, Any],
-        expected_parameter: Union[str, list[str]],
+        expected_parameter: str | list[str],
     ) -> tuple[dict[str, Any], str]:
         """Tests that the `Content-Type` field of the `/versions` header contains
         the passed parameter.
@@ -1244,6 +1244,29 @@ class ImplementationValidator:
         )
 
     @test_case
+    def _test_if_data_empty(
+        self,
+        response: requests.models.Response,
+        request_str: str,
+    ):
+        """Tests whether an endpoint responds a entries under `data`."""
+        try:
+            if not response.json().get("data", []):
+                raise ResponseError(
+                    f"Query {request_str} did not respond with any entries under `data`. This may not consitute an error, but should be checked."
+                )
+
+        except json.JSONDecodeError:
+            raise ResponseError(
+                f"Unable to test presence of `data` for query {request_str}: could not decode response as JSON.\n{str(response.content)}"
+            )
+
+        return (
+            True,
+            f"Query {request_str} successfully returned some entries.",
+        )
+
+    @test_case
     def _test_meta_schema_reporting(
         self,
         response: requests.models.Response,
@@ -1270,8 +1293,8 @@ class ImplementationValidator:
         self,
         response: requests.models.Response,
         check_next_link: int = 5,
-        previous_links: Optional[set[str]] = None,
-    ) -> tuple[Optional[bool], str]:
+        previous_links: set[str] | None = None,
+    ) -> tuple[bool | None, str]:
         """Test that a multi-entry endpoint obeys the page limit by
         following pagination links up to a depth of `check_next_link`.
 
@@ -1386,7 +1409,7 @@ class ImplementationValidator:
         self,
         response: requests.models.Response,
         response_cls: Any,
-        request: Optional[str] = None,
+        request: str | None = None,
     ) -> tuple[Any, str]:
         """Try to create the appropriate pydantic model from the response.
 
@@ -1421,8 +1444,8 @@ class ImplementationValidator:
 
     @test_case
     def _get_available_endpoints(
-        self, base_info: Union[Any, dict[str, Any]]
-    ) -> tuple[Optional[list[str]], str]:
+        self, base_info: Any | dict[str, Any]
+    ) -> tuple[list[str] | None, str]:
         """Tries to get `entry_types_by_format` from base info response
         even if it could not be deserialized.
 
@@ -1478,8 +1501,8 @@ class ImplementationValidator:
 
     @test_case
     def _get_endpoint(
-        self, request_str: str, expected_status_code: Union[list[int], int] = 200
-    ) -> tuple[Optional[requests.Response], str]:
+        self, request_str: str, expected_status_code: list[int] | int = 200
+    ) -> tuple[requests.Response | None, str]:
         """Gets the response from the endpoint specified by `request_str`.
         function is wrapped by the `test_case` decorator
 

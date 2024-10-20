@@ -1,6 +1,6 @@
 """Tests specifically for optimade.servers.routers.utils."""
+
 from collections.abc import Mapping
-from typing import Optional, Union
 from unittest import mock
 
 import pytest
@@ -8,8 +8,8 @@ from requests.exceptions import ConnectionError
 
 
 def mocked_providers_list_response(
-    url: Union[str, bytes] = "",
-    param: Optional[Union[Mapping[str, str], tuple[str, str]]] = None,
+    url: str | bytes = "",
+    param: Mapping[str, str] | tuple[str, str] | None = None,
     **kwargs,
 ):
     """This function will be used to mock requests.get
@@ -20,7 +20,7 @@ def mocked_providers_list_response(
         https://stackoverflow.com/questions/15753390/how-can-i-mock-requests-and-the-response
     """
     try:
-        from optimade.server.data import providers  # type: ignore[attr-defined]
+        from optimade.server.data import providers
     except ImportError:
         pytest.fail(
             "Cannot import providers from optimade.server.data, "
@@ -28,12 +28,15 @@ def mocked_providers_list_response(
         )
 
     class MockResponse:
-        def __init__(self, data: Union[list, dict], status_code: int):
+        def __init__(self, data: list | dict, status_code: int):
             self.data = data
             self.status_code = status_code
 
-        def json(self) -> Union[list, dict]:
+        def json(self) -> list | dict:
             return self.data
+
+        def content(self) -> str:
+            return str(self.data)
 
     return MockResponse(providers, 200)
 
@@ -73,6 +76,12 @@ def test_get_providers():
             assert get_providers() == providers_list
 
 
+def test_get_all_databases():
+    from optimade.utils import get_all_databases
+
+    assert list(get_all_databases())
+
+
 def test_get_providers_warning(caplog, top_dir):
     """Make sure a warning is logged as a last resort."""
     import copy
@@ -88,7 +97,7 @@ def test_get_providers_warning(caplog, top_dir):
 
         caplog.clear()
         with mock.patch("requests.get", side_effect=ConnectionError):
-            del data.providers  # pylint: disable=no-member
+            del data.providers
             assert get_providers() == []
 
             warning_message = """Could not retrieve a list of providers!
@@ -97,9 +106,7 @@ def test_get_providers_warning(caplog, top_dir):
 
 {}
     The list of providers will not be included in the `/links`-endpoint.
-""".format(
-                "".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS])
-            )
+""".format("".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS]))
             assert warning_message in caplog.messages
 
     finally:

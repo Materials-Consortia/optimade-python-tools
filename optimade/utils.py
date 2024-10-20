@@ -3,9 +3,17 @@ with OPTIMADE providers that can be used in server or client code.
 
 """
 
+import contextlib
 import json
 from collections.abc import Container, Iterable
-from typing import Optional
+from pathlib import Path
+from traceback import print_exc
+from typing import TYPE_CHECKING, Optional
+
+from requests.exceptions import SSLError
+
+if TYPE_CHECKING:
+    import rich
 
 from pydantic import ValidationError
 
@@ -15,6 +23,71 @@ PROVIDER_LIST_URLS = (
     "https://providers.optimade.org/v1/links",
     "https://raw.githubusercontent.com/Materials-Consortia/providers/master/src/links/v1/providers.json",
 )
+
+
+def insert_from_jsonl(jsonl_path: Path) -> None:
+    """Insert OPTIMADE JSON lines data into the database.
+
+    Arguments:
+        jsonl_path: Path to the JSON lines file.
+
+    """
+    from collections import defaultdict
+
+    import bson.json_util
+
+    from optimade.server.routers import ENTRY_COLLECTIONS
+
+    batch = defaultdict(list)
+    batch_size: int = 1000
+
+    # Attempt to treat path as absolute, otherwise join with root directory
+    if not jsonl_path.is_file():
+        _jsonl_path = Path(__file__).parent.joinpath(jsonl_path)
+        if not _jsonl_path.is_file():
+            raise FileNotFoundError(
+                f"Could not find file {jsonl_path} or {_jsonl_path}"
+            )
+        jsonl_path = _jsonl_path
+
+    with open(jsonl_path) as handle:
+        header = handle.readline()
+        header_jsonl = json.loads(header)
+        assert header_jsonl.get(
+            "x-optimade"
+        ), "No x-optimade header, not sure if this is a JSONL file"
+
+        for json_str in handle:
+            try:
+                entry = bson.json_util.loads(json_str)
+            except json.JSONDecodeError:
+                print(f"Could not read entry as JSON: {json_str}")
+                print_exc()
+                continue
+            try:
+                id = entry.get("id", None)
+                _type = entry.get("type", None)
+                if id is None or _type == "info":
+                    # assume this is an info endpoint for pre-1.2
+                    continue
+
+                inp_data = entry["attributes"]
+                inp_data["id"] = id
+                # Append the data to the batch
+                batch[_type].append(inp_data)
+            except Exception as exc:
+                print(f"Error with entry {entry}: {exc}")
+                print_exc()
+                continue
+
+            if len(batch[_type]) >= batch_size:
+                ENTRY_COLLECTIONS[_type].insert(batch[_type])
+                batch[_type] = []
+
+        # Insert any remaining data
+        for entry_type in batch:
+            ENTRY_COLLECTIONS[entry_type].insert(batch[entry_type])
+            batch[entry_type] = []
 
 
 def mongo_id_for_database(database_id: str, database_type: str) -> str:
@@ -54,11 +127,12 @@ def get_providers(add_mongo_id: bool = False) -> list:
 
     for provider_list_url in PROVIDER_LIST_URLS:
         try:
-            providers = requests.get(provider_list_url).json()
+            providers = requests.get(provider_list_url, timeout=10).json()
         except (
             requests.exceptions.ConnectionError,
             requests.exceptions.ConnectTimeout,
             json.JSONDecodeError,
+            requests.exceptions.SSLError,
         ):
             pass
         else:
@@ -76,9 +150,7 @@ def get_providers(add_mongo_id: bool = False) -> list:
 
 {}
     The list of providers will not be included in the `/links`-endpoint.
-""".format(
-                    "".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS])
-                )
+""".format("".join([f"    * {_}\n" for _ in PROVIDER_LIST_URLS]))
             )
             return []
 
@@ -102,12 +174,18 @@ def get_providers(add_mongo_id: bool = False) -> list:
 
 
 def get_child_database_links(
-    provider: LinksResource, obey_aggregate: bool = True
+    provider: LinksResource,
+    obey_aggregate: bool = True,
+    headers: dict | None = None,
+    skip_ssl: bool = False,
 ) -> list[LinksResource]:
     """For a provider, return a list of available child databases.
 
     Arguments:
         provider: The links entry for the provider.
+        obey_aggregate: Whether to only return links that allow
+            aggregation.
+        headers: Additional HTTP headers to pass to the provider.
 
     Returns:
         A list of the valid links entries from this provider that
@@ -121,7 +199,6 @@ def get_child_database_links(
     import requests
 
     from optimade.models.links import Aggregate, LinkType
-    from optimade.models.responses import LinksResponse
 
     base_url = provider.pop("base_url")
     if base_url is None:
@@ -129,7 +206,14 @@ def get_child_database_links(
 
     links_endp = base_url + "/v1/links"
     try:
-        links = requests.get(links_endp, timeout=10)
+        links = requests.get(links_endp, timeout=10, headers=headers)
+    except SSLError as exc:
+        if skip_ssl:
+            links = requests.get(links_endp, timeout=10, headers=headers, verify=False)
+        else:
+            raise RuntimeError(
+                f"SSL error when connecting to provider {provider['id']}. Use `skip_ssl` to ignore."
+            ) from exc
     except (requests.ConnectionError, requests.Timeout) as exc:
         raise RuntimeError(f"Unable to connect to provider {provider['id']}") from exc
 
@@ -139,27 +223,31 @@ def get_child_database_links(
         )
 
     try:
-        links_resp = LinksResponse(**links.json())
+        links_resources = links.json().get("data", [])
+        return_links = []
+        for link in links_resources:
+            link = LinksResource(**link)
+            if (
+                link.attributes.link_type == LinkType.CHILD
+                and link.attributes.base_url is not None
+                and (not obey_aggregate or link.attributes.aggregate == Aggregate.OK)
+            ):
+                return_links.append(link)
 
-        return [
-            link
-            for link in links_resp.data
-            if isinstance(link, LinksResource)
-            and link.attributes.link_type == LinkType.CHILD
-            and link.attributes.base_url is not None
-            and (not obey_aggregate or link.attributes.aggregate == Aggregate.OK)
-        ]
+        return return_links
 
     except (ValidationError, json.JSONDecodeError) as exc:
         raise RuntimeError(
-            f"Did not understand response from {provider['id']}: {links.content!r}"
-        ) from exc
+            f"Did not understand response from {provider['id']}: {links.content!r}, {exc}"
+        )
 
 
 def get_all_databases(
-    include_providers: Optional[Container[str]] = None,
-    exclude_providers: Optional[Container[str]] = None,
-    exclude_databases: Optional[Container[str]] = None,
+    include_providers: Container[str] | None = None,
+    exclude_providers: Container[str] | None = None,
+    exclude_databases: Container[str] | None = None,
+    progress: "Optional[rich.Progress]" = None,
+    skip_ssl: bool = False,
 ) -> Iterable[str]:
     """Iterate through all databases reported by registered OPTIMADE providers.
 
@@ -172,21 +260,42 @@ def get_all_databases(
         A generator of child database links that obey the given parameters.
 
     """
-    for provider in get_providers():
-        if exclude_providers and provider["id"] in exclude_providers:
-            continue
-        if include_providers and provider["id"] not in include_providers:
-            continue
+    if progress is not None:
+        _task = progress.add_task(
+            description="Retrieving all databases from registered OPTIMADE providers...",
+            total=None,
+        )
+    else:
+        progress = contextlib.nullcontext()
+        progress.print = lambda _: None  # type: ignore[attr-defined]
+        progress.advance = lambda *_: None  # type: ignore[attr-defined]
+        _task = None
 
-        try:
-            links = get_child_database_links(provider)
-            for link in links:
-                if link.attributes.base_url:
-                    if (
-                        exclude_databases
-                        and link.attributes.base_url in exclude_databases
-                    ):
-                        continue
-                    yield str(link.attributes.base_url)
-        except RuntimeError:
-            pass
+    with progress:
+        for provider in get_providers():
+            if exclude_providers and provider["id"] in exclude_providers:
+                continue
+            if include_providers and provider["id"] not in include_providers:
+                continue
+
+            try:
+                links = get_child_database_links(provider, skip_ssl=skip_ssl)
+                for link in links:
+                    if link.attributes.base_url:
+                        if (
+                            exclude_databases
+                            and link.attributes.base_url in exclude_databases
+                        ):
+                            continue
+                        yield str(link.attributes.base_url)
+                if links and progress is not None:
+                    progress.advance(_task, 1)
+                    progress.print(
+                        f"Retrieved databases from [bold green]{provider['id']}[/bold green]"
+                    )
+            except RuntimeError as exc:
+                if progress is not None:
+                    progress.print(
+                        f"Unable to retrieve databases from [bold red]{provider['id']}[/bold red]: {exc}",
+                    )
+                pass

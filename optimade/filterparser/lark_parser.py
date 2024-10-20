@@ -5,7 +5,6 @@ into `Lark.Tree` objects for use by the filter transformers.
 """
 
 from pathlib import Path
-from typing import Optional
 
 from lark import Lark, Tree
 
@@ -50,7 +49,7 @@ class LarkParser:
     """
 
     def __init__(
-        self, version: Optional[tuple[int, int, int]] = None, variant: str = "default"
+        self, version: tuple[int, int, int] | None = None, variant: str = "default"
     ):
         """For a given version and variant, try to load the corresponding grammar.
 
@@ -81,8 +80,8 @@ class LarkParser:
         with open(AVAILABLE_PARSERS[version][variant]) as f:
             self.lark = Lark(f, maybe_placeholders=False)
 
-        self.tree: Optional[Tree] = None
-        self.filter: Optional[str] = None
+        self.tree: Tree | None = None
+        self.filter: str | None = None
 
     def parse(self, filter_: str) -> Tree:
         """Parse a filter string into a `lark.Tree`.

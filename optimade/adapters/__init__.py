@@ -1,4 +1,3 @@
-# pylint: disable=undefined-variable
 from .exceptions import *  # noqa: F403
 from .references import *  # noqa: F403
 from .structures import *  # noqa: F403

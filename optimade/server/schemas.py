@@ -1,18 +1,35 @@
 from collections.abc import Iterable
-from typing import Callable, Optional
+from typing import TYPE_CHECKING, Any, Optional
+
+from pydantic import BaseModel, TypeAdapter
 
 from optimade.models import (
     DataType,
+    EntryResource,
     ErrorResponse,
     ReferenceResource,
     StructureResource,
 )
+from optimade.models.types import NoneType, _get_origin_type
+
+if TYPE_CHECKING:  # pragma: no cover
+    from typing import Literal, Union
+
+    from optimade.models.utils import SupportLevel
+
+    QueryableProperties = dict[
+        str,
+        dict[
+            Literal["description", "unit", "queryable", "support", "sortable", "type"],
+            Optional[Union[str, SupportLevel, bool, DataType]],
+        ],
+    ]
 
 __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properties")
 
-ENTRY_INFO_SCHEMAS: dict[str, Callable[[], dict]] = {
-    "structures": StructureResource.schema,
-    "references": ReferenceResource.schema,
+ENTRY_INFO_SCHEMAS: dict[str, type[EntryResource]] = {
+    "structures": StructureResource,
+    "references": ReferenceResource,
 }
 """This dictionary is used to define the `/info/<entry_type>` endpoints."""
 
@@ -25,7 +42,7 @@ try:
     """
     from optimade.exceptions import POSSIBLE_ERRORS
 
-    ERROR_RESPONSES: Optional[dict[int, dict]] = {
+    ERROR_RESPONSES: dict[int, dict[str, Any]] | None = {
         err.status_code: {"model": ErrorResponse, "description": err.title}
         for err in POSSIBLE_ERRORS
     }
@@ -34,16 +51,15 @@ except ModuleNotFoundError:
 
 
 def retrieve_queryable_properties(
-    schema: dict,
-    queryable_properties: Optional[Iterable[str]] = None,
-    entry_type: Optional[str] = None,
-) -> dict:
-    """Recursively loops through the schema of a pydantic model and
-    resolves all references, returning a dictionary of all the
+    schema: type[EntryResource],
+    queryable_properties: Iterable[str] | None = None,
+    entry_type: str | None = None,
+) -> "QueryableProperties":
+    """Recursively loops through a pydantic model, returning a dictionary of all the
     OPTIMADE-queryable properties of that model.
 
     Parameters:
-        schema: The schema of the pydantic model.
+        schema: The pydantic model.
         queryable_properties: The list of properties to find in the schema.
         entry_type: An optional entry type for the model. Will be used to
             lookup schemas for any config-defined fields.
@@ -54,36 +70,57 @@ def retrieve_queryable_properties(
         and type, where provided.
 
     """
-    properties = {}
-    for name, value in schema["properties"].items():
+    properties: "QueryableProperties" = {}
+    for name, value in schema.model_fields.items():
+        # Proceed if the field (name) is given explicitly in the queryable_properties
+        # list or if the queryable_properties list is empty (i.e., all properties are
+        # requested)
         if not queryable_properties or name in queryable_properties:
-            if "$ref" in value:
-                path = value["$ref"].split("/")[1:]
-                sub_schema = schema.copy()
-                while path:
-                    next_key = path.pop(0)
-                    sub_schema = sub_schema[next_key]
-                sub_queryable_properties = sub_schema["properties"].keys()
+            if name in properties:
+                continue
+
+            # If the field is another data model, "unpack" it by recursively calling
+            # this function.
+            # But first, we need to "unpack" the annotation, getting in behind any
+            # Optional, Union, or Annotated types.
+            annotation = _get_origin_type(value.annotation)
+
+            if annotation not in (None, NoneType) and issubclass(annotation, BaseModel):
+                sub_queryable_properties = list(annotation.model_fields)  # type: ignore[attr-defined]
                 properties.update(
-                    retrieve_queryable_properties(sub_schema, sub_queryable_properties)
+                    retrieve_queryable_properties(annotation, sub_queryable_properties)
                 )
-            else:
-                properties[name] = {"description": value.get("description", "")}
-                # Update schema with extension keys provided they are not None
-                for key in (
-                    "x-optimade-unit",
-                    "x-optimade-queryable",
-                    "x-optimade-support",
+
+            properties[name] = {"description": value.description or ""}
+
+            # Update schema with extension keys, provided they are not None
+            for key in (
+                "x-optimade-unit",
+                "x-optimade-queryable",
+                "x-optimade-support",
+            ):
+                if (
+                    value.json_schema_extra
+                    and value.json_schema_extra.get(key) is not None
                 ):
-                    if value.get(key) is not None:
-                        properties[name][key.replace("x-optimade-", "")] = value[key]
-                # All properties are sortable with the MongoDB backend.
-                # While the result for sorting lists may not be as expected, they are still sorted.
-                properties[name]["sortable"] = value.get("x-optimade-sortable", True)
-                # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
-                properties[name]["type"] = DataType.from_json_type(
-                    value.get("format", value.get("type"))
-                )
+                    properties[name][
+                        key.replace("x-optimade-", "")  # type: ignore[index]
+                    ] = value.json_schema_extra[key]
+
+            # All properties are sortable with the MongoDB backend.
+            # While the result for sorting lists may not be as expected, they are still sorted.
+            properties[name]["sortable"] = (
+                value.json_schema_extra.get("x-optimade-sortable", True)
+                if value.json_schema_extra
+                else True
+            )
+
+            # Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.
+            json_schema = TypeAdapter(annotation).json_schema(mode="validation")
+
+            properties[name]["type"] = DataType.from_json_type(
+                json_schema.get("format", json_schema.get("type"))
+            )
 
     # If specified, check the config for any additional well-described provider fields
     if entry_type:
@@ -102,5 +139,11 @@ def retrieve_queryable_properties(
             )
             properties[name] = {k: field[k] for k in field if k != "name"}
             properties[name]["sortable"] = field.get("sortable", True)
+
+    # Remove JSON fields mistaken as properties
+    non_property_fields = ["attributes", "relationships"]
+    for non_property_field in non_property_fields:
+        if non_property_field in properties:
+            del properties[non_property_field]
 
     return properties

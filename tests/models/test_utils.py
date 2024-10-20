@@ -1,4 +1,4 @@
-from typing import Callable
+from collections.abc import Callable
 
 import pytest
 from pydantic import BaseModel, Field, ValidationError
@@ -43,6 +43,10 @@ def test_compatible_strict_optimade_field() -> None:
     produce the same schemas when given the same arguments.
 
     """
+    from optimade.models.utils import (
+        OPTIMADE_SCHEMA_EXTENSION_KEYS,
+        OPTIMADE_SCHEMA_EXTENSION_PREFIX,
+    )
 
     class CorrectModelWithStrictField(BaseModel):
         # check that unit and uniqueItems are passed through
@@ -51,7 +55,7 @@ def test_compatible_strict_optimade_field() -> None:
             support=SupportLevel.MUST,
             queryable=SupportLevel.OPTIONAL,
             description="Unit test to make sure that StrictField allows through OptimadeField keys",
-            pattern="^structures$",
+            # pattern="^structures$",  # pattern is only allowed for string type
             unit="stringiness",
             uniqueItems=True,
             sortable=True,
@@ -65,16 +69,33 @@ def test_compatible_strict_optimade_field() -> None:
             support="must",
             queryable="optional",
             description="Unit test to make sure that StrictField allows through OptimadeField keys",
-            pattern="^structures$",
+            # pattern="^structures$",  # pattern is only allowed for string type
             uniqueItems=True,
             unit="stringiness",
             sortable=True,
         )
 
-    optimade_schema = CorrectModelWithOptimadeField.schema()
-    strict_schema = CorrectModelWithStrictField.schema()
+    optimade_schema = CorrectModelWithOptimadeField.model_json_schema(mode="validation")
+    strict_schema = CorrectModelWithStrictField.model_json_schema(mode="validation")
     strict_schema["title"] = optimade_schema["title"]
     assert strict_schema == optimade_schema
+
+    assert "uniqueItems" in strict_schema["properties"]["good_field"]
+    assert (
+        "uniqueItems"
+        in CorrectModelWithStrictField.model_fields["good_field"].json_schema_extra
+    )
+
+    for key in OPTIMADE_SCHEMA_EXTENSION_KEYS:
+        assert key not in strict_schema["properties"]["good_field"]
+        assert (
+            f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"
+            in CorrectModelWithStrictField.model_fields["good_field"].json_schema_extra
+        )
+        assert (
+            f"{OPTIMADE_SCHEMA_EXTENSION_PREFIX}{key}"
+            in strict_schema["properties"]["good_field"]
+        )
 
 
 def test_formula_regexp() -> None:
@@ -87,7 +108,7 @@ def test_formula_regexp() -> None:
     from optimade.models.utils import CHEMICAL_FORMULA_REGEXP
 
     class DummyModel(BaseModel):
-        formula: str = Field(regex=CHEMICAL_FORMULA_REGEXP)
+        formula: str = Field(pattern=CHEMICAL_FORMULA_REGEXP)
 
     good_formulae = (
         "AgCl",

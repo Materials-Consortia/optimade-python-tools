@@ -3,8 +3,6 @@ OPTIMADE API.
 
 """
 
-from typing import Optional
-
 __all__ = (
     "OptimadeWarning",
     "FieldValueNotRecognized",
@@ -21,7 +19,7 @@ class OptimadeWarning(Warning):
     """Base Warning for the `optimade` package"""
 
     def __init__(
-        self, detail: Optional[str] = None, title: Optional[str] = None, *args
+        self, detail: str | None = None, title: str | None = None, *args
     ) -> None:
         detail = detail if detail else self.__doc__
         super().__init__(detail, *args)

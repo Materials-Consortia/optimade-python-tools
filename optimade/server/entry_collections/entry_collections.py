@@ -3,13 +3,14 @@ import re
 import warnings
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
-from typing import Any, Optional, Union
+from typing import Any
 
 from lark import Transformer
 
 from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
-from optimade.models.entries import EntryResource
+from optimade.models import Attributes, EntryResource
+from optimade.models.types import NoneType, _get_origin_type
 from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
@@ -127,7 +128,7 @@ class EntryCollection(ABC):
         """
 
     @abstractmethod
-    def count(self, **kwargs: Any) -> Union[int, None]:
+    def count(self, **kwargs: Any) -> int | None:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
@@ -137,8 +138,14 @@ class EntryCollection(ABC):
         """
 
     def find(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> tuple[Union[None, dict, list[dict]], Optional[int], bool, set[str], set[str],]:
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
+    ) -> tuple[
+        dict[str, Any] | list[dict[str, Any]] | None,
+        int | None,
+        bool,
+        set[str],
+        set[str],
+    ]:
         """
         Fetches results and indicates if more data is available.
 
@@ -160,7 +167,7 @@ class EntryCollection(ABC):
         """
         criteria = self.handle_query_params(params)
         single_entry = isinstance(params, SingleEntryQueryParams)
-        response_fields = criteria.pop("fields")
+        response_fields: set[str] = criteria.pop("fields")
 
         raw_results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry
@@ -171,10 +178,10 @@ class EntryCollection(ABC):
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
         )
 
-        bad_optimade_fields = set()
-        bad_provider_fields = set()
+        bad_optimade_fields: set[str] = set()
+        bad_provider_fields: set[str] = set()
         supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
-        all_attributes = self.resource_mapper.ALL_ATTRIBUTES
+        all_attributes: set[str] = self.resource_mapper.ALL_ATTRIBUTES
         for field in include_fields:
             if field not in all_attributes:
                 if field.startswith("_"):
@@ -196,13 +203,13 @@ class EntryCollection(ABC):
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
 
-        results: Union[None, list[dict], dict] = None
+        results: list[dict[str, Any]] | dict[str, Any] | None = None
 
         if raw_results:
             results = [self.resource_mapper.map_back(doc) for doc in raw_results]
 
             if single_entry:
-                results = results[0]  # type: ignore[assignment]
+                results = results[0]
 
                 if (
                     CONFIG.validate_api_response
@@ -226,7 +233,7 @@ class EntryCollection(ABC):
     @abstractmethod
     def _run_db_query(
         self, criteria: dict[str, Any], single_entry: bool = False
-    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
+    ) -> tuple[list[dict[str, Any]], int | None, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -282,23 +289,19 @@ class EntryCollection(ABC):
             Property names.
 
         """
+        annotation = _get_origin_type(
+            self.resource_cls.model_fields["attributes"].annotation
+        )
 
-        schema = self.resource_cls.schema()
-        attributes = schema["properties"]["attributes"]
-        if "allOf" in attributes:
-            allOf = attributes.pop("allOf")
-            for dict_ in allOf:
-                attributes.update(dict_)
-        if "$ref" in attributes:
-            path = attributes["$ref"].split("/")[1:]
-            attributes = schema.copy()
-            while path:
-                next_key = path.pop(0)
-                attributes = attributes[next_key]
-        return set(attributes["properties"].keys())
+        if annotation in (None, NoneType) or not issubclass(annotation, Attributes):
+            raise TypeError(
+                "resource class 'attributes' field must be a subclass of 'EntryResourceAttributes'"
+            )
+
+        return set(annotation.model_fields)  # type: ignore[attr-defined]
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
     ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
@@ -465,7 +468,7 @@ class EntryCollection(ABC):
     def get_next_query_params(
         self,
         params: EntryListingQueryParams,
-        results: Union[None, dict, list[dict]],
+        results: dict[str, Any] | list[dict[str, Any]] | None,
     ) -> dict[str, list[str]]:
         """Provides url query pagination parameters that will be used in the next
         link.
