@@ -74,7 +74,13 @@ class BaseResourceMapper:
     PROVIDER_FIELDS: tuple[str, ...] = ()
     ENTRY_RESOURCE_CLASS: type[EntryResource] = EntryResource
     RELATIONSHIP_ENTRY_TYPES: set[str] = {"references", "structures"}
-    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set[str] = {"id", "type", "relationships", "links"}
+    TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set[str] = {
+        "id",
+        "type",
+        "relationships",
+        "links",
+        "meta",
+    }
 
     @classmethod
     @lru_cache(maxsize=NUM_ENTRY_TYPES)
@@ -118,18 +124,10 @@ class BaseResourceMapper:
     @classproperty
     @lru_cache(maxsize=1)
     def SUPPORTED_PREFIXES(cls) -> set[str]:
-        """A set of prefixes handled by this entry type.
-
-        !!! note
-            This implementation only includes the provider prefix,
-            but in the future this property may be extended to include other
-            namespaces (for serving fields from, e.g., other providers or
-            domain-specific terms).
-
-        """
+        """A set of prefixes handled by this entry type."""
         from optimade.server.config import CONFIG
 
-        return {CONFIG.provider.prefix}
+        return set(CONFIG.supported_prefixes)
 
     @classproperty
     def ALL_ATTRIBUTES(cls) -> set[str]:
