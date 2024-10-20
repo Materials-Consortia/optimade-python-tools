@@ -485,6 +485,7 @@
             "description": "An object containing per-entry and per-property metadata. The keys are the names of the fields in attributes for which metadata is available. The values belonging to these keys are dictionaries containing the relevant metadata fields. See also [Metadata properties](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#metadata-properties)"
           }
         },
+        "additionalProperties": true,
         "type": "object",
         "title": "EntryMetadata",
         "description": "Contains the metadata for the attributes of an entry"
@@ -548,13 +549,13 @@
           "meta": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Meta"
+                "$ref": "#/components/schemas/EntryMetadata"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "$ref": "#/components/schemas/EntryResourceAttributes",
@@ -1295,13 +1296,13 @@
           "meta": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Meta"
+                "$ref": "#/components/schemas/EntryMetadata"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
+            "description": "A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata."
           },
           "attributes": {
             "$ref": "#/components/schemas/LinksResourceAttributes",
