@@ -51,8 +51,6 @@ def test_advanced_relationships():
 
 
 def test_meta():
-    import copy
-
     good_entry_resource = {
         "id": "goodstruct123",
         "type": "structure",
@@ -76,23 +74,22 @@ def test_meta():
 
     EntryResource(**good_entry_resource)
 
-    bad_entry_resources = [
-        good_entry_resource,
-        copy.deepcopy(good_entry_resource),
-        copy.deepcopy(good_entry_resource),
-        copy.deepcopy(good_entry_resource),
-    ]
+    # Test that other prefixed fields are allowed in meta
+    good_entry_resource["meta"]["_other_database_specific_property"] = {
+        "_exmpl_metadata_property": "entry 3"
+    }
+
+    EntryResource(**good_entry_resource)
+
+    bad_entry_resources = [good_entry_resource.copy() for _ in range(4)]
     bad_entry_resources[0]["meta"]["property_metadata"][
         "_exmpl_database_specific_property"
-    ] = {"metadata_property": "metadata_value"}
+    ] = {"metadata_property": "entry 0"}
     bad_entry_resources[1]["meta"]["property_metadata"][
         "database_specific_property"
-    ] = {"_exmpl_metadata_property": "metadata_value"}
+    ] = {"_exmpl_metadata_property": "entry 1"}
     bad_entry_resources[2]["meta"]["database_specific_property"] = {
-        "_exmpl_metadata_property": "metadata_value"
-    }
-    bad_entry_resources[3]["meta"]["_other_database_specific_property"] = {
-        "_exmpl_metadata_property": "metadata_value"
+        "_exmpl_metadata_property": "entry 2"
     }
 
     for bad_entry in bad_entry_resources:
