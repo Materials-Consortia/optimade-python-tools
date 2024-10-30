@@ -7,7 +7,6 @@ import contextlib
 import json
 from collections.abc import Container, Iterable
 from pathlib import Path
-from traceback import print_exc
 from typing import TYPE_CHECKING, Optional
 
 from requests.exceptions import SSLError
@@ -36,6 +35,7 @@ def insert_from_jsonl(jsonl_path: Path) -> None:
 
     import bson.json_util
 
+    from optimade.server.logger import LOGGER
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     batch = defaultdict(list)
@@ -50,6 +50,8 @@ def insert_from_jsonl(jsonl_path: Path) -> None:
             )
         jsonl_path = _jsonl_path
 
+    bad_rows: int = 0
+    good_rows: int = 0
     with open(jsonl_path) as handle:
         header = handle.readline()
         header_jsonl = json.loads(header)
@@ -57,12 +59,19 @@ def insert_from_jsonl(jsonl_path: Path) -> None:
             "x-optimade"
         ), "No x-optimade header, not sure if this is a JSONL file"
 
-        for json_str in handle:
+        for line_no, json_str in enumerate(handle):
             try:
-                entry = bson.json_util.loads(json_str)
+                if json_str.strip():
+                    entry = bson.json_util.loads(json_str)
+                else:
+                    LOGGER.warning("Could not read any data from L%s", line_no)
+                    bad_rows += 1
+                    continue
             except json.JSONDecodeError:
-                print(f"Could not read entry as JSON: {json_str}")
-                print_exc()
+                from optimade.server.logger import LOGGER
+
+                LOGGER.warning("Could not read entry L%s JSON: '%s'", line_no, json_str)
+                bad_rows += 1
                 continue
             try:
                 id = entry.get("id", None)
@@ -76,18 +85,25 @@ def insert_from_jsonl(jsonl_path: Path) -> None:
                 # Append the data to the batch
                 batch[_type].append(inp_data)
             except Exception as exc:
-                print(f"Error with entry {entry}: {exc}")
-                print_exc()
+                LOGGER.warning(f"Error with entry at L{line_no} -- {entry} -- {exc}")
+                bad_rows += 1
                 continue
 
             if len(batch[_type]) >= batch_size:
                 ENTRY_COLLECTIONS[_type].insert(batch[_type])
                 batch[_type] = []
 
+            good_rows += 1
+
         # Insert any remaining data
         for entry_type in batch:
             ENTRY_COLLECTIONS[entry_type].insert(batch[entry_type])
             batch[entry_type] = []
+
+        if bad_rows:
+            LOGGER.warning("Could not read %d rows from the JSONL file", bad_rows)
+
+        LOGGER.info("Inserted %d rows from the JSONL file", good_rows)
 
 
 def mongo_id_for_database(database_id: str, database_type: str) -> str:
