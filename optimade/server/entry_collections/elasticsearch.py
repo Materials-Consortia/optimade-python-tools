@@ -111,7 +111,7 @@ class ElasticCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return Search(using=self.client, index=self.name).execute().hits.total.value
 
-    def insert(self, data: list[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource | dict]) -> None:
         """Add the given entries to the underlying database.
 
         Warning:

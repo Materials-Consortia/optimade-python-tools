@@ -119,11 +119,16 @@ class EntryCollection(ABC):
         """Returns the total number of entries in the collection."""
 
     @abstractmethod
-    def insert(self, data: list[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource | dict]) -> None:
         """Add the given entries to the underlying database.
 
+        Warning:
+            No validation is performed on the incoming data, this data
+            should have been mapped to the appropriate format before
+            insertion.
+
         Arguments:
-            data: The entry resource objects to add to the database.
+            data: The entries to add to the database.
 
         """
 
@@ -273,6 +278,16 @@ class EntryCollection(ABC):
             }
 
         return self._all_fields
+
+    def create_index(self, fields: str | set[str], unique: bool = False) -> None:
+        """Create an index on the given fields.
+
+        Arguments:
+            fields: The fields, or single field, to index.
+            unique: Whether or not the index should be unique.
+
+        """
+        raise NotImplementedError
 
     def get_attribute_fields(self) -> set[str]:
         """Get the set of attribute fields
