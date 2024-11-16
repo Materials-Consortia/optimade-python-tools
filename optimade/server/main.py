@@ -123,7 +123,7 @@ if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
                 f"Requested JSONL file does not exist: {jsonl_path}. Please specify an absolute group."
             )
 
-        insert_from_jsonl(jsonl_path)
+        insert_from_jsonl(jsonl_path, create_default_index=CONFIG.create_default_index)
 
         LOGGER.debug("Inserted data from JSONL file: %s", jsonl_path)
         if CONFIG.insert_test_data:

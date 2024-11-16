@@ -279,12 +279,26 @@ class EntryCollection(ABC):
 
         return self._all_fields
 
-    def create_index(self, fields: str | set[str], unique: bool = False) -> None:
-        """Create an index on the given fields.
+    def create_index(self, field: str, unique: bool = False) -> None:
+        """Create an index on the given field, as stored in the database.
 
         Arguments:
-            fields: The fields, or single field, to index.
+            field: The database field to index (i.e., if different from the OPTIMADE field,
+                the mapper should be used to convert between the two).
             unique: Whether or not the index should be unique.
+
+        """
+        raise NotImplementedError
+
+    def create_default_index(self) -> None:
+        """Create the default index for the collection.
+
+        For example, a database backend could override this method to
+        create a unique index on the `id` field, so that it can be called
+        on server startup.
+
+        This method should use a mapper to convert any OPTIMADE field names
+        to the corresponding stored names in the database.
 
         """
         raise NotImplementedError
