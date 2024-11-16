@@ -180,6 +180,16 @@ class ServerConfig(BaseSettings):
         ),
     ] = None
 
+    create_default_index: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether to create a set of default indices "
+                "for supporting databases after inserting JSONL data."
+            )
+        ),
+    ] = False
+
     use_real_mongo: Annotated[
         bool | None,
         Field(description="DEPRECATED: force usage of MongoDB over any other backend."),

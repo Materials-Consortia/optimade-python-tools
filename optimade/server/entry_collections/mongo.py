@@ -105,18 +105,29 @@ class MongoCollection(EntryCollection):
         """
         self.collection.insert_many(data, ordered=False)
 
-    def create_index(self, fields: str | set[str], unique: bool = False) -> None:
-        """Create an index on the given fields.
+    def create_index(self, field: str, unique: bool = False) -> None:
+        """Create an index on the given field, as stored in the database.
+
+        If any error is raised during index creation, this method should faithfully
+        return it, except for the simple case where an identical index already exists.
 
         Arguments:
-            fields: The fields, or single field, to index.
+            field: The database field to index (i.e., if different from the OPTIMADE field,
+                the mapper should be used to convert between the two).
             unique: Whether or not the index should be unique.
 
         """
-        if isinstance(fields, str):
-            fields = {fields}
+        self.collection.create_index(field, unique=unique, background=True)
 
-        self.collection.create_indexes(fields, unique=unique, background=True)
+    def create_default_index(self) -> None:
+        """Create the default index for the collection.
+
+        For MongoDB, the default is to create a unique index
+        on the `id` field. This method should obey any configured
+        mappers.
+
+        """
+        self.create_index(self.resource_mapper.get_backend_field("id"), unique=True)
 
     def handle_query_params(
         self, params: EntryListingQueryParams | SingleEntryQueryParams

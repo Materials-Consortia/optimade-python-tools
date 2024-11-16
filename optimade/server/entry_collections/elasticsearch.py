@@ -48,13 +48,18 @@ class ElasticCollection(EntryCollection):
         self.client = client if client else CLIENT
         self.name = name
 
-        # If we are creating a new collection from scratch, also create the index,
-        # otherwise assume it has already been created externally
-        if CONFIG.insert_test_data:
-            self.create_optimade_index()
-
     def count(self, *args, **kwargs) -> int:
         raise NotImplementedError
+
+    def create_default_index(self) -> None:
+        """Create the default index for the collection.
+
+        For Elastic, the default is to create a search index
+        over all relevant OPTIMADE fields based on the configured
+        mapper.
+
+        """
+        return self.create_optimade_index()
 
     def create_optimade_index(self) -> None:
         """Load or create an index that can handle aliased OPTIMADE fields and attach it

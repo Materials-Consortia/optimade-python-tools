@@ -17,6 +17,7 @@
     "mongo_count_timeout": 0,
     "index_base_url": "http://localhost:5001",
     "insert_from_jsonl": "optimade/server/data/test_data.jsonl",
+    "create_default_index": true,
     "provider_fields": {
         "structures": [
             "band_gap",

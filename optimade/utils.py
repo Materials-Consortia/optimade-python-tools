@@ -24,11 +24,12 @@ PROVIDER_LIST_URLS = (
 )
 
 
-def insert_from_jsonl(jsonl_path: Path) -> None:
+def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> None:
     """Insert OPTIMADE JSON lines data into the database.
 
     Arguments:
         jsonl_path: Path to the JSON lines file.
+        create_default_index: Whether to create a default index on the `id` field.
 
     """
     from collections import defaultdict
@@ -49,6 +50,14 @@ def insert_from_jsonl(jsonl_path: Path) -> None:
                 f"Could not find file {jsonl_path} or {_jsonl_path}"
             )
         jsonl_path = _jsonl_path
+
+    # If the chosen database backend supports it, make the default indices
+    if create_default_index:
+        for entry_type in ENTRY_COLLECTIONS:
+            try:
+                ENTRY_COLLECTIONS[entry_type].create_default_index()
+            except NotImplementedError:
+                pass
 
     bad_rows: int = 0
     good_rows: int = 0
