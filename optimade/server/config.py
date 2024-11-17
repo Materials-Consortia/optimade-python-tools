@@ -93,7 +93,10 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
     def parse_config_file(self) -> dict[str, Any]:
         """Parse the config file and return a dictionary of its content."""
         encoding = self.config.get("env_file_encoding")
-        config_file = Path(os.getenv("OPTIMADE_CONFIG_FILE", DEFAULT_CONFIG_FILE_PATH))
+
+        config_file_env = os.getenv("OPTIMADE_CONFIG_FILE")
+        if config_file_env is None:
+            config_file = Path(config_file_env or DEFAULT_CONFIG_FILE_PATH)
 
         parsed_config_file = {}
         if config_file.is_file():
@@ -112,11 +115,8 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
                         "YAML, using the default settings instead..\n"
                         f"Errors:\n  JSON:\n{json_exc}.\n\n  YAML:\n{yaml_exc}"
                     )
-        else:
-            warnings.warn(
-                f"Unable to find config file at {config_file}, using the default "
-                "settings instead."
-            )
+        elif config_file_env:
+            warnings.warn(f"Unable to find requested config file at {config_file}.")
 
         if parsed_config_file is None:
             # This can happen if the yaml loading doesn't succeed properly, e.g., if
