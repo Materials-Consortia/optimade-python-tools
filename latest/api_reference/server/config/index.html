@@ -2243,6 +2243,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.align_mongo_uri_and_mongo_database" class="md-nav__link">
+    <span class="md-ellipsis">
+      align_mongo_uri_and_mongo_database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.check_jsonl_path" class="md-nav__link">
     <span class="md-ellipsis">
       check_jsonl_path
@@ -3569,6 +3578,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.server.config.ServerConfig.align_mongo_uri_and_mongo_database" class="md-nav__link">
+    <span class="md-ellipsis">
+      align_mongo_uri_and_mongo_database
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.server.config.ServerConfig.check_jsonl_path" class="md-nav__link">
     <span class="md-ellipsis">
       check_jsonl_path
@@ -3839,8 +3857,7 @@ this class defines loading ServerConfig settings from a configuration file.</p>
 <span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ConfigFileSettingsSource</span><span class="p">(</span><span class="n">PydanticBaseSettingsSource</span><span class="p">):</span>
+<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ConfigFileSettingsSource</span><span class="p">(</span><span class="n">PydanticBaseSettingsSource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration file settings source.</span>
 
 <span class="sd">    Based on the example in the</span>
@@ -3864,7 +3881,9 @@ this class defines loading ServerConfig settings from a configuration file.</p>
     <span class="k">def</span> <span class="nf">parse_config_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the config file and return a dictionary of its content.&quot;&quot;&quot;</span>
         <span class="n">encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;env_file_encoding&quot;</span><span class="p">)</span>
-        <span class="n">config_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPTIMADE_CONFIG_FILE&quot;</span><span class="p">,</span> <span class="n">DEFAULT_CONFIG_FILE_PATH</span><span class="p">))</span>
+
+        <span class="n">config_file_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPTIMADE_CONFIG_FILE&quot;</span><span class="p">)</span>
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_file_env</span> <span class="ow">or</span> <span class="n">DEFAULT_CONFIG_FILE_PATH</span><span class="p">)</span>
 
         <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">config_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
@@ -3883,11 +3902,8 @@ this class defines loading ServerConfig settings from a configuration file.</p>
                         <span class="s2">&quot;YAML, using the default settings instead..</span><span class="se">\n</span><span class="s2">&quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;Errors:</span><span class="se">\n</span><span class="s2">  JSON:</span><span class="se">\n</span><span class="si">{</span><span class="n">json_exc</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2">  YAML:</span><span class="se">\n</span><span class="si">{</span><span class="n">yaml_exc</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unable to find config file at </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">, using the default &quot;</span>
-                <span class="s2">&quot;settings instead.&quot;</span>
-            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">config_file_env</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to find requested config file at </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">parsed_config_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># This can happen if the yaml loading doesn&#39;t succeed properly, e.g., if</span>
@@ -3937,8 +3953,8 @@ this class defines loading ServerConfig settings from a configuration file.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
-<span class="normal">140</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
+<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_config_file</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4047,11 +4063,12 @@ config file.</p>
 <span class="normal">133</span>
 <span class="normal">134</span>
 <span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_config_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_config_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the config file and return a dictionary of its content.&quot;&quot;&quot;</span>
     <span class="n">encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;env_file_encoding&quot;</span><span class="p">)</span>
-    <span class="n">config_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPTIMADE_CONFIG_FILE&quot;</span><span class="p">,</span> <span class="n">DEFAULT_CONFIG_FILE_PATH</span><span class="p">))</span>
+
+    <span class="n">config_file_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPTIMADE_CONFIG_FILE&quot;</span><span class="p">)</span>
+    <span class="n">config_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_file_env</span> <span class="ow">or</span> <span class="n">DEFAULT_CONFIG_FILE_PATH</span><span class="p">)</span>
 
     <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="n">config_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
@@ -4070,11 +4087,8 @@ config file.</p>
                     <span class="s2">&quot;YAML, using the default settings instead..</span><span class="se">\n</span><span class="s2">&quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;Errors:</span><span class="se">\n</span><span class="s2">  JSON:</span><span class="se">\n</span><span class="si">{</span><span class="n">json_exc</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2">  YAML:</span><span class="se">\n</span><span class="si">{</span><span class="n">yaml_exc</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unable to find config file at </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">, using the default &quot;</span>
-            <span class="s2">&quot;settings instead.&quot;</span>
-        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">config_file_env</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to find requested config file at </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">parsed_config_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># This can happen if the yaml loading doesn&#39;t succeed properly, e.g., if</span>
@@ -4344,7 +4358,8 @@ can be easily extended for new config file types.</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/server/config.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">143</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">142</span>
+<span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
 <span class="normal">146</span>
@@ -4711,7 +4726,35 @@ can be easily extended for new config file types.</p>
 <span class="normal">507</span>
 <span class="normal">508</span>
 <span class="normal">509</span>
-<span class="normal">510</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class stores server config parameters in a way that</span>
 <span class="sd">    can be easily extended for new config file types.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -4794,11 +4837,19 @@ can be easily extended for new config file types.</p>
     <span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
 
     <span class="n">mongo_database</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo database for collection data&quot;</span><span class="p">)</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;MongoDB database name to use; will be overwritten if also present in `mongo_uri`&quot;</span>
+        <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;optimade&quot;</span>
-    <span class="n">mongo_uri</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;URI for the Mongo server&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;localhost:27017&quot;</span>
-    <span class="p">)</span>
+    <span class="n">mongo_uri</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Field</span><span class="p">(</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;URI for the MongoDB instance&quot;</span><span class="p">,</span>
+            <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mongodb://localhost:27017/optimade&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost:1000&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;localhost:27017&quot;</span>
+
     <span class="n">links_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for /links endpoint resources&quot;</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;links&quot;</span>
@@ -5044,6 +5095,27 @@ can be easily extended for new config file types.</p>
 
             <span class="k">if</span> <span class="n">use_real_mongo</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">database_backend</span> <span class="o">=</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGODB</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">align_mongo_uri_and_mongo_database</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ServerConfig&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prefer the value of database name if set from `mongo_uri` rather than</span>
+<span class="sd">        `mongo_database`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_backend</span> <span class="o">==</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGODB</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">:</span>
+                <span class="kn">import</span> <span class="nn">pymongo.uri_parser</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+                    <span class="s2">&quot;mongodb://&quot;</span>
+                <span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb+srv://&quot;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">&quot;</span>
+
+                <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -5517,7 +5589,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.mongo_database" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">mongo_database</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mongo database for collection data&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;optimade&#39;</span></code>
+            <code class="highlight language-python"><span class="n">mongo_database</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;MongoDB database name to use; will be overwritten if also present in `mongo_uri`&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;optimade&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5537,7 +5609,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.mongo_uri" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">mongo_uri</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;URI for the Mongo server&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;localhost:27017&#39;</span></code>
+            <code class="highlight language-python"><span class="n">mongo_uri</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;URI for the MongoDB instance&#39;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mongodb://localhost:27017/optimade&#39;</span><span class="p">,</span> <span class="s1">&#39;localhost:1000&#39;</span><span class="p">])]</span> <span class="o">=</span> <span class="s1">&#39;localhost:27017&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5777,6 +5849,67 @@ can be easily extended for new config file types.</p>
 <div class="doc doc-object doc-function">
 
 
+<h3 id="optimade.server.config.ServerConfig.align_mongo_uri_and_mongo_database" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">align_mongo_uri_and_mongo_database</span><span class="p">()</span></code>
+
+<a href="#optimade.server.config.ServerConfig.align_mongo_uri_and_mongo_database" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Prefer the value of database name if set from <code>mongo_uri</code> rather than
+<code>mongo_database</code>.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>optimade/server/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">align_mongo_uri_and_mongo_database</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ServerConfig&quot;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prefer the value of database name if set from `mongo_uri` rather than</span>
+<span class="sd">    `mongo_database`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_backend</span> <span class="o">==</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGODB</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pymongo.uri_parser</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+                <span class="s2">&quot;mongodb://&quot;</span>
+            <span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb+srv://&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="optimade.server.config.ServerConfig.check_jsonl_path" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">check_jsonl_path</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
@@ -5793,14 +5926,14 @@ can be easily extended for new config file types.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">428</span>
-<span class="normal">429</span>
-<span class="normal">430</span>
-<span class="normal">431</span>
-<span class="normal">432</span>
-<span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;insert_from_jsonl&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;insert_from_jsonl&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">check_jsonl_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the path to the JSONL file is valid.&quot;&quot;&quot;</span>
@@ -5833,21 +5966,21 @@ can be easily extended for new config file types.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">437</span>
-<span class="normal">438</span>
-<span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span>
-<span class="normal">442</span>
-<span class="normal">443</span>
-<span class="normal">444</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">444</span>
 <span class="normal">445</span>
 <span class="normal">446</span>
 <span class="normal">447</span>
 <span class="normal">448</span>
 <span class="normal">449</span>
 <span class="normal">450</span>
-<span class="normal">451</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">set_implementation_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Set defaults and modify bypassed value(s)&quot;&quot;&quot;</span>
@@ -5903,38 +6036,38 @@ can be easily extended for new config file types.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">479</span>
-<span class="normal">480</span>
-<span class="normal">481</span>
-<span class="normal">482</span>
-<span class="normal">483</span>
-<span class="normal">484</span>
-<span class="normal">485</span>
-<span class="normal">486</span>
-<span class="normal">487</span>
-<span class="normal">488</span>
-<span class="normal">489</span>
-<span class="normal">490</span>
-<span class="normal">491</span>
-<span class="normal">492</span>
-<span class="normal">493</span>
-<span class="normal">494</span>
-<span class="normal">495</span>
-<span class="normal">496</span>
-<span class="normal">497</span>
-<span class="normal">498</span>
-<span class="normal">499</span>
-<span class="normal">500</span>
-<span class="normal">501</span>
-<span class="normal">502</span>
-<span class="normal">503</span>
-<span class="normal">504</span>
-<span class="normal">505</span>
-<span class="normal">506</span>
-<span class="normal">507</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">507</span>
 <span class="normal">508</span>
 <span class="normal">509</span>
-<span class="normal">510</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">settings_customise_sources</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">settings_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseSettings</span><span class="p">],</span>
@@ -5988,14 +6121,7 @@ raises a deprecation warning.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">453</span>
-<span class="normal">454</span>
-<span class="normal">455</span>
-<span class="normal">456</span>
-<span class="normal">457</span>
-<span class="normal">458</span>
-<span class="normal">459</span>
-<span class="normal">460</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">460</span>
 <span class="normal">461</span>
 <span class="normal">462</span>
 <span class="normal">463</span>
@@ -6012,7 +6138,14 @@ raises a deprecation warning.</p>
 <span class="normal">474</span>
 <span class="normal">475</span>
 <span class="normal">476</span>
-<span class="normal">477</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">use_real_mongo_override</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ServerConfig&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Overrides the `database_backend` setting with MongoDB and</span>
 <span class="sd">    raises a deprecation warning.</span>
