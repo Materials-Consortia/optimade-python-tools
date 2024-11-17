@@ -95,8 +95,7 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
         encoding = self.config.get("env_file_encoding")
 
         config_file_env = os.getenv("OPTIMADE_CONFIG_FILE")
-        if config_file_env is None:
-            config_file = Path(config_file_env or DEFAULT_CONFIG_FILE_PATH)
+        config_file = Path(config_file_env or DEFAULT_CONFIG_FILE_PATH)
 
         parsed_config_file = {}
         if config_file.is_file():
@@ -223,11 +222,19 @@ class ServerConfig(BaseSettings):
     ] = 5
 
     mongo_database: Annotated[
-        str, Field(description="Mongo database for collection data")
+        str,
+        Field(
+            description="MongoDB database name to use; will be overwritten if also present in `mongo_uri`"
+        ),
     ] = "optimade"
-    mongo_uri: Annotated[str, Field(description="URI for the Mongo server")] = (
-        "localhost:27017"
-    )
+    mongo_uri: Annotated[
+        str,
+        Field(
+            description="URI for the MongoDB instance",
+            examples=["mongodb://localhost:27017/optimade", "localhost:1000"],
+        ),
+    ] = "localhost:27017"
+
     links_collection: Annotated[
         str, Field(description="Mongo collection name for /links endpoint resources")
     ] = "links"
@@ -473,6 +480,27 @@ class ServerConfig(BaseSettings):
 
             if use_real_mongo:
                 self.database_backend = SupportedBackend.MONGODB
+
+        return self
+
+    @model_validator(mode="after")
+    def align_mongo_uri_and_mongo_database(self) -> "ServerConfig":
+        """Prefer the value of database name if set from `mongo_uri` rather than
+        `mongo_database`.
+
+        """
+        if self.database_backend == SupportedBackend.MONGODB:
+            if self.mongo_uri and self.mongo_database:
+                import pymongo.uri_parser
+
+                if not self.mongo_uri.startswith(
+                    "mongodb://"
+                ) or self.mongo_uri.startswith("mongodb+srv://"):
+                    self.mongo_uri = f"mongodb://{self.mongo_uri}"
+
+                uri: dict[str, Any] = pymongo.uri_parser.parse_uri(self.mongo_uri)
+                if uri.get("database"):
+                    self.mongo_database = uri["database"]
 
         return self
 
