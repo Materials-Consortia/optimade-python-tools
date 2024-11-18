@@ -130,5 +130,3 @@ If you use this package to access or serve OPTIMADE data, we kindly request that
 - [pydantic](https://pydantic-docs.helpmanual.io/), the library used for generating the OpenAPI schema from [Python models](https://www.optimade.org/optimade-python-tools/all_models/).
 - [FastAPI](https://fastapi.tiangolo.com/), the framework used for generating the reference implementation expressed by the [`openapi.json`](openapi/openapi.json) specification.
 - [Lark](https://github.com/lark-parser/lark), the library used to parse the filter language in OPTIMADE queries.
-
-
