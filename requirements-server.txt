@@ -1,6 +1,6 @@
 elasticsearch==7.17.12
 elasticsearch-dsl==7.4.1
-fastapi==0.115.4
-mongomock==4.2.0.post1
+fastapi==0.115.5
+mongomock==4.3.0
 pymongo==4.10.1
 starlette==0.41.2
