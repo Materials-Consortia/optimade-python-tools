@@ -115,8 +115,9 @@ Contribution guidelines and tips for getting help can be found in the [contribut
 
 ## How to cite
 
-If you use this package to access or serve OPTIMADE data, we kindly request that you consider citing the following:
+If you use this package to access or serve OPTIMADE data, we kindly request that you cite the following:
 
+- Evans *et al.*, Developments and applications of the OPTIMADE API for materials discovery, design, and data exchange, *Digital Discovery*, **3**, 1509-1533 (2024) [10.1039/D4DD00039K](https://doi.org/10.1039/D4DD00039K)
 - Andersen *et al.*, OPTIMADE, an API for exchanging materials data, *Sci. Data* **8**, 217 (2021) [10.1038/s41597-021-00974-z](https://doi.org/10.1038/s41597-021-00974-z)
 - Evans *et al.*, optimade-python-tools: a Python library for serving and consuming materials data via OPTIMADE APIs. *Journal of Open Source Software*, **6**(65), 3458 (2021) [10.21105/joss.03458](https://doi.org/10.21105/joss.03458)
 
