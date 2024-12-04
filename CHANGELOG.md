@@ -1,6 +1,33 @@
 # Changelog
 
-## [v1.1.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.4) (2024-10-07)
+## [v1.1.6](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.6) (2024-11-18)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.5...v1.1.6)
+
+**Closed issues:**
+
+- Support Python 3.13 [\#2161](https://github.com/Materials-Consortia/optimade-python-tools/issues/2161)
+
+**Merged pull requests:**
+
+- Add citation info for latest OPTIMADE paper [\#2186](https://github.com/Materials-Consortia/optimade-python-tools/pull/2186) ([ml-evs](https://github.com/ml-evs))
+- Improve config loading warnings and prefer `mongo_uri` as source of database name [\#2183](https://github.com/Materials-Consortia/optimade-python-tools/pull/2183) ([ml-evs](https://github.com/ml-evs))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2178](https://github.com/Materials-Consortia/optimade-python-tools/pull/2178) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+- Quality of life changes around JSONL & MongoDB [\#2175](https://github.com/Materials-Consortia/optimade-python-tools/pull/2175) ([ml-evs](https://github.com/ml-evs))
+- Update README with pre-emptive support of OPTIMADE versions [\#2165](https://github.com/Materials-Consortia/optimade-python-tools/pull/2165) ([ml-evs](https://github.com/ml-evs))
+- Add Python 3.13 to test matrix [\#2163](https://github.com/Materials-Consortia/optimade-python-tools/pull/2163) ([ml-evs](https://github.com/ml-evs))
+- Remove support for Python 3.9 [\#2158](https://github.com/Materials-Consortia/optimade-python-tools/pull/2158) ([ml-evs](https://github.com/ml-evs))
+
+## [v1.1.5](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.5) (2024-10-15)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.4...v1.1.5)
+
+**Closed issues:**
+
+- Deprecate Python 3.9 [\#2149](https://github.com/Materials-Consortia/optimade-python-tools/issues/2149)
+- `mongomock` as a production dependency [\#2146](https://github.com/Materials-Consortia/optimade-python-tools/issues/2146)
+
+## [v1.1.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.4) (2024-10-11)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.3...v1.1.4)
 
