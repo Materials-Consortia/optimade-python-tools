@@ -3,8 +3,8 @@ invoke==2.2.0
 jsondiff==2.2.1
 mypy==1.13.0
 pre-commit==4.0.1
-pytest==8.3.3
+pytest==8.3.4
 pytest-cov==6.0.0
-ruff==0.7.2
+ruff==0.8.1
 types-pyyaml
 types-requests
