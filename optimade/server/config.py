@@ -498,7 +498,9 @@ class ServerConfig(BaseSettings):
                 ) or self.mongo_uri.startswith("mongodb+srv://"):
                     self.mongo_uri = f"mongodb://{self.mongo_uri}"
 
-                uri: dict[str, Any] = pymongo.uri_parser.parse_uri(self.mongo_uri, warn=True)
+                uri: dict[str, Any] = pymongo.uri_parser.parse_uri(
+                    self.mongo_uri, warn=True
+                )
                 if uri.get("database"):
                     self.mongo_database = uri["database"]
 
