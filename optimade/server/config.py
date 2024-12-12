@@ -490,7 +490,7 @@ class ServerConfig(BaseSettings):
 
         """
         if self.database_backend == SupportedBackend.MONGODB:
-            if self.mongo_uri and self.mongo_database:
+            if self.mongo_uri:
                 import pymongo.uri_parser
 
                 if not self.mongo_uri.startswith(
