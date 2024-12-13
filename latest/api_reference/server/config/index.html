@@ -4754,7 +4754,9 @@ can be easily extended for new config file types.</p>
 <span class="normal">535</span>
 <span class="normal">536</span>
 <span class="normal">537</span>
-<span class="normal">538</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class stores server config parameters in a way that</span>
 <span class="sd">    can be easily extended for new config file types.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -5105,7 +5107,7 @@ can be easily extended for new config file types.</p>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_backend</span> <span class="o">==</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGODB</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">:</span>
                 <span class="kn">import</span> <span class="nn">pymongo.uri_parser</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
@@ -5113,7 +5115,9 @@ can be easily extended for new config file types.</p>
                 <span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb+srv://&quot;</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">&quot;</span>
 
-                <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">)</span>
+                <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
 
@@ -5881,14 +5885,16 @@ can be easily extended for new config file types.</p>
 <span class="normal">502</span>
 <span class="normal">503</span>
 <span class="normal">504</span>
-<span class="normal">505</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">align_mongo_uri_and_mongo_database</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ServerConfig&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Prefer the value of database name if set from `mongo_uri` rather than</span>
 <span class="sd">    `mongo_database`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_backend</span> <span class="o">==</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGODB</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">pymongo.uri_parser</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
@@ -5896,7 +5902,9 @@ can be easily extended for new config file types.</p>
             <span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb+srv://&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">&quot;</span>
 
-            <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">)</span>
+            <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
             <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
 
@@ -6036,9 +6044,7 @@ can be easily extended for new config file types.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">507</span>
-<span class="normal">508</span>
-<span class="normal">509</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">509</span>
 <span class="normal">510</span>
 <span class="normal">511</span>
 <span class="normal">512</span>
@@ -6067,7 +6073,9 @@ can be easily extended for new config file types.</p>
 <span class="normal">535</span>
 <span class="normal">536</span>
 <span class="normal">537</span>
-<span class="normal">538</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">settings_customise_sources</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">settings_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseSettings</span><span class="p">],</span>
