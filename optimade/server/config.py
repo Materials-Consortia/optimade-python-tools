@@ -490,7 +490,7 @@ class ServerConfig(BaseSettings):
 
         """
         if self.database_backend == SupportedBackend.MONGODB:
-            if self.mongo_uri and self.mongo_database:
+            if self.mongo_uri:
                 import pymongo.uri_parser
 
                 if not self.mongo_uri.startswith(
@@ -498,7 +498,9 @@ class ServerConfig(BaseSettings):
                 ) or self.mongo_uri.startswith("mongodb+srv://"):
                     self.mongo_uri = f"mongodb://{self.mongo_uri}"
 
-                uri: dict[str, Any] = pymongo.uri_parser.parse_uri(self.mongo_uri)
+                uri: dict[str, Any] = pymongo.uri_parser.parse_uri(
+                    self.mongo_uri, warn=True
+                )
                 if uri.get("database"):
                     self.mongo_database = uri["database"]
 
