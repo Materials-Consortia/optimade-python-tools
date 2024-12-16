@@ -1,6 +1,26 @@
 # Changelog
 
-## [v1.1.6](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.6) (2024-11-18)
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.7...HEAD)
+
+**Closed issues:**
+
+- aligning `mongo_uri/database` breaks connecting to Atlas cluster [\#2197](https://github.com/Materials-Consortia/optimade-python-tools/issues/2197)
+
+## [v1.1.7](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.7) (2024-12-13)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.6...v1.1.7)
+
+**Closed issues:**
+
+- help me to download any compositional based material  [\#2196](https://github.com/Materials-Consortia/optimade-python-tools/issues/2196)
+
+**Merged pull requests:**
+
+- Give warning instead of error for wrong mongo URI [\#2198](https://github.com/Materials-Consortia/optimade-python-tools/pull/2198) ([JPBergsma](https://github.com/JPBergsma))
+
+## [v1.1.6](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.6) (2024-12-04)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.5...v1.1.6)
 
