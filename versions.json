@@ -3,21 +3,21 @@
     "version": "latest",
     "title": "latest",
     "aliases": [
-      "master",
-      "main"
+      "main",
+      "master"
     ]
   },
   {
     "version": "1.1.7",
     "title": "1.1.7",
-    "aliases": []
+    "aliases": [
+      "stable"
+    ]
   },
   {
     "version": "1.1.6",
     "title": "1.1.6",
-    "aliases": [
-      "stable"
-    ]
+    "aliases": []
   },
   {
     "version": "1.1.5",
