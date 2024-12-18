@@ -503,7 +503,7 @@ class ServerConfig(BaseSettings):
                     )
                     if uri.get("database"):
                         self.mongo_database = uri["database"]
-                except InvalidURI as error_msg:
+                except pymongo.errors.InvalidURI as error_msg:
                     warnings.warn(
                         f"The uri {self.mongo_uri} may be invalid.\n{error_msg}"
                     )
