@@ -508,7 +508,6 @@ class ServerConfig(BaseSettings):
                         f"The uri {self.mongo_uri} may be invalid.\n{error_msg}"
                     )
 
-
         return self
 
     @classmethod
