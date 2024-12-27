@@ -4321,7 +4321,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.BaseResource.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource ID&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="nb">id</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4360,7 +4360,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.BaseResource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource type&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="nb">type</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4530,7 +4530,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Error.code" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">code</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;an application-specific error code, expressed as a string value.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">code</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4550,7 +4550,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Error.detail" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">detail</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A human-readable explanation specific to this occurrence of the problem.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">detail</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4570,7 +4570,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Error.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique identifier for this particular occurrence of the problem.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="nb">id</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4590,7 +4590,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Error.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ErrorLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A links object storing about&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4610,7 +4610,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Error.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about the error.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4630,7 +4630,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Error.source" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">source</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ErrorSource</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An object containing references to the source of the error&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">source</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4650,7 +4650,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Error.status" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">status</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BeforeValidator</span><span class="p">(</span><span class="nb">str</span><span class="p">)]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;the HTTP status code applicable to this problem, expressed as a string value.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">status</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4670,7 +4670,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Error.title" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">title</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4777,7 +4777,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.ErrorLinks.about" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">about</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A link that leads to further details about this particular occurrence of the problem.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">about</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4876,7 +4876,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.ErrorSource.parameter" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">parameter</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a string indicating which URI query parameter caused the error.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">parameter</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4896,7 +4896,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.ErrorSource.pointer" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">pointer</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a JSON Pointer [RFC6901] to the associated entity in the request document [e.g. &quot;/data&quot; for a primary data object, or &quot;/data/attributes/title&quot; for a specific attribute].&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">pointer</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4981,7 +4981,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.JsonApi.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Non-standard meta information&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5001,7 +5001,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.JsonApi.version" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">version</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Version of the json API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span></code>
+            <code class="highlight language-python"><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5092,7 +5092,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Link.href" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">href</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">AnyUrl</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;a string containing the link&#39;s URL.&quot;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">href</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5111,7 +5111,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Link.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about the link.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5307,7 +5307,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Relationship.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">BaseResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseResource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource linkage&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5327,7 +5327,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Relationship.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">RelationshipLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing at least one of the following: self, related&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5347,7 +5347,7 @@ The keys for Attributes MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Relationship.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object that contains non-standard meta-information about the relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5508,7 +5508,7 @@ Relationships can be specified by including a member in a resource's links objec
 
 
 <h3 id="optimade.models.jsonapi.RelationshipLinks.related" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">related</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A [related resource link](https://jsonapi.org/format/1.0/#document-resource-object-related-resource-links).&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">related</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5528,7 +5528,7 @@ Relationships can be specified by including a member in a resource's links objec
 
 
 <h3 id="optimade.models.jsonapi.RelationshipLinks.self" class="doc doc-heading">
-            <code class="highlight language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A link for the relationship itself (a &#39;relationship link&#39;).</span><span class="se">\n</span><span class="s2">This link allows the client to directly manipulate the relationship.</span><span class="se">\n</span><span class="s2">When fetched successfully, this link returns the [linkage](https://jsonapi.org/format/1.0/#document-resource-object-linkage) for the related resources as its primary data.</span><span class="se">\n</span><span class="s2">(See [Fetching Relationships](https://jsonapi.org/format/1.0/#fetching-relationships).)&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="bp">self</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5803,7 +5803,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Resource.attributes" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Attributes</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;an attributes object representing some of the resource’s data.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">attributes</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5823,7 +5823,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Resource.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource ID&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="nb">id</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5842,7 +5842,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Resource.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResourceLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5862,7 +5862,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Resource.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5902,7 +5902,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Resource.relationships" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Relationships</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)</span><span class="se">\n</span><span class="s1">describing relationships between the resource and other JSON API resources.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">relationships</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5922,7 +5922,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Resource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource type&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="nb">type</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6006,7 +6006,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.ResourceLinks.self" class="doc doc-heading">
-            <code class="highlight language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A link that identifies the resource represented by the resource object.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="bp">self</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6185,7 +6185,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Response.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="kc">None</span> <span class="o">|</span> <span class="n">Resource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Outputted Data&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6205,7 +6205,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Response.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6225,7 +6225,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Response.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included resources&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6245,7 +6245,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Response.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6265,7 +6265,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Response.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6285,7 +6285,7 @@ Keys MUST NOT be:
 
 
 <h3 id="optimade.models.jsonapi.Response.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information related to the Success&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6498,7 +6498,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.first" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">first</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The first page of data&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">first</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6518,7 +6518,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.last" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">last</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The last page of data&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">last</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6558,7 +6558,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.next" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">next</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The next page of data&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="nb">next</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6578,7 +6578,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.prev" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">prev</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The previous page of data&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">prev</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6598,7 +6598,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.related" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">related</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A related resource link&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">related</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6618,7 +6618,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.jsonapi.ToplevelLinks.self" class="doc doc-heading">
-            <code class="highlight language-python"><span class="bp">self</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A link to itself&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="bp">self</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>

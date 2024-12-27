@@ -3668,7 +3668,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoProperty.description" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A human-readable description of the entry property&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">description</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3687,7 +3687,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoProperty.sortable" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">sortable</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Defines whether the entry property can be used for sorting with the &quot;sort&quot; parameter.</span><span class="se">\n</span><span class="s1">If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">sortable</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3707,7 +3707,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoProperty.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">DataType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">Type</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of the property&#39;s value.</span><span class="se">\n</span><span class="s2">This MUST be any of the types defined in the Data types section.</span><span class="se">\n</span><span class="s2">For the purpose of compatibility with future versions of this specification, a client MUST accept values that are not `string` values specifying any of the OPTIMADE Data types, but MUST then also disregard the `type` field.</span><span class="se">\n</span><span class="s2">Note, if the value is a nested type, only the outermost type should be reported.</span><span class="se">\n</span><span class="s2">E.g., for the entry resource `structures`, the `species` property is defined as a list of dictionaries, hence its `type` value would be `list`.&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3727,7 +3727,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoProperty.unit" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">unit</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The physical unit of the entry property.</span><span class="se">\n</span><span class="s1">This MUST be a valid representation of units according to version 2.1 of [The Unified Code for Units of Measure](https://unitsofmeasure.org/ucum.html).</span><span class="se">\n</span><span class="s1">It is RECOMMENDED that non-standard (non-SI) units are described in the description for the property.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">unit</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3838,7 +3838,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoResource.description" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Description of the entry.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">description</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3857,7 +3857,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoResource.formats" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of output formats available for this type of entry.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">formats</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3876,7 +3876,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoResource.output_fields_by_format" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">output_fields_by_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">ValidIdentifier</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">output_fields_by_format</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3895,7 +3895,7 @@
 
 
 <h3 id="optimade.models.entries.EntryInfoResource.properties" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">properties</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">ValidIdentifier</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary describing queryable properties for this entry type, where each key is a property name.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">properties</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3993,7 +3993,7 @@
 
 
 <h3 id="optimade.models.entries.EntryRelationships.references" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">references</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ReferenceRelationship</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Object containing links to relationships with entries of the `references` type.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">references</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4013,7 +4013,7 @@
 
 
 <h3 id="optimade.models.entries.EntryRelationships.structures" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">structures</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">StructureRelationship</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Object containing links to relationships with entries of the `structures` type.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">structures</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4238,7 +4238,7 @@
 
 
 <h3 id="optimade.models.entries.EntryResource.attributes" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EntryResourceAttributes</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dictionary, containing key-value pairs representing the entry&#39;s properties, except for `type` and `id`.</span><span class="se">\n</span><span class="s2">Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).&quot;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">attributes</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4257,7 +4257,7 @@
 
 
 <h3 id="optimade.models.entries.EntryResource.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An entry</span><span class="se">\&#39;</span><span class="s1">s ID as defined in section Definition of Terms.</span><span class="se">\n\n</span><span class="s1">- **Type**: string.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n</span><span class="s1">    - **Response**: REQUIRED in the response.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n</span><span class="s1">    - `&quot;db/1234567&quot;`</span><span class="se">\n</span><span class="s1">    - `&quot;cod/2000000&quot;`</span><span class="se">\n</span><span class="s1">    - `&quot;cod/2000000@1234567&quot;`</span><span class="se">\n</span><span class="s1">    - `&quot;nomad/L1234567890&quot;`</span><span class="se">\n</span><span class="s1">    - `&quot;42&quot;`&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="nb">id</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4276,7 +4276,7 @@
 
 
 <h3 id="optimade.models.entries.EntryResource.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResourceLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4296,7 +4296,7 @@
 
 
 <h3 id="optimade.models.entries.EntryResource.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4336,7 +4336,7 @@
 
 
 <h3 id="optimade.models.entries.EntryResource.relationships" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EntryRelationships</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).</span><span class="se">\n</span><span class="s1">The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">relationships</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4356,7 +4356,7 @@
 
 
 <h3 id="optimade.models.entries.EntryResource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The name of the type of an entry.</span><span class="se">\n\n</span><span class="s1">- **Type**: string.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n</span><span class="s1">    - **Response**: REQUIRED in the response.</span><span class="se">\n</span><span class="s1">    - MUST be an existing entry type.</span><span class="se">\n</span><span class="s1">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span><span class="se">\n\n</span><span class="s1">- **Example**: `&quot;structures&quot;`&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="nb">type</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4520,7 +4520,7 @@
 
 
 <h3 id="optimade.models.entries.EntryResourceAttributes.immutable_id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">immutable_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The entry</span><span class="se">\&#39;</span><span class="s1">s immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to &quot;the latest version&quot; of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.</span><span class="se">\n\n</span><span class="s1">- **Type**: string.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n</span><span class="s1">    - `&quot;8bd3e750-b477-41a0-9b11-3a799f21b44f&quot;`</span><span class="se">\n</span><span class="s1">    - `&quot;fjeiwoj,54;@=%&lt;&gt;#32&quot;` (Strings that are not URL-safe are allowed.)&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">immutable_id</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4540,7 +4540,7 @@
 
 
 <h3 id="optimade.models.entries.EntryResourceAttributes.last_modified" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">last_modified</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Date and time representing when the entry was last modified.</span><span class="se">\n\n</span><span class="s1">- **Type**: timestamp.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n</span><span class="s1">    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.</span><span class="se">\n\n</span><span class="s1">- **Example**:</span><span class="se">\n</span><span class="s1">    - As part of JSON response format: `&quot;2007-04-05T14:30:20Z&quot;` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">last_modified</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4704,7 +4704,7 @@
 
 
 <h3 id="optimade.models.entries.ReferenceRelationship.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">BaseRelationshipResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource linkage&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4724,7 +4724,7 @@
 
 
 <h3 id="optimade.models.entries.ReferenceRelationship.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">RelationshipLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing at least one of the following: self, related&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4744,7 +4744,7 @@
 
 
 <h3 id="optimade.models.entries.ReferenceRelationship.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object that contains non-standard meta-information about the relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4895,7 +4895,7 @@
 
 
 <h3 id="optimade.models.entries.StructureRelationship.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">BaseRelationshipResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource linkage&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4915,7 +4915,7 @@
 
 
 <h3 id="optimade.models.entries.StructureRelationship.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">RelationshipLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing at least one of the following: self, related&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4935,7 +4935,7 @@
 
 
 <h3 id="optimade.models.entries.StructureRelationship.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object that contains non-standard meta-information about the relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5116,7 +5116,7 @@
 
 
 <h3 id="optimade.models.entries.TypedRelationship.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">BaseRelationshipResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource linkage&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5136,7 +5136,7 @@
 
 
 <h3 id="optimade.models.entries.TypedRelationship.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">RelationshipLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing at least one of the following: self, related&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5156,7 +5156,7 @@
 
 
 <h3 id="optimade.models.entries.TypedRelationship.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object that contains non-standard meta-information about the relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>

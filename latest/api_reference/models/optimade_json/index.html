@@ -4465,7 +4465,7 @@
 
 
 <h3 id="optimade.models.optimade_json.BaseRelationshipMeta.description" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;OPTIONAL human-readable description of the relationship.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">description</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4569,7 +4569,7 @@
 
 
 <h3 id="optimade.models.optimade_json.BaseRelationshipResource.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource ID&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="nb">id</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4588,7 +4588,7 @@
 
 
 <h3 id="optimade.models.optimade_json.BaseRelationshipResource.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">BaseRelationshipMeta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Relationship meta field. MUST contain &#39;description&#39; if supplied.&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4628,7 +4628,7 @@
 
 
 <h3 id="optimade.models.optimade_json.BaseRelationshipResource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource type&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="nb">type</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5394,7 +5394,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Implementation.homepage" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">homepage</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the homepage of the implementation.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">homepage</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5414,7 +5414,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Implementation.issue_tracker" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">issue_tracker</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation&#39;s issue tracker.&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">issue_tracker</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5434,7 +5434,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Implementation.maintainer" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">maintainer</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ImplementationMaintainer</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A dictionary providing details about the maintainer of the implementation.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">maintainer</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5454,7 +5454,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Implementation.name" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;name of the implementation&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5474,7 +5474,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Implementation.source_url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">source_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) pointing to the implementation source, either downloadable archive or version control system.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">source_url</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5494,7 +5494,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Implementation.version" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">version</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;version string of the current implementation&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">version</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5573,7 +5573,7 @@
 
 
 <h3 id="optimade.models.optimade_json.ImplementationMaintainer.email" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">email</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EmailStr</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;the maintainer&#39;s email address&quot;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">email</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5657,7 +5657,7 @@
 
 
 <h3 id="optimade.models.optimade_json.OptimadeError.code" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">code</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;an application-specific error code, expressed as a string value.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">code</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5677,7 +5677,7 @@
 
 
 <h3 id="optimade.models.optimade_json.OptimadeError.detail" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">detail</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A human-readable explanation specific to this occurrence of the problem.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">detail</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5696,7 +5696,7 @@
 
 
 <h3 id="optimade.models.optimade_json.OptimadeError.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique identifier for this particular occurrence of the problem.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="nb">id</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5716,7 +5716,7 @@
 
 
 <h3 id="optimade.models.optimade_json.OptimadeError.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ErrorLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A links object storing about&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5736,7 +5736,7 @@
 
 
 <h3 id="optimade.models.optimade_json.OptimadeError.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about the error.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5756,7 +5756,7 @@
 
 
 <h3 id="optimade.models.optimade_json.OptimadeError.source" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">source</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ErrorSource</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An object containing references to the source of the error&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">source</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5776,7 +5776,7 @@
 
 
 <h3 id="optimade.models.optimade_json.OptimadeError.status" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">status</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BeforeValidator</span><span class="p">(</span><span class="nb">str</span><span class="p">)]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;the HTTP status code applicable to this problem, expressed as a string value.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">status</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5796,7 +5796,7 @@
 
 
 <h3 id="optimade.models.optimade_json.OptimadeError.title" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">title</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5939,7 +5939,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Provider.description" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a longer description of the database provider&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">description</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5958,7 +5958,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Provider.homepage" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">homepage</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a [JSON API links object](http://jsonapi.org/format/1.0#document-links) pointing to homepage of the database provider, either directly as a string, or as a link object.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">homepage</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5978,7 +5978,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Provider.name" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a short name for the database provider&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">name</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5997,7 +5997,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Provider.prefix" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">prefix</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;^[a-z]([a-z]|[0-9]|_)*$&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;database-provider-specific prefix as found in section Database-Provider-Specific Namespace Prefixes.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">prefix</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6077,7 +6077,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Relationship.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">BaseRelationshipResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Resource linkage&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6097,7 +6097,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Relationship.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">RelationshipLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing at least one of the following: self, related&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6117,7 +6117,7 @@
 
 
 <h3 id="optimade.models.optimade_json.Relationship.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object that contains non-standard meta-information about the relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6419,7 +6419,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.api_version" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">api_version</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SemanticVersion</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Presently used full version of the OPTIMADE API.</span><span class="se">\n</span><span class="s1">The version number string MUST NOT be prefixed by, e.g., &quot;v&quot;.</span><span class="se">\n</span><span class="s1">Examples: `1.0.0`, `1.0.0-rc.2`.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">api_version</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6438,7 +6438,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.data_available" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data_available</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An integer containing the total number of data resource objects available in the database for the endpoint.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data_available</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6458,7 +6458,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.data_returned" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data_returned</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An integer containing the total number of data resource objects returned for the current `filter` query, independent of pagination.&#39;</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data_returned</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6478,7 +6478,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.implementation" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">implementation</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Implementation</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a dictionary describing the server implementation&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">implementation</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6498,7 +6498,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.last_id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">last_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a string containing the last ID returned&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">last_id</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6538,7 +6538,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.more_data_available" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">more_data_available</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;`false` if the response contains all data for the request (e.g., a request issued to a single entry endpoint, or a `filter` query at the last page of a paginated response) and `true` if the response is incomplete in the sense that multiple objects match the request, and not all of them have been included in the response (e.g., a query with multiple pages that is not at the last page).&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">more_data_available</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6557,7 +6557,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.optimade_schema" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">optimade_schema</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">jsonapi</span><span class="o">.</span><span class="n">JsonLinkType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) that points to a schema for the response.</span><span class="se">\n</span><span class="s1">If it is a string, or a dictionary containing no `meta` field, the provided URL MUST point at an [OpenAPI](https://swagger.io/specification/) schema.</span><span class="se">\n</span><span class="s1">It is possible that future versions of this specification allows for alternative schema types.</span><span class="se">\n</span><span class="s1">Hence, if the `meta` field of the JSON API links object is provided and contains a field `schema_type` that is not equal to the string `OpenAPI` the client MUST not handle failures to parse the schema or to validate the response against the schema as errors.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">optimade_schema</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6577,7 +6577,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.provider" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">provider</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Provider</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;information on the database provider of the implementation.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">provider</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6597,7 +6597,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.query" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">query</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMetaQuery</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information on the Query that was requested&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">query</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6616,7 +6616,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.response_message" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">response_message</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;response string from the server&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">response_message</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6636,7 +6636,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.time_stamp" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">time_stamp</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A timestamp containing the date and time at which the query was executed.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">time_stamp</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6656,7 +6656,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMeta.warnings" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">warnings</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Warnings</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of warning resource objects representing non-critical errors or warnings.</span><span class="se">\n</span><span class="s1">A warning resource object is defined similarly to a [JSON API error object](http://jsonapi.org/format/1.0/#error-objects), but MUST also include the field `type`, which MUST have the value `&quot;warning&quot;`.</span><span class="se">\n</span><span class="s1">The field `detail` MUST be present and SHOULD contain a non-critical message, e.g., reporting unrecognized search attributes or deprecated features.</span><span class="se">\n</span><span class="s1">The field `status`, representing a HTTP response status code, MUST NOT be present for a warning resource object.</span><span class="se">\n</span><span class="s1">This is an exclusive field for error resource objects.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">warnings</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6747,7 +6747,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.ResponseMetaQuery.representation" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">representation</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A string with the part of the URL following the versioned or unversioned base URL that serves the API.</span><span class="se">\n</span><span class="s1">Query parameters that have not been used in processing the request MAY be omitted.</span><span class="se">\n</span><span class="s1">In particular, if no query parameters have been involved in processing the request, the query part of the URL MAY be excluded.</span><span class="se">\n</span><span class="s1">Example: `/structures?filter=nelements=2`&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">representation</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6857,7 +6857,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.Success.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="kc">None</span> <span class="o">|</span> <span class="n">Resource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Outputted Data&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6877,7 +6877,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.Success.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6897,7 +6897,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.Success.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included resources&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6917,7 +6917,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.Success.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6937,7 +6937,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.Success.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6957,7 +6957,7 @@ database-provider-specific prefix.</p>
 
 
 <h3 id="optimade.models.optimade_json.Success.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -7155,7 +7155,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
 
 <h3 id="optimade.models.optimade_json.Warnings.code" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">code</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;an application-specific error code, expressed as a string value.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">code</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7175,7 +7175,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
 
 <h3 id="optimade.models.optimade_json.Warnings.detail" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">detail</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A human-readable explanation specific to this occurrence of the problem.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">detail</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -7194,7 +7194,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
 
 <h3 id="optimade.models.optimade_json.Warnings.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A unique identifier for this particular occurrence of the problem.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="nb">id</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7214,7 +7214,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
 
 <h3 id="optimade.models.optimade_json.Warnings.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ErrorLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A links object storing about&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7234,7 +7234,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
 
 <h3 id="optimade.models.optimade_json.Warnings.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about the error.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7274,7 +7274,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
 
 <h3 id="optimade.models.optimade_json.Warnings.source" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">source</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ErrorSource</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An object containing references to the source of the error&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">source</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7294,7 +7294,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
 
 <h3 id="optimade.models.optimade_json.Warnings.status" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">status</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BeforeValidator</span><span class="p">(</span><span class="nb">str</span><span class="p">)]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;the HTTP status code applicable to this problem, expressed as a string value.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">status</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7314,7 +7314,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
 
 <h3 id="optimade.models.optimade_json.Warnings.title" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">title</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A short, human-readable summary of the problem. It **SHOULD NOT** change from occurrence to occurrence of the problem, except for purposes of localization.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">title</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7334,7 +7334,7 @@ The field detail MUST be present and SHOULD contain a non-critical message, e.g.
 
 
 <h3 id="optimade.models.optimade_json.Warnings.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;warning&#39;</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Warnings must be of type &quot;warning&quot;&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;^warning$&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;warning&#39;</span></code>
+            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;warning&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>

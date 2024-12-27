@@ -3714,7 +3714,7 @@
 
 
 <h2 id="optimade.server.config.CONFIG" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">CONFIG</span><span class="p">:</span> <span class="n">ServerConfig</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -3737,7 +3737,7 @@ and makes it importable in the server code.</p>
 
 
 <h2 id="optimade.server.config.DEFAULT_CONFIG_FILE_PATH" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">DEFAULT_CONFIG_FILE_PATH</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;.optimade.json&#39;</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">DEFAULT_CONFIG_FILE_PATH</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;.optimade.json&#39;</span><span class="p">))</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -4756,7 +4756,11 @@ can be easily extended for new config file types.</p>
 <span class="normal">537</span>
 <span class="normal">538</span>
 <span class="normal">539</span>
-<span class="normal">540</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class stores server config parameters in a way that</span>
 <span class="sd">    can be easily extended for new config file types.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -5114,12 +5118,16 @@ can be easily extended for new config file types.</p>
                     <span class="s2">&quot;mongodb://&quot;</span>
                 <span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb+srv://&quot;</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">&quot;</span>
-
-                <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
+                <span class="k">except</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">InvalidURI</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;The uri </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2"> may be invalid.</span><span class="se">\n</span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -5173,7 +5181,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.aliases" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">aliases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;links&#39;</span><span class="p">,</span> <span class="s1">&#39;references&#39;</span><span class="p">,</span> <span class="s1">&#39;structures&#39;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A mapping between field names in the database with their corresponding OPTIMADE field names, broken down by endpoint.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{}</span></code>
+            <code class="highlight language-python"><span class="n">aliases</span> <span class="o">=</span> <span class="p">{}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5193,7 +5201,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.base_url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">base_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Base URL for this implementation&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">base_url</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5213,7 +5221,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.create_default_index" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">create_default_index</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Whether to create a set of default indices for supporting databases after inserting JSONL data.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">create_default_index</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5233,7 +5241,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.custom_landing_page" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">custom_landing_page</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The location of a custom landing page (Jinja template) to use for the API.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">custom_landing_page</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5253,7 +5261,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.database_backend" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">database_backend</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SupportedBackend</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Which database backend to use out of the supported backends.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGOMOCK</span></code>
+            <code class="highlight language-python"><span class="n">database_backend</span> <span class="o">=</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGOMOCK</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5273,7 +5281,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.debug" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">debug</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Turns on Debug Mode for the OPTIMADE Server implementation&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5293,7 +5301,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.default_db" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">default_db</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;ID of /links endpoint resource for the chosen default OPTIMADE implementation (only relevant for the index meta-database)&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;test_server&#39;</span></code>
+            <code class="highlight language-python"><span class="n">default_db</span> <span class="o">=</span> <span class="s1">&#39;test_server&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5313,7 +5321,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.elastic_hosts" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Host settings to pass through to the `Elasticsearch` class.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">elastic_hosts</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5333,7 +5341,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.implementation" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">implementation</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Implementation</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Introspective information about this OPTIMADE implementation&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Implementation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;OPTIMADE Python Tools&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span> <span class="n">source_url</span><span class="o">=</span><span class="s1">&#39;https://github.com/Materials-Consortia/optimade-python-tools&#39;</span><span class="p">,</span> <span class="n">maintainer</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;dev@optimade.org&#39;</span><span class="p">},</span> <span class="n">issue_tracker</span><span class="o">=</span><span class="s1">&#39;https://github.com/Materials-Consortia/optimade-python-tools/issues&#39;</span><span class="p">,</span> <span class="n">homepage</span><span class="o">=</span><span class="s1">&#39;https://optimade.org/optimade-python-tools&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">implementation</span> <span class="o">=</span> <span class="n">Implementation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;OPTIMADE Python Tools&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span> <span class="n">source_url</span><span class="o">=</span><span class="s1">&#39;https://github.com/Materials-Consortia/optimade-python-tools&#39;</span><span class="p">,</span> <span class="n">maintainer</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;dev@optimade.org&#39;</span><span class="p">},</span> <span class="n">issue_tracker</span><span class="o">=</span><span class="s1">&#39;https://github.com/Materials-Consortia/optimade-python-tools/issues&#39;</span><span class="p">,</span> <span class="n">homepage</span><span class="o">=</span><span class="s1">&#39;https://optimade.org/optimade-python-tools&#39;</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5353,7 +5361,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.index_base_url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">index_base_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;An optional link to the base URL for the index meta-database of the provider.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">index_base_url</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5373,7 +5381,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.index_links_path" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">index_links_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Absolute path to a JSON file containing the MongoDB collecton of links entries (documents) to serve under the /links endpoint of the index meta-database. NB! As suggested in the previous sentence, these will only be served when using a MongoDB-based backend.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;index_links.json&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">index_links_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;index_links.json&#39;</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5393,7 +5401,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.index_schema_url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">index_schema_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A URL that will be provided in the `meta-&gt;schema` field for every response from the index meta-database.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s1">/optimade_index.json&#39;</span></code>
+            <code class="highlight language-python"><span class="n">index_schema_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s1">/optimade_index.json&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5413,7 +5421,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.insert_from_jsonl" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">insert_from_jsonl</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The absolute path to an OPTIMADE JSONL file to use to initialize the database. A unique index will be created over the ID to avoid duplication over multiple runs.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">insert_from_jsonl</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5433,7 +5441,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.insert_test_data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">insert_test_data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Insert test data into each collection on server initialisation. If true, the configured backend will be populated with test data on server start. Should be disabled for production usage.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span></code>
+            <code class="highlight language-python"><span class="n">insert_test_data</span> <span class="o">=</span> <span class="kc">True</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5453,7 +5461,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.is_index" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">is_index</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A runtime setting to dynamically switch between index meta-database and normal OPTIMADE servers. Used for switching behaviour of e.g., `meta-&gt;optimade_schema` values in the response. Any provided value may be overridden when used with the reference server implementation.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">is_index</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5473,7 +5481,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.length_aliases" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">length_aliases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;links&#39;</span><span class="p">,</span> <span class="s1">&#39;references&#39;</span><span class="p">,</span> <span class="s1">&#39;structures&#39;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A mapping between a list property (or otherwise) and an integer property that defines the length of that list, for example elements -&gt; nelements. The standard aliases are applied first, so this dictionary must refer to the API fields, not the database fields.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{}</span></code>
+            <code class="highlight language-python"><span class="n">length_aliases</span> <span class="o">=</span> <span class="p">{}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5493,7 +5501,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.links_collection" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mongo collection name for /links endpoint resources&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;links&#39;</span></code>
+            <code class="highlight language-python"><span class="n">links_collection</span> <span class="o">=</span> <span class="s1">&#39;links&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5513,7 +5521,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.log_dir" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">log_dir</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Folder in which log files will be saved.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/var/log/optimade/&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">log_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/var/log/optimade/&#39;</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5533,7 +5541,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.log_level" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">log_level</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">LogLevel</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Logging level for the OPTIMADE server.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">LogLevel</span><span class="o">.</span><span class="n">INFO</span></code>
+            <code class="highlight language-python"><span class="n">log_level</span> <span class="o">=</span> <span class="n">LogLevel</span><span class="o">.</span><span class="n">INFO</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5573,7 +5581,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.mongo_count_timeout" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">mongo_count_timeout</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Number of seconds to allow MongoDB to perform a full database count before falling back to `null`. This operation can require a full COLLSCAN for empty queries which can be prohibitively slow if the database does not fit into the active set, hence a timeout can drastically speed-up response times.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">5</span></code>
+            <code class="highlight language-python"><span class="n">mongo_count_timeout</span> <span class="o">=</span> <span class="mi">5</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5593,7 +5601,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.mongo_database" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">mongo_database</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;MongoDB database name to use; will be overwritten if also present in `mongo_uri`&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;optimade&#39;</span></code>
+            <code class="highlight language-python"><span class="n">mongo_database</span> <span class="o">=</span> <span class="s1">&#39;optimade&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5613,7 +5621,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.mongo_uri" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">mongo_uri</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;URI for the MongoDB instance&#39;</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mongodb://localhost:27017/optimade&#39;</span><span class="p">,</span> <span class="s1">&#39;localhost:1000&#39;</span><span class="p">])]</span> <span class="o">=</span> <span class="s1">&#39;localhost:27017&#39;</span></code>
+            <code class="highlight language-python"><span class="n">mongo_uri</span> <span class="o">=</span> <span class="s1">&#39;localhost:27017&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5633,7 +5641,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.page_limit" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">page_limit</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Default number of resources per page&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">20</span></code>
+            <code class="highlight language-python"><span class="n">page_limit</span> <span class="o">=</span> <span class="mi">20</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5653,7 +5661,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.page_limit_max" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">page_limit_max</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Max allowed number of resources per page&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">500</span></code>
+            <code class="highlight language-python"><span class="n">page_limit_max</span> <span class="o">=</span> <span class="mi">500</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5673,7 +5681,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.provider" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">provider</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Provider</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;General information about the provider of this OPTIMADE implementation&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Provider</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;exmpl&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Example provider&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Provider used for examples, not to be assigned to a real database&#39;</span><span class="p">,</span> <span class="n">homepage</span><span class="o">=</span><span class="s1">&#39;https://example.com&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">provider</span> <span class="o">=</span> <span class="n">Provider</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;exmpl&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Example provider&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Provider used for examples, not to be assigned to a real database&#39;</span><span class="p">,</span> <span class="n">homepage</span><span class="o">=</span><span class="s1">&#39;https://example.com&#39;</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5693,7 +5701,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.provider_fields" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">provider_fields</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;links&#39;</span><span class="p">,</span> <span class="s1">&#39;references&#39;</span><span class="p">,</span> <span class="s1">&#39;structures&#39;</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]],</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of additional fields to be served with the provider&#39;s prefix attached, broken down by endpoint.&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{}</span></code>
+            <code class="highlight language-python"><span class="n">provider_fields</span> <span class="o">=</span> <span class="p">{}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5713,7 +5721,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.references_collection" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">references_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mongo collection name for /references endpoint resources&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;references&#39;</span></code>
+            <code class="highlight language-python"><span class="n">references_collection</span> <span class="o">=</span> <span class="s1">&#39;references&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5733,7 +5741,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.root_path" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">root_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Sets the FastAPI app `root_path` parameter. This can be used to serve the API under a path prefix behind a proxy or as a sub-application of another FastAPI app. See https://fastapi.tiangolo.com/advanced/sub-applications/#technical-details-root_path for details.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">root_path</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5753,7 +5761,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.schema_url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">schema_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A URL that will be provided in the `meta-&gt;schema` field for every response&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s1">/optimade.json&#39;</span></code>
+            <code class="highlight language-python"><span class="n">schema_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s1">/optimade.json&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5773,7 +5781,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.structures_collection" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">structures_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Mongo collection name for /structures endpoint resources&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="s1">&#39;structures&#39;</span></code>
+            <code class="highlight language-python"><span class="n">structures_collection</span> <span class="o">=</span> <span class="s1">&#39;structures&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5793,7 +5801,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.use_real_mongo" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">use_real_mongo</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;DEPRECATED: force usage of MongoDB over any other backend.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">use_real_mongo</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5813,7 +5821,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.validate_api_response" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">validate_api_response</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;If False, data from the database will not undergo validation before being emitted by the API, and only the mapping of aliases will occur.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span></code>
+            <code class="highlight language-python"><span class="n">validate_api_response</span> <span class="o">=</span> <span class="kc">True</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5833,7 +5841,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.validate_query_parameters" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">validate_query_parameters</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;If True, the server will check whether the query parameters given in the request are correct.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">True</span></code>
+            <code class="highlight language-python"><span class="n">validate_query_parameters</span> <span class="o">=</span> <span class="kc">True</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5887,7 +5895,11 @@ can be easily extended for new config file types.</p>
 <span class="normal">504</span>
 <span class="normal">505</span>
 <span class="normal">506</span>
-<span class="normal">507</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">align_mongo_uri_and_mongo_database</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ServerConfig&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Prefer the value of database name if set from `mongo_uri` rather than</span>
 <span class="sd">    `mongo_database`.</span>
@@ -5901,12 +5913,16 @@ can be easily extended for new config file types.</p>
                 <span class="s2">&quot;mongodb://&quot;</span>
             <span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb+srv://&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">&quot;</span>
-
-            <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">InvalidURI</span> <span class="k">as</span> <span class="n">error_msg</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The uri </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2"> may be invalid.</span><span class="se">\n</span><span class="si">{</span><span class="n">error_msg</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -6044,11 +6060,7 @@ can be easily extended for new config file types.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">509</span>
-<span class="normal">510</span>
-<span class="normal">511</span>
-<span class="normal">512</span>
-<span class="normal">513</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">513</span>
 <span class="normal">514</span>
 <span class="normal">515</span>
 <span class="normal">516</span>
@@ -6075,7 +6087,11 @@ can be easily extended for new config file types.</p>
 <span class="normal">537</span>
 <span class="normal">538</span>
 <span class="normal">539</span>
-<span class="normal">540</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">settings_customise_sources</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span>
     <span class="n">settings_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseSettings</span><span class="p">],</span>

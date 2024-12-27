@@ -4618,7 +4618,7 @@
 
 
 <h3 id="optimade.models.responses.EntryInfoResponse.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EntryInfoResource</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;OPTIMADE information for an entry endpoint.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4637,7 +4637,7 @@
 
 
 <h3 id="optimade.models.responses.EntryInfoResponse.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4657,7 +4657,7 @@
 
 
 <h3 id="optimade.models.responses.EntryInfoResponse.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included resources&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4677,7 +4677,7 @@
 
 
 <h3 id="optimade.models.responses.EntryInfoResponse.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4697,7 +4697,7 @@
 
 
 <h3 id="optimade.models.responses.EntryInfoResponse.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4717,7 +4717,7 @@
 
 
 <h3 id="optimade.models.responses.EntryInfoResponse.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4889,7 +4889,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseMany.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of unique OPTIMADE entry resource objects.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -4908,7 +4908,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseMany.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4928,7 +4928,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseMany.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included OPTIMADE entry resources.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4948,7 +4948,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseMany.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4968,7 +4968,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseMany.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4988,7 +4988,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseMany.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5158,7 +5158,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseOne.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The single entry resource returned by this query.&#39;</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5178,7 +5178,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseOne.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5198,7 +5198,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseOne.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included OPTIMADE entry resources.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5218,7 +5218,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseOne.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5238,7 +5238,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseOne.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5258,7 +5258,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseOne.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5438,7 +5438,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ErrorResponse.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="kc">None</span> <span class="o">|</span> <span class="n">Resource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Outputted Data&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">data</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5458,7 +5458,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ErrorResponse.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">errors</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5477,7 +5477,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ErrorResponse.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included resources&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5497,7 +5497,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ErrorResponse.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5517,7 +5517,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ErrorResponse.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5537,7 +5537,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ErrorResponse.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5701,7 +5701,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.IndexInfoResponse.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">IndexInfoResource</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Index meta-database /info data.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5720,7 +5720,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.IndexInfoResponse.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5740,7 +5740,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.IndexInfoResponse.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included resources&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5760,7 +5760,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.IndexInfoResponse.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5780,7 +5780,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.IndexInfoResponse.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5800,7 +5800,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.IndexInfoResponse.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5946,7 +5946,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.InfoResponse.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">BaseInfoResource</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;The implementations /info data.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -5965,7 +5965,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.InfoResponse.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5985,7 +5985,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.InfoResponse.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Resource</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included resources&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6005,7 +6005,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.InfoResponse.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6025,7 +6025,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.InfoResponse.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6045,7 +6045,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.InfoResponse.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6201,7 +6201,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.LinksResponse.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of unique OPTIMADE links resource objects.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6220,7 +6220,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.LinksResponse.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6240,7 +6240,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.LinksResponse.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included OPTIMADE entry resources.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6260,7 +6260,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.LinksResponse.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6280,7 +6280,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.LinksResponse.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6300,7 +6300,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.LinksResponse.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6456,7 +6456,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseMany.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">ReferenceResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of unique OPTIMADE references entry resource objects.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6475,7 +6475,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseMany.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6495,7 +6495,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseMany.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included OPTIMADE entry resources.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6515,7 +6515,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseMany.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6535,7 +6535,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseMany.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6555,7 +6555,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseMany.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6709,7 +6709,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseOne.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ReferenceResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A single references entry resource.&#39;</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6728,7 +6728,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseOne.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6748,7 +6748,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseOne.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included OPTIMADE entry resources.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6768,7 +6768,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseOne.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6788,7 +6788,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseOne.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6808,7 +6808,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseOne.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6964,7 +6964,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseMany.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">StructureResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of unique OPTIMADE structures entry resource objects.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -6983,7 +6983,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseMany.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7003,7 +7003,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseMany.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included OPTIMADE entry resources.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7023,7 +7023,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseMany.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7043,7 +7043,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseMany.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7063,7 +7063,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseMany.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -7217,7 +7217,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseOne.data" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">StructureResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A single structures entry resource.&#39;</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">data</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -7236,7 +7236,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseOne.errors" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Error</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique errors&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">errors</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7256,7 +7256,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseOne.included" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of unique included OPTIMADE entry resources.&#39;</span><span class="p">,</span> <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">union_mode</span><span class="o">=</span><span class="n">left_to_right</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">included</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7276,7 +7276,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseOne.jsonapi" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">jsonapi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">JsonApi</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Information about the JSON API used&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">jsonapi</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7296,7 +7296,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseOne.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ToplevelLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Links associated with the primary data or errors&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7316,7 +7316,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseOne.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResponseMeta</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A meta object containing non-standard information&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">meta</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>

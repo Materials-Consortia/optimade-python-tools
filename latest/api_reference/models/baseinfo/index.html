@@ -3235,7 +3235,7 @@
 
 
 <h3 id="optimade.models.baseinfo.AvailableApiVersion.url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">AnyHttpUrl</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A string specifying a versioned base URL that MUST adhere to the rules in section Base URL&#39;</span><span class="p">,</span> <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span><span class="n">pattern</span><span class="p">:</span> <span class="n">VERSIONED_BASE_URL_PATTERN</span><span class="p">})]</span></code>
+            <code class="highlight language-python"><span class="n">url</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3254,7 +3254,7 @@
 
 
 <h3 id="optimade.models.baseinfo.AvailableApiVersion.version" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">version</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SemanticVersion</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A string containing the full version number of the API served at that versioned base URL.</span><span class="se">\n</span><span class="s2">The version number string MUST NOT be prefixed by, e.g., &#39;v&#39;.</span><span class="se">\n</span><span class="s2">Examples: `1.0.0`, `1.0.0-rc.2`.&quot;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">version</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3528,7 +3528,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.api_version" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">api_version</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">SemanticVersion</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Presently used full version of the OPTIMADE API.</span><span class="se">\n</span><span class="s1">The version number string MUST NOT be prefixed by, e.g., &quot;v&quot;.</span><span class="se">\n</span><span class="s1">Examples: `1.0.0`, `1.0.0-rc.2`.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">api_version</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3547,7 +3547,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.available_api_versions" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">available_api_versions</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">AvailableApiVersion</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;A list of dictionaries of available API versions at other base URLs&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">available_api_versions</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3566,7 +3566,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.available_endpoints" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">available_endpoints</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of available endpoints (i.e., the string to be appended to the versioned base URL).&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">available_endpoints</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3585,7 +3585,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.entry_types_by_format" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">entry_types_by_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Available entry endpoints as a function of output formats.&#39;</span><span class="p">)]</span></code>
+            <code class="highlight language-python"><span class="n">entry_types_by_format</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3604,7 +3604,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.formats" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">formats</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;List of available output formats.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3624,7 +3624,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.is_index" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">is_index</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for `is_index` to be `false`).&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">False</span></code>
+            <code class="highlight language-python"><span class="n">is_index</span> <span class="o">=</span> <span class="kc">False</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3737,7 +3737,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoResource.attributes" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">attributes</span><span class="p">:</span> <span class="n">BaseInfoAttributes</span></code>
+            <code class="highlight language-python"><span class="n">attributes</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
@@ -3756,7 +3756,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoResource.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;/&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span></code>
+            <code class="highlight language-python"><span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3776,7 +3776,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoResource.links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">ResourceLinks</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a links object containing links related to the resource.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">links</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3796,7 +3796,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoResource.meta" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Meta</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3836,7 +3836,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoResource.relationships" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Relationships</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;[Relationships object](https://jsonapi.org/format/1.0/#document-resource-object-relationships)</span><span class="se">\n</span><span class="s1">describing relationships between the resource and other JSON API resources.&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">relationships</span> <span class="o">=</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -3856,7 +3856,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoResource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span></code>
+            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
