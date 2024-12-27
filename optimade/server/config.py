@@ -497,12 +497,16 @@ class ServerConfig(BaseSettings):
                     "mongodb://"
                 ) or self.mongo_uri.startswith("mongodb+srv://"):
                     self.mongo_uri = f"mongodb://{self.mongo_uri}"
-
-                uri: dict[str, Any] = pymongo.uri_parser.parse_uri(
-                    self.mongo_uri, warn=True
-                )
-                if uri.get("database"):
-                    self.mongo_database = uri["database"]
+                try:
+                    uri: dict[str, Any] = pymongo.uri_parser.parse_uri(
+                        self.mongo_uri, warn=True
+                    )
+                    if uri.get("database"):
+                        self.mongo_database = uri["database"]
+                except pymongo.errors.InvalidURI as error_msg:
+                    warnings.warn(
+                        f"The uri {self.mongo_uri} may be invalid.\n{error_msg}"
+                    )
 
         return self
 
