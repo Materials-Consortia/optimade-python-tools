@@ -1,14 +1,14 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v1.1.8](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.8) (2024-12-27)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.7...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.7...v1.1.8)
 
-**Closed issues:**
+**Merged pull requests:**
 
-- aligning `mongo_uri/database` breaks connecting to Atlas cluster [\#2197](https://github.com/Materials-Consortia/optimade-python-tools/issues/2197)
+- Catch error for invalid URI. [\#2201](https://github.com/Materials-Consortia/optimade-python-tools/pull/2201) ([JPBergsma](https://github.com/JPBergsma))
 
-## [v1.1.7](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.7) (2024-12-13)
+## [v1.1.7](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.7) (2024-12-16)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.6...v1.1.7)
 
