@@ -493,9 +493,10 @@ class ServerConfig(BaseSettings):
             if self.mongo_uri:
                 import pymongo.uri_parser
 
-                if not self.mongo_uri.startswith(
-                    "mongodb://"
-                ) or self.mongo_uri.startswith("mongodb+srv://"):
+                if not (
+                    self.mongo_uri.startswith("mongodb://")
+                    or self.mongo_uri.startswith("mongodb+srv://")
+                ):
                     self.mongo_uri = f"mongodb://{self.mongo_uri}"
                 try:
                     uri: dict[str, Any] = pymongo.uri_parser.parse_uri(
