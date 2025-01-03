@@ -5,10 +5,16 @@ import pytest
 import requests
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(autouse=True, scope="module")
 def set_ci_env(monkeypatch):
-    """Super unpleasant workaround to deal with monty's deprecation behaviour."""
-    monkeypatch.setenv("CI", "false")
+    """Super unpleasant workaround to deal with monty's deprecation behaviour,
+    see:
+
+        - https://github.com/materialsproject/pymatgen/issues/4243
+        - https://github.com/materialsvirtuallab/monty/pull/735
+
+    """
+    monkeypatch.delenv("CI", raising=False)
     yield
 
 
