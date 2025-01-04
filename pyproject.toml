@@ -167,5 +167,4 @@ filterwarnings = [
     "ignore:.*The 'app' shortcut is now deprecated.*:DeprecationWarning", # Raised by httpx for test client code; would rather not force upgrade of httpx to deal with it for now
     "ignore::pytest.PytestUnraisableExceptionWarning",  # Started raising with pytest 8.2.1, seemingly related to anyio warnings
     "ignore:.*Unclosed.*:ResourceWarning", # Also started raising with pytest 8.2.1, seemingly related to anyio warnings
-    "ignore:.*This function should have been removed on 2025-01-01*:DeprecationWarning", # Raised by monty, who knows when it will actually be removed
 ]
