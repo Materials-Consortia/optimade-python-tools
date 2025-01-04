@@ -1,5 +1,21 @@
 # Changelog
 
+## [v1.1.9](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.9) (2025-01-04)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.8...v1.1.9)
+
+**Fixed bugs:**
+
+- Fix issue with mongodb+srv:// URIs [\#2205](https://github.com/Materials-Consortia/optimade-python-tools/pull/2205) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- aligning `mongo_uri/database` breaks connecting to Atlas cluster [\#2197](https://github.com/Materials-Consortia/optimade-python-tools/issues/2197)
+
+**Merged pull requests:**
+
+- Do not use jarvis on Python 3.13 [\#2207](https://github.com/Materials-Consortia/optimade-python-tools/pull/2207) ([ml-evs](https://github.com/ml-evs))
+
 ## [v1.1.8](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.8) (2024-12-27)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.7...v1.1.8)
