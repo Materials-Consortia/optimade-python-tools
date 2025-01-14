@@ -91,6 +91,10 @@ def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> N
 
                 inp_data = entry["attributes"]
                 inp_data["id"] = id
+                if "relationships" in entry:
+                    inp_data["relationships"] = entry["relationships"]
+                if "links" in entry:
+                    inp_data["links"] = entry["links"]
                 # Append the data to the batch
                 batch[_type].append(inp_data)
             except Exception as exc:
