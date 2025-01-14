@@ -2814,7 +2814,7 @@ or from a local copy of the repository with
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">()</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;elements HAS &quot;Ag&quot;&#39;</span><span class="p">)</span>
 </code></pre></div>
@@ -2835,7 +2835,7 @@ optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class=
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
     <span class="n">base_urls</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;https://optimade.fly.dev&quot;</span><span class="p">,</span> <span class="s2">&quot;https://optimade.odbx.science&quot;</span><span class="p">]</span>
 <span class="p">)</span>
@@ -2855,7 +2855,7 @@ optimade-get<span class="w"> </span>--include-providers<span class="w"> </span>e
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># Only query databases served by the example providers</span>
-<span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
     <span class="n">include_providers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;exmpl&quot;</span><span class="p">,</span> <span class="s2">&quot;optimade&quot;</span><span class="p">},</span>
 <span class="p">)</span>
@@ -2874,7 +2874,7 @@ optimade-get<span class="w"> </span>--exclude-providers<span class="w"> </span>e
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># Exclude example providers from global list</span>
-<span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
     <span class="n">exclude_providers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;exmpl&quot;</span><span class="p">,</span> <span class="s2">&quot;optimade&quot;</span><span class="p">},</span>
 <span class="p">)</span>
@@ -2893,7 +2893,7 @@ optimade-get<span class="w"> </span>--exclude-databases<span class="w"> </span>h
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># Exclude specific example databases</span>
-<span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
     <span class="n">exclude_databases</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;https://example.org/optimade&quot;</span><span class="p">,</span> <span class="s2">&quot;https://optimade.org/example&quot;</span><span class="p">}</span>
 <span class="p">)</span>
@@ -2912,7 +2912,7 @@ You can specify your desired filter as follows (note the quotation marks):</p>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">()</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;elements HAS &quot;Ag&quot; AND nsites &lt; 2&#39;</span><span class="p">)</span>
 </code></pre></div>
@@ -2966,7 +2966,7 @@ cat<span class="w"> </span>results.json
 </code></pre></div>
 <p>The response is broken down by queried endpoint, filter and then base URL so that the query URL can be easily reconstructed.
 This is the same format as the cached results of the Python client:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="s2">&quot;https://optimade.fly.dev&quot;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites = 1&#39;</span><span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites = 2&#39;</span><span class="p">)</span>
@@ -3005,7 +3005,7 @@ optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span clas
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">()</span>
 
 <span class="n">client</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
@@ -3078,7 +3078,7 @@ We can use this to repeat the queries from the <a href="https://doi.org/10.1038/
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">()</span>
 <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;elements HAS ANY &quot;C&quot;, &quot;Si&quot;, &quot;Ge&quot;, &quot;Sn&quot;, &quot;Pb&quot;&#39;</span><span class="p">,</span>
@@ -3178,12 +3178,12 @@ Care should be taken if combining an asynchronous client with callbacks, as the 
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># Write a callback that saves into a MongoDB (fake or otherwise)</span>
-<span class="kn">import</span> <span class="nn">mongomock</span> <span class="k">as</span> <span class="nn">pymongo</span>
-<span class="kn">from</span> <span class="nn">optimade.client</span> <span class="kn">import</span> <span class="n">OptimadeClient</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mongomock</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pymongo</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">()</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">structures</span>
 
-<span class="k">def</span> <span class="nf">write_to_db</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_to_db</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
         <span class="n">entry</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">))</span>
         <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>

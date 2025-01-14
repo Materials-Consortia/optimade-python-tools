@@ -2650,7 +2650,7 @@ This guide will briefly outline how to parse OPTIMADE filter strings into databa
 <h2 id="parsing-optimade-filter-strings">Parsing OPTIMADE filter strings<a class="headerlink" href="#parsing-optimade-filter-strings" title="Permanent link">&para;</a></h2>
 <p>The <a class="autorefs autorefs-internal" href="../../api_reference/filterparser/lark_parser/#optimade.filterparser.lark_parser.LarkParser"><code>LarkParser</code></a> class will take an OPTIMADE filter string, supplied by the user, and parse it into a <code>lark.Tree</code> instance.</p>
 <p>Example use:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.filterparser</span> <span class="kn">import</span> <span class="n">LarkParser</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.filterparser</span><span class="w"> </span><span class="kn">import</span> <span class="n">LarkParser</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="n">LarkParser</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;nelements&lt;3&quot;</span><span class="p">)</span>
@@ -2699,7 +2699,7 @@ This guide will briefly outline how to parse OPTIMADE filter strings into databa
 <p>After the <a class="autorefs autorefs-internal" href="../../api_reference/filterparser/lark_parser/#optimade.filterparser.lark_parser.LarkParser"><code>LarkParser</code></a> has turned the filter string into a <code>lark.Tree</code>, it is fed to a <code>lark.Transformer</code> instance, which transforms the 'lark.Tree' into a backend-specific representation of the query.
 For example, <a class="autorefs autorefs-internal" href="../../api_reference/filtertransformers/mongo/#optimade.filtertransformers.mongo.MongoTransformer"><code>MongoTransformer</code></a> will turn the tree into something useful for a MongoDB backend:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Example: Converting to MongoDB Query Syntax</span>
-<span class="kn">from</span> <span class="nn">optimade.filtertransformers.mongo</span> <span class="kn">import</span> <span class="n">MongoTransformer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">optimade.filtertransformers.mongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">MongoTransformer</span>
 
 <span class="n">transformer</span> <span class="o">=</span> <span class="n">MongoTransformer</span><span class="p">()</span>
 

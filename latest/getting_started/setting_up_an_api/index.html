@@ -2790,31 +2790,31 @@ In this case, it may be easier to write a custom endpoint for your entry type, t
 <p>Finally, the model must be instructed to use the prefixed (aliased) fields when generating its schemas.</p>
 <p>Pulling all of this together:</p>
 <!-- markdownlint-disable-next-line MD046 -->
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.server.schemas</span> <span class="kn">import</span> <span class="n">ENTRY_INFO_SCHEMAS</span>
-<span class="kn">from</span> <span class="nn">optimade.models</span> <span class="kn">import</span> <span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.schemas</span><span class="w"> </span><span class="kn">import</span> <span class="n">ENTRY_INFO_SCHEMAS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">optimade.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">StructureResource</span><span class="p">,</span> <span class="n">StructureResourceAttributes</span><span class="p">,</span> <span class="n">OptimadeField</span>
 <span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">MyStructureResourceAttributes</span><span class="p">(</span><span class="n">StructureResourceAttributes</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyStructureResourceAttributes</span><span class="p">(</span><span class="n">StructureResourceAttributes</span><span class="p">):</span>
      <span class="n">my_custom_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="s2">&quot;default value&quot;</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="s2">&quot;This is a custom field&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a pydantic `Config` that defines the alias generator,</span>
 <span class="sd">        based on our configured `provider_fields`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nd">@classmethod</span>
-        <span class="k">def</span> <span class="nf">alias_generator</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">alias_generator</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;structures&quot;</span><span class="p">,</span> <span class="p">[]):</span>
                 <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">return</span> <span class="n">name</span>
 
 
-<span class="k">class</span> <span class="nc">MyStructureResource</span><span class="p">(</span><span class="n">StructureResource</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyStructureResource</span><span class="p">(</span><span class="n">StructureResource</span><span class="p">):</span>
     <span class="n">attributes</span><span class="p">:</span> <span class="n">MyStructureResourceAttributes</span>
 
 

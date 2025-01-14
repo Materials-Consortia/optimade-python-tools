@@ -2658,15 +2658,15 @@ Let's say you have a file <code>optimade_config.json</code> as part of the Pytho
 <p>You can find more detailed information about configuring the <code>optimade</code> server in the <a href="../../configuration/">Configuration</a> section.</p>
 </div>
 <p>Before importing any <code>optimade</code> modules, you can set the <code>OPTIMADE_CONFIG_FILE</code> environment variable to refer to your config file:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;OPTIMADE_CONFIG_FILE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;optimade_config.json&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="customize-the-entrycollection-implementation">Customize the <a class="autorefs autorefs-internal" href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a> implementation<a class="headerlink" href="#customize-the-entrycollection-implementation" title="Permanent link">&para;</a></h2>
 <p>Let's assume that your Elasticsearch backend stores structure data in a different enough manner that you need to provide your own custom implementation.
 The following code customizes the <a class="autorefs autorefs-internal" href="../../api_reference/server/entry_collections/entry_collections/#optimade.server.entry_collections.entry_collections.EntryCollection"><code>EntryCollection</code></a> class for structures, whilst keeping the default MongoDB-based implementation (using <a class="autorefs autorefs-internal" href="../../api_reference/server/entry_collections/mongo/#optimade.server.entry_collections.mongo.MongoCollection"><code>MongoCollection</code></a>) for all other entry types.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.server.routers</span> <span class="kn">import</span> <span class="n">structures</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.routers</span><span class="w"> </span><span class="kn">import</span> <span class="n">structures</span>
 
 <span class="n">structures</span><span class="o">.</span><span class="n">structures_coll</span> <span class="o">=</span> <span class="n">MyElasticsearchStructureCollection</span><span class="p">()</span>
 </code></pre></div>
@@ -2676,11 +2676,11 @@ The following code customizes the <a class="autorefs autorefs-internal" href="..
 It already implements a few routers under certain path prefixes, and now you want to add an OPTIMADE implementation under the path prefix <code>/optimade</code>.</p>
 <p>First, you have to set the <code>root_path</code> in the <code>optimade</code> configuration, so that the app expects all requests to be prefixed with <code>/optimade</code>.</p>
 <p>Second, you simply mount the <code>optimade</code> app into your existing app <code>my_app</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">optimade.server.config</span> <span class="kn">import</span> <span class="n">CONFIG</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CONFIG</span>
 
 <span class="n">CONFIG</span><span class="o">.</span><span class="n">root_path</span> <span class="o">=</span> <span class="s2">&quot;/optimade&quot;</span>
 
-<span class="kn">from</span> <span class="nn">optimade.server</span> <span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">optimade</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">optimade</span>
 
 <span class="n">optimade</span><span class="o">.</span><span class="n">add_major_version_base_url</span><span class="p">(</span><span class="n">optimade</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
 <span class="n">my_app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/optimade&quot;</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
