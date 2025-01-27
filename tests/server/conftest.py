@@ -96,9 +96,9 @@ def get_good_response(
             response_json = response.json()
             assert response.status_code == 200, f"Request failed: {response_json}"
             expected_mime_type = "application/vnd.api+json"
-            assert (
-                response.headers["content-type"] == expected_mime_type
-            ), f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
+            assert response.headers["content-type"] == expected_mime_type, (
+                f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
+            )
         except json.JSONDecodeError:
             print(
                 f"Request attempted:\n{used_client.base_url}{used_client.version}"
@@ -220,9 +220,9 @@ def check_error_response(client, index_client):
                 f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
             )
             expected_mime_type = "application/vnd.api+json"
-            assert (
-                response.headers["content-type"] == expected_mime_type
-            ), f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
+            assert response.headers["content-type"] == expected_mime_type, (
+                f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
+            )
 
             response = response.json()
             assert len(response["errors"]) == 1, response.get(

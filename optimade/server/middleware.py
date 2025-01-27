@@ -242,7 +242,7 @@ class HandleApiHint(BaseHTTPMiddleware):
                     base_url = get_base_url(request.url)
 
                     new_request = (
-                        f"{base_url}{version_path}{str(request.url)[len(base_url):]}"
+                        f"{base_url}{version_path}{str(request.url)[len(base_url) :]}"
                     )
                     url = urllib.parse.urlsplit(new_request)
                     q = "&".join(
@@ -354,9 +354,9 @@ class AddWarnings(BaseHTTPMiddleware):
             line: Source content of the line that issued the warning.
 
         """
-        assert isinstance(
-            message, Warning
-        ), "'message' is expected to be a Warning or subclass thereof."
+        assert isinstance(message, Warning), (
+            "'message' is expected to be a Warning or subclass thereof."
+        )
 
         if not isinstance(message, OptimadeWarning):
             # If the Warning is not an OptimadeWarning or subclass thereof,

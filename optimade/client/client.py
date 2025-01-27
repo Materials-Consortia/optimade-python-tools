@@ -1113,7 +1113,7 @@ class OptimadeClient:
         """
 
         if not version:
-            version = f'v{__api_version__.split(".")[0]}'
+            version = f"v{__api_version__.split('.')[0]}"
         while base_url.endswith("/"):
             base_url = base_url[:-1]
 
@@ -1129,7 +1129,7 @@ class OptimadeClient:
                 params_dict["response_fields"] = "response_fields=id"
             else:
                 params_dict["response_fields"] = (
-                    f'response_fields={",".join(response_fields)}'
+                    f"response_fields={','.join(response_fields)}"
                 )
 
         if page_limit:
