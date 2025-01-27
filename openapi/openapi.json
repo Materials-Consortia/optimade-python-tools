@@ -1504,18 +1504,12 @@
         "properties": {
           "id": {
             "type": "string",
-            "enum": [
-              "/"
-            ],
             "const": "/",
             "title": "Id",
             "default": "/"
           },
           "type": {
             "type": "string",
-            "enum": [
-              "info"
-            ],
             "const": "info",
             "title": "Type",
             "default": "info"
@@ -2420,9 +2414,6 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "links"
-            ],
             "const": "links",
             "pattern": "^links$",
             "title": "Type",
@@ -2918,9 +2909,6 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "references"
-            ],
             "const": "references",
             "pattern": "^references$",
             "title": "Type",
@@ -4045,9 +4033,6 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "structures"
-            ],
             "const": "structures",
             "pattern": "^structures$",
             "title": "Type",
@@ -4786,9 +4771,6 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "warning"
-            ],
             "const": "warning",
             "pattern": "^warning$",
             "title": "Type",
