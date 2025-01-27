@@ -64,9 +64,9 @@ def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> N
     with open(jsonl_path) as handle:
         header = handle.readline()
         header_jsonl = json.loads(header)
-        assert header_jsonl.get(
-            "x-optimade"
-        ), "No x-optimade header, not sure if this is a JSONL file"
+        assert header_jsonl.get("x-optimade"), (
+            "No x-optimade header, not sure if this is a JSONL file"
+        )
 
         for line_no, json_str in enumerate(handle):
             try:

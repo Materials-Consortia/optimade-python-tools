@@ -1039,7 +1039,7 @@ class ImplementationValidator:
         request_str = f"{endp}?page_limit={self.page_limit}"
 
         if response_fields:
-            request_str += f'&response_fields={",".join(response_fields)}'
+            request_str += f"&response_fields={','.join(response_fields)}"
 
         response, _ = self._get_endpoint(request_str)
 
@@ -1529,7 +1529,7 @@ class ImplementationValidator:
             message += "\nAdditional details from implementation:"
             try:
                 for error in response.json().get("errors", []):
-                    message += f'\n  {error.get("title", "N/A")}: {error.get("detail", "N/A")} ({error.get("source", {}).get("pointer", "N/A")})'
+                    message += f"\n  {error.get('title', 'N/A')}: {error.get('detail', 'N/A')} ({error.get('source', {}).get('pointer', 'N/A')})"
             except json.JSONDecodeError:
                 message += f"\n  Could not parse response as JSON. Content type was {response.headers.get('content-type')!r}."
 

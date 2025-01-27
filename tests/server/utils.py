@@ -97,9 +97,9 @@ class BaseEndpointTests:
     @staticmethod
     def check_keys(keys: list, response_subset: "Iterable[str]"):
         for key in keys:
-            assert (
-                key in response_subset
-            ), f"{key!r} missing from response {response_subset}"
+            assert key in response_subset, (
+                f"{key!r} missing from response {response_subset}"
+            )
 
     def test_response_okay(self):
         """Make sure the response was successful"""
@@ -251,9 +251,9 @@ class NoJsonEndpointTests:
 
     def test_response_okay(self):
         """Make sure the response was successful"""
-        assert (
-            self.response.status_code == 200
-        ), f"Request to {self.request_str} failed: {self.response.content}"
+        assert self.response.status_code == 200, (
+            f"Request to {self.request_str} failed: {self.response.content}"
+        )
 
 
 class HttpxTestClient(httpx.Client):

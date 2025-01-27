@@ -46,9 +46,9 @@ def test_convert_python_types():
         python_types_as_objects,
     ]:
         for index, python_type in enumerate(list_of_python_types):
-            assert isinstance(
-                DataType.from_python_type(python_type), DataType
-            ), f"python_type: {python_type}"
+            assert isinstance(DataType.from_python_type(python_type), DataType), (
+                f"python_type: {python_type}"
+            )
             assert DataType.from_python_type(python_type) == expected_data_type[index]
 
 
@@ -70,9 +70,9 @@ def test_convert_json_types():
 
     for list_of_schema_types in [json_types, openapi_formats]:
         for schema_type, optimade_type in list_of_schema_types:
-            assert isinstance(
-                DataType.from_json_type(schema_type), DataType
-            ), f"json_type: {schema_type}"
+            assert isinstance(DataType.from_json_type(schema_type), DataType), (
+                f"json_type: {schema_type}"
+            )
             assert DataType.from_json_type(schema_type) == optimade_type
 
 

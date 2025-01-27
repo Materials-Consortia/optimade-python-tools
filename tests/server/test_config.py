@@ -92,9 +92,9 @@ def test_debug_is_respected_when_off(both_clients: "OptimadeTestClient") -> None
             CONFIG.debug = False
 
         response = both_clients.get("/non/existent/path")
-        assert (
-            response.status_code == 404
-        ), f"Request should have failed, but didn't: {response.json()}"
+        assert response.status_code == 404, (
+            f"Request should have failed, but didn't: {response.json()}"
+        )
 
         response = response.json()
         assert "data" not in response
@@ -118,9 +118,9 @@ def test_debug_is_respected_when_on(both_clients: "OptimadeTestClient") -> None:
         CONFIG.debug = True
 
         response = both_clients.get("/non/existent/path")
-        assert (
-            response.status_code == 404
-        ), f"Request should have failed, but didn't: {response.json()}"
+        assert response.status_code == 404, (
+            f"Request should have failed, but didn't: {response.json()}"
+        )
 
         response = response.json()
         assert "data" not in response
@@ -174,13 +174,13 @@ debug: true
             os.environ["OPTIMADE_CONFIG_FILE"] = str(Path(config_file.name).resolve())
             CONFIG = ServerConfig()
 
-        assert CONFIG.aliases == {
-            "references": {"last_modified": "mtime"}
-        }, f"Config: {CONFIG.aliases}"
+        assert CONFIG.aliases == {"references": {"last_modified": "mtime"}}, (
+            f"Config: {CONFIG.aliases}"
+        )
         assert CONFIG.debug, f"Config: {CONFIG.debug}"
-        assert CONFIG.provider_fields == {
-            "references": ["great_paper"]
-        }, f"Config: {CONFIG.provider_fields}"
+        assert CONFIG.provider_fields == {"references": ["great_paper"]}, (
+            f"Config: {CONFIG.provider_fields}"
+        )
 
         with tempfile.NamedTemporaryFile("w+t", suffix=".yml") as config_file:
             config_file.write(yaml_content + extra_yaml_content)

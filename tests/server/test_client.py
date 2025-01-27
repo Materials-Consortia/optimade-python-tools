@@ -471,7 +471,7 @@ def test_client_asynchronous_write_callback(
         with open(tmp_path / "formulae.csv", "a") as f:
             for structure in results["data"]:
                 f.write(
-                    f'\n{structure["id"]}, {structure["attributes"]["chemical_formula_reduced"]}'
+                    f"\n{structure['id']}, {structure['attributes']['chemical_formula_reduced']}"
                 )
 
         return None
@@ -538,9 +538,9 @@ def test_binary_search_internals(trial_counts):
         window, probe = cli._update_probe_and_window(window, probe, below=below)
         # print(trial_counts, window, probe)
         if window[0] == window[1] == probe:
-            assert (
-                window[0] == trial_counts
-            ), "Binary search did not converge to the correct value."
+            assert window[0] == trial_counts, (
+                "Binary search did not converge to the correct value."
+            )
             break
         attempts += 1
     else:
