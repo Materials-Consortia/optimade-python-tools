@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.1.10](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.10) (2025-01-27)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.9...v1.1.10)
+
+**Merged pull requests:**
+
+- Make sure any relationships or links are ingested when consuming JSONL [\#2212](https://github.com/Materials-Consortia/optimade-python-tools/pull/2212) ([ml-evs](https://github.com/ml-evs))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2193](https://github.com/Materials-Consortia/optimade-python-tools/pull/2193) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+- Bump codecov/codecov-action from 4 to 5 in the github-actions group [\#2181](https://github.com/Materials-Consortia/optimade-python-tools/pull/2181) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v1.1.9](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.9) (2025-01-04)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.8...v1.1.9)
