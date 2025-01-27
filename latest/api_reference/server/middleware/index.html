@@ -3296,9 +3296,9 @@ added through usages of <code>warnings.warn()</code> via <a class="autorefs auto
 <span class="sd">            line: Source content of the line that issued the warning.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">message</span><span class="p">,</span> <span class="ne">Warning</span>
-        <span class="p">),</span> <span class="s2">&quot;&#39;message&#39; is expected to be a Warning or subclass thereof.&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="ne">Warning</span><span class="p">),</span> <span class="p">(</span>
+            <span class="s2">&quot;&#39;message&#39; is expected to be a Warning or subclass thereof.&quot;</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">OptimadeWarning</span><span class="p">):</span>
             <span class="c1"># If the Warning is not an OptimadeWarning or subclass thereof,</span>
@@ -3828,9 +3828,9 @@ This process is similar to the <a class="autorefs autorefs-internal" href="../ex
 <span class="sd">        line: Source content of the line that issued the warning.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-        <span class="n">message</span><span class="p">,</span> <span class="ne">Warning</span>
-    <span class="p">),</span> <span class="s2">&quot;&#39;message&#39; is expected to be a Warning or subclass thereof.&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="ne">Warning</span><span class="p">),</span> <span class="p">(</span>
+        <span class="s2">&quot;&#39;message&#39; is expected to be a Warning or subclass thereof.&quot;</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">OptimadeWarning</span><span class="p">):</span>
         <span class="c1"># If the Warning is not an OptimadeWarning or subclass thereof,</span>
@@ -4776,7 +4776,7 @@ and semi-colon (<code>;</code>).</p>
                     <span class="n">base_url</span> <span class="o">=</span> <span class="n">get_base_url</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
                     <span class="n">new_request</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}{</span><span class="n">version_path</span><span class="si">}{</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">):]</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}{</span><span class="n">version_path</span><span class="si">}{</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="w"> </span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
                     <span class="n">url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlsplit</span><span class="p">(</span><span class="n">new_request</span><span class="p">)</span>
                     <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
