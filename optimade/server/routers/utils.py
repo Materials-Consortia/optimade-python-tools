@@ -255,6 +255,16 @@ def get_entries(
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
+
+    if params.search and collection.resource_cls == "structures":
+        import ccdc.search
+        smarts_query = ccdc.search.SMARTSSubstructure(params.search)
+        smarts_search = ccdc.search.SubstructureSearch()
+        smarts_search.add(smarts_query)
+        hits = smarts_search.search(max_hits_per_structure=1, max_hit_structures=1000)
+        # create filter of IDs from hits
+        params.filter = " OR ".join((f"id={hit.identifier}" for hit in hits))
+
     (
         results,
         data_returned,
