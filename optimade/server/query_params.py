@@ -188,6 +188,12 @@ class EntryListingQueryParams(BaseQueryParams):
                 description="A filter string, in the format described in section API Filtering Format Specification of the specification.",
             ),
         ] = "",
+        search: Annotated[
+            str,
+            Query(
+                description="A search string",
+            ),
+        ] = "",
         response_format: Annotated[
             str,
             Query(
@@ -269,6 +275,7 @@ class EntryListingQueryParams(BaseQueryParams):
         ] = "",
     ):
         self.filter = filter
+        self.search = search
         self.response_format = response_format
         self.email_address = email_address
         self.response_fields = response_fields
