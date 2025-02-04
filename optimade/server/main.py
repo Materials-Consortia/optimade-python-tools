@@ -131,6 +131,12 @@ if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
     elif CONFIG.insert_test_data:
         _insert_test_data()
 
+    if CONFIG.exit_after_insert:
+        LOGGER.info("Exiting after inserting test data.")
+        import sys
+
+        sys.exit(0)
+
 # Add CORS middleware first
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
 

@@ -179,6 +179,10 @@ class ServerConfig(BaseSettings):
         ),
     ] = None
 
+    exit_after_insert: Annotated[
+        bool, Field(description="Exit the API after inserting data")
+    ] = False
+
     create_default_index: Annotated[
         bool,
         Field(
