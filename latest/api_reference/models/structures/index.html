@@ -5257,7 +5257,14 @@ hydrogens might represent a methyl group, -CH3).</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/models/structures.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1161</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1154</span>
+<span class="normal">1155</span>
+<span class="normal">1156</span>
+<span class="normal">1157</span>
+<span class="normal">1158</span>
+<span class="normal">1159</span>
+<span class="normal">1160</span>
+<span class="normal">1161</span>
 <span class="normal">1162</span>
 <span class="normal">1163</span>
 <span class="normal">1164</span>
@@ -5275,14 +5282,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 <span class="normal">1176</span>
 <span class="normal">1177</span>
 <span class="normal">1178</span>
-<span class="normal">1179</span>
-<span class="normal">1180</span>
-<span class="normal">1181</span>
-<span class="normal">1182</span>
-<span class="normal">1183</span>
-<span class="normal">1184</span>
-<span class="normal">1185</span>
-<span class="normal">1186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">StructureResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
+<span class="normal">1179</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">StructureResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Representing a structure.&quot;&quot;&quot;</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -6361,14 +6361,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 <span class="normal">1148</span>
 <span class="normal">1149</span>
 <span class="normal">1150</span>
-<span class="normal">1151</span>
-<span class="normal">1152</span>
-<span class="normal">1153</span>
-<span class="normal">1154</span>
-<span class="normal">1155</span>
-<span class="normal">1156</span>
-<span class="normal">1157</span>
-<span class="normal">1158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">StructureResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
+<span class="normal">1151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">StructureResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions.&quot;&quot;&quot;</span>
 
     <span class="n">elements</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
@@ -7191,13 +7184,6 @@ hydrogens might represent a methyl group, -CH3).</p>
                             <span class="s2">&quot;greater than one element&quot;</span>
                         <span class="p">)</span>
                     <span class="k">break</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">DISORDER</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure_features</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">DISORDER</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST NOT be present, &quot;</span>
-                        <span class="s2">&quot;since all species&#39; chemical_symbols lists are equal to or &quot;</span>
-                        <span class="s2">&quot;less than one element&quot;</span>
-                    <span class="p">)</span>
 
             <span class="c1"># site_attachments</span>
             <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">:</span>
@@ -8394,14 +8380,7 @@ hydrogens might represent a methyl group, -CH3).</p>
 <span class="normal">1148</span>
 <span class="normal">1149</span>
 <span class="normal">1150</span>
-<span class="normal">1151</span>
-<span class="normal">1152</span>
-<span class="normal">1153</span>
-<span class="normal">1154</span>
-<span class="normal">1155</span>
-<span class="normal">1156</span>
-<span class="normal">1157</span>
-<span class="normal">1158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">1151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_structure_features</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;StructureResourceAttributes&quot;</span><span class="p">:</span>
     <span class="k">if</span> <span class="p">[</span>
         <span class="n">StructureFeatures</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -8436,13 +8415,6 @@ hydrogens might represent a methyl group, -CH3).</p>
                         <span class="s2">&quot;greater than one element&quot;</span>
                     <span class="p">)</span>
                 <span class="k">break</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">DISORDER</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure_features</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">StructureFeatures</span><span class="o">.</span><span class="n">DISORDER</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> MUST NOT be present, &quot;</span>
-                    <span class="s2">&quot;since all species&#39; chemical_symbols lists are equal to or &quot;</span>
-                    <span class="s2">&quot;less than one element&quot;</span>
-                <span class="p">)</span>
 
         <span class="c1"># site_attachments</span>
         <span class="k">for</span> <span class="n">species</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="p">:</span>
