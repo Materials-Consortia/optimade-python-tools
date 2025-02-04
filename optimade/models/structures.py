@@ -1104,13 +1104,6 @@ The properties of the species are found in the property `species`.
                             "greater than one element"
                         )
                     break
-            else:
-                if StructureFeatures.DISORDER in self.structure_features:
-                    raise ValueError(
-                        f"{StructureFeatures.DISORDER.value} MUST NOT be present, "
-                        "since all species' chemical_symbols lists are equal to or "
-                        "less than one element"
-                    )
 
             # site_attachments
             for species in self.species:
