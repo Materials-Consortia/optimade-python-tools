@@ -5,7 +5,7 @@ from fastapi.exceptions import StarletteHTTPException
 
 from optimade import __api_version__
 from optimade.models import EntryInfoResource, EntryInfoResponse, InfoResponse
-from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource
+from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource, Link
 from optimade.server.config import CONFIG
 from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import (
@@ -44,8 +44,10 @@ def get_info(request: Request) -> InfoResponse:
                 available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS.keys()),
                 entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
                 is_index=False,
-                license={"href": f"https://spdx.org/licenses/{CONFIG.license}"},
-                available_licenses=[CONFIG.license],
+                license=Link(href=CONFIG.license),
+                available_licenses=[str(CONFIG.license).split("/")[-1]]
+                if "https://spdx.org" in str(CONFIG.license)
+                else None,
             ),
         )
 
