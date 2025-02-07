@@ -1,5 +1,18 @@
 # Changelog
 
+## [v1.1.11](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.11) (2025-02-07)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.10...v1.1.11)
+
+**Closed issues:**
+
+- Overzealous validation of disordered structures [\#2221](https://github.com/Materials-Consortia/optimade-python-tools/issues/2221)
+
+**Merged pull requests:**
+
+- Add config option `exit_after_insert` to exit API after inserting data  [\#2223](https://github.com/Materials-Consortia/optimade-python-tools/pull/2223) ([ml-evs](https://github.com/ml-evs))
+- Remove overly strict validation of disordered structures [\#2222](https://github.com/Materials-Consortia/optimade-python-tools/pull/2222) ([ml-evs](https://github.com/ml-evs))
+
 ## [v1.1.10](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.10) (2025-01-27)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.9...v1.1.10)
@@ -7,8 +20,6 @@
 **Merged pull requests:**
 
 - Make sure any relationships or links are ingested when consuming JSONL [\#2212](https://github.com/Materials-Consortia/optimade-python-tools/pull/2212) ([ml-evs](https://github.com/ml-evs))
-- \[pre-commit.ci\] pre-commit autoupdate [\#2193](https://github.com/Materials-Consortia/optimade-python-tools/pull/2193) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
-- Bump codecov/codecov-action from 4 to 5 in the github-actions group [\#2181](https://github.com/Materials-Consortia/optimade-python-tools/pull/2181) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v1.1.9](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.9) (2025-01-04)
 
@@ -58,7 +69,6 @@
 
 - Add citation info for latest OPTIMADE paper [\#2186](https://github.com/Materials-Consortia/optimade-python-tools/pull/2186) ([ml-evs](https://github.com/ml-evs))
 - Improve config loading warnings and prefer `mongo_uri` as source of database name [\#2183](https://github.com/Materials-Consortia/optimade-python-tools/pull/2183) ([ml-evs](https://github.com/ml-evs))
-- \[pre-commit.ci\] pre-commit autoupdate [\#2178](https://github.com/Materials-Consortia/optimade-python-tools/pull/2178) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
 - Quality of life changes around JSONL & MongoDB [\#2175](https://github.com/Materials-Consortia/optimade-python-tools/pull/2175) ([ml-evs](https://github.com/ml-evs))
 - Update README with pre-emptive support of OPTIMADE versions [\#2165](https://github.com/Materials-Consortia/optimade-python-tools/pull/2165) ([ml-evs](https://github.com/ml-evs))
 - Add Python 3.13 to test matrix [\#2163](https://github.com/Materials-Consortia/optimade-python-tools/pull/2163) ([ml-evs](https://github.com/ml-evs))
