@@ -20,8 +20,18 @@ class TestInfoEndpoint(RegularEndpointTests):
             "formats",
             "entry_types_by_format",
             "available_endpoints",
+            "license",
+            "available_licenses",
         ]
         self.check_keys(attributes, self.json_response["data"]["attributes"])
+
+        # Test that the spdx identifier is transformed correctly and found in both license fields
+        assert self.json_response["data"]["attributes"]["available_licenses"] == [
+            "CC-BY-4.0"
+        ]
+        assert self.json_response["data"]["attributes"]["license"] == {
+            "href": "https://spdx.org/licenses/CC-BY-4.0"
+        }
 
 
 class TestInfoStructuresEndpoint(RegularEndpointTests):
