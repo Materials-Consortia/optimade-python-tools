@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.11...HEAD)
+
+**Closed issues:**
+
+- Support for specifying database licenses [\#1254](https://github.com/Materials-Consortia/optimade-python-tools/issues/1254)
+
 ## [v1.1.11](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.11) (2025-02-07)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.10...v1.1.11)
