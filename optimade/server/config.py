@@ -240,7 +240,7 @@ class ServerConfig(BaseSettings):
     ] = "localhost:27017"
 
     license: Annotated[
-        AnyHttpUrl | str | None,
+        str | AnyHttpUrl | None,
         Field(
             description="""Either an SPDX license identifier or a URL to a human-readable license, used to populate the `license` field in the info response.
 
@@ -480,9 +480,7 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         if not value:
             return None
 
-        try:
-            value = AnyHttpUrl(value)
-        except ValueError:
+        if not isinstance(value, AnyHttpUrl):
             value = f"https://spdx.org/licenses/{value}"
 
         # Check if license URL is accessible
