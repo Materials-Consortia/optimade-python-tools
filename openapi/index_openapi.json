@@ -1010,53 +1010,6 @@
             "title": "Is Index",
             "description": "This must be `true` since this is an index meta-database (see section Index Meta-Database).",
             "default": true
-          },
-          "license": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Link"
-              },
-              {
-                "type": "string",
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "License",
-            "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) giving a URL to a web page containing a human-readable text describing the license (or licensing options if there are multiple) covering all the data and metadata provided by this database.\nClients are advised not to try automated parsing of this link or its content, but rather rely on the field `available_licenses` instead."
-          },
-          "available_licenses": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Available Licenses",
-            "description": "List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of alternative licenses available to the client for licensing the complete database, i.e., all the entries, metadata, and the content and structure of the database itself.\n\nIf more than one license is available to the client, the identifier of each one SHOULD be included in the list.\nInclusion of a license identifier in the list is a commitment of the database that the rights are in place to grant clients access to all the individual entries, all metadata, and the content and structure of the database itself according to the terms of any of these licenses (at the choice of the client).\nIf the licensing information provided via the field license omits licensing options specified in `available_licenses`, or if it otherwise contradicts them, a client MUST still be allowed to interpret the inclusion of a license in `available_licenses` as a full commitment from the database without exceptions, under the respective licenses.\nIf the database cannot make that commitment, e.g., if only part of the database is available under a license, the corresponding license identifier MUST NOT appear in `available_licenses` (but, rather, the field license is to be used to clarify the licensing situation.)\nAn empty list indicates that none of the SPDX licenses apply and that the licensing situation is clarified in human readable form in the field `license`.\nAn unknown value means that the database makes no commitment."
-          },
-          "available_licenses_for_entries": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Available Licenses For Entries",
-            "description": "List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of additional alternative licenses available to the client for licensing individual, and non-substantial sets of, database entries, metadata, and extracts from the database that do not constitute substantial parts of the database.\n\nNote that the definition of the field `available_licenses` implies that licenses specified in that field are available also for the licensing specified by this field, even if they are not explicitly included in the field `available_licenses_for_entries` or if it is `null` (however, the opposite relationship does not hold).\nIf `available_licenses` is unknown, only the licenses in `available_licenses_for_entries` apply."
           }
         },
         "type": "object",
