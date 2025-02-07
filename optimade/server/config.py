@@ -240,15 +240,13 @@ class ServerConfig(BaseSettings):
     ] = "localhost:27017"
 
     license: Annotated[
-        str | AnyHttpUrl | None,
+        str,
         Field(
-            description="""Either an SPDX license identifier or a URL to a human-readable license, used to populate the `license` field in the info response.
-
-If provided an SPDX license identifier, the `license` field value will be constructed from this identifier preprended with `https://spdx.org/licenses/CC-BY-4.0`, and the identifier will also be added to the `available_licenses` field directly.
-Otherwise, the license will be given as the provided URL and no SPDX identifier will be added to the `available_licenses` field. If your desired licensing scenario is more complex, please open an issue.""",
+            description="""The SPDX license identifier that will be linked to by the server under the info field `license`.
+The `license` field value will be constructed from this identifier preprended with `https://spdx.org/licenses/CC-BY-4.0`, and the identifier will also be added to the `available_licenses` field directly.
+There is currently no support for providing a full list of identifiers to be served at `available_licenses`.""",
         ),
-    ] = None
-
+    ] = "CC-BY-4.0"
     links_collection: Annotated[
         str, Field(description="Mongo collection name for /links endpoint resources")
     ] = "links"
@@ -470,27 +468,6 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         res = {"version": __version__}
         res.update(value)
         return res
-
-    @field_validator("license", mode="before")
-    @classmethod
-    def check_license_info(cls, value: Any) -> AnyHttpUrl | None:
-        """Check that the license is either an spdx identifier or an accessible URL."""
-        import requests
-
-        if not value:
-            return None
-
-        if not isinstance(value, AnyHttpUrl):
-            value = f"https://spdx.org/licenses/{value}"
-
-        # Check if license URL is accessible
-        try:
-            response = requests.head(str(value))
-            response.raise_for_status()
-        except requests.RequestException as exc:
-            raise ValueError(f"License URL '{value}' is not accessible: {exc}") from exc
-
-        return value
 
     @model_validator(mode="after")
     def use_real_mongo_override(self) -> "ServerConfig":
