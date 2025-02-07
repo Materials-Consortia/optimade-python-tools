@@ -440,7 +440,7 @@ class ServerConfig(BaseSettings):
     @classmethod
     def check_jsonl_path(cls, value: Any) -> Path | None:
         """Check that the path to the JSONL file is valid."""
-        if value in ("null", ""):
+        if value in ("null", "", None, "None"):
             return None
 
         return value
