@@ -44,7 +44,7 @@ def get_info(request: Request) -> InfoResponse:
                 available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS.keys()),
                 entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
                 is_index=False,
-                license=Link(href=CONFIG.license),
+                license=Link(href=CONFIG.license) if CONFIG.license else None,
                 available_licenses=[str(CONFIG.license).split("/")[-1]]
                 if "https://spdx.org" in str(CONFIG.license)
                 else None,
