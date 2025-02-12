@@ -872,6 +872,7 @@ class OptimadeClient:
         page_limit: int | None = None,
         paginate: bool = True,
         other_params: dict[str, Any] | None = None,
+        override_url: str | None = None,
     ) -> dict[str, QueryResults]:
         """Executes the query asynchronously on one API.
 
@@ -894,6 +895,8 @@ class OptimadeClient:
                 value of `max_results_per_provider`) or whether to return
                 after one page.
             other_params: Any other parameters to pass to the server.
+            override_url: Allow overriding the URL for the request, e.g., when
+                doing pagination externally.
 
         Returns:
             A dictionary mapping from base URL to the results of the query.
@@ -909,6 +912,7 @@ class OptimadeClient:
                 response_fields=response_fields,
                 sort=sort,
                 other_params=other_params,
+                override_url=override_url,
             )
         except Exception as exc:
             error_query_results = QueryResults()
@@ -930,6 +934,7 @@ class OptimadeClient:
         page_limit: int | None = None,
         paginate: bool = True,
         other_params: dict[str, Any] | None = None,
+        override_url: str | None = None,
     ) -> dict[str, QueryResults]:
         """See [`OptimadeClient.get_one_async`][optimade.client.OptimadeClient.get_one_async]."""
         next_url, _task = self._setup(
@@ -941,6 +946,10 @@ class OptimadeClient:
             sort=sort,
             other_params=other_params,
         )
+
+        if not paginate and override_url:
+            next_url = override_url
+
         results = QueryResults()
         try:
             async with self._http_client(headers=self.headers) as client:  # type: ignore[union-attr,call-arg,misc]
