@@ -197,6 +197,10 @@ class OptimadeClient:
         self.verbosity = verbosity
         self.skip_ssl = skip_ssl
 
+        self._progress = OptimadeClientProgress()
+        if self.silent:
+            self._progress.disable = True
+
         if headers:
             self.headers.update(headers)
 
@@ -324,10 +328,6 @@ class OptimadeClient:
 
         if filter is None:
             filter = ""
-
-        self._progress = OptimadeClientProgress()
-        if self.silent:
-            self._progress.disable = True
 
         self._check_filter(filter, endpoint)
 
