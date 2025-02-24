@@ -1233,7 +1233,7 @@ class OptimadeClient:
 
         next_url = callback_response.get("next") or results["links"].get("next", None)
         if isinstance(next_url, dict):
-            next_url = next_url.pop("href")
+            next_url = next_url["href"]
 
         return results, next_url
 
