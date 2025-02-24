@@ -5637,7 +5637,7 @@ and provider.</p>
 
         <span class="n">next_url</span> <span class="o">=</span> <span class="n">callback_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">next_url</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">next_url</span> <span class="o">=</span> <span class="n">next_url</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span>
+            <span class="n">next_url</span> <span class="o">=</span> <span class="n">next_url</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">next_url</span>
 
