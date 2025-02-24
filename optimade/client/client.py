@@ -947,7 +947,7 @@ class OptimadeClient:
             other_params=other_params,
         )
 
-        if not paginate and override_url:
+        if override_url:
             next_url = override_url
 
         results = QueryResults()
