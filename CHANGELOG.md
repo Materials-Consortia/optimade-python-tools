@@ -2,11 +2,27 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.11...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.0...HEAD)
+
+This v1.2.0 release is coincidentally the first to support some features from OPTIMADE v1.2.0, namely the specification of licenses. Support for other 1.2 fields (e.g., symmetry, partial data etc.) will come in future releases based on demand. As the `optimade.__api_version__` has been bumped, servers running optimade-python-tools will now have versioned endpoints for `/v1` and `/v1.2`, but not `/v1.1`. For now, only one OPTIMADE API version is targeted by each optimade-python-tools version, as listed in the README. If you need any changes backported to the v1.1.x branch, please raise an issue.
+
+## [v1.2.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.0) (2025-02-25)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.11...v1.2.0)
+
+**Fixed bugs:**
+
+- Retain `next_url` value in responses from `OptimadeClient` [\#2233](https://github.com/Materials-Consortia/optimade-python-tools/pull/2233) ([mehmetgiritli](https://github.com/mehmetgiritli))
 
 **Closed issues:**
 
-- Support for specifying database licenses [\#1254](https://github.com/Materials-Consortia/optimade-python-tools/issues/1254)
+- I [\#2225](https://github.com/Materials-Consortia/optimade-python-tools/issues/2225)
+- Ability to dynamically skip erroneous entries [\#2166](https://github.com/Materials-Consortia/optimade-python-tools/issues/2166)
+
+**Merged pull requests:**
+
+- Allow overriding request URL in `OptimadeClient` [\#2234](https://github.com/Materials-Consortia/optimade-python-tools/pull/2234) ([mehmetgiritli](https://github.com/mehmetgiritli))
+- Add configurable `license` and `available_licenses` info fields [\#2224](https://github.com/Materials-Consortia/optimade-python-tools/pull/2224) ([ml-evs](https://github.com/ml-evs))
 
 ## [v1.1.11](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.11) (2025-02-07)
 
@@ -15,6 +31,7 @@
 **Closed issues:**
 
 - Overzealous validation of disordered structures [\#2221](https://github.com/Materials-Consortia/optimade-python-tools/issues/2221)
+- Support for specifying database licenses [\#1254](https://github.com/Materials-Consortia/optimade-python-tools/issues/1254)
 
 **Merged pull requests:**
 
