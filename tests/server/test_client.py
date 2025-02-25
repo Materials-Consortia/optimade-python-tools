@@ -547,3 +547,55 @@ def test_binary_search_internals(trial_counts):
         raise RuntimeError(
             f"Could not converge binary search for {trial_counts} in {max_attempts} attempts."
         )
+
+
+def test_raw_get_one_sync(http_client):
+    """Test the raw `get_one` method."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        use_async=False,
+        http_client=http_client,
+        verbosity=10,
+    )
+    result = cli.get_one(
+        endpoint="structures",
+        filter='elements HAS "Ag"',
+        base_url=TEST_URL,
+        paginate=False,
+        page_limit=10,
+    )
+    assert len(result[TEST_URL].data) == 10
+    override = cli.get_one(
+        endpoint="structures",
+        filter='elements HAS "Ag"',
+        base_url=TEST_URL,
+        override_url='https://example.org/v1/structures?filter=elements HAS "Ag"&page_offset=10',
+        paginate=False,
+    )
+    assert len(override[TEST_URL].data) == 1
+
+
+@pytest.mark.asyncio
+async def test_raw_get_one_async(async_http_client):
+    """Test the raw `get_one` method."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        http_client=async_http_client,
+        use_async=True,
+    )
+    result = await cli.get_one_async(
+        endpoint="structures",
+        filter='elements HAS "Ag"',
+        base_url=TEST_URL,
+        paginate=False,
+        page_limit=10,
+    )
+    assert len(result[TEST_URL].data) == 10
+    override = await cli.get_one_async(
+        endpoint="structures",
+        filter='elements HAS "Ag"',
+        base_url=TEST_URL,
+        override_url='https://example.org/v1/structures?filter=elements HAS "Ag"&page_offset=10',
+        paginate=False,
+    )
+    assert len(override[TEST_URL].data) == 1
