@@ -203,6 +203,14 @@ deformities = (
         {"chemical_formula_anonymous": "A44B15C9D4E3F2GHI0J0K0L0"},
         "String should match pattern",
     ),
+    (
+        {"space_group_symmetry_operations_xyz": ["-x,-y,-z"]},
+        "The identity operation 'x,y,z' MUST be included in the space group symmetry operations, if provided.",
+    ),
+    (
+        {"space_group_symmetry_operations_xyz": ["xy,z"]},
+        "String should match pattern",
+    ),
 )
 
 

@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Annotated, Literal, Optional
 from pydantic import BaseModel, BeforeValidator, Field, field_validator, model_validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
-from optimade.models.types import ChemicalSymbol
+from optimade.models.types import ChemicalSymbol, SymmetryOperation
 from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
@@ -564,6 +564,43 @@ Note: the elements in this list each refer to the direction of the corresponding
         ),
     ] = None
 
+    space_group_symmetry_operations_xyz: Annotated[
+        list[SymmetryOperation] | None,
+        OptimadeField(
+            description="""A list of symmetry operations given as general position x, y and z coordinates in algebraic form.
+
+- **Type**: list of strings
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+      - The property is RECOMMENDED if coordinates are returned in a form to which these operations can or must be applied (e.g. fractional atom coordinates of an asymmetric unit).
+      - The property is REQUIRED if symmetry operations are necessary to reconstruct the full model of the material and no other symmetry information (e.g., the Hall symbol) is provided that would allow the user to derive symmetry operations unambiguously.
+    - **Query***: Support for queries on this property is not required and in fact is NOT RECOMMENDED.
+    - MUST be `null` if `nperiodic_dimensions` is equal to 0.
+    - Each symmetry operation is described by a string that gives that symmetry operation in Jones' faithful representation (Bradley & Cracknell, 1972: pp. 35-37), adapted for computer string notation.
+    - The letters `x`, `y` and `z` that are typesetted with overbars in printed text represent coordinate values multiplied by -1 and are encoded as `-x`, `-y` and `-z`, respectively.
+    - The syntax of the strings representing symmetry operations MUST conform to regular expressions given in appendix The Symmetry Operation String Regular Expressions.
+    - The interpretation of the strings MUST follow the conventions of the IUCr CIF core dictionary (IUCr, 2023). In particular, this property MUST explicitly provide all symmetry operations needed to generate all the atoms in the unit cell from the atoms in the asymmetric unit, for the setting used.
+    - This symmetry operation set MUST always include the `x,y,z` identity operation.
+    - The symmetry operations are to be applied to fractional atom coordinates. In case only Cartesian coordinates are available, these Cartesian coordinates must be converted to fractional coordinates before the application of the provided symmetry operations.
+    - If the symmetry operation list is present, it MUST be compatible with other space group specifications (e.g. the ITC space group number, the Hall symbol, the Hermann-Mauguin symbol) if these are present.
+
+- **Examples**:
+    - Space group operations for the space group with ITC number 3 (H-M symbol `P 2`, extended H-M symbol `P 1 2 1`, Hall symbol `P 2y`): `["x,y,z", "-x,y,-z"]`
+    - Space group operations for the space group with ITC number 5 (H-M symbol `C 2`, extended H-M symbol `C 1 2 1`, Hall symbol `C 2y`): `["x,y,z", "-x,y,-z", "x+1/2,y+1/2,z", "-x+1/2,y+1/2,-z"]`
+
+- **Notes**: The list of space group symmetry operations applies to the whole periodic array of atoms and together with the lattice translations given in the `lattice_vectors` property provides the necessary information to reconstruct all atom site positions of the periodic material.
+  Thus, the symmetry operations described in this property are only applicable to material models with at least one periodic dimension.
+  This property is not meant to represent arbitrary symmetries of molecules, non-periodic (finite) collections of atoms or non-crystallographic symmetry.
+
+- **Bibliographic References**:
+  - Bradley, C. J. and Cracknell, A. P. (1972) The Mathematical Theory of Symmetry in Solids. Oxford, Clarendon Press (paperback edition 2010) 745 p. ISBN 978-0-19-958258-7.
+  - IUCr (2023) Core dictionary (coreCIF) version 2.4.5; data name `_space_group_symop_operation_xyz`. Available from: https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_symop_operation_xyz.html [Accessed 2023-06-18T16:46+03:00].""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+        ),
+    ] = None
+
     cartesian_site_positions: Annotated[
         list[Vector3D] | None,
         OptimadeField(
@@ -1068,6 +1105,23 @@ The properties of the species are found in the property `species`.
             )
 
         return value
+
+    @model_validator(mode="after")
+    def check_symmetry_operations(self) -> "StructureResourceAttributes":
+        if self.nperiodic_dimensions == 0 and self.space_group_symmetry_operations_xyz:
+            raise ValueError(
+                "Non-periodic structures MUST NOT have space group symmetry operations."
+            )
+
+        if (
+            self.space_group_symmetry_operations_xyz
+            and "x,y,z" not in self.space_group_symmetry_operations_xyz
+        ):
+            raise ValueError(
+                "The identity operation 'x,y,z' MUST be included in the space group symmetry operations, if provided."
+            )
+
+        return self
 
     @model_validator(mode="after")
     def validate_structure_features(self) -> "StructureResourceAttributes":
