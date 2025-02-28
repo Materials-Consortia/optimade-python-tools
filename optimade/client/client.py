@@ -954,6 +954,8 @@ class OptimadeClient:
         if override_url:
             next_url = override_url
 
+        request_delay: float | None = None
+
         results = QueryResults()
         try:
             async with self._http_client(headers=self.headers) as client:  # type: ignore[union-attr,call-arg,misc]
@@ -968,13 +970,18 @@ class OptimadeClient:
                             next_url, follow_redirects=True, timeout=self.http_timeout
                         )
                         page_results, next_url = self._handle_response(r, _task)
+                        request_delay = page_results["meta"].get("request_delay", None)
+                        # Don't wait any longer than 5 seconds
+                        if request_delay:
+                            request_delay = min(request_delay, 5)
+
                     except RecoverableHTTPError:
                         attempts += 1
                         if attempts > self.max_attempts:
                             raise RuntimeError(
                                 f"Exceeded maximum number of retries for {next_url}"
                             )
-                        await asyncio.sleep(1)
+                        await asyncio.sleep(request_delay or 1)
                         continue
 
                     results.update(page_results)
@@ -1023,6 +1030,8 @@ class OptimadeClient:
         if override_url:
             next_url = override_url
 
+        request_delay: float | None = None
+
         results = QueryResults()
         try:
             with self._http_client() as client:  # type: ignore[misc]
@@ -1041,13 +1050,19 @@ class OptimadeClient:
                             )
                         r = client.get(next_url, timeout=timeout)
                         page_results, next_url = self._handle_response(r, _task)
+
+                        request_delay = page_results["meta"].get("request_delay", None)
+                        # Don't wait any longer than 5 seconds
+                        if request_delay:
+                            request_delay = min(request_delay, 5)
+
                     except RecoverableHTTPError:
                         attempts += 1
                         if attempts > self.max_attempts:
                             raise RuntimeError(
                                 f"Exceeded maximum number of retries for {next_url}"
                             )
-                        time.sleep(1)
+                        time.sleep(request_delay or 1)
                         continue
 
                     results.update(page_results)

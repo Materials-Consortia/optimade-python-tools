@@ -4,7 +4,14 @@ from datetime import datetime
 from enum import Enum
 from typing import Annotated, Any, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    NonNegativeFloat,
+    model_validator,
+)
 
 from optimade.models import jsonapi
 from optimade.models.types import SemanticVersion
@@ -358,6 +365,15 @@ Hence, if the `meta` field of the JSON API links object is provided and contains
 
     response_message: Annotated[
         str | None, StrictField(description="response string from the server")
+    ] = None
+
+    request_delay: Annotated[
+        NonNegativeFloat | None,
+        StrictField(
+            description="""A non-negative float giving time in seconds that the client is suggested to wait before issuing a subsequent request.
+Implementation note: the functionality of this field overlaps to some degree with features provided by the HTTP error `429 Too Many Requests` and the `Retry-After` HTTP header.
+Implementations are suggested to provide consistent handling of request overload through both mechanisms."""
+        ),
     ] = None
 
     implementation: Annotated[

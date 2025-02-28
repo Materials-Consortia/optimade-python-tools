@@ -38,5 +38,6 @@
             "chemsys": "nelements"
         }
     },
-    "license": "CC-BY-4.0"
+    "license": "CC-BY-4.0",
+    "request_delay": 0.1
 }
