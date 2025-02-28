@@ -6,7 +6,13 @@ from pathlib import Path
 from typing import Annotated, Any, Literal
 
 import yaml
-from pydantic import AnyHttpUrl, Field, field_validator, model_validator
+from pydantic import (
+    AnyHttpUrl,
+    Field,
+    NonNegativeFloat,
+    field_validator,
+    model_validator,
+)
 from pydantic.fields import FieldInfo
 from pydantic_settings import (
     BaseSettings,
@@ -435,6 +441,12 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
             ),
         ),
     ] = True
+    request_delay: Annotated[
+        NonNegativeFloat | None,
+        Field(
+            description="The value to use for the `meta->request_delay` field, which indicates to clients how long they should leave between success queries."
+        ),
+    ] = None
 
     validate_api_response: Annotated[
         bool | None,
@@ -452,6 +464,15 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         """Check that the path to the JSONL file is valid."""
         if value in ("null", "", None, "None"):
             return None
+
+        return value
+
+    @field_validator("request_delay", mode="before")
+    @classmethod
+    def check_request_delay(cls, value: Any) -> Path | None:
+        """Make sure the request delay is not adversarially large."""
+        if value and value > 5:
+            raise ValueError("Request delay must be less than 5 seconds.")
 
         return value
 

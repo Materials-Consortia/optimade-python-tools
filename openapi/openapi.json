@@ -3852,6 +3852,19 @@
             "title": "Response Message",
             "description": "response string from the server"
           },
+          "request_delay": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Delay",
+            "description": "A non-negative float giving time in seconds that the client is suggested to wait before issuing a subsequent request.\nImplementation note: the functionality of this field overlaps to some degree with features provided by the HTTP error `429 Too Many Requests` and the `Retry-After` HTTP header.\nImplementations are suggested to provide consistent handling of request overload through both mechanisms."
+          },
           "implementation": {
             "anyOf": [
               {

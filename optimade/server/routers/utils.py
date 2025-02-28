@@ -69,6 +69,10 @@ def meta_values(
     if schema is None:
         schema = CONFIG.schema_url if not CONFIG.is_index else CONFIG.index_schema_url
 
+    if CONFIG.request_delay:
+        # Double-guard against the server setting an adversarially large request delay
+        kwargs["request_delay"] = min(CONFIG.request_delay, 10.0)
+
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{url.query}"),
         api_version=__api_version__,
