@@ -2954,11 +2954,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
@@ -2972,7 +2968,11 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 <span class="normal">235</span>
 <span class="normal">236</span>
 <span class="normal">237</span>
-<span class="normal">238</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_base_url</span><span class="p">(</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_base_url</span><span class="p">(</span>
     <span class="n">parsed_url_request</span><span class="p">:</span> <span class="p">(</span>
         <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span> <span class="o">|</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span> <span class="o">|</span> <span class="n">StarletteURL</span> <span class="o">|</span> <span class="nb">str</span>
     <span class="p">),</span>
@@ -3012,11 +3012,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">245</span>
 <span class="normal">246</span>
 <span class="normal">247</span>
 <span class="normal">248</span>
@@ -3065,7 +3061,11 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 <span class="normal">291</span>
 <span class="normal">292</span>
 <span class="normal">293</span>
-<span class="normal">294</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_entries</span><span class="p">(</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_entries</span><span class="p">(</span>
     <span class="n">collection</span><span class="p">:</span> <span class="n">EntryCollection</span><span class="p">,</span>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
@@ -3230,11 +3230,7 @@ of resource objects for that entry type.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">136</span>
 <span class="normal">137</span>
 <span class="normal">138</span>
 <span class="normal">139</span>
@@ -3315,7 +3311,11 @@ of resource objects for that entry type.</p>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
-<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_included_relationships</span><span class="p">(</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_included_relationships</span><span class="p">(</span>
     <span class="n">results</span><span class="p">:</span> <span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
     <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryCollection</span><span class="p">],</span>
     <span class="n">include_param</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -3723,11 +3723,7 @@ set to null if missing in the entry.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/routers/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
 <span class="normal"> 91</span>
 <span class="normal"> 92</span>
 <span class="normal"> 93</span>
@@ -3766,7 +3762,11 @@ set to null if missing in the entry.</p>
 <span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span>
-<span class="normal">129</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">handle_response_fields</span><span class="p">(</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">handle_response_fields</span><span class="p">(</span>
     <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">,</span>
     <span class="n">exclude_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">include_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -3865,7 +3865,11 @@ set to null if missing in the entry.</p>
 <span class="normal">80</span>
 <span class="normal">81</span>
 <span class="normal">82</span>
-<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">meta_values</span><span class="p">(</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">meta_values</span><span class="p">(</span>
     <span class="n">url</span><span class="p">:</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span> <span class="o">|</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span> <span class="o">|</span> <span class="n">StarletteURL</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">data_returned</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">data_available</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -3887,6 +3891,10 @@ set to null if missing in the entry.</p>
 
     <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">schema</span> <span class="o">=</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">schema_url</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">is_index</span> <span class="k">else</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">index_schema_url</span>
+
+    <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">request_delay</span><span class="p">:</span>
+        <span class="c1"># Double-guard against the server setting an adversarially large request delay</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;request_delay&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">request_delay</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ResponseMeta</span><span class="p">(</span>
         <span class="n">query</span><span class="o">=</span><span class="n">ResponseMetaQuery</span><span class="p">(</span><span class="n">representation</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url_path</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>

@@ -4468,7 +4468,22 @@ and provider.</p>
 <span class="normal">1288</span>
 <span class="normal">1289</span>
 <span class="normal">1290</span>
-<span class="normal">1291</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimadeClient</span><span class="p">:</span>
+<span class="normal">1291</span>
+<span class="normal">1292</span>
+<span class="normal">1293</span>
+<span class="normal">1294</span>
+<span class="normal">1295</span>
+<span class="normal">1296</span>
+<span class="normal">1297</span>
+<span class="normal">1298</span>
+<span class="normal">1299</span>
+<span class="normal">1300</span>
+<span class="normal">1301</span>
+<span class="normal">1302</span>
+<span class="normal">1303</span>
+<span class="normal">1304</span>
+<span class="normal">1305</span>
+<span class="normal">1306</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimadeClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class implemements a client for executing the same queries</span>
 <span class="sd">    across multiple OPTIMADE APIs simultaneously, paging and caching the</span>
 <span class="sd">    results.</span>
@@ -5376,6 +5391,8 @@ and provider.</p>
         <span class="k">if</span> <span class="n">override_url</span><span class="p">:</span>
             <span class="n">next_url</span> <span class="o">=</span> <span class="n">override_url</span>
 
+        <span class="n">request_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="n">results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">(</span><span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr,call-arg,misc]</span>
@@ -5390,13 +5407,18 @@ and provider.</p>
                             <span class="n">next_url</span><span class="p">,</span> <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span>
                         <span class="p">)</span>
                         <span class="n">page_results</span><span class="p">,</span> <span class="n">next_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">_task</span><span class="p">)</span>
+                        <span class="n">request_delay</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request_delay&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                        <span class="c1"># Don&#39;t wait any longer than 5 seconds</span>
+                        <span class="k">if</span> <span class="n">request_delay</span><span class="p">:</span>
+                            <span class="n">request_delay</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">request_delay</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
                     <span class="k">except</span> <span class="n">RecoverableHTTPError</span><span class="p">:</span>
                         <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
                         <span class="k">if</span> <span class="n">attempts</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span><span class="p">:</span>
                             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                                 <span class="sa">f</span><span class="s2">&quot;Exceeded maximum number of retries for </span><span class="si">{</span><span class="n">next_url</span><span class="si">}</span><span class="s2">&quot;</span>
                             <span class="p">)</span>
-                        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">request_delay</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
                         <span class="k">continue</span>
 
                     <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">page_results</span><span class="p">)</span>
@@ -5445,6 +5467,8 @@ and provider.</p>
         <span class="k">if</span> <span class="n">override_url</span><span class="p">:</span>
             <span class="n">next_url</span> <span class="o">=</span> <span class="n">override_url</span>
 
+        <span class="n">request_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="n">results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">()</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>  <span class="c1"># type: ignore[misc]</span>
@@ -5463,13 +5487,19 @@ and provider.</p>
                             <span class="p">)</span>
                         <span class="n">r</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">next_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
                         <span class="n">page_results</span><span class="p">,</span> <span class="n">next_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">_task</span><span class="p">)</span>
+
+                        <span class="n">request_delay</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request_delay&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                        <span class="c1"># Don&#39;t wait any longer than 5 seconds</span>
+                        <span class="k">if</span> <span class="n">request_delay</span><span class="p">:</span>
+                            <span class="n">request_delay</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">request_delay</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
                     <span class="k">except</span> <span class="n">RecoverableHTTPError</span><span class="p">:</span>
                         <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
                         <span class="k">if</span> <span class="n">attempts</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span><span class="p">:</span>
                             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                                 <span class="sa">f</span><span class="s2">&quot;Exceeded maximum number of retries for </span><span class="si">{</span><span class="n">next_url</span><span class="si">}</span><span class="s2">&quot;</span>
                             <span class="p">)</span>
-                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">request_delay</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
                         <span class="k">continue</span>
 
                     <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">page_results</span><span class="p">)</span>
