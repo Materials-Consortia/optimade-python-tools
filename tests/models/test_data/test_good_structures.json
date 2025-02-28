@@ -125,7 +125,8 @@
         "group_probabilities": [0.3, 0.5, 0.2]
       }
     ],
-    "structure_features": ["assemblies", "implicit_atoms"]
+    "structure_features": ["assemblies", "implicit_atoms"],
+    "space_group_symmetry_operations_xyz": ["x,y,z", "-x,y,-z"]
   },
   {
     "task_id": "db/1234567",
@@ -189,7 +190,8 @@
       {"name": "Na", "chemical_symbols": ["Na"], "concentration": [1.0] },
       {"name": "P", "chemical_symbols": ["P"], "concentration": [1.0] }
     ],
-    "structure_features": ["site_attachments"]
+    "structure_features": ["site_attachments"],
+    "space_group_symmetry_operations_xyz": ["x,y,z", "-x,y,-z", "x+1/2,y+1/2,z", "-x+1/2,y+1/2,-z"]
   },
   {
     "task_id": "db/1234567",
@@ -221,6 +223,7 @@
       {"name": "Na", "chemical_symbols": ["Na"], "concentration": [1.0] },
       {"name": "P", "chemical_symbols": ["P"], "concentration": [1.0] }
     ],
-    "structure_features": ["disorder", "site_attachments"]
+    "structure_features": ["disorder", "site_attachments"],
+    "space_group_symmetry_operations_xyz": ["x,y,z"]
   }
 ]

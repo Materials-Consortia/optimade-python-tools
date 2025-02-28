@@ -233,6 +233,7 @@ ANONYMOUS_ELEMENTS = tuple(itertools.islice(anonymous_element_generator(), 150))
 """ Returns the first 150 values of the anonymous element generator. """
 
 CHEMICAL_FORMULA_REGEXP = r"(^$)|^([A-Z][a-z]?([2-9]|[1-9]\d+)?)+$"
+SYMMETRY_OPERATION_REGEXP = r"^([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?)$"
 
 EXTRA_SYMBOLS = ["X", "vacancy"]
 

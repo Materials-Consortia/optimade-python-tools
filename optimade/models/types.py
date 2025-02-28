@@ -7,11 +7,14 @@ from optimade.models.utils import (
     ELEMENT_SYMBOLS_PATTERN,
     EXTENDED_CHEMICAL_SYMBOLS_PATTERN,
     SEMVER_PATTERN,
+    SYMMETRY_OPERATION_REGEXP,
 )
 
 __all__ = ("ChemicalSymbol", "SemanticVersion")
 
 ChemicalSymbol = Annotated[str, Field(pattern=EXTENDED_CHEMICAL_SYMBOLS_PATTERN)]
+
+SymmetryOperation = Annotated[str, Field(pattern=SYMMETRY_OPERATION_REGEXP)]
 
 ElementSymbol = Annotated[str, Field(pattern=ELEMENT_SYMBOLS_PATTERN)]
 
