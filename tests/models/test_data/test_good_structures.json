@@ -191,7 +191,10 @@
       {"name": "P", "chemical_symbols": ["P"], "concentration": [1.0] }
     ],
     "structure_features": ["site_attachments"],
-    "space_group_symmetry_operations_xyz": ["x,y,z", "-x,y,-z", "x+1/2,y+1/2,z", "-x+1/2,y+1/2,-z"]
+    "space_group_symmetry_operations_xyz": ["x,y,z", "-x,y,-z", "x+1/2,y+1/2,z", "-x+1/2,y+1/2,-z"],
+    "space_group_symbol_hermann_mauguin": "R -3 m",
+    "space_group_symbol_hermann_mauguin_extended": "R -3 m",
+    "space_group_symbol_hall": "I 4bd 2ab 3"
   },
   {
     "task_id": "db/1234567",
@@ -224,6 +227,10 @@
       {"name": "P", "chemical_symbols": ["P"], "concentration": [1.0] }
     ],
     "structure_features": ["disorder", "site_attachments"],
-    "space_group_symmetry_operations_xyz": ["x,y,z"]
+    "space_group_symmetry_operations_xyz": ["x,y,z"],
+    "space_group_symbol_hall": "P 2yb (-1/2*x+z,1/2*x,y)",
+    "space_group_symbol_hermann_mauguin": "P 1",
+    "space_group_symbol_hermann_mauguin_extended": "P 1",
+    "space_group_it_number": 122
   }
 ]

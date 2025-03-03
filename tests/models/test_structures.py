@@ -211,6 +211,10 @@ deformities = (
         {"space_group_symmetry_operations_xyz": ["xy,z"]},
         "String should match pattern",
     ),
+    (
+        {"space_group_symbol_hermann_mauguin": "P1"},
+        "String should match pattern",
+    ),
 )
 
 

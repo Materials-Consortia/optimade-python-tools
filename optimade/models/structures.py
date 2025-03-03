@@ -11,6 +11,7 @@ from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
     CHEMICAL_SYMBOLS,
+    HM_SYMBOL_REGEXP,
     OptimadeField,
     StrictField,
     SupportLevel,
@@ -598,6 +599,119 @@ Note: the elements in this list each refer to the direction of the corresponding
   - IUCr (2023) Core dictionary (coreCIF) version 2.4.5; data name `_space_group_symop_operation_xyz`. Available from: https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_symop_operation_xyz.html [Accessed 2023-06-18T16:46+03:00].""",
             support=SupportLevel.OPTIONAL,
             queryable=SupportLevel.OPTIONAL,
+        ),
+    ] = None
+
+    space_group_symbol_hall: Annotated[
+        str | None,
+        OptimadeField(
+            description="""A Hall space group symbol representing the symmetry of the structure as defined in (Hall, 1981, 1981a).
+
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+    - The change-of-basis operations are used as defined in the International Tables of Crystallography (ITC) Vol. B, Sect. 1.4, Appendix A1.4.2 (IUCr, 2001).
+    - Each component of the Hall symbol MUST be separated by a single space symbol.
+    - If there exists a standard Hall symbol which represents the symmetry it SHOULD be used.
+    - MUST be `null` if `nperiodic_dimensions` is not equal to 3.
+
+- **Examples**:
+    - Space group symbols with explicit origin (the Hall symbols):
+        - `P 2c -2ac`
+        - `I 4bd 2ab 3`
+    - Space group symbols with change-of-basis operations:
+        - `P 2yb (-1/2*x+z,1/2*x,y)`
+        - `-I 4 2 (1/2*x+1/2*y,-1/2*x+1/2*y,z)`
+
+- **Bibliographic References**:
+    - Hall, S. R. (1981) Space-group notation with an explicit origin. Acta Crystallographica Section A, 37, 517-525, International Union of Crystallography (IUCr), DOI: https://doi.org/10.1107/s0567739481001228
+    - Hall, S. R. (1981a) Space-group notation with an explicit origin; erratum. Acta Crystallographica Section A, 37, 921-921, International Union of Crystallography (IUCr), DOI: https://doi.org/10.1107/s0567739481001976
+    - IUCr (2001). International Tables for Crystallography vol. B. Reciprocal Space. Ed. U. Shmueli. 2-nd edition. Dordrecht/Boston/London, Kluwer Academic Publishers.""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+        ),
+    ] = None
+
+    space_group_symbol_hermann_mauguin: Annotated[
+        str | None,
+        OptimadeField(
+            description="""A human- and machine-readable string containing the short Hermann-Mauguin (H-M) symbol which specifies the space group of the structure in the response.
+
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+    - The H-M symbol SHOULD aim to convey the closest representation of the symmetry information that can be specified using the short format used in the International Tables for Crystallography vol. A (IUCr, 2005), Table 4.3.2.1 as described in the accompanying text.
+    - The symbol MAY be a non-standard short H-M symbol.
+    - The H-M symbol does not unambiguously communicate the axis, cell, and origin choice, and the given symbol SHOULD NOT be amended to convey this information.
+    - To encode as character strings, the following adaptations MUST be made when representing H-M symbols given in their typesetted form:
+        - the overbar above the numbers MUST be changed to the minus sign in front of the digit (e.g. '-2');
+        - subscripts that denote screw axes are written as digits immediately after the axis designator without a space (e.g. 'P 32')
+        - the space group generators MUST be separated by a single space (e.g. 'P 21 21 2');
+        - there MUST be no spaces in the space group generator designation (i.e. use 'P 21/m', not the 'P 21 / m');
+
+- **Examples**:
+    - `C 2`
+    - `P 21 21 21`
+
+- **Bibliographic References**:
+    - IUCr (2005). International Tables for Crystallography vol. A. Space-Group Symmetry. Ed. Theo Hahn. 5-th edition. Dordrecht, Springer.
+""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+            pattern=HM_SYMBOL_REGEXP,
+        ),
+    ] = None
+
+    space_group_symbol_hermann_mauguin_extended: Annotated[
+        str | None,
+        OptimadeField(
+            description="""A human- and machine-readable string containing the extended Hermann-Mauguin (H-M) symbol which specifies the space group of the structure in the response.
+
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+    - The H-M symbols SHOULD be given as specified in the International Tables for Crystallography vol. A (IUCr, 2005), Table 4.3.2.1.
+    - The change-of-basis operation SHOULD be provided for the non-standard axis and cell choices.
+    - The extended H-M symbol does not unambiguously communicate the origin choice, and the given symbol SHOULD NOT be amended to convey this information.
+    - The description of the change-of-basis SHOULD follow conventions of the ITC Vol. B, Sect. 1.4, Appendix A1.4.2 (IUCr, 2001).
+    - The same character string encoding conventions MUST be used as for the specification of the `space_group_symbol_hermann_mauguin` property.
+
+- **Examples**:
+    - `C 1 2 1`
+
+- **Bibliographic References**:
+    - IUCr (2001). International Tables for Crystallography vol. B. Reciprocal Space. Ed. U. Shmueli. 2-nd edition. Dordrecht/Boston/London, Kluwer Academic Publishers.
+    - IUCr (2005). International Tables for Crystallography vol. A. Space-Group Symmetry. Ed. Theo Hahn. 5-th edition. Dordrecht, Springer.
+
+""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+            pattern=HM_SYMBOL_REGEXP,
+        ),
+    ] = None
+
+    space_group_it_number: Annotated[
+        int | None,
+        OptimadeField(
+            description="""Space group number which specifies the space group of the structure as defined in the International Tables for Crystallography Vol. A. (IUCr, 2005).
+
+- **Type**: integer
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+    - The integer value MUST be between 1 and 230.
+    - MUST be null if `nperiodic_dimensions` is not equal to 3.""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+            ge=1,
+            le=230,
         ),
     ] = None
 
