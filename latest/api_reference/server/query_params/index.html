@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.d7758b05.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.8608ea7d.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -2905,7 +2905,7 @@
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.BaseQueryParams.unsupported_params">unsupported_params</span></code></td>
             <td>
-                  <code>list[str]</code>
+                  <code><span title="list">list</span>[<span title="str">str</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3124,7 +3124,7 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
                 <code>query_params</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3308,7 +3308,7 @@ does not have a valid prefix.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="BaseQueryParams (optimade.server.query_params.BaseQueryParams)" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
 
 
         <p>Common query params for all Entry listing endpoints.</p>
@@ -3327,7 +3327,7 @@ does not have a valid prefix.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.filter">filter</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3338,7 +3338,7 @@ does not have a valid prefix.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.response_format">response_format</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3364,7 +3364,7 @@ The email SHOULD be that of a person and not an automatic system.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.response_fields">response_fields</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3378,7 +3378,7 @@ Other OPTIONAL fields MUST NOT be returned when this parameter is present.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.sort">sort</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3401,7 +3401,7 @@ An example is shown in the section Entry Listing Info Endpoints.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_limit">page_limit</span></code></td>
             <td>
-                  <code>int</code>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3418,7 +3418,7 @@ The default limit value is up to the API implementation to decide.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_offset">page_offset</span></code></td>
             <td>
-                  <code>int</code>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3430,7 +3430,7 @@ The default limit value is up to the API implementation to decide.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_number">page_number</span></code></td>
             <td>
-                  <code>int</code>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3443,7 +3443,7 @@ It is RECOMMENDED that the first page has number 1, i.e., that <code>page_number
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_cursor">page_cursor</span></code></td>
             <td>
-                  <code>int</code>
+                  <code><span title="int">int</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3454,7 +3454,7 @@ It is RECOMMENDED that the first page has number 1, i.e., that <code>page_number
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_above">page_above</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3467,7 +3467,7 @@ increasing <code>id</code>, so <code>page_above</code> value refers to an <code>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.page_below">page_below</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3478,7 +3478,7 @@ increasing <code>id</code>, so <code>page_above</code> value refers to an <code>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.include">include</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3499,7 +3499,7 @@ field <code>included</code>, as per the definition of <code>included</code>, see
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.EntryListingQueryParams.api_hint">api_hint</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3968,7 +3968,7 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
                 <code>query_params</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4152,7 +4152,7 @@ does not have a valid prefix.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="optimade.server.query_params.BaseQueryParams" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="BaseQueryParams (optimade.server.query_params.BaseQueryParams)" href="#optimade.server.query_params.BaseQueryParams">BaseQueryParams</a></code></p>
 
 
         <p>Common query params for single entry endpoints.</p>
@@ -4171,7 +4171,7 @@ does not have a valid prefix.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.response_format">response_format</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4197,7 +4197,7 @@ The email SHOULD be that of a person and not an automatic system.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.response_fields">response_fields</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4211,7 +4211,7 @@ Other OPTIONAL fields MUST NOT be returned when this parameter is present.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.include">include</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4232,7 +4232,7 @@ field <code>included</code>, as per the definition of <code>included</code>, see
           <tr class="doc-section-item">
             <td><code><span title="optimade.server.query_params.SingleEntryQueryParams.api_hint">api_hint</span></code></td>
             <td>
-                  <code>str</code>
+                  <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4477,7 +4477,7 @@ in the URL string are implemented in the relevant <code>*QueryParams</code> clas
                 <code>query_params</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Iterable">Iterable</span>[str]</code>
+                  <code><span title="collections.abc.Iterable">Iterable</span>[<span title="str">str</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4724,7 +4724,7 @@ does not have a valid prefix.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c8b220af.min.js"></script>
       
     
   </body>
