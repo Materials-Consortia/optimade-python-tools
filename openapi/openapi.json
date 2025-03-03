@@ -4388,12 +4388,14 @@
           "space_group_symbol_hermann_mauguin": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(P|I|F|A|B|C|R)(\\s+\\d+|\\s+[a-z]+|\\s+\\d+/[a-z]+|\\s+\\d+/\\d+|\\s+-\\d*|\\s+\\d+/m|\\s+[a-z]+/m)*$"
               },
               {
                 "type": "null"
               }
             ],
+            "pattern": "^(P|I|F|A|B|C|R)(\\s+\\d+|\\s+[a-z]+|\\s+\\d+/[a-z]+|\\s+\\d+/\\d+|\\s+-\\d*|\\s+\\d+/m|\\s+[a-z]+/m)*$",
             "title": "Space Group Symbol Hermann Mauguin",
             "description": "A human- and machine-readable string containing the short Hermann-Mauguin (H-M) symbol which specifies the space group of the structure in the response.\n\n- **Type**: string\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n    - The H-M symbol SHOULD aim to convey the closest representation of the symmetry information that can be specified using the short format used in the International Tables for Crystallography vol. A (IUCr, 2005), Table 4.3.2.1 as described in the accompanying text.\n    - The symbol MAY be a non-standard short H-M symbol.\n    - The H-M symbol does not unambiguously communicate the axis, cell, and origin choice, and the given symbol SHOULD NOT be amended to convey this information.\n    - To encode as character strings, the following adaptations MUST be made when representing H-M symbols given in their typesetted form:\n        - the overbar above the numbers MUST be changed to the minus sign in front of the digit (e.g. '-2');\n        - subscripts that denote screw axes are written as digits immediately after the axis designator without a space (e.g. 'P 32')\n        - the space group generators MUST be separated by a single space (e.g. 'P 21 21 2');\n        - there MUST be no spaces in the space group generator designation (i.e. use 'P 21/m', not the 'P 21 / m');\n\n- **Examples**:\n    - `C 2`\n    - `P 21 21 21`\n\n- **Bibliographic References**:\n    - IUCr (2005). International Tables for Crystallography vol. A. Space-Group Symmetry. Ed. Theo Hahn. 5-th edition. Dordrecht, Springer.\n",
             "x-optimade-queryable": "optional",
@@ -4402,12 +4404,14 @@
           "space_group_symbol_hermann_mauguin_extended": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(P|I|F|A|B|C|R)(\\s+\\d+|\\s+[a-z]+|\\s+\\d+/[a-z]+|\\s+\\d+/\\d+|\\s+-\\d*|\\s+\\d+/m|\\s+[a-z]+/m)*$"
               },
               {
                 "type": "null"
               }
             ],
+            "pattern": "^(P|I|F|A|B|C|R)(\\s+\\d+|\\s+[a-z]+|\\s+\\d+/[a-z]+|\\s+\\d+/\\d+|\\s+-\\d*|\\s+\\d+/m|\\s+[a-z]+/m)*$",
             "title": "Space Group Symbol Hermann Mauguin Extended",
             "description": "A human- and machine-readable string containing the extended Hermann-Mauguin (H-M) symbol which specifies the space group of the structure in the response.\n\n- **Type**: string\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n    - The H-M symbols SHOULD be given as specified in the International Tables for Crystallography vol. A (IUCr, 2005), Table 4.3.2.1.\n    - The change-of-basis operation SHOULD be provided for the non-standard axis and cell choices.\n    - The extended H-M symbol does not unambiguously communicate the origin choice, and the given symbol SHOULD NOT be amended to convey this information.\n    - The description of the change-of-basis SHOULD follow conventions of the ITC Vol. B, Sect. 1.4, Appendix A1.4.2 (IUCr, 2001).\n    - The same character string encoding conventions MUST be used as for the specification of the `space_group_symbol_hermann_mauguin` property.\n\n- **Examples**:\n    - `C 1 2 1`\n\n- **Bibliographic References**:\n    - IUCr (2001). International Tables for Crystallography vol. B. Reciprocal Space. Ed. U. Shmueli. 2-nd edition. Dordrecht/Boston/London, Kluwer Academic Publishers.\n    - IUCr (2005). International Tables for Crystallography vol. A. Space-Group Symmetry. Ed. Theo Hahn. 5-th edition. Dordrecht, Springer.\n\n",
             "x-optimade-queryable": "optional",

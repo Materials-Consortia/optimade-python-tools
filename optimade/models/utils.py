@@ -234,6 +234,7 @@ ANONYMOUS_ELEMENTS = tuple(itertools.islice(anonymous_element_generator(), 150))
 
 CHEMICAL_FORMULA_REGEXP = r"(^$)|^([A-Z][a-z]?([2-9]|[1-9]\d+)?)+$"
 SYMMETRY_OPERATION_REGEXP = r"^([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?)$"
+HM_SYMBOL_REGEXP = r"^(P|I|F|A|B|C|R)(\s+\d+|\s+[a-z]+|\s+\d+/[a-z]+|\s+\d+/\d+|\s+-\d*|\s+\d+/m|\s+[a-z]+/m)*$"
 
 
 def _generate_symmetry_operation_regex():

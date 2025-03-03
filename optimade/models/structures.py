@@ -11,6 +11,7 @@ from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
     CHEMICAL_SYMBOLS,
+    HM_SYMBOL_REGEXP,
     OptimadeField,
     StrictField,
     SupportLevel,
@@ -661,6 +662,7 @@ Note: the elements in this list each refer to the direction of the corresponding
 """,
             support=SupportLevel.OPTIONAL,
             queryable=SupportLevel.OPTIONAL,
+            pattern=HM_SYMBOL_REGEXP,
         ),
     ] = None
 
@@ -690,6 +692,7 @@ Note: the elements in this list each refer to the direction of the corresponding
 """,
             support=SupportLevel.OPTIONAL,
             queryable=SupportLevel.OPTIONAL,
+            pattern=HM_SYMBOL_REGEXP,
         ),
     ] = None
 
