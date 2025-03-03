@@ -235,6 +235,17 @@ ANONYMOUS_ELEMENTS = tuple(itertools.islice(anonymous_element_generator(), 150))
 CHEMICAL_FORMULA_REGEXP = r"(^$)|^([A-Z][a-z]?([2-9]|[1-9]\d+)?)+$"
 SYMMETRY_OPERATION_REGEXP = r"^([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?)$"
 
+
+def _generate_symmetry_operation_regex():
+    translation = "1/2|[12]/3|[1-3]/4|[1-5]/6"
+    translation_appended = f"[-+]? [xyz] ([-+][xyz])? ([-+] ({translation}) )?"
+    translation_prepended = f"[-+]? ({translation}) ([-+] [xyz] ([-+][xyz])? )?"
+    symop = f"({translation_appended}|{translation_prepended})".replace(" ", "")
+    return f"^{symop},{symop},{symop}$"
+
+
+SPACE_GROUP_SYMMETRY_OPERATION_REGEX = _generate_symmetry_operation_regex()
+
 EXTRA_SYMBOLS = ["X", "vacancy"]
 
 CHEMICAL_SYMBOLS = [
