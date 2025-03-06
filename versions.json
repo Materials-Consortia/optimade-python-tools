@@ -3,9 +3,14 @@
     "version": "latest",
     "title": "latest",
     "aliases": [
-      "main",
-      "master"
+      "master",
+      "main"
     ]
+  },
+  {
+    "version": "1.2.1",
+    "title": "1.2.1",
+    "aliases": []
   },
   {
     "version": "1.2.0",
