@@ -1,14 +1,32 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v1.2.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.1) (2025-03-03)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.0...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.0...v1.2.1)
 
-This v1.2.0 release is coincidentally the first to support some features from OPTIMADE v1.2.0, namely the specification of licenses. Support for other 1.2 fields (e.g., symmetry, partial data etc.) will come in future releases based on demand. As the `optimade.__api_version__` has been bumped, servers running optimade-python-tools will now have versioned endpoints for `/v1` and `/v1.2`, but not `/v1.1`. For now, only one OPTIMADE API version is targeted by each optimade-python-tools version, as listed in the README. If you need any changes backported to the v1.1.x branch, please raise an issue.
+**Fixed bugs:**
+
+- `update_openapijson` invoke task is not idempotent [\#1429](https://github.com/Materials-Consortia/optimade-python-tools/issues/1429)
+- anyOf, allOf, etc. in /info/{entry\_type} endpoints [\#775](https://github.com/Materials-Consortia/optimade-python-tools/issues/775)
+- API does not return milliseconds in datetimes even when present in underlying data [\#606](https://github.com/Materials-Consortia/optimade-python-tools/issues/606)
+- CheckWronglyVersionedBaseUrls middleware not working for Dockerized servers [\#520](https://github.com/Materials-Consortia/optimade-python-tools/issues/520)
+
+**Closed issues:**
+
+- Support new `meta->request_delay` field [\#1418](https://github.com/Materials-Consortia/optimade-python-tools/issues/1418)
+- Support `request_delay` meta value in client [\#1247](https://github.com/Materials-Consortia/optimade-python-tools/issues/1247)
+
+**Merged pull requests:**
+
+- Add remaining symmetry group fields \(Hall, HM symbols, IT number\) [\#2240](https://github.com/Materials-Consortia/optimade-python-tools/pull/2240) ([ml-evs](https://github.com/ml-evs))
+- Add support for `request_delay` in client and server [\#2237](https://github.com/Materials-Consortia/optimade-python-tools/pull/2237) ([ml-evs](https://github.com/ml-evs))
+- Add support for `space_group_symmetry_operations_xyz` [\#2236](https://github.com/Materials-Consortia/optimade-python-tools/pull/2236) ([ml-evs](https://github.com/ml-evs))
 
 ## [v1.2.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.0) (2025-02-25)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.1.11...v1.2.0)
+
+This v1.2.0 release is coincidentally the first to support some features from OPTIMADE v1.2.0, namely the specification of licenses. Support for other 1.2 fields (e.g., symmetry, partial data etc.) will come in future releases based on demand. As the `optimade.__api_version__` has been bumped, servers running optimade-python-tools will now have versioned endpoints for `/v1` and `/v1.2`, but not `/v1.1`. For now, only one OPTIMADE API version is targeted by each optimade-python-tools version, as listed in the README. If you need any changes backported to the v1.1.x branch, please raise an issue.
 
 **Fixed bugs:**
 
