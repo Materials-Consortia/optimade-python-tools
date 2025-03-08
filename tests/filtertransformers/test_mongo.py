@@ -14,7 +14,7 @@ from optimade.warnings import UnknownProviderProperty
 
 class TestMongoTransformer:
     version = (1, 2, 0)
-    variant = "develop"
+    variant = "default"
 
     @pytest.fixture(autouse=True)
     def set_up(self):
@@ -42,7 +42,9 @@ class TestMongoTransformer:
             self.transform("BadLuck IS KNOWN")  # contains upper-case letters
 
     def test_awkward_nested_field(self):
-        assert self.transform("_mp_stability.gga_gga+u_r2scan <= 0.0") == {"_mp_stability.gga_gga+u_r2scan": {"$lte": 0.0}}
+        assert self.transform("_mp_stability.gga_gga+u_r2scan <= 0.0") == {
+            "_mp_stability.gga_gga+u_r2scan": {"$lte": 0.0}
+        }
 
     def test_provider_property_name(self):
         # database-provider-specific prefixes
