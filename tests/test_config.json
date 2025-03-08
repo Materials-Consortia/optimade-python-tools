@@ -22,7 +22,8 @@
         "structures": [
             "band_gap",
             {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"},
-            {"name": "_exmpl_this_provider_field", "type": "string", "description": "A field defined by this provider, added to this config to check whether the server will pass it through without adding two prefixes."}
+            {"name": "_exmpl_this_provider_field", "type": "string", "description": "A field defined by this provider, added to this config to check whether the server will pass it through without adding two prefixes."},
+            {"name": "_exmpl_stability", "type": "dictionary", "description": "A dictionary field with some naughty keys that contain non-URL-safe characters."}
         ]
     },
     "aliases": {

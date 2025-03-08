@@ -80,6 +80,15 @@ def test_check_response_single_structure(check_response):
     check_response(request, expected_ids=expected_ids)
 
 
+def test_awkward_nested_provider_field(check_response):
+    """Tests that structures with a nested provider field that breaks
+    identifier field names can still be filtered on.
+    """
+
+    request = "/structures?filter=_exmpl_stability.gga_gga%2Bu_r2scan < 0"
+    check_response(request, expected_ids=["mpf_3819"])
+
+
 class TestMissingSingleStructureEndpoint(RegularEndpointTests):
     """Tests for /structures/<entry_id> for unknown <entry_id>"""
 

@@ -3757,6 +3757,7 @@
     ],
     "structure_features": [],
     "task_id": "mpf_3819",
+    "_exmpl_stability": {"gga_gga+u_r2scan": -0.2},
     "relationships": {
       "references": {
         "data": [
