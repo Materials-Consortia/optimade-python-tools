@@ -14,7 +14,7 @@ from optimade.warnings import UnknownProviderProperty
 
 class TestMongoTransformer:
     version = (1, 2, 0)
-    variant = "develop"
+    variant = "default"
 
     @pytest.fixture(autouse=True)
     def set_up(self):
