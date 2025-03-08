@@ -269,7 +269,7 @@ class TestParserV1_2_0(TestParserV1_0_0):
     """
 
     version = (1, 2, 0)
-    variant = "develop"
+    variant = "default"
 
     def test_boolean_values(self):
         assert isinstance(
@@ -290,4 +290,8 @@ class TestParserV1_2_0(TestParserV1_0_0):
         assert isinstance(
             self.parse("NOT _exmpl_element_counts = TRUE"),
             Tree,
+        )
+        assert isinstance(
+            self.parse("_mp_stability.gga_gga+u_r2scan <= 0.0"),
+            Tree
         )
