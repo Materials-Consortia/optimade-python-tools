@@ -291,7 +291,4 @@ class TestParserV1_2_0(TestParserV1_0_0):
             self.parse("NOT _exmpl_element_counts = TRUE"),
             Tree,
         )
-        assert isinstance(
-            self.parse("_mp_stability.gga_gga+u_r2scan <= 0.0"),
-            Tree
-        )
+        assert isinstance(self.parse("_mp_stability.gga_gga+u_r2scan <= 0.0"), Tree)
