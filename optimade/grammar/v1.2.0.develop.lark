@@ -55,7 +55,7 @@ set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL v
 property_zip_addon: ":" property (":" property)*
 
 // Property syntax
-property: IDENTIFIER ( "." IDENTIFIER )*
+property: IDENTIFIER ( "." NESTED_IDENTIFIER )*
 
 // String syntax
 string: ESCAPED_STRING
@@ -95,6 +95,7 @@ ANY:      "ANY"
 OPERATOR: ( "<" ["="] | ">" ["="] | ["!"] "=" )
 
 IDENTIFIER: ( "_" | LCASE_LETTER ) ( "_" | LCASE_LETTER | DIGIT )*
+NESTED_IDENTIFIER: ( "_" | LCASE_LETTER ) ( "_" | "+" | LCASE_LETTER | DIGIT )*
 LCASE_LETTER: "a".."z"
 DIGIT: "0".."9"
 
