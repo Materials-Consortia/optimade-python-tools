@@ -166,6 +166,10 @@ def get_included_relationships(
             )
 
     endpoint_includes: dict[Any, dict] = defaultdict(dict)
+
+    if not include_param:
+        return []
+
     for doc in results:
         # convert list of references into dict by ID to only included unique IDs
         if doc is None:
