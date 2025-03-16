@@ -3188,6 +3188,7 @@
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -3218,6 +3219,7 @@ results.</p>
 simulateneously and asynchronously, with the results collected
 into the <code>all_results</code> attribute, keyed by endpoint, filter
 and provider.</p>
+
 
 
 
@@ -5773,6 +5775,7 @@ and provider.</p>
 
         <p>Used internally when querying via <code>client.structures.get()</code> to set the
 chosen endpoint. Should be reset to <code>None</code> outside of all <code>get()</code> calls.</p>
+
     </div>
 
 </div>
@@ -5796,6 +5799,7 @@ chosen endpoint. Should be reset to <code>None</code> outside of all <code>get()
 
         <p>Whether or not to fallover if <code>use_async</code> is true yet asynchronous mode
 is impossible due to, e.g., a running event loop.</p>
+
     </div>
 
 </div>
@@ -5819,6 +5823,7 @@ is impossible due to, e.g., a running event loop.</p>
 
         <p>A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
 the results from each base URL for that particular filter.</p>
+
     </div>
 
 </div>
@@ -5840,6 +5845,7 @@ the results from each base URL for that particular filter.</p>
     <div class="doc doc-contents ">
 
         <p>A list (or any iterable) of OPTIMADE base URLs to query.</p>
+
     </div>
 
 </div>
@@ -5871,6 +5877,7 @@ and 'included'.</p>
 key <code>next</code> and the progress bar with the key <code>advance_results</code>.
 In the case of multiple provided callbacks, only the value returned by the final
 callback in the stack will be used.</p>
+
     </div>
 
 </div>
@@ -5893,6 +5900,7 @@ callback in the stack will be used.</p>
     <div class="doc doc-contents ">
 
         <p>Enable binary search count for databases that do not support <code>meta-&gt;data_returned</code>.</p>
+
     </div>
 
 </div>
@@ -5916,6 +5924,7 @@ callback in the stack will be used.</p>
 
         <p>A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
 the number of results from each base URL for that particular filter.</p>
+
     </div>
 
 </div>
@@ -5938,6 +5947,7 @@ the number of results from each base URL for that particular filter.</p>
     <div class="doc doc-contents ">
 
         <p>Additional HTTP headers.</p>
+
     </div>
 
 </div>
@@ -5960,6 +5970,7 @@ the number of results from each base URL for that particular filter.</p>
     <div class="doc doc-contents ">
 
         <p>The timeout to use for each HTTP request.</p>
+
     </div>
 
 </div>
@@ -5981,6 +5992,7 @@ the number of results from each base URL for that particular filter.</p>
     <div class="doc doc-contents ">
 
         <p>The maximum number of times to repeat a failed query before giving up.</p>
+
     </div>
 
 </div>
@@ -6004,6 +6016,7 @@ the number of results from each base URL for that particular filter.</p>
 
         <p>Maximum number of results to downlod per provider. If None, will
 download all.</p>
+
     </div>
 
 </div>
@@ -6027,6 +6040,7 @@ download all.</p>
 
         <p>A dictionary containing list of properties served by each database,
 broken down by entry type, then database.</p>
+
     </div>
 
 </div>
@@ -6048,6 +6062,7 @@ broken down by entry type, then database.</p>
     <div class="doc doc-contents ">
 
         <p>Whether to disable progress bar printing.</p>
+
     </div>
 
 </div>
@@ -6070,6 +6085,7 @@ broken down by entry type, then database.</p>
     <div class="doc doc-contents ">
 
         <p>Whether to skip SSL verification.</p>
+
     </div>
 
 </div>
@@ -6091,6 +6107,7 @@ broken down by entry type, then database.</p>
     <div class="doc doc-contents ">
 
         <p>Whether or not to make all requests asynchronously using asyncio.</p>
+
     </div>
 
 </div>
@@ -6122,6 +6139,7 @@ original <code>__getattribute__</code>.</p>
 <span class="n">info_structures</span> <span class="o">=</span> <span class="n">cli</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 </code></pre></div>
 </div>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/client/client.py</code></summary>
@@ -6412,6 +6430,7 @@ docstring for more details.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/client/client.py</code></summary>
@@ -6777,6 +6796,7 @@ asynchronously within a single API.</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/client/client.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">421</span>
@@ -6903,6 +6923,7 @@ search over pagination to count the results.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/client/client.py</code></summary>
@@ -7184,6 +7205,7 @@ from the server.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/client/client.py</code></summary>
@@ -7485,6 +7507,7 @@ doing pagination externally.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/client/client.py</code></summary>
@@ -7797,6 +7820,7 @@ doing pagination externally.</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/client/client.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">869</span>
@@ -7939,6 +7963,7 @@ doing pagination externally.</p>
 
         <p>Returns the list of properties reported at <code>/info/&lt;entry_type&gt;</code>
 for the given entry type, for each database.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/client/client.py</code></summary>
@@ -8108,6 +8133,7 @@ served by each database.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/client/client.py</code></summary>

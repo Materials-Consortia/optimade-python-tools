@@ -2986,6 +2986,7 @@
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -3013,6 +3014,7 @@
 
         <p>Class for querying MongoDB collections (implemented by either pymongo or mongomock)
 containing serialized <a class="autorefs autorefs-internal" href="../../../models/entries/#optimade.models.entries.EntryResource"><code>EntryResource</code></a>s objects.</p>
+
 
 
 
@@ -3448,6 +3450,7 @@ This means the set is created the first time the property is requested and then 
           </tr>
       </tbody>
     </table>
+
     </div>
 
 </div>
@@ -3471,6 +3474,7 @@ This means the set is created the first time the property is requested and then 
 
         <p>The default pagination mechansim to use with a given collection,
 if the user does not provide any pagination query parameters.</p>
+
     </div>
 
 </div>
@@ -3570,6 +3574,7 @@ format changes between deserialization and response.</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">38</span>
@@ -3646,6 +3651,7 @@ format changes between deserialization and response.</p>
 
         <p>Returns the total number of entries in the collection.</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">67</span>
@@ -3705,6 +3711,7 @@ to the <code>pymongo.collection.Collection.count_documents</code> method.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
@@ -3772,6 +3779,7 @@ to the <code>pymongo.collection.Collection.count_documents</code> method.</p>
 <p>For MongoDB, the default is to create a unique index
 on the <code>id</code> field. This method should obey any configured
 mappers.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
@@ -3860,6 +3868,7 @@ the mapper should be used to convert between the two).</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
@@ -3975,6 +3984,7 @@ for more information.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
@@ -4212,6 +4222,7 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">306</span>
@@ -4352,6 +4363,7 @@ link.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>
@@ -4536,6 +4548,7 @@ or response format.</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">132</span>
@@ -4668,6 +4681,7 @@ insertion.</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/mongo.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 94</span>
@@ -4770,6 +4784,7 @@ resolving aliases and dealing with any invalid fields.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/entry_collections/entry_collections.py</code></summary>

@@ -3361,6 +3361,7 @@ for turning filters parsed by lark into backend-specific queries.</p>
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -3427,6 +3428,7 @@ various field-related configuration.</p>
           </tr>
       </tbody>
     </table>
+
 
 
 
@@ -4049,6 +4051,7 @@ various field-related configuration.</p>
 
         <p>A mapping between backend field names (aliases) and the corresponding
 <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> object.</p>
+
     </div>
 
 </div>
@@ -4072,6 +4075,7 @@ various field-related configuration.</p>
 
         <p>A mapping from the OPTIMADE field name to the corresponding
 <a class="autorefs autorefs-internal" href="#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> objects.</p>
+
     </div>
 
 </div>
@@ -4090,6 +4094,7 @@ various field-related configuration.</p>
     <div class="doc doc-contents ">
 
         <p>The default rule to call when no definition is found for a particular construct.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4121,6 +4126,7 @@ various field-related configuration.</p>
 
         <p>Initialise the transformer object, optionally loading in a
 resource mapper for use when post-processing.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4154,6 +4160,7 @@ resource mapper for use when post-processing.</p>
 
         <p>comparison: constant_first_comparison | property_first_comparison</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">299</span>
@@ -4183,6 +4190,7 @@ resource mapper for use when post-processing.</p>
     <div class="doc doc-contents ">
 
         <p>constant: string | number</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4214,6 +4222,7 @@ resource mapper for use when post-processing.</p>
 
         <p>constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">335</span>
@@ -4237,6 +4246,7 @@ resource mapper for use when post-processing.</p>
     <div class="doc doc-contents ">
 
         <p>expression: expression_clause ( OR expression_clause )</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4262,6 +4272,7 @@ resource mapper for use when post-processing.</p>
 
         <p>expression_clause: expression_phrase ( AND expression_phrase )*</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">318</span>
@@ -4286,6 +4297,7 @@ resource mapper for use when post-processing.</p>
 
         <p>expression_phrase: [ NOT ] ( comparison | "(" expression ")" )</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">321</span>
@@ -4309,6 +4321,7 @@ resource mapper for use when post-processing.</p>
     <div class="doc doc-contents ">
 
         <p>filter: expression*</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4336,6 +4349,7 @@ resource mapper for use when post-processing.</p>
 
         <p>fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">345</span>
@@ -4359,6 +4373,7 @@ resource mapper for use when post-processing.</p>
     <div class="doc doc-contents ">
 
         <p>known_op_rhs: IS ( KNOWN | UNKNOWN )</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4384,6 +4399,7 @@ resource mapper for use when post-processing.</p>
 
         <p>length_op_rhs: LENGTH [ OPERATOR ] value</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">351</span>
@@ -4407,6 +4423,7 @@ resource mapper for use when post-processing.</p>
     <div class="doc doc-contents ">
 
         <p>non_string_value: number | property</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4462,6 +4479,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
@@ -4501,6 +4519,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
     <div class="doc doc-contents ">
 
         <p>number: SIGNED_INT | SIGNED_FLOAT</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4544,6 +4563,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 
         <p>Post-process the query according to the rules defined for
 the backend, returning the backend-specific query.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4605,6 +4625,7 @@ of the above rules.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4732,6 +4753,7 @@ property ( value_op_rhs
          | set_zip_op_rhs
          | length_op_rhs )</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">324</span>
@@ -4772,6 +4794,7 @@ property ( value_op_rhs
 
         <p>property_zip_addon: ":" property (":" property)*</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">362</span>
@@ -4795,6 +4818,7 @@ property ( value_op_rhs
     <div class="doc doc-contents ">
 
         <p>set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4822,6 +4846,7 @@ property ( value_op_rhs
 | ONLY value_zip_list
 | ALL value_zip_list
 | ANY value_zip_list )</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4857,6 +4882,7 @@ property ( value_op_rhs
 
         <p>signed_int : SIGNED_INT</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">282</span>
@@ -4884,6 +4910,7 @@ property ( value_op_rhs
     <div class="doc doc-contents ">
 
         <p>string: ESCAPED_STRING</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4913,6 +4940,7 @@ property ( value_op_rhs
 
         <p>Transform the query using the Lark <code>Transformer</code> then run the
 backend-specific post-processing methods.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4946,6 +4974,7 @@ backend-specific post-processing methods.</p>
 
         <p>value: string | number | property</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">203</span>
@@ -4976,6 +5005,7 @@ backend-specific post-processing methods.</p>
 
         <p>value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">305</span>
@@ -4999,6 +5029,7 @@ backend-specific post-processing methods.</p>
     <div class="doc doc-contents ">
 
         <p>value_op_rhs: OPERATOR value</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -5026,6 +5057,7 @@ backend-specific post-processing methods.</p>
 
         <p>value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">308</span>
@@ -5051,6 +5083,7 @@ backend-specific post-processing methods.</p>
     <div class="doc doc-contents ">
 
         <p>value_zip_list: value_zip ( "," value_zip )*</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -5141,6 +5174,7 @@ can then decide whether to use this for all "LENGTH" queries.</p>
           </tr>
       </tbody>
     </table>
+
 
 
 
@@ -5327,6 +5361,7 @@ can then decide whether to use this for all "LENGTH" queries.</p>
           </tr>
       </tbody>
     </table>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>

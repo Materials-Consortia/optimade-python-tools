@@ -3042,6 +3042,7 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.</p>
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -3120,6 +3121,7 @@ various field-related configuration.</p>
           </tr>
       </tbody>
     </table>
+
 
 
 
@@ -4254,6 +4256,7 @@ various field-related configuration.</p>
 
         <p>A mapping between backend field names (aliases) and the corresponding
 <a class="autorefs autorefs-internal" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> object.</p>
+
     </div>
 
 </div>
@@ -4277,6 +4280,7 @@ various field-related configuration.</p>
 
         <p>A mapping from the OPTIMADE field name to the corresponding
 <a class="autorefs autorefs-internal" href="../base_transformer/#optimade.filtertransformers.base_transformer.Quantity"><code>Quantity</code></a> objects.</p>
+
     </div>
 
 </div>
@@ -4295,6 +4299,7 @@ various field-related configuration.</p>
     <div class="doc doc-contents ">
 
         <p>The default rule to call when no definition is found for a particular construct.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4326,6 +4331,7 @@ various field-related configuration.</p>
 
         <p>Initialise the transformer object, optionally loading in a
 resource mapper for use when post-processing.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4359,6 +4365,7 @@ resource mapper for use when post-processing.</p>
 
         <p>comparison: constant_first_comparison | property_first_comparison</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">299</span>
@@ -4388,6 +4395,7 @@ resource mapper for use when post-processing.</p>
     <div class="doc doc-contents ">
 
         <p>constant: string | number</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4419,6 +4427,7 @@ resource mapper for use when post-processing.</p>
 
         <p>filter: expression*</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">193</span>
@@ -4444,6 +4453,7 @@ resource mapper for use when post-processing.</p>
     <div class="doc doc-contents ">
 
         <p>non_string_value: number | property</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4499,6 +4509,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
       </tbody>
     </table>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
@@ -4538,6 +4549,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
     <div class="doc doc-contents ">
 
         <p>number: SIGNED_INT | SIGNED_FLOAT</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4581,6 +4593,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 
         <p>Used to post-process the nested dictionary of the parsed query.</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">58</span>
@@ -4619,6 +4632,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 
         <p>signed_int : SIGNED_INT</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">282</span>
@@ -4646,6 +4660,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
     <div class="doc doc-contents ">
 
         <p>string: ESCAPED_STRING</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4675,6 +4690,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 
         <p>Transform the query using the Lark <code>Transformer</code> then run the
 backend-specific post-processing methods.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4707,6 +4723,7 @@ backend-specific post-processing methods.</p>
     <div class="doc doc-contents ">
 
         <p>value: string | number | property</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
@@ -4834,6 +4851,7 @@ another, the following functions could be used:</p>
 <span class="p">)</span>
 </code></pre></div>
 </details>
+
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">570</span>

@@ -3884,6 +3884,7 @@
 
 
 
+
   <div class="doc doc-children">
 
 
@@ -3911,6 +3912,7 @@
         <p>This singleton loads the config from a hierarchy of sources (see
 <a class="autorefs autorefs-internal" title="settings_customise_sources" href="#optimade.server.config.ServerConfig.settings_customise_sources"><code>customise_sources</code></a>)
 and makes it importable in the server code.</p>
+
     </div>
 
 </div>
@@ -3939,6 +3941,7 @@ and makes it importable in the server code.</p>
 <p>It is set to: <code>pathlib.Path.home()/.optimade.json</code></p>
 <p>For Unix-based systems (Linux) this will be equivalent to <code>~/.optimade.json</code>.</p>
 </div>
+
     </div>
 
 </div>
@@ -3965,6 +3968,7 @@ and makes it importable in the server code.</p>
 <a href="https://docs.pydantic.dev/latest/concepts/pydantic_settings/#customise-settings-sources">pydantic documentation</a>,
 this class defines loading ServerConfig settings from a configuration file.</p>
 <p>The file must be of either type JSON or YML/YAML.</p>
+
 
 
 
@@ -4134,6 +4138,7 @@ this class defines loading ServerConfig settings from a configuration file.</p>
 
     <div class="doc doc-contents ">
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">144</span>
@@ -4160,6 +4165,7 @@ this class defines loading ServerConfig settings from a configuration file.</p>
 <p>It does not make sense to use it for this class, since 'extra' is set to
 'allow'. We will instead just parse and take every key/field specified in the
 config file.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -4200,6 +4206,7 @@ config file.</p>
     <div class="doc doc-contents ">
 
         <p>Parse the config file and return a dictionary of its content.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -4335,6 +4342,7 @@ config file.</p>
 
 
 
+
               <details class="quote">
                 <summary>Source code in <code>optimade/server/config.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">40</span>
@@ -4401,6 +4409,7 @@ config file.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -4421,6 +4430,7 @@ config file.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -4441,6 +4451,7 @@ config file.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -4461,6 +4472,7 @@ config file.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -4481,6 +4493,7 @@ config file.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -4501,6 +4514,7 @@ config file.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -4533,6 +4547,7 @@ config file.</p>
 
         <p>This class stores server config parameters in a way that
 can be easily extended for new config file types.</p>
+
 
 
 
@@ -5471,6 +5486,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5491,6 +5507,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5511,6 +5528,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5531,6 +5549,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5551,6 +5570,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5571,6 +5591,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5591,6 +5612,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5611,6 +5633,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5631,6 +5654,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5651,6 +5675,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5671,6 +5696,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5691,6 +5717,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5711,6 +5738,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5731,6 +5759,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5751,6 +5780,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5771,6 +5801,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5791,6 +5822,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5811,6 +5843,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5831,6 +5864,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5851,6 +5885,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5871,6 +5906,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5891,6 +5927,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5911,6 +5948,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5931,6 +5969,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5951,6 +5990,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5971,6 +6011,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -5991,6 +6032,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6011,6 +6053,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6031,6 +6074,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6051,6 +6095,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6071,6 +6116,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6091,6 +6137,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6111,6 +6158,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6131,6 +6179,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6151,6 +6200,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6171,6 +6221,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6191,6 +6242,7 @@ can be easily extended for new config file types.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6210,6 +6262,7 @@ can be easily extended for new config file types.</p>
 
         <p>Prefer the value of database name if set from <code>mongo_uri</code> rather than
 <code>mongo_database</code>.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -6279,6 +6332,7 @@ can be easily extended for new config file types.</p>
 
         <p>Check that the path to the JSONL file is valid.</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">461</span>
@@ -6318,6 +6372,7 @@ can be easily extended for new config file types.</p>
     <div class="doc doc-contents ">
 
         <p>Check that the license is either an spdx identifier or an accessible URL.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -6387,6 +6442,7 @@ can be easily extended for new config file types.</p>
 
         <p>Make sure the request delay is not adversarially large.</p>
 
+
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">470</span>
@@ -6426,6 +6482,7 @@ can be easily extended for new config file types.</p>
     <div class="doc doc-contents ">
 
         <p>Set defaults and modify bypassed value(s)</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -6496,6 +6553,7 @@ can be easily extended for new config file types.</p>
     <a href="https://pydantic-docs.helpmanual.io/usage/settings/#secret-support">pydantic documentation</a>
     for more information).</li>
 </ol>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -6581,6 +6639,7 @@ can be easily extended for new config file types.</p>
 
         <p>Overrides the <code>database_backend</code> setting with MongoDB and
 raises a deprecation warning.</p>
+
 
             <details class="quote">
               <summary>Source code in <code>optimade/server/config.py</code></summary>
@@ -6679,6 +6738,7 @@ raises a deprecation warning.</p>
 
 
 
+
               <details class="quote">
                 <summary>Source code in <code>optimade/server/config.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
@@ -6741,6 +6801,7 @@ raises a deprecation warning.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6761,6 +6822,7 @@ raises a deprecation warning.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
@@ -6781,6 +6843,7 @@ raises a deprecation warning.</p>
 
 
     <div class="doc doc-contents ">
+
     </div>
 
 </div>
