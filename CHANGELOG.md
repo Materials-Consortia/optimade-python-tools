@@ -1,6 +1,22 @@
 # Changelog
 
-## [v1.2.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.1) (2025-03-03)
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.2...HEAD)
+
+**Fixed bugs:**
+
+- Unable to create filters with "+" in nested property name [\#2182](https://github.com/Materials-Consortia/optimade-python-tools/issues/2182)
+
+## [v1.2.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.2) (2025-03-16)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.1...v1.2.2)
+
+**Merged pull requests:**
+
+- Use 1.2 grammar by default and relax rules on nested fields [\#2242](https://github.com/Materials-Consortia/optimade-python-tools/pull/2242) ([ml-evs](https://github.com/ml-evs))
+
+## [v1.2.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.1) (2025-03-06)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.0...v1.2.1)
 
