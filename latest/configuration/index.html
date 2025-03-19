@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
     
     
       
@@ -2758,7 +2758,11 @@
 This way of handling configuration options supports various different approaches to configure the server.
 We recommend either or a combination of the following:</p>
 <ol>
-<li>Create a JSON or YAML configuration file with an implementation's complete configuration in the default location <a class="autorefs autorefs-internal" href="../api_reference/server/config/#optimade.server.config.DEFAULT_CONFIG_FILE_PATH">DEFAULT_CONFIG_FILE_PATH</a> or specify its location with the <code>OPTIMADE_CONFIG_FILE</code> environment variable.</li>
+<li>Create a JSON or YAML configuration file with an implementation's complete configuration in the default location <a class="autorefs autorefs-internal" title="DEFAULT_CONFIG_FILE_PATH = str(Path.home().joinpath('.optimade.json'))
+
+  
+      module-attribute
+  " href="../api_reference/server/config/#optimade.server.config.DEFAULT_CONFIG_FILE_PATH">DEFAULT_CONFIG_FILE_PATH</a> or specify its location with the <code>OPTIMADE_CONFIG_FILE</code> environment variable.</li>
 <li>Set environment variables prefixed with <code>OPTIMADE_</code> or <code>optimade_</code>.</li>
 <li>Create a custom <a class="autorefs autorefs-internal" href="../api_reference/server/config/#optimade.server.config.ServerConfig"><code>ServerConfig</code></a> object with the desired settings directly.</li>
 <li>Load settings from a secret file (see <a href="https://pydantic-docs.helpmanual.io/usage/settings/#secret-support">pydantic documentation</a> for more information).</li>

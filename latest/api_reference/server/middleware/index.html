@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
     
     
       
@@ -3052,15 +3052,25 @@ in the <em>reverse</em> order to <code>OPTIMADE_MIDDLEWARE</code>.</p>
         <p>Add <a class="autorefs autorefs-internal" href="../../warnings/#optimade.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>s to the response.</p>
 <p>All sub-classes of <a class="autorefs autorefs-internal" href="../../warnings/#optimade.warnings.OptimadeWarning"><code>OptimadeWarning</code></a>
 will also be added to the response's
-<a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> list.</p>
+<a class="autorefs autorefs-internal" title="warnings = None
+
+  
+      class-attribute
+      instance-attribute
+  " href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> list.</p>
 <p>By overriding the <code>warnings.showwarning()</code> function with the
-<a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code> method</a>,
+<a class="autorefs autorefs-internal" title="showwarning(message, category, filename, lineno, file=None, line=None)" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code> method</a>,
 all usages of <code>warnings.warn()</code> will result in the regular printing of the
 warning message to <code>stderr</code>, but also its addition to an in-memory list of
 warnings.
 This middleware will, after the URL request has been handled, add the list of
 accumulated warnings to the JSON response under the
-<a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> field.</p>
+<a class="autorefs autorefs-internal" title="warnings = None
+
+  
+      class-attribute
+      instance-attribute
+  " href="../../models/optimade_json/#optimade.models.optimade_json.ResponseMeta.warnings"><code>meta.warnings</code></a> field.</p>
 <p>To make sure the last part happens correctly and a Starlette <code>StreamingResponse</code>
 is returned, as is expected from a <code>BaseHTTPMiddleware</code> sub-class, one is
 instantiated with the updated <code>Content-Length</code> header, as well as making sure
@@ -3075,7 +3085,11 @@ catching all warnings that should be added to the response.</p>
 other middleware with the <code>.add_middleware()</code> method, or by
 initialising the app with a middleware list in which <code>AddWarnings</code>
 appears <em>first</em>. More information can be found in the docstring of
-<a class="autorefs autorefs-internal" href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE"><code>OPTIMADE_MIDDLEWARE</code></a>.</p>
+<a class="autorefs autorefs-internal" title="OPTIMADE_MIDDLEWARE = (EnsureQueryParamIntegrity, CheckWronglyVersionedBaseUrls, HandleApiHint, AddWarnings)
+
+  
+      module-attribute
+  " href="#optimade.server.middleware.OPTIMADE_MIDDLEWARE"><code>OPTIMADE_MIDDLEWARE</code></a>.</p>
 </div>
 
 
@@ -3097,7 +3111,7 @@ appears <em>first</em>. More information can be found in the docstring of
             <td>
               <div class="doc-md-description">
                 <p>List of <a class="autorefs autorefs-internal" href="../../models/optimade_json/#optimade.models.optimade_json.Warnings"><code>Warnings</code></a>
-added through usages of <code>warnings.warn()</code> via <a class="autorefs autorefs-internal" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code></a>.</p>
+added through usages of <code>warnings.warn()</code> via <a class="autorefs autorefs-internal" title="showwarning(message, category, filename, lineno, file=None, line=None)" href="#optimade.server.middleware.AddWarnings.showwarning"><code>showwarning</code></a>.</p>
               </div>
             </td>
           </tr>

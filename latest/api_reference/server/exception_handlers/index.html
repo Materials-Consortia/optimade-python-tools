@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
     
     
       
@@ -3163,7 +3163,7 @@ OPTIMADE specification.</p>
     <div class="doc doc-contents ">
 
         <p>Catch all Python Exceptions not handled by other exception handlers</p>
-<p>Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+<p>Pass-through directly to <a class="autorefs autorefs-internal" title="general_exception(request, exc, status_code=500, errors=None)" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3228,7 +3228,7 @@ OPTIMADE specification.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" title="general_exception(request, exc, status_code=500, errors=None)" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
               </div>
             </td>
           </tr>
@@ -3286,7 +3286,7 @@ OPTIMADE specification.</p>
 <p>All errors raised during filter transformation are wrapped in the Lark <code>VisitError</code>.
 According to the OPTIMADE specification, these errors are repurposed to be 501 NotImplementedErrors.</p>
 <p>For special exceptions, like <a class="autorefs autorefs-internal" href="../../exceptions/#optimade.exceptions.BadRequest"><code>BadRequest</code></a>, we pass-through to
-<a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>, since they should not
+<a class="autorefs autorefs-internal" title="general_exception(request, exc, status_code=500, errors=None)" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>, since they should not
 return a 501 NotImplementedError.</p>
 
 
@@ -3352,7 +3352,7 @@ return a 501 NotImplementedError.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" title="general_exception(request, exc, status_code=500, errors=None)" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
               </div>
             </td>
           </tr>
@@ -3517,7 +3517,7 @@ return a 501 NotImplementedError.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" title="general_exception(request, exc, status_code=500, errors=None)" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
               </div>
             </td>
           </tr>
@@ -3638,7 +3638,7 @@ return a 501 NotImplementedError.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" title="general_exception(request, exc, status_code=500, errors=None)" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
               </div>
             </td>
           </tr>
@@ -3702,7 +3702,7 @@ return a 501 NotImplementedError.</p>
 
         <p>Handle a request validation error from FastAPI</p>
 <p><code>RequestValidationError</code> is a specialization of a general pydantic <code>ValidationError</code>.
-Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+Pass-through directly to <a class="autorefs autorefs-internal" title="general_exception(request, exc, status_code=500, errors=None)" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3767,7 +3767,7 @@ Pass-through directly to <a class="autorefs autorefs-internal" href="#optimade.s
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" title="general_exception(request, exc, status_code=500, errors=None)" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
               </div>
             </td>
           </tr>
@@ -3894,7 +3894,7 @@ this function extracts them and wraps them in the OPTIMADE specific error resour
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
+                <p>A JSON HTTP response through <a class="autorefs autorefs-internal" title="general_exception(request, exc, status_code=500, errors=None)" href="#optimade.server.exception_handlers.general_exception"><code>general_exception()</code></a>.</p>
               </div>
             </td>
           </tr>

@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
     
     
       
@@ -2966,8 +2966,18 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 <p>This function will return either a pymatgen <code>Structure</code> or <code>Molecule</code> based
 on the periodicity or periodic dimensionality of OPTIMADE structure.</p>
 <p>For structures that are periodic in one or more dimensions, a pymatgen <code>Structure</code> is returned when valid lattice_vectors are given.
-This means, if the any of the values in the <a class="autorefs autorefs-internal" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.dimension_types"><code>dimension_types</code></a>
-attribute is <code>1</code>s or if <a class="autorefs autorefs-internal" title="nperiodic_dimensions" href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.nperiodic_dimensions"><code>nperiodic_dimesions</code></a> &gt; 0.</p>
+This means, if the any of the values in the <a class="autorefs autorefs-internal" title="dimension_types = None
+
+  
+      class-attribute
+      instance-attribute
+  " href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.dimension_types"><code>dimension_types</code></a>
+attribute is <code>1</code>s or if <a class="autorefs autorefs-internal" title="nperiodic_dimensions = None
+
+  
+      class-attribute
+      instance-attribute
+  " href="../../../models/structures/#optimade.models.structures.StructureResourceAttributes.nperiodic_dimensions"><code>nperiodic_dimesions</code></a> &gt; 0.</p>
 <p>Otherwise, a pymatgen <code>Molecule</code> is returned.</p>
 
 

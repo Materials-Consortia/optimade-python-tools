@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
     
     
       
@@ -3910,7 +3910,11 @@
     <div class="doc doc-contents ">
 
         <p>This singleton loads the config from a hierarchy of sources (see
-<a class="autorefs autorefs-internal" title="settings_customise_sources" href="#optimade.server.config.ServerConfig.settings_customise_sources"><code>customise_sources</code></a>)
+<a class="autorefs autorefs-internal" title="settings_customise_sources(settings_cls, init_settings, env_settings, dotenv_settings, file_secret_settings)
+
+  
+      classmethod
+  " href="#optimade.server.config.ServerConfig.settings_customise_sources"><code>customise_sources</code></a>)
 and makes it importable in the server code.</p>
 
     </div>
@@ -6546,7 +6550,11 @@ can be easily extended for new config file types.</p>
 <li>Configuration file (JSON/YAML) taken from:<ol>
 <li>Environment variable <code>OPTIMADE_CONFIG_FILE</code>.</li>
 <li>Default location (see
-    <a class="autorefs autorefs-internal" href="#optimade.server.config.DEFAULT_CONFIG_FILE_PATH">DEFAULT_CONFIG_FILE_PATH</a>).</li>
+    <a class="autorefs autorefs-internal" title="DEFAULT_CONFIG_FILE_PATH = str(Path.home().joinpath('.optimade.json'))
+
+  
+      module-attribute
+  " href="#optimade.server.config.DEFAULT_CONFIG_FILE_PATH">DEFAULT_CONFIG_FILE_PATH</a>).</li>
 </ol>
 </li>
 <li>Settings from secret file (see

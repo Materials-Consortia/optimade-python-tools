@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
     
     
       
@@ -3124,7 +3124,11 @@ field names common to all endpoints.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="SUPPORTED_PREFIXES (optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES)" href="#optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES">SUPPORTED_PREFIXES</a></code></td>
+            <td><code><a class="autorefs autorefs-internal" title="SUPPORTED_PREFIXES()
+
+  
+      cached
+   (optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES)" href="#optimade.server.mappers.entries.BaseResourceMapper.SUPPORTED_PREFIXES">SUPPORTED_PREFIXES</a></code></td>
             <td>
                   <code><span title="set">set</span>[<span title="str">str</span>]</code>
             </td>
@@ -3135,7 +3139,7 @@ field names common to all endpoints.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="ALL_ATTRIBUTES (optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES)" href="#optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES">ALL_ATTRIBUTES</a></code></td>
+            <td><code><a class="autorefs autorefs-internal" title="ALL_ATTRIBUTES() (optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES)" href="#optimade.server.mappers.entries.BaseResourceMapper.ALL_ATTRIBUTES">ALL_ATTRIBUTES</a></code></td>
             <td>
                   <code><span title="set">set</span>[<span title="str">str</span>]</code>
             </td>
@@ -3147,7 +3151,7 @@ resource class and the server configuration.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="ENTRY_RESOURCE_ATTRIBUTES (optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES)" href="#optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES">ENTRY_RESOURCE_ATTRIBUTES</a></code></td>
+            <td><code><a class="autorefs autorefs-internal" title="ENTRY_RESOURCE_ATTRIBUTES() (optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES)" href="#optimade.server.mappers.entries.BaseResourceMapper.ENTRY_RESOURCE_ATTRIBUTES">ENTRY_RESOURCE_ATTRIBUTES</a></code></td>
             <td>
                   <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
             </td>
@@ -3159,7 +3163,11 @@ defined by the schema of the entry resource class.</p>
             </td>
           </tr>
           <tr class="doc-section-item">
-            <td><code><a class="autorefs autorefs-internal" title="ENDPOINT (optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT)" href="#optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT">ENDPOINT</a></code></td>
+            <td><code><a class="autorefs autorefs-internal" title="ENDPOINT()
+
+  
+      cached
+   (optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT)" href="#optimade.server.mappers.entries.BaseResourceMapper.ENDPOINT">ENDPOINT</a></code></td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
@@ -4103,7 +4111,12 @@ domain-specific terms).</p>
 <div class="admonition warning">
 <p class="admonition-title">Deprecated</p>
 <p>This method is deprecated could be removed without further warning. Please use
-<a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.get_backend_field"><code>get_backend_field()</code></a>.</p>
+<a class="autorefs autorefs-internal" title="get_backend_field(optimade_field)
+
+  
+      cached
+      classmethod
+  " href="#optimade.server.mappers.entries.BaseResourceMapper.get_backend_field"><code>get_backend_field()</code></a>.</p>
 </div>
 
 
@@ -4153,7 +4166,12 @@ domain-specific terms).</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Aliased field as found in <a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
+                <p>Aliased field as found in <a class="autorefs autorefs-internal" title="all_aliases()
+
+  
+      cached
+      classmethod
+  " href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
               </div>
             </td>
           </tr>
@@ -4231,7 +4249,12 @@ otherwise return the input field name.</p>
 <div class="admonition warning">
 <p class="admonition-title">Deprecated</p>
 <p>This method is deprecated could be removed without further warning. Please use
-<a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.get_optimade_field"><code>get_optimade_field()</code></a>.</p>
+<a class="autorefs autorefs-internal" title="get_optimade_field(backend_field)
+
+  
+      cached
+      classmethod
+  " href="#optimade.server.mappers.entries.BaseResourceMapper.get_optimade_field"><code>get_optimade_field()</code></a>.</p>
 </div>
 
 
@@ -4618,7 +4641,12 @@ mapping the data along the way.</p>
 underlying database for the passed OPTIMADE field name, that would
 be used in an API filter.</p>
 <p>Aliases are read from
-<a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
+<a class="autorefs autorefs-internal" title="all_aliases()
+
+  
+      cached
+      classmethod
+  " href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
 <p>If a dot-separated OPTIMADE field is provided, e.g., <code>species.mass</code>, only the first part will be mapped.
 This means for an (OPTIMADE, DB) alias of (<code>species</code>, <code>kinds</code>), <code>get_backend_fields("species.mass")</code>
 will return <code>kinds.mass</code>.</p>
@@ -4782,7 +4810,12 @@ will return <code>kinds.mass</code>.</p>
         <p>Return the corresponding OPTIMADE field name for the underlying database field,
 ready to be used to construct the OPTIMADE-compliant JSON response.</p>
 <p>Aliases are read from
-<a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
+<a class="autorefs autorefs-internal" title="all_aliases()
+
+  
+      cached
+      classmethod
+  " href="#optimade.server.mappers.entries.BaseResourceMapper.all_aliases"><code>all_aliases()</code></a>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -5045,7 +5078,12 @@ or <code>None</code> if no such alias is found.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Aliased field as found in <a class="autorefs autorefs-internal" href="#optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases"><code>all_length_aliases()</code></a>.</p>
+                <p>Aliased field as found in <a class="autorefs autorefs-internal" title="all_length_aliases()
+
+  
+      cached
+      classmethod
+  " href="#optimade.server.mappers.entries.BaseResourceMapper.all_length_aliases"><code>all_length_aliases()</code></a>.</p>
               </div>
             </td>
           </tr>
