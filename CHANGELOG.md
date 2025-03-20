@@ -2,15 +2,37 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.2...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.3...HEAD)
+
+Users of the `OptimadeClient` are recommended to install this update.
+
+This release fixes a nasty issue with the client that can cause it to hang infinitely when an malformed OPTIMADE API continues to return `next_url` with no additional data (thanks to @mehmetgiritli for the report and fix!) It also reduces the default MongoDB timeout when counting how many results are in a filter. As this count is performed for every page of queries, the previous high timeout could effectively set a minimum response time of 5 seconds. Issue #2251 tracks future improvements to this behaviour.
+
+## [v1.2.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.3) (2025-03-20)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.2...v1.2.3)
 
 **Fixed bugs:**
 
-- Unable to create filters with "+" in nested property name [\#2182](https://github.com/Materials-Consortia/optimade-python-tools/issues/2182)
+- Client can be forced into infinite loop by bad API responses [\#2249](https://github.com/Materials-Consortia/optimade-python-tools/issues/2249)
+- Expand infinite loop fix to have hardcoded guard rail [\#2250](https://github.com/Materials-Consortia/optimade-python-tools/pull/2250) ([ml-evs](https://github.com/ml-evs))
+- Stop pagination when last response contains no data [\#2248](https://github.com/Materials-Consortia/optimade-python-tools/pull/2248) ([mehmetgiritli](https://github.com/mehmetgiritli))
+
+**Closed issues:**
+
+- Can I use the optimade JSON serialization to store ASE atoms? [\#2246](https://github.com/Materials-Consortia/optimade-python-tools/issues/2246)
+
+**Merged pull requests:**
+
+- Drastically reduce the default Mongo count timeout [\#2247](https://github.com/Materials-Consortia/optimade-python-tools/pull/2247) ([ml-evs](https://github.com/ml-evs))
 
 ## [v1.2.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.2) (2025-03-16)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.1...v1.2.2)
+
+**Fixed bugs:**
+
+- Unable to create filters with "+" in nested property name [\#2182](https://github.com/Materials-Consortia/optimade-python-tools/issues/2182)
 
 **Merged pull requests:**
 
