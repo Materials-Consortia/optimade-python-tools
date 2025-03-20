@@ -989,6 +989,14 @@ class OptimadeClient:
                     if not paginate:
                         break
 
+                    if len(results.data) == 0:
+                        if next_url:
+                            message = f"{base_url} unexpectedly stopped returning results. Stopping download."
+                            results.errors.append(message)
+                            if not self.silent:
+                                self._progress.print(message)
+                        break
+
                     if (
                         self.max_results_per_provider
                         and len(results.data) >= self.max_results_per_provider
@@ -1066,6 +1074,14 @@ class OptimadeClient:
                         continue
 
                     results.update(page_results)
+
+                    if len(results.data) == 0:
+                        if next_url:
+                            message = f"{base_url} unexpectedly stopped returning results. Stopping download."
+                            results.errors.append(message)
+                            if not self.silent:
+                                self._progress.print(message)
+                        break
 
                     if (
                         self.max_results_per_provider
