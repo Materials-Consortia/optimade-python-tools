@@ -989,7 +989,7 @@ class OptimadeClient:
                     if not paginate:
                         break
 
-                    if (len(results.data) == 0):
+                    if len(results.data) == 0:
                         if next_url and not self.silent:
                             self._progress.print(
                                 f"{base_url} unexpectedly stopped returning results. Stopping download."
