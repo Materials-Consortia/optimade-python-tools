@@ -219,7 +219,7 @@ class ServerConfig(BaseSettings):
     ] = None
 
     mongo_count_timeout: Annotated[
-        int,
+        float,
         Field(
             description=(
                 "Number of seconds to allow MongoDB to perform a full database count "
@@ -229,7 +229,7 @@ class ServerConfig(BaseSettings):
                 "response times."
             ),
         ),
-    ] = 5
+    ] = 0.5
 
     mongo_database: Annotated[
         str,

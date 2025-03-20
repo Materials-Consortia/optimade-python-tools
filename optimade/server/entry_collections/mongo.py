@@ -85,7 +85,7 @@ class MongoCollection(EntryCollection):
             return self.collection.estimated_document_count()
         else:
             if "maxTimeMS" not in kwargs:
-                kwargs["maxTimeMS"] = 1000 * CONFIG.mongo_count_timeout
+                kwargs["maxTimeMS"] = int(1000 * CONFIG.mongo_count_timeout)
             try:
                 return self.collection.count_documents(**kwargs)
             except ExecutionTimeout:
