@@ -92,7 +92,7 @@ class OptimadeClient:
 
     max_requests_per_provider: int = 2_000_000
     """An upper limit guard rail to avoid infinite hanging of the client on malformed APIs.
-    If available, a better value will be estimate for each API based on the total number of entries.
+    If available, a better value will be estimated for each API based on the total number of entries.
 
     """
 
