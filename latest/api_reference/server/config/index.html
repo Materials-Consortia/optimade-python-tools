@@ -5084,7 +5084,7 @@ can be easily extended for new config file types.</p>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">mongo_count_timeout</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">int</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
                 <span class="s2">&quot;Number of seconds to allow MongoDB to perform a full database count &quot;</span>
@@ -5094,7 +5094,7 @@ can be easily extended for new config file types.</p>
                 <span class="s2">&quot;response times.&quot;</span>
             <span class="p">),</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
 
     <span class="n">mongo_database</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
@@ -5941,7 +5941,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.mongo_count_timeout" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">mongo_count_timeout</span> <span class="o">=</span> <span class="mi">5</span></code>
+            <code class="highlight language-python"><span class="n">mongo_count_timeout</span> <span class="o">=</span> <span class="mf">0.5</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
