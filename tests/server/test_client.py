@@ -599,3 +599,34 @@ async def test_raw_get_one_async(async_http_client):
         paginate=False,
     )
     assert len(override[TEST_URL].data) == 1
+
+
+@pytest.mark.asyncio
+async def test_guardrail_async(async_http_client):
+    """Test the upper limit on requests guard rail."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        http_client=async_http_client,
+        use_async=True,
+    )
+    cli.max_requests_per_provider = 1
+    result = await cli.get_one_async(
+        endpoint="structures", base_url=TEST_URL, filter="", page_limit=5, paginate=True
+    )
+    assert len(result[TEST_URL].errors) == 1
+    assert "infinite" in result[TEST_URL].errors[0]
+
+
+def test_guardrail_sync(http_client):
+    """Test the upper limit on requests guard rail."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        http_client=http_client,
+        use_async=False,
+    )
+    cli.max_requests_per_provider = 1
+    result = cli.get_one(
+        endpoint="structures", base_url=TEST_URL, filter="", page_limit=5, paginate=True
+    )
+    assert len(result[TEST_URL].errors) == 1
+    assert "infinite" in result[TEST_URL].errors[0]
