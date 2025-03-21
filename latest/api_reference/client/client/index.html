@@ -4562,7 +4562,11 @@ and provider.</p>
 <span class="normal">1362</span>
 <span class="normal">1363</span>
 <span class="normal">1364</span>
-<span class="normal">1365</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimadeClient</span><span class="p">:</span>
+<span class="normal">1365</span>
+<span class="normal">1366</span>
+<span class="normal">1367</span>
+<span class="normal">1368</span>
+<span class="normal">1369</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimadeClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This class implemements a client for executing the same queries</span>
 <span class="sd">    across multiple OPTIMADE APIs simultaneously, paging and caching the</span>
 <span class="sd">    results.</span>
@@ -5508,6 +5512,8 @@ and provider.</p>
                                 <span class="s2">&quot;data_available&quot;</span><span class="p">,</span> <span class="mi">0</span>
                             <span class="p">)</span>
                             <span class="n">page_limit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">page_limit</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">page_limit</span> <span class="o">=</span> <span class="mi">1</span>
                             <span class="k">if</span> <span class="n">total_data_available</span> <span class="ow">and</span> <span class="n">total_data_available</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                                 <span class="n">stopping_criteria</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
                                     <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">total_data_available</span> <span class="o">/</span> <span class="n">page_limit</span><span class="p">),</span>
@@ -5610,6 +5616,8 @@ and provider.</p>
                                 <span class="s2">&quot;data_available&quot;</span><span class="p">,</span> <span class="mi">0</span>
                             <span class="p">)</span>
                             <span class="n">page_limit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">page_limit</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">page_limit</span> <span class="o">=</span> <span class="mi">1</span>
                             <span class="k">if</span> <span class="n">total_data_available</span> <span class="ow">and</span> <span class="n">total_data_available</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                                 <span class="n">stopping_criteria</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
                                     <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">total_data_available</span> <span class="o">/</span> <span class="n">page_limit</span><span class="p">),</span>
