@@ -2,15 +2,27 @@
 
 ## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.3...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.4...HEAD)
 
-Users of the `OptimadeClient` are recommended to install this update.
+**Fixed bugs:**
 
-This release fixes a nasty issue with the client that can cause it to hang infinitely when an malformed OPTIMADE API continues to return `next_url` with no additional data (thanks to @mehmetgiritli for the report and fix!) It also reduces the default MongoDB timeout when counting how many results are in a filter. As this count is performed for every page of queries, the previous high timeout could effectively set a minimum response time of 5 seconds. Issue #2251 tracks future improvements to this behaviour.
+- Division by zero errors with version 1.2.3 [\#2254](https://github.com/Materials-Consortia/optimade-python-tools/issues/2254)
+
+## [v1.2.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.4) (2025-03-21)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.3...v1.2.4)
+
+**Fixed bugs:**
+
+- Fix divide by zero when no data is returned [\#2255](https://github.com/Materials-Consortia/optimade-python-tools/pull/2255) ([ml-evs](https://github.com/ml-evs))
 
 ## [v1.2.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.3) (2025-03-20)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.2...v1.2.3)
+
+Users of the `OptimadeClient` are recommended to install this update.
+
+This release fixes a nasty issue with the client that can cause it to hang infinitely when an malformed OPTIMADE API continues to return `next_url` with no additional data (thanks to @mehmetgiritli for the report and fix!) It also reduces the default MongoDB timeout when counting how many results are in a filter. As this count is performed for every page of queries, the previous high timeout could effectively set a minimum response time of 5 seconds. Issue #2251 tracks future improvements to this behaviour.
 
 **Fixed bugs:**
 
