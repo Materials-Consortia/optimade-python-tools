@@ -992,6 +992,8 @@ class OptimadeClient:
                                 "data_available", 0
                             )
                             page_limit = len(page_results["data"])
+                            if page_limit == 0:
+                                page_limit = 1
                             if total_data_available and total_data_available > 0:
                                 stopping_criteria = min(
                                     math.ceil(total_data_available / page_limit),
@@ -1094,6 +1096,8 @@ class OptimadeClient:
                                 "data_available", 0
                             )
                             page_limit = len(page_results["data"])
+                            if page_limit == 0:
+                                page_limit = 1
                             if total_data_available and total_data_available > 0:
                                 stopping_criteria = min(
                                     math.ceil(total_data_available / page_limit),
