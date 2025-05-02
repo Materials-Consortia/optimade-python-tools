@@ -7,7 +7,7 @@ name = "optimade"
 description = "Tools for implementing and consuming OPTIMADE APIs."
 readme = "README.md"
 keywords = ["optimade", "jsonapi", "materials"]
-license = { text = "MIT" }
+license = "MIT"
 authors = [{ name = "OPTIMADE development team", email = "dev@optimade.org" }]
 dynamic = ["version"]
 classifiers = [
