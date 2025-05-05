@@ -168,4 +168,5 @@ filterwarnings = [
     "ignore:.*The 'app' shortcut is now deprecated.*:DeprecationWarning", # Raised by httpx for test client code; would rather not force upgrade of httpx to deal with it for now
     "ignore::pytest.PytestUnraisableExceptionWarning",  # Started raising with pytest 8.2.1, seemingly related to anyio warnings
     "ignore:.*Unclosed.*:ResourceWarning", # Also started raising with pytest 8.2.1, seemingly related to anyio warnings
+    "ignore:.*Accessing the 'model_fields' attribute on the instance is deprecated.*:DeprecationWarning"  # Raised by pydantic 2.11, needs to be resolved for pydantic 3.0
 ]
