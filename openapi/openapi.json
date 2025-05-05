@@ -2615,6 +2615,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -2654,6 +2655,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -3434,6 +3436,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -3473,6 +3476,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -3523,6 +3527,7 @@
                 "$ref": "#/components/schemas/ReferenceResource"
               },
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -3562,6 +3567,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -4553,6 +4559,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -4592,6 +4599,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -4642,6 +4650,7 @@
                 "$ref": "#/components/schemas/StructureResource"
               },
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -4681,6 +4690,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
