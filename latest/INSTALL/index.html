@@ -2915,7 +2915,7 @@
 <h1 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h1>
 <p>This package can be installed from PyPI, or by cloning the repository, depending on your use-case.</p>
 <ol>
-<li>To use the <code>optimade</code> Python package as a library, (e.g., using the models for validation, parsing filters with the grammar, or using the command-line tool <code>optimade-validator</code> tool), it is recommended that you install the latest release of the package from PyPI with <code>pip install optimade</code>. If you also want to use the OPTIMADE client to query OPTIMADE APIs, you should install with the additional dependencies: <code>pip install optimade[http_client]</code>.</li>
+<li>To use the <code>optimade</code> Python package as a library, (e.g., using the models for validation, parsing filters with the grammar, or using the command-line tool <code>optimade-validator</code> tool), it is recommended that you install the latest release of the package from PyPI with <code>pip install optimade</code>. If you also want to use the OPTIMADE client to query OPTIMADE APIs, you should install with the additional dependencies: <code>pip install 'optimade[http-client]'</code>.</li>
 <li>If you want to run, use or modify the reference server implementation, then it is recommended that you clone this repository and install it from your local files (with <code>pip install .</code>, or <code>pip install -e .</code> for an editable installation).
    As an alternative, you can run the <code>optimade</code> container image (see the <a href="#container-image">Container image</a> section below).</li>
 </ol>
