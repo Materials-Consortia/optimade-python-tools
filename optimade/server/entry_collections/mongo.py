@@ -195,6 +195,9 @@ class MongoCollection(EntryCollection):
             criteria_nolimit = criteria.copy()
             criteria_nolimit.pop("limit", None)
             skip = criteria_nolimit.pop("skip", 0)
+            # If we're on the first page, set a much higher timeout for counting the results (10 s)
+            if skip == 0:
+                criteria_nolimit["maxTimeMS"] = 1000 * 10
             data_returned = self.count(**criteria_nolimit)
             # Only correct most of the time: if the total number of remaining results is exactly the page limit
             # then this will incorrectly say there is more_data_available
