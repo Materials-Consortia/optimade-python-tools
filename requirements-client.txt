@@ -2,4 +2,4 @@ aiida-core==2.6.4
 ase==3.25.0
 jarvis-tools==2024.10.30; python_version < '3.13'
 numpy>=1.20
-pymatgen==2025.5.2; python_version < '3.13'
+pymatgen==2025.5.28; python_version < '3.13'
