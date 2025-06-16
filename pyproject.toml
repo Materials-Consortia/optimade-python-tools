@@ -101,7 +101,7 @@ testing = [
     "build~=1.0",
     "jsondiff~=2.0",
     "pytest~=8.3",
-    "pytest-asyncio~=0.25",
+    "pytest-asyncio>=0.25,<2.0",
     "pytest-cov~=6.0",
     "optimade[server]",
 ]
