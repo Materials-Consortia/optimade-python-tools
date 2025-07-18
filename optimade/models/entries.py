@@ -217,6 +217,23 @@ E.g., for the entry resource `structures`, the `species` property is defined as 
 
 
 class EntryInfoResource(BaseModel):
+    id: Annotated[
+        str,
+        StrictField(
+            optimade_version=">= 1.2",
+            description="Must precisely match the entry type name for the given info endpoint.",
+        ),
+    ]
+
+    type: Annotated[
+        str,
+        StrictField(
+            optimade_version=">= 1.2",
+            description="The type of this response.",
+            default="info",
+        ),
+    ]
+
     formats: Annotated[
         list[str],
         StrictField(
