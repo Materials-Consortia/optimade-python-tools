@@ -41,6 +41,7 @@ def StrictField(
     default: "Any" = PydanticUndefined,
     *,
     description: str | None = None,
+    optimade_version: str | None = None,
     **kwargs: "Any",
 ) -> Any:
     """A wrapper around `pydantic.Field` that does the following:
@@ -55,6 +56,8 @@ def StrictField(
         default: The only non-keyword argument allowed for Field.
         description: The description of the `Field`; if this is not
             specified then a `UserWarning` will be emitted.
+        optimade_version: A PEP version specifier indicating which OPTIMADE API version
+            this field is required for.
         **kwargs: Extra keyword arguments to be passed to `Field`.
 
     Raises:

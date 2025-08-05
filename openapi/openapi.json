@@ -1721,6 +1721,17 @@
       },
       "EntryInfoResource": {
         "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Must precisely match the entry type name for the given info endpoint."
+          },
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "The type of this response.",
+            "default": "info"
+          },
           "formats": {
             "items": {
               "type": "string"
@@ -1759,6 +1770,7 @@
         },
         "type": "object",
         "required": [
+          "id",
           "formats",
           "description",
           "properties",
