@@ -4697,7 +4697,7 @@ and provider.</p>
 <span class="sd">    the results from each base URL for that particular filter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">count_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">count_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A nested dictionary keyed by endpoint and OPTIMADE filter string that contains</span>
 <span class="sd">    the number of results from each base URL for that particular filter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
