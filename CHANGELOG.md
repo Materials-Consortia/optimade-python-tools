@@ -1,12 +1,26 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v1.3.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.3.0) (2025-08-11)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.4...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.4...v1.3.0)
 
-**Fixed bugs:**
+**Implemented enhancements:**
 
-- Division by zero errors with version 1.2.3 [\#2254](https://github.com/Materials-Consortia/optimade-python-tools/issues/2254)
+- Allow the first page of MongoDB results to very slowly return a proper count [\#2253](https://github.com/Materials-Consortia/optimade-python-tools/pull/2253) ([ml-evs](https://github.com/ml-evs))
+
+**Closed issues:**
+
+- SOCKS5 Proxy Support for OPTIMADE Client. [\#2274](https://github.com/Materials-Consortia/optimade-python-tools/issues/2274)
+
+**Merged pull requests:**
+
+- Add `id` and `type` to entry info response for OPTIMADE v1.2+ [\#2287](https://github.com/Materials-Consortia/optimade-python-tools/pull/2287) ([ml-evs](https://github.com/ml-evs))
+- Bump requests from 2.32.3 to 2.32.4 [\#2281](https://github.com/Materials-Consortia/optimade-python-tools/pull/2281) ([dependabot[bot]](https://github.com/apps/dependabot))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2279](https://github.com/Materials-Consortia/optimade-python-tools/pull/2279) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+- Quote package name + extra in installation instructions [\#2272](https://github.com/Materials-Consortia/optimade-python-tools/pull/2272) ([ml-evs](https://github.com/ml-evs))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2270](https://github.com/Materials-Consortia/optimade-python-tools/pull/2270) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+- Use PEP 639 SPDX license in pyproject [\#2269](https://github.com/Materials-Consortia/optimade-python-tools/pull/2269) ([ml-evs](https://github.com/ml-evs))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2263](https://github.com/Materials-Consortia/optimade-python-tools/pull/2263) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
 
 ## [v1.2.4](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.4) (2025-03-21)
 
@@ -14,6 +28,7 @@
 
 **Fixed bugs:**
 
+- Division by zero errors with version 1.2.3 [\#2254](https://github.com/Materials-Consortia/optimade-python-tools/issues/2254)
 - Fix divide by zero when no data is returned [\#2255](https://github.com/Materials-Consortia/optimade-python-tools/pull/2255) ([ml-evs](https://github.com/ml-evs))
 
 ## [v1.2.3](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.3) (2025-03-20)
