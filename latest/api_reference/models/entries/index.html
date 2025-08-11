@@ -1738,6 +1738,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.models.entries.EntryInfoResource.id" class="md-nav__link">
+    <span class="md-ellipsis">
+      id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.models.entries.EntryInfoResource.output_fields_by_format" class="md-nav__link">
     <span class="md-ellipsis">
       output_fields_by_format
@@ -1750,6 +1759,15 @@
   <a href="#optimade.models.entries.EntryInfoResource.properties" class="md-nav__link">
     <span class="md-ellipsis">
       properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.entries.EntryInfoResource.type" class="md-nav__link">
+    <span class="md-ellipsis">
+      type
     </span>
   </a>
   
@@ -3340,6 +3358,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#optimade.models.entries.EntryInfoResource.id" class="md-nav__link">
+    <span class="md-ellipsis">
+      id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#optimade.models.entries.EntryInfoResource.output_fields_by_format" class="md-nav__link">
     <span class="md-ellipsis">
       output_fields_by_format
@@ -3352,6 +3379,15 @@
   <a href="#optimade.models.entries.EntryInfoResource.properties" class="md-nav__link">
     <span class="md-ellipsis">
       properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optimade.models.entries.EntryInfoResource.type" class="md-nav__link">
+    <span class="md-ellipsis">
+      type
     </span>
   </a>
   
@@ -4008,7 +4044,41 @@
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
-<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EntryInfoResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EntryInfoResource</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">StrictField</span><span class="p">(</span>
+            <span class="n">optimade_version</span><span class="o">=</span><span class="s2">&quot;&gt;= 1.2&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Must precisely match the entry type name for the given info endpoint.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">StrictField</span><span class="p">(</span>
+            <span class="n">optimade_version</span><span class="o">=</span><span class="s2">&quot;&gt;= 1.2&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of this response.&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
     <span class="n">formats</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
@@ -4088,6 +4158,26 @@
 
 
 
+<h3 id="optimade.models.entries.EntryInfoResource.id" class="doc doc-heading">
+            <code class="highlight language-python"><span class="nb">id</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#optimade.models.entries.EntryInfoResource.id" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
 <h3 id="optimade.models.entries.EntryInfoResource.output_fields_by_format" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">output_fields_by_format</span></code>
 
@@ -4116,6 +4206,26 @@
   </span>
 
 <a href="#optimade.models.entries.EntryInfoResource.properties" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="optimade.models.entries.EntryInfoResource.type" class="doc doc-heading">
+            <code class="highlight language-python"><span class="nb">type</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#optimade.models.entries.EntryInfoResource.type" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">

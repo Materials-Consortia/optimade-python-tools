@@ -3770,7 +3770,7 @@ of this field.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" title="StrictField(default=PydanticUndefined, *, description=None, **kwargs)" href="#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p>
+                <p>The pydantic field with extra validation provided by <a class="autorefs autorefs-internal" title="StrictField(default=PydanticUndefined, *, description=None, optimade_version=None, **kwargs)" href="#optimade.models.utils.StrictField"><code>StrictField</code></a>.</p>
               </div>
             </td>
           </tr>
@@ -3780,10 +3780,7 @@ of this field.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span>
 <span class="normal">129</span>
@@ -3819,7 +3816,10 @@ of this field.</p>
 <span class="normal">159</span>
 <span class="normal">160</span>
 <span class="normal">161</span>
-<span class="normal">162</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">OptimadeField</span><span class="p">(</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">OptimadeField</span><span class="p">(</span>
     <span class="n">default</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span> <span class="o">=</span> <span class="n">PydanticUndefined</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">support</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">SupportLevel</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3869,7 +3869,7 @@ of this field.</p>
 
 
 <h2 id="optimade.models.utils.StrictField" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">StrictField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">PydanticUndefined</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">StrictField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">PydanticUndefined</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">optimade_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 <a href="#optimade.models.utils.StrictField" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -3924,6 +3924,23 @@ of this field.</p>
               <div class="doc-md-description">
                 <p>The description of the <code>Field</code>; if this is not
 specified then a <code>UserWarning</code> will be emitted.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>optimade_version</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A PEP version specifier indicating which OPTIMADE API version
+this field is required for.</p>
               </div>
             </td>
             <td>
@@ -4080,10 +4097,14 @@ by models in this package (see above).</p>
 <span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span>
-<span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">StrictField</span><span class="p">(</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">StrictField</span><span class="p">(</span>
     <span class="n">default</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span> <span class="o">=</span> <span class="n">PydanticUndefined</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">optimade_version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper around `pydantic.Field` that does the following:</span>
@@ -4098,6 +4119,8 @@ by models in this package (see above).</p>
 <span class="sd">        default: The only non-keyword argument allowed for Field.</span>
 <span class="sd">        description: The description of the `Field`; if this is not</span>
 <span class="sd">            specified then a `UserWarning` will be emitted.</span>
+<span class="sd">        optimade_version: A PEP version specifier indicating which OPTIMADE API version</span>
+<span class="sd">            this field is required for.</span>
 <span class="sd">        **kwargs: Extra keyword arguments to be passed to `Field`.</span>
 
 <span class="sd">    Raises:</span>
@@ -4208,16 +4231,16 @@ drawn from A, B, C... ordered from largest proportion to smallest.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">212</span>
 <span class="normal">213</span>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
-<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">anonymize_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">anonymize_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes a string representation of a chemical formula of the form `[A-Z][a-z]*[0-9]*` (potentially with whitespace) and</span>
 <span class="sd">    returns the OPTIMADE `chemical_formula_anonymous` representation, i.e., a reduced chemical formula comprising of element symbols</span>
 <span class="sd">    drawn from A, B, C... ordered from largest proportion to smallest.</span>
@@ -4249,15 +4272,15 @@ drawn from A, B, C... ordered from largest proportion to smallest.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">168</span>
 <span class="normal">169</span>
 <span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span>
-<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">anonymous_element_generator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;Generator[str, None, None]&quot;</span><span class="p">:</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">anonymous_element_generator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="s2">&quot;Generator[str, None, None]&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generator that yields the next symbol in the A, B, Aa, ... Az naming scheme.&quot;&quot;&quot;</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">string</span><span class="w"> </span><span class="kn">import</span> <span class="n">ascii_lowercase</span>
 
@@ -4312,15 +4335,15 @@ reduces it by the GCD of the proportion integers present in the formula, strippi
 
             <details class="quote">
               <summary>Source code in <code>optimade/models/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
 <span class="normal">228</span>
-<span class="normal">229</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reduce_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reduce_formula</span><span class="p">(</span><span class="n">formula</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes a string representation of a chemical formula of the form `[A-Z][a-z]*[0-9]*` (potentially with whitespace) and</span>
 <span class="sd">    reduces it by the GCD of the proportion integers present in the formula, stripping any leftover &quot;1&quot; values.</span>
 
