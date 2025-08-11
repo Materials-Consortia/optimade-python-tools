@@ -7,12 +7,12 @@ import contextlib
 import json
 from collections.abc import Container, Iterable
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from requests.exceptions import SSLError
 
 if TYPE_CHECKING:
-    import rich
+    import rich.progress
 
 from pydantic import ValidationError
 
@@ -275,7 +275,7 @@ def get_all_databases(
     include_providers: Container[str] | None = None,
     exclude_providers: Container[str] | None = None,
     exclude_databases: Container[str] | None = None,
-    progress: "Optional[rich.Progress]" = None,
+    progress: "rich.progress.Progress | None" = None,
     skip_ssl: bool = False,
 ) -> Iterable[str]:
     """Iterate through all databases reported by registered OPTIMADE providers.
@@ -290,17 +290,18 @@ def get_all_databases(
 
     """
     if progress is not None:
-        _task = progress.add_task(
+        _progress = progress
+        _task = _progress.add_task(
             description="Retrieving all databases from registered OPTIMADE providers...",
             total=None,
         )
     else:
-        progress = contextlib.nullcontext()
-        progress.print = lambda _: None  # type: ignore[attr-defined]
-        progress.advance = lambda *_: None  # type: ignore[attr-defined]
+        _progress = contextlib.nullcontext()
+        _progress.print = lambda _: None  # type: ignore[attr-defined]
+        _progress.advance = lambda *_: None  # type: ignore[attr-defined]
         _task = None
 
-    with progress:
+    with _progress:
         for provider in get_providers():
             if exclude_providers and provider["id"] in exclude_providers:
                 continue
@@ -317,14 +318,14 @@ def get_all_databases(
                         ):
                             continue
                         yield str(link.attributes.base_url)
-                if links and progress is not None:
-                    progress.advance(_task, 1)
-                    progress.print(
+                if links and _progress is not None:
+                    _progress.advance(_task, 1)
+                    _progress.print(
                         f"Retrieved databases from [bold green]{provider['id']}[/bold green]"
                     )
             except RuntimeError as exc:
-                if progress is not None:
-                    progress.print(
+                if _progress is not None:
+                    _progress.print(
                         f"Unable to retrieve databases from [bold red]{provider['id']}[/bold red]: {exc}",
                     )
                 pass

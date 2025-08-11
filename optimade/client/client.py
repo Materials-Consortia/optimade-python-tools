@@ -66,7 +66,7 @@ class OptimadeClient:
     the results from each base URL for that particular filter.
     """
 
-    count_results: dict[str, dict[str, dict[str, int]]] = defaultdict(dict)
+    count_results: dict[str, dict[str, dict[str, int | None]]] = defaultdict(dict)
     """A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
     the number of results from each base URL for that particular filter.
     """
