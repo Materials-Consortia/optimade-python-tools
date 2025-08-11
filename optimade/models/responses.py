@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Optional, Union
+from typing import Annotated, Any
 
 from pydantic import model_validator
 
@@ -73,14 +73,14 @@ class InfoResponse(Success):
 
 class EntryResponseOne(Success):
     data: Annotated[
-        Optional[Union[EntryResource, dict[str, Any]]],
+        EntryResource | dict[str, Any] | None,
         StrictField(
             description="The single entry resource returned by this query.",
             union_mode="left_to_right",
         ),
     ] = None  # type: ignore[assignment]
     included: Annotated[
-        Optional[Union[list[EntryResource], list[dict[str, Any]]]],
+        list[EntryResource] | list[dict[str, Any]] | None,
         StrictField(
             description="A list of unique included OPTIMADE entry resources.",
             uniqueItems=True,
@@ -91,7 +91,7 @@ class EntryResponseOne(Success):
 
 class EntryResponseMany(Success):
     data: Annotated[  # type: ignore[assignment]
-        Union[list[EntryResource], list[dict[str, Any]]],
+        list[EntryResource] | list[dict[str, Any]],
         StrictField(
             description="List of unique OPTIMADE entry resource objects.",
             uniqueItems=True,
@@ -99,7 +99,7 @@ class EntryResponseMany(Success):
         ),
     ]
     included: Annotated[
-        Optional[Union[list[EntryResource], list[dict[str, Any]]]],
+        list[EntryResource] | list[dict[str, Any]] | None,
         StrictField(
             description="A list of unique included OPTIMADE entry resources.",
             uniqueItems=True,
@@ -110,7 +110,7 @@ class EntryResponseMany(Success):
 
 class LinksResponse(EntryResponseMany):
     data: Annotated[
-        Union[list[LinksResource], list[dict[str, Any]]],
+        list[LinksResource] | list[dict[str, Any]],
         StrictField(
             description="List of unique OPTIMADE links resource objects.",
             uniqueItems=True,
@@ -121,7 +121,7 @@ class LinksResponse(EntryResponseMany):
 
 class StructureResponseOne(EntryResponseOne):
     data: Annotated[
-        Optional[Union[StructureResource, dict[str, Any]]],
+        StructureResource | dict[str, Any] | None,
         StrictField(
             description="A single structures entry resource.",
             union_mode="left_to_right",
@@ -131,7 +131,7 @@ class StructureResponseOne(EntryResponseOne):
 
 class StructureResponseMany(EntryResponseMany):
     data: Annotated[
-        Union[list[StructureResource], list[dict[str, Any]]],
+        list[StructureResource] | list[dict[str, Any]],
         StrictField(
             description="List of unique OPTIMADE structures entry resource objects.",
             uniqueItems=True,
@@ -156,7 +156,7 @@ class FileResponseMany(EntryResponseMany):
 
 class ReferenceResponseOne(EntryResponseOne):
     data: Annotated[
-        Optional[Union[ReferenceResource, dict[str, Any]]],
+        ReferenceResource | dict[str, Any] | None,
         StrictField(
             description="A single references entry resource.",
             union_mode="left_to_right",
@@ -166,7 +166,7 @@ class ReferenceResponseOne(EntryResponseOne):
 
 class ReferenceResponseMany(EntryResponseMany):
     data: Annotated[
-        Union[list[ReferenceResource], list[dict[str, Any]]],
+        list[ReferenceResource] | list[dict[str, Any]],
         StrictField(
             description="List of unique OPTIMADE references entry resource objects.",
             uniqueItems=True,

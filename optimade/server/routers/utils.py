@@ -1,7 +1,7 @@
 import re
 import urllib.parse
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
@@ -47,11 +47,11 @@ class JSONAPIResponse(JSONResponse):
 
 
 def meta_values(
-    url: Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str],
-    data_returned: Optional[int],
+    url: urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str,
+    data_returned: int | None,
     data_available: int,
     more_data_available: bool,
-    schema: Optional[str] = None,
+    schema: str | None = None,
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
@@ -69,6 +69,10 @@ def meta_values(
     if schema is None:
         schema = CONFIG.schema_url if not CONFIG.is_index else CONFIG.index_schema_url
 
+    if CONFIG.request_delay:
+        # Double-guard against the server setting an adversarially large request delay
+        kwargs["request_delay"] = min(CONFIG.request_delay, 10.0)
+
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{url.query}"),
         api_version=__api_version__,
@@ -84,7 +88,7 @@ def meta_values(
 
 
 def handle_response_fields(
-    results: Union[list[EntryResource], EntryResource, list[dict], dict],
+    results: list[EntryResource] | EntryResource | list[dict] | dict,
     exclude_fields: set[str],
     include_fields: set[str],
 ) -> list[dict[str, Any]]:
@@ -130,10 +134,10 @@ def handle_response_fields(
 
 
 def get_included_relationships(
-    results: Union[EntryResource, list[EntryResource], dict, list[dict]],
+    results: EntryResource | list[EntryResource] | dict | list[dict],
     ENTRY_COLLECTIONS: dict[str, EntryCollection],
     include_param: list[str],
-) -> list[Union[EntryResource, dict[str, Any]]]:
+) -> list[EntryResource | dict[str, Any]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
@@ -162,6 +166,10 @@ def get_included_relationships(
             )
 
     endpoint_includes: dict[Any, dict] = defaultdict(dict)
+
+    if not include_param:
+        return []
+
     for doc in results:
         # convert list of references into dict by ID to only included unique IDs
         if doc is None:
@@ -192,7 +200,7 @@ def get_included_relationships(
 
     included: dict[
         str,
-        Union[list[EntryResource], list[dict[str, Any]]],
+        list[EntryResource] | list[dict[str, Any]],
     ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
@@ -218,9 +226,9 @@ def get_included_relationships(
 
 
 def get_base_url(
-    parsed_url_request: Union[
-        urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str
-    ],
+    parsed_url_request: (
+        urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str
+    ),
 ) -> str:
     """Get base URL for current server
 

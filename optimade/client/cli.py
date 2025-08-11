@@ -16,7 +16,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
     ClientResult = Union[
         dict[str, list[str]],
-        dict[str, dict[str, dict[str, int]]],
+        dict[str, dict[str, dict[str, int | None]]],
         dict[str, dict[str, dict[str, QueryResults]]],
     ]
 

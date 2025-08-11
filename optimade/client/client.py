@@ -11,8 +11,8 @@ import json
 import math
 import time
 from collections import defaultdict
-from collections.abc import Iterable
-from typing import Any, Callable, Optional, Union
+from collections.abc import Callable, Iterable
+from typing import Any
 from urllib.parse import urlparse
 
 # External deps that are only used in the client code
@@ -58,7 +58,7 @@ class OptimadeClient:
 
     """
 
-    base_urls: Union[str, Iterable[str]]
+    base_urls: str | Iterable[str]
     """A list (or any iterable) of OPTIMADE base URLs to query."""
 
     all_results: dict[str, dict[str, dict[str, QueryResults]]] = defaultdict(dict)
@@ -66,12 +66,12 @@ class OptimadeClient:
     the results from each base URL for that particular filter.
     """
 
-    count_results: dict[str, dict[str, dict[str, int]]] = defaultdict(dict)
+    count_results: dict[str, dict[str, dict[str, int | None]]] = defaultdict(dict)
     """A nested dictionary keyed by endpoint and OPTIMADE filter string that contains
     the number of results from each base URL for that particular filter.
     """
 
-    max_results_per_provider: Optional[int] = None
+    max_results_per_provider: int | None = None
     """Maximum number of results to downlod per provider. If None, will
     download all.
     """
@@ -90,10 +90,16 @@ class OptimadeClient:
     max_attempts: int
     """The maximum number of times to repeat a failed query before giving up."""
 
+    max_requests_per_provider: int = 2_000_000
+    """An upper limit guard rail to avoid infinite hanging of the client on malformed APIs.
+    If available, a better value will be estimated for each API based on the total number of entries.
+
+    """
+
     use_async: bool
     """Whether or not to make all requests asynchronously using asyncio."""
 
-    callbacks: Optional[list[Callable[[str, dict], Union[None, dict]]]] = None
+    callbacks: list[Callable[[str, dict], None | dict]] | None = None
     """A list of callbacks to execute after each successful request, used
     to e.g., write to a file, add results to a database or perform additional
     filtering.
@@ -118,22 +124,20 @@ class OptimadeClient:
     skip_ssl: bool = False
     """Whether to skip SSL verification."""
 
-    _excluded_providers: Optional[set[str]] = None
+    _excluded_providers: set[str] | None = None
     """A set of providers IDs excluded from future queries."""
 
-    _included_providers: Optional[set[str]] = None
+    _included_providers: set[str] | None = None
     """A set of providers IDs included from future queries."""
 
-    _excluded_databases: Optional[set[str]] = None
+    _excluded_databases: set[str] | None = None
     """A set of child database URLs excluded from future queries."""
 
-    __current_endpoint: Optional[str] = None
+    __current_endpoint: str | None = None
     """Used internally when querying via `client.structures.get()` to set the
     chosen endpoint. Should be reset to `None` outside of all `get()` calls."""
 
-    _http_client: Optional[Union[type[httpx.AsyncClient], type[requests.Session]]] = (
-        None
-    )
+    _http_client: type[httpx.AsyncClient] | type[requests.Session] | None = None
     """Override the HTTP client class, primarily used for testing."""
 
     __strict_async: bool = False
@@ -148,21 +152,19 @@ class OptimadeClient:
 
     def __init__(
         self,
-        base_urls: Optional[Union[str, Iterable[str]]] = None,
+        base_urls: str | Iterable[str] | None = None,
         max_results_per_provider: int = 1000,
-        headers: Optional[dict] = None,
-        http_timeout: Optional[Union[httpx.Timeout, float]] = None,
+        headers: dict | None = None,
+        http_timeout: httpx.Timeout | float | None = None,
         max_attempts: int = 5,
         use_async: bool = True,
         silent: bool = False,
-        exclude_providers: Optional[list[str]] = None,
-        include_providers: Optional[list[str]] = None,
-        exclude_databases: Optional[list[str]] = None,
-        http_client: Optional[
-            Union[type[httpx.AsyncClient], type[requests.Session]]
-        ] = None,
+        exclude_providers: list[str] | None = None,
+        include_providers: list[str] | None = None,
+        exclude_databases: list[str] | None = None,
+        http_client: None | (type[httpx.AsyncClient] | type[requests.Session]) = None,
         verbosity: int = 0,
-        callbacks: Optional[list[Callable[[str, dict], Union[None, dict]]]] = None,
+        callbacks: list[Callable[[str, dict], None | dict]] | None = None,
         skip_ssl: bool = False,
     ):
         """Create the OPTIMADE client object.
@@ -200,6 +202,10 @@ class OptimadeClient:
         self.silent = silent
         self.verbosity = verbosity
         self.skip_ssl = skip_ssl
+
+        self._progress = OptimadeClientProgress()
+        if self.silent:
+            self._progress.disable = True
 
         if headers:
             self.headers.update(headers)
@@ -296,10 +302,10 @@ class OptimadeClient:
 
     def get(
         self,
-        filter: Optional[str] = None,
-        endpoint: Optional[str] = None,
-        response_fields: Optional[list[str]] = None,
-        sort: Optional[str] = None,
+        filter: str | None = None,
+        endpoint: str | None = None,
+        response_fields: list[str] | None = None,
+        sort: str | None = None,
     ) -> dict[str, dict[str, dict[str, dict]]]:
         """Gets the results from the endpoint and filter across the
         defined OPTIMADE APIs.
@@ -329,10 +335,6 @@ class OptimadeClient:
         if filter is None:
             filter = ""
 
-        self._progress = OptimadeClientProgress()
-        if self.silent:
-            self._progress.disable = True
-
         self._check_filter(filter, endpoint)
 
         with self._progress:
@@ -355,8 +357,8 @@ class OptimadeClient:
             return {endpoint: {filter: {k: results[k].asdict() for k in results}}}
 
     def count(
-        self, filter: Optional[str] = None, endpoint: Optional[str] = None
-    ) -> dict[str, dict[str, dict[str, Optional[int]]]]:
+        self, filter: str | None = None, endpoint: str | None = None
+    ) -> dict[str, dict[str, dict[str, int | None]]]:
         """Counts the number of results for the filter, requiring
         only 1 request per provider by making use of the `meta->data_returned`
         key. If missing, attempts will be made to perform an exponential/binary
@@ -423,7 +425,7 @@ class OptimadeClient:
             return {endpoint: {filter: count_results}}
 
     def binary_search_count(
-        self, filter: str, endpoint: str, base_url: str, results: Optional[dict] = None
+        self, filter: str, endpoint: str, base_url: str, results: dict | None = None
     ) -> int:
         """In cases where `data_returned` is not available (due to database limitations or
         otherwise), iteratively probe the final page of results available for a filter using
@@ -453,7 +455,7 @@ class OptimadeClient:
             )
 
     def _binary_search_count_async(
-        self, filter: str, endpoint: str, base_url: str, result: Optional[dict] = None
+        self, filter: str, endpoint: str, base_url: str, result: dict | None = None
     ) -> int:
         """Run a series of asynchronously queries on a given API to
         find the number of results for a filter.
@@ -530,10 +532,10 @@ class OptimadeClient:
 
     @staticmethod
     def _update_probe_and_window(
-        window: Optional[tuple[int, Optional[int]]] = None,
-        last_probe: Optional[int] = None,
-        below: Optional[bool] = None,
-    ) -> tuple[tuple[int, Optional[int]], int]:
+        window: tuple[int, int | None] | None = None,
+        last_probe: int | None = None,
+        below: bool | None = None,
+    ) -> tuple[tuple[int, int | None], int]:
         """Sets the new range, trial value and exit condition for exponential/binary search.
         When converged, returns the same value three times.
 
@@ -650,10 +652,10 @@ class OptimadeClient:
         self,
         filter: str,
         endpoint: str,
-        page_limit: Optional[int],
+        page_limit: int | None,
         paginate: bool,
-        response_fields: Optional[list[str]],
-        sort: Optional[str],
+        response_fields: list[str] | None,
+        sort: str | None,
     ) -> dict[str, QueryResults]:
         """Executes the queries over the base URLs either asynchronously or
         serially, depending on the `self.use_async` setting.
@@ -718,11 +720,12 @@ class OptimadeClient:
         endpoint: str,
         filter: str,
         base_url: str,
-        response_fields: Optional[list[str]] = None,
-        sort: Optional[str] = None,
-        page_limit: Optional[int] = None,
+        response_fields: list[str] | None = None,
+        sort: str | None = None,
+        page_limit: int | None = None,
         paginate: bool = True,
-        other_params: Optional[dict[str, Any]] = None,
+        other_params: dict[str, Any] | None = None,
+        override_url: str | None = None,
     ) -> dict[str, QueryResults]:
         """Executes the query synchronously on one API.
 
@@ -738,6 +741,8 @@ class OptimadeClient:
                 value of `max_results_per_provider`) or whether to return
                 after one page.
             other_params: Any other parameters to pass to the server.
+            override_url: Allow overriding the URL for the request, e.g., when
+                doing pagination externally.
 
         Returns:
             A dictionary mapping from base URL to the results of the query.
@@ -753,6 +758,7 @@ class OptimadeClient:
                 response_fields=response_fields,
                 sort=sort,
                 other_params=other_params,
+                override_url=override_url,
             )
         except Exception as exc:
             error_query_results = QueryResults()
@@ -768,12 +774,12 @@ class OptimadeClient:
         self,
         endpoint: str,
         filter: str,
-        response_fields: Optional[list[str]] = None,
-        sort: Optional[str] = None,
-        page_limit: Optional[int] = None,
+        response_fields: list[str] | None = None,
+        sort: str | None = None,
+        page_limit: int | None = None,
         paginate: bool = True,
-        base_urls: Optional[Iterable[str]] = None,
-        other_params: Optional[dict[str, Any]] = None,
+        base_urls: Iterable[str] | None = None,
+        other_params: dict[str, Any] | None = None,
     ) -> dict[str, QueryResults]:
         """Executes the query asynchronously across all defined APIs.
 
@@ -819,12 +825,12 @@ class OptimadeClient:
         self,
         endpoint: str,
         filter: str,
-        page_limit: Optional[int] = None,
-        response_fields: Optional[list[str]] = None,
-        sort: Optional[str] = None,
+        page_limit: int | None = None,
+        response_fields: list[str] | None = None,
+        sort: str | None = None,
         paginate: bool = True,
-        base_urls: Optional[Iterable[str]] = None,
-        other_params: Optional[dict[str, Any]] = None,
+        base_urls: Iterable[str] | None = None,
+        other_params: dict[str, Any] | None = None,
     ) -> dict[str, QueryResults]:
         """Executes the query synchronously across all defined APIs.
 
@@ -871,11 +877,12 @@ class OptimadeClient:
         endpoint: str,
         filter: str,
         base_url: str,
-        response_fields: Optional[list[str]] = None,
-        sort: Optional[str] = None,
-        page_limit: Optional[int] = None,
+        response_fields: list[str] | None = None,
+        sort: str | None = None,
+        page_limit: int | None = None,
         paginate: bool = True,
-        other_params: Optional[dict[str, Any]] = None,
+        other_params: dict[str, Any] | None = None,
+        override_url: str | None = None,
     ) -> dict[str, QueryResults]:
         """Executes the query asynchronously on one API.
 
@@ -898,6 +905,8 @@ class OptimadeClient:
                 value of `max_results_per_provider`) or whether to return
                 after one page.
             other_params: Any other parameters to pass to the server.
+            override_url: Allow overriding the URL for the request, e.g., when
+                doing pagination externally.
 
         Returns:
             A dictionary mapping from base URL to the results of the query.
@@ -913,6 +922,7 @@ class OptimadeClient:
                 response_fields=response_fields,
                 sort=sort,
                 other_params=other_params,
+                override_url=override_url,
             )
         except Exception as exc:
             error_query_results = QueryResults()
@@ -929,11 +939,12 @@ class OptimadeClient:
         endpoint: str,
         filter: str,
         base_url: str,
-        response_fields: Optional[list[str]] = None,
-        sort: Optional[str] = None,
-        page_limit: Optional[int] = None,
+        response_fields: list[str] | None = None,
+        sort: str | None = None,
+        page_limit: int | None = None,
         paginate: bool = True,
-        other_params: Optional[dict[str, Any]] = None,
+        other_params: dict[str, Any] | None = None,
+        override_url: str | None = None,
     ) -> dict[str, QueryResults]:
         """See [`OptimadeClient.get_one_async`][optimade.client.OptimadeClient.get_one_async]."""
         next_url, _task = self._setup(
@@ -945,10 +956,20 @@ class OptimadeClient:
             sort=sort,
             other_params=other_params,
         )
+
+        if override_url:
+            next_url = override_url
+
+        request_delay: float | None = None
+
         results = QueryResults()
+        number_of_requests = 0
+        total_data_available: int | None = None
         try:
             async with self._http_client(headers=self.headers) as client:  # type: ignore[union-attr,call-arg,misc]
                 while next_url:
+                    number_of_requests += 1
+
                     attempts = 0
                     try:
                         if self.verbosity:
@@ -959,18 +980,48 @@ class OptimadeClient:
                             next_url, follow_redirects=True, timeout=self.http_timeout
                         )
                         page_results, next_url = self._handle_response(r, _task)
+                        request_delay = page_results["meta"].get("request_delay", None)
+                        # Don't wait any longer than 5 seconds
+                        if request_delay:
+                            request_delay = min(request_delay, 5)
+
+                        # Compute the upper limit guard rail on pagination requests based on the number of entries in the entire db
+                        # and the chosen page limit
+                        if total_data_available is None:
+                            total_data_available = page_results["meta"].get(
+                                "data_available", 0
+                            )
+                            page_limit = len(page_results["data"])
+                            if page_limit == 0:
+                                page_limit = 1
+                            if total_data_available and total_data_available > 0:
+                                stopping_criteria = min(
+                                    math.ceil(total_data_available / page_limit),
+                                    self.max_requests_per_provider,
+                                )
+                            else:
+                                stopping_criteria = self.max_results_per_provider
+
                     except RecoverableHTTPError:
                         attempts += 1
                         if attempts > self.max_attempts:
                             raise RuntimeError(
                                 f"Exceeded maximum number of retries for {next_url}"
                             )
-                        await asyncio.sleep(1)
+                        await asyncio.sleep(request_delay or 1)
                         continue
 
                     results.update(page_results)
 
                     if not paginate:
+                        break
+
+                    if len(results.data) == 0 or number_of_requests > stopping_criteria:
+                        if next_url:
+                            message = f"Detected potential infinite loop for {base_url} (more than {stopping_criteria=} requests made). Stopping download."
+                            results.errors.append(message)
+                            if not self.silent:
+                                self._progress.print(message)
                         break
 
                     if (
@@ -993,11 +1044,12 @@ class OptimadeClient:
         endpoint: str,
         filter: str,
         base_url: str,
-        sort: Optional[str] = None,
-        page_limit: Optional[int] = None,
-        response_fields: Optional[list[str]] = None,
+        sort: str | None = None,
+        page_limit: int | None = None,
+        response_fields: list[str] | None = None,
         paginate: bool = True,
-        other_params: Optional[dict[str, Any]] = None,
+        other_params: dict[str, Any] | None = None,
+        override_url: str | None = None,
     ) -> dict[str, QueryResults]:
         """See [`OptimadeClient.get_one`][optimade.client.OptimadeClient.get_one]."""
         next_url, _task = self._setup(
@@ -1009,7 +1061,15 @@ class OptimadeClient:
             sort=sort,
             other_params=other_params,
         )
+
+        if override_url:
+            next_url = override_url
+
+        request_delay: float | None = None
+
         results = QueryResults()
+        number_of_requests: int = 0
+        total_data_available: int | None = None
         try:
             with self._http_client() as client:  # type: ignore[misc]
                 client.headers.update(self.headers)
@@ -1019,6 +1079,7 @@ class OptimadeClient:
                     timeout = (self.http_timeout.connect, self.http_timeout.read)
 
                 while next_url:
+                    number_of_requests += 1
                     attempts = 0
                     try:
                         if self.verbosity:
@@ -1027,16 +1088,47 @@ class OptimadeClient:
                             )
                         r = client.get(next_url, timeout=timeout)
                         page_results, next_url = self._handle_response(r, _task)
+
+                        # Compute the upper limit guard rail on pagination requests based on the number of entries in the entire db
+                        # and the chosen page limit
+                        if total_data_available is None:
+                            total_data_available = page_results["meta"].get(
+                                "data_available", 0
+                            )
+                            page_limit = len(page_results["data"])
+                            if page_limit == 0:
+                                page_limit = 1
+                            if total_data_available and total_data_available > 0:
+                                stopping_criteria = min(
+                                    math.ceil(total_data_available / page_limit),
+                                    self.max_requests_per_provider,
+                                )
+                            else:
+                                stopping_criteria = self.max_results_per_provider
+
+                        request_delay = page_results["meta"].get("request_delay", None)
+                        # Don't wait any longer than 5 seconds
+                        if request_delay:
+                            request_delay = min(request_delay, 5)
+
                     except RecoverableHTTPError:
                         attempts += 1
                         if attempts > self.max_attempts:
                             raise RuntimeError(
                                 f"Exceeded maximum number of retries for {next_url}"
                             )
-                        time.sleep(1)
+                        time.sleep(request_delay or 1)
                         continue
 
                     results.update(page_results)
+
+                    if len(results.data) == 0 or number_of_requests > stopping_criteria:
+                        if next_url:
+                            message = f"Detected potential infinite loop for {base_url} (more than {stopping_criteria=} requests made). Stopping download."
+                            results.errors.append(message)
+                            if not self.silent:
+                                self._progress.print(message)
+                        break
 
                     if (
                         self.max_results_per_provider
@@ -1061,10 +1153,10 @@ class OptimadeClient:
         endpoint: str,
         base_url: str,
         filter: str,
-        page_limit: Optional[int],
-        response_fields: Optional[list[str]],
-        sort: Optional[str],
-        other_params: Optional[dict[str, Any]] = None,
+        page_limit: int | None,
+        response_fields: list[str] | None,
+        sort: str | None,
+        other_params: dict[str, Any] | None = None,
     ) -> tuple[str, TaskID]:
         """Constructs the first query URL and creates the progress bar task.
 
@@ -1091,13 +1183,13 @@ class OptimadeClient:
     def _build_url(
         self,
         base_url: str,
-        endpoint: Optional[str] = "structures",
-        version: Optional[str] = None,
-        filter: Optional[str] = None,
-        response_fields: Optional[list[str]] = None,
-        sort: Optional[str] = None,
-        page_limit: Optional[int] = None,
-        other_params: Optional[dict[str, Any]] = None,
+        endpoint: str | None = "structures",
+        version: str | None = None,
+        filter: str | None = None,
+        response_fields: list[str] | None = None,
+        sort: str | None = None,
+        page_limit: int | None = None,
+        other_params: dict[str, Any] | None = None,
     ) -> str:
         """Builds the URL to query based on the passed parameters.
 
@@ -1117,7 +1209,7 @@ class OptimadeClient:
         """
 
         if not version:
-            version = f'v{__api_version__.split(".")[0]}'
+            version = f"v{__api_version__.split('.')[0]}"
         while base_url.endswith("/"):
             base_url = base_url[:-1]
 
@@ -1133,7 +1225,7 @@ class OptimadeClient:
                 params_dict["response_fields"] = "response_fields=id"
             else:
                 params_dict["response_fields"] = (
-                    f'response_fields={",".join(response_fields)}'
+                    f"response_fields={','.join(response_fields)}"
                 )
 
         if page_limit:
@@ -1177,7 +1269,7 @@ class OptimadeClient:
                 raise RuntimeError(exc) from None
 
     def _handle_response(
-        self, response: Union[httpx.Response, requests.Response], _task: TaskID
+        self, response: httpx.Response | requests.Response, _task: TaskID
     ) -> tuple[dict[str, Any], str]:
         """Handle the response from the server.
 
@@ -1237,7 +1329,7 @@ class OptimadeClient:
 
         next_url = callback_response.get("next") or results["links"].get("next", None)
         if isinstance(next_url, dict):
-            next_url = next_url.pop("href")
+            next_url = next_url["href"]
 
         return results, next_url
 
@@ -1257,8 +1349,8 @@ class OptimadeClient:
             )
 
     def _execute_callbacks(
-        self, results: dict, response: Union[httpx.Response, requests.Response]
-    ) -> Union[None, dict]:
+        self, results: dict, response: httpx.Response | requests.Response
+    ) -> None | dict:
         """Execute any callbacks registered with the client.
 
         Parameters:

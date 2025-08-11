@@ -11,7 +11,7 @@ import re
 import urllib.parse
 import warnings
 from collections.abc import Generator, Iterable
-from typing import Optional, TextIO, Union
+from typing import TextIO
 
 from starlette.datastructures import URL as StarletteURL
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -113,7 +113,7 @@ class HandleApiHint(BaseHTTPMiddleware):
     """Handle `api_hint` query parameter."""
 
     @staticmethod
-    def handle_api_hint(api_hint: list[str]) -> Union[None, str]:
+    def handle_api_hint(api_hint: list[str]) -> None | str:
         """Handle `api_hint` parameter value.
 
         There are several scenarios that can play out, when handling the `api_hint`
@@ -242,7 +242,7 @@ class HandleApiHint(BaseHTTPMiddleware):
                     base_url = get_base_url(request.url)
 
                     new_request = (
-                        f"{base_url}{version_path}{str(request.url)[len(base_url):]}"
+                        f"{base_url}{version_path}{str(request.url)[len(base_url) :]}"
                     )
                     url = urllib.parse.urlsplit(new_request)
                     q = "&".join(
@@ -314,12 +314,12 @@ class AddWarnings(BaseHTTPMiddleware):
 
     def showwarning(
         self,
-        message: Union[Warning, str],
+        message: Warning | str,
         category: type[Warning],
         filename: str,
         lineno: int,
-        file: Optional[TextIO] = None,
-        line: Optional[str] = None,
+        file: TextIO | None = None,
+        line: str | None = None,
     ) -> None:
         """
         Hook to write a warning to a file using the built-in `warnings` lib.
@@ -354,9 +354,9 @@ class AddWarnings(BaseHTTPMiddleware):
             line: Source content of the line that issued the warning.
 
         """
-        assert isinstance(
-            message, Warning
-        ), "'message' is expected to be a Warning or subclass thereof."
+        assert isinstance(message, Warning), (
+            "'message' is expected to be a Warning or subclass thereof."
+        )
 
         if not isinstance(message, OptimadeWarning):
             # If the Warning is not an OptimadeWarning or subclass thereof,
@@ -411,7 +411,7 @@ class AddWarnings(BaseHTTPMiddleware):
         )
 
     @staticmethod
-    def chunk_it_up(content: Union[str, bytes], chunk_size: int) -> Generator:
+    def chunk_it_up(content: str | bytes, chunk_size: int) -> Generator:
         """Return generator for string in chunks of size `chunk_size`.
 
         Parameters:

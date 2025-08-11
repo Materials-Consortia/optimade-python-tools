@@ -23,16 +23,16 @@
   <td align="center">
     <a href="https://pypi.org/project/optimade"><img alt="PyPI version" src="https://img.shields.io/pypi/v/optimade?logo=pypi&logoColor=white"></a><br>
     <a href="https://pypi.org/project/optimade"><img alt="PyPI - Python Version"  src="https://img.shields.io/pypi/pyversions/optimade?logo=python&logoColor=white"></a><br>
-    <a href="https://github.com/Materials-Consortia/OPTIMADE"><img alt="OPTIMADE version" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/optimade-version.json"></a>
+    <a href="https://github.com/Materials-Consortia/OPTIMADE"><img alt="OPTIMADE version" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/main/optimade-version.json"></a>
   </td>
   <td align="center">
-    <a href="https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amaster+"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/Materials-Consortia/optimade-python-tools/ci.yml?logo=github"></a><br>
-    <a href="https://optimade.org/optimade-python-tools"><img alt="Docs" src="https://img.shields.io/github/actions/workflow/status/Materials-Consortia/optimade-python-tools/ci_cd_updated_master.yml?label=docs&logo=github"></a><br>
+    <a href="https://github.com/Materials-Consortia/optimade-python-tools/actions?query=branch%3Amain+"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/Materials-Consortia/optimade-python-tools/ci.yml?logo=github"></a><br>
+    <a href="https://optimade.org/optimade-python-tools"><img alt="Docs" src="https://img.shields.io/github/actions/workflow/status/Materials-Consortia/optimade-python-tools/ci_cd_updated_main.yml?label=docs&logo=github"></a><br>
     <a href="https://codecov.io/gh/Materials-Consortia/optimade-python-tools"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/Materials-Consortia/optimade-python-tools?logo=codecov&logoColor=white&token=UJAtmqkZZO"></a><br>
   </td>
   <td align="center">
     <a href="https://github.com/Materials-Consortia/optimade-python-tools/pulse"><img alt="Commit Activity" src="https://img.shields.io/github/commit-activity/m/Materials-Consortia/optimade-python-tools?logo=github"></a><br>
-    <a href="https://github.com/Materials-Consortia/optimade-python-tools/commits/master"><img alt="Last Commit" src="https://img.shields.io/github/last-commit/Materials-Consortia/optimade-python-tools/master?logo=github"></a><br>
+    <a href="https://github.com/Materials-Consortia/optimade-python-tools/commits/main"><img alt="Last Commit" src="https://img.shields.io/github/last-commit/Materials-Consortia/optimade-python-tools/main?logo=github"></a><br>
     <a href="https://github.com/Materials-Consortia/optimade-python-tools/graphs/contributors"><img alt="Contributors" src="https://badgen.net/github/contributors/Materials-Consortia/optimade-python-tools?icon=github"></a>
   </td>
 </tr>
@@ -70,7 +70,7 @@ The latest stable version of this package can be obtained from [PyPI](https://py
 pip install optimade
 ```
 
-The latest development version of this package can be obtained from the master branch of this repository:
+The latest development version of this package can be obtained from the main branch of this repository:
 
 ```shell
 git clone https://github.com/Materials-Consortia/optimade-python-tools
@@ -98,7 +98,11 @@ Each release of the `optimade` package from this repository only targets one ver
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.1.0/optimade.rst">v1.1.0</a></td>
-        <td align="center"><code>optimade~=0.16</code></td>
+        <td align="center"><code>optimade>=0.16,<1.2</code></td>
+    </tr>
+    <tr>
+        <td align="center"><a href="https://github.com/Materials-Consortia/OPTIMADE/blob/v1.2.0/optimade.rst">v1.2.0</a></td>
+        <td align="center"><code>optimade>=1.2.0</code></td>
     </tr>
 </tbody>
 </table>
@@ -111,8 +115,9 @@ Contribution guidelines and tips for getting help can be found in the [contribut
 
 ## How to cite
 
-If you use this package to access or serve OPTIMADE data, we kindly request that you consider citing the following:
+If you use this package to access or serve OPTIMADE data, we kindly request that you cite the following:
 
+- Evans *et al.*, Developments and applications of the OPTIMADE API for materials discovery, design, and data exchange, *Digital Discovery*, **3**, 1509-1533 (2024) [10.1039/D4DD00039K](https://doi.org/10.1039/D4DD00039K)
 - Andersen *et al.*, OPTIMADE, an API for exchanging materials data, *Sci. Data* **8**, 217 (2021) [10.1038/s41597-021-00974-z](https://doi.org/10.1038/s41597-021-00974-z)
 - Evans *et al.*, optimade-python-tools: a Python library for serving and consuming materials data via OPTIMADE APIs. *Journal of Open Source Software*, **6**(65), 3458 (2021) [10.21105/joss.03458](https://doi.org/10.21105/joss.03458)
 
@@ -121,7 +126,7 @@ If you use this package to access or serve OPTIMADE data, we kindly request that
 - [OPTIMADE Specification](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst), the human-readable specification that this library is based on.
 - [optimade-validator-action](https://github.com/Materials-Consortia/optimade-validator-action), a GitHub action that can be used to validate implementations from a URL (using the validator from this repo).
 - [OpenAPI](https://github.com/OAI/OpenAPI-Specification), the machine-readable format used to specify the OPTIMADE API in [`openapi.json`](openapi/openapi.json) and [`index_openapi.json`](openapi/index_openapi.json).
-- [Interactive documentation](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/openapi/openapi.json) generated from [`openapi.json`](openapi/openapi.json) (see also [interactive JSON editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/master/openapi/openapi.json)).
+- [Interactive documentation](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/main/openapi/openapi.json) generated from [`openapi.json`](openapi/openapi.json) (see also [interactive JSON editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/Materials-Consortia/optimade-python-tools/main/openapi/openapi.json)).
 - [pydantic](https://pydantic-docs.helpmanual.io/), the library used for generating the OpenAPI schema from [Python models](https://www.optimade.org/optimade-python-tools/all_models/).
 - [FastAPI](https://fastapi.tiangolo.com/), the framework used for generating the reference implementation expressed by the [`openapi.json`](openapi/openapi.json) specification.
 - [Lark](https://github.com/lark-parser/lark), the library used to parse the filter language in OPTIMADE queries.

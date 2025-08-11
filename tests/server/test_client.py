@@ -4,7 +4,6 @@ import json
 import warnings
 from functools import partial
 from pathlib import Path
-from typing import Optional
 
 import httpx
 import pytest
@@ -416,7 +415,7 @@ def test_client_global_data_callback(async_http_client, http_client, use_async):
 
 @pytest.mark.parametrize("use_async", [True, False])
 def test_client_page_skip_callback(async_http_client, http_client, use_async):
-    def page_skip_callback(_: str, results: dict) -> Optional[dict]:
+    def page_skip_callback(_: str, results: dict) -> dict | None:
         """A test callback that skips to the final page of results."""
         if len(results["data"]) > 16:
             return {"next": f"{TEST_URL}/structures?page_offset=16"}
@@ -440,7 +439,7 @@ def test_client_mutable_data_callback(async_http_client, http_client, use_async)
     container: dict[str, str] = {}
 
     def mutable_database_callback(
-        _: str, results: dict, db: Optional[dict[str, str]] = None
+        _: str, results: dict, db: dict[str, str] | None = None
     ) -> None:
         """A test callback that creates a flat dictionary of results via mutable args."""
 
@@ -472,7 +471,7 @@ def test_client_asynchronous_write_callback(
         with open(tmp_path / "formulae.csv", "a") as f:
             for structure in results["data"]:
                 f.write(
-                    f'\n{structure["id"]}, {structure["attributes"]["chemical_formula_reduced"]}'
+                    f"\n{structure['id']}, {structure['attributes']['chemical_formula_reduced']}"
                 )
 
         return None
@@ -510,7 +509,7 @@ def test_list_properties(
 
     results = cli.list_properties("structures")
     for database in results:
-        assert len(results[database]) == 22, str(results[database])
+        assert len(results[database]) == 28, str(results[database])
 
     results = cli.search_property("structures", "site")
     for database in results:
@@ -539,12 +538,95 @@ def test_binary_search_internals(trial_counts):
         window, probe = cli._update_probe_and_window(window, probe, below=below)
         # print(trial_counts, window, probe)
         if window[0] == window[1] == probe:
-            assert (
-                window[0] == trial_counts
-            ), "Binary search did not converge to the correct value."
+            assert window[0] == trial_counts, (
+                "Binary search did not converge to the correct value."
+            )
             break
         attempts += 1
     else:
         raise RuntimeError(
             f"Could not converge binary search for {trial_counts} in {max_attempts} attempts."
         )
+
+
+def test_raw_get_one_sync(http_client):
+    """Test the raw `get_one` method."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        use_async=False,
+        http_client=http_client,
+        verbosity=10,
+    )
+    result = cli.get_one(
+        endpoint="structures",
+        filter='elements HAS "Ag"',
+        base_url=TEST_URL,
+        paginate=False,
+        page_limit=10,
+    )
+    assert len(result[TEST_URL].data) == 10
+    override = cli.get_one(
+        endpoint="structures",
+        filter='elements HAS "Ag"',
+        base_url=TEST_URL,
+        override_url='https://example.org/v1/structures?filter=elements HAS "Ag"&page_offset=10',
+        paginate=False,
+    )
+    assert len(override[TEST_URL].data) == 1
+
+
+@pytest.mark.asyncio
+async def test_raw_get_one_async(async_http_client):
+    """Test the raw `get_one` method."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        http_client=async_http_client,
+        use_async=True,
+    )
+    result = await cli.get_one_async(
+        endpoint="structures",
+        filter='elements HAS "Ag"',
+        base_url=TEST_URL,
+        paginate=False,
+        page_limit=10,
+    )
+    assert len(result[TEST_URL].data) == 10
+    override = await cli.get_one_async(
+        endpoint="structures",
+        filter='elements HAS "Ag"',
+        base_url=TEST_URL,
+        override_url='https://example.org/v1/structures?filter=elements HAS "Ag"&page_offset=10',
+        paginate=False,
+    )
+    assert len(override[TEST_URL].data) == 1
+
+
+@pytest.mark.asyncio
+async def test_guardrail_async(async_http_client):
+    """Test the upper limit on requests guard rail."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        http_client=async_http_client,
+        use_async=True,
+    )
+    cli.max_requests_per_provider = 1
+    result = await cli.get_one_async(
+        endpoint="structures", base_url=TEST_URL, filter="", page_limit=5, paginate=True
+    )
+    assert len(result[TEST_URL].errors) == 1
+    assert "infinite" in result[TEST_URL].errors[0]
+
+
+def test_guardrail_sync(http_client):
+    """Test the upper limit on requests guard rail."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        http_client=http_client,
+        use_async=False,
+    )
+    cli.max_requests_per_provider = 1
+    result = cli.get_one(
+        endpoint="structures", base_url=TEST_URL, filter="", page_limit=5, paginate=True
+    )
+    assert len(result[TEST_URL].errors) == 1
+    assert "infinite" in result[TEST_URL].errors[0]

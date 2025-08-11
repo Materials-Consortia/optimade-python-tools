@@ -62,6 +62,8 @@ def test_available_api_versions():
 
 def test_good_entry_info_custom_properties():
     test_good_info = {
+        "id": "structures",
+        "type": "info",
         "formats": ["json", "xml"],
         "description": "good info data",
         "output_fields_by_format": {"json": ["nelements", "id"]},
@@ -76,6 +78,8 @@ def test_good_entry_info_custom_properties():
 def test_bad_entry_info_custom_properties():
     """Checks that error is raised if custom field contains upper case letter."""
     test_bad_info = {
+        "id": "structures",
+        "type": "info",
         "formats": ["json", "xml"],
         "description": "bad info data",
         "output_fields_by_format": {"json": ["nelements", "id"]},

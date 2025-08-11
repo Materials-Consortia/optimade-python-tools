@@ -1,4 +1,4 @@
-from typing import Annotated, Any, Literal, Optional
+from typing import Annotated, Any, Literal
 
 from pydantic import AnyUrl, BaseModel, field_validator
 
@@ -21,7 +21,7 @@ class Person(BaseModel):
     ]
 
     firstname: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""First name of the person.""",
             support=SupportLevel.OPTIONAL,
@@ -30,7 +30,7 @@ class Person(BaseModel):
     ] = None
 
     lastname: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""Last name of the person.""",
             support=SupportLevel.OPTIONAL,
@@ -48,7 +48,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     """
 
     authors: Annotated[
-        Optional[list[Person]],
+        list[Person] | None,
         OptimadeField(
             description="List of person objects containing the authors of the reference.",
             support=SupportLevel.OPTIONAL,
@@ -57,7 +57,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     editors: Annotated[
-        Optional[list[Person]],
+        list[Person] | None,
         OptimadeField(
             description="List of person objects containing the editors of the reference.",
             support=SupportLevel.OPTIONAL,
@@ -66,7 +66,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     doi: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="The digital object identifier of the reference.",
             support=SupportLevel.OPTIONAL,
@@ -75,7 +75,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     url: Annotated[
-        Optional[AnyUrl],
+        AnyUrl | None,
         OptimadeField(
             description="The URL of the reference.",
             support=SupportLevel.OPTIONAL,
@@ -84,7 +84,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     address: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -93,7 +93,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     annote: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -102,7 +102,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     booktitle: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -111,7 +111,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     chapter: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -120,7 +120,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     crossref: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -129,7 +129,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     edition: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -138,7 +138,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     howpublished: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -147,7 +147,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     institution: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -156,7 +156,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     journal: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -165,7 +165,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     key: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -174,7 +174,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     month: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -183,7 +183,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     note: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -192,7 +192,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     number: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -201,7 +201,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     organization: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -210,7 +210,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     pages: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -219,7 +219,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     publisher: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -228,7 +228,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     school: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -237,7 +237,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     series: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -246,7 +246,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     title: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -255,7 +255,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     bib_type: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Type of the reference, corresponding to the **type** property in the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -264,7 +264,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     volume: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,
@@ -273,7 +273,7 @@ class ReferenceResourceAttributes(EntryResourceAttributes):
     ] = None
 
     year: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="Meaning of property matches the BiBTeX specification.",
             support=SupportLevel.OPTIONAL,

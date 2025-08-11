@@ -5,7 +5,6 @@ Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
 
 from collections.abc import Iterable
-from typing import Optional
 
 from optimade.models.structures import Species as OptimadeStructureSpecies
 from optimade.models.structures import Vector3D
@@ -165,7 +164,7 @@ def unit_vector(x: Vector3D) -> Vector3D:
 def cellpar_to_cell(
     cellpar: list[float],
     ab_normal: tuple[int, int, int] = (0, 0, 1),
-    a_direction: Optional[tuple[int, int, int]] = None,
+    a_direction: tuple[int, int, int] | None = None,
 ) -> list[Vector3D]:
     """Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.
 
@@ -278,9 +277,9 @@ def cellpar_to_cell(
 
 def _pad_iter_of_iters(
     iterable: Iterable[Iterable],
-    padding: Optional[float] = None,
-    outer: Optional[type] = None,
-    inner: Optional[type] = None,
+    padding: float | None = None,
+    outer: type | None = None,
+    inner: type | None = None,
 ) -> tuple[Iterable[Iterable], bool]:
     """Turn any null/None values into a float in given iterable of iterables"""
     try:
@@ -309,7 +308,7 @@ def _pad_iter_of_iters(
 
 def pad_cell(
     lattice_vectors: tuple[Vector3D, Vector3D, Vector3D],
-    padding: Optional[float] = None,
+    padding: float | None = None,
 ) -> tuple:  # Setting this properly makes MkDocs fail.
     """Turn any `null`/`None` values into a `float` in given `tuple` of
     [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors].

@@ -1,16 +1,17 @@
 import re
 import warnings
 from enum import Enum, IntEnum
-from typing import TYPE_CHECKING, Annotated, Literal, Optional, Union
+from typing import TYPE_CHECKING, Annotated, Literal, Optional
 
 from pydantic import BaseModel, BeforeValidator, Field, field_validator, model_validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
-from optimade.models.types import ChemicalSymbol
+from optimade.models.types import ChemicalSymbol, SymmetryOperation
 from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
     CHEMICAL_SYMBOLS,
+    HM_SYMBOL_REGEXP,
     OptimadeField,
     StrictField,
     SupportLevel,
@@ -120,7 +121,7 @@ Note that concentrations are uncorrelated between different site (even of the sa
     ]
 
     mass: Annotated[
-        Optional[list[float]],
+        list[float] | None,
         OptimadeField(
             description="""If present MUST be a list of floats expressed in a.m.u.
 Elements denoting vacancies MUST have masses equal to 0.""",
@@ -131,7 +132,7 @@ Elements denoting vacancies MUST have masses equal to 0.""",
     ] = None
 
     original_name: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""Can be any valid Unicode string, and SHOULD contain (if specified) the name of the species that is used internally in the source database.
 
@@ -142,7 +143,7 @@ Note: With regards to "source database", we refer to the immediate source being 
     ] = None
 
     attached: Annotated[
-        Optional[list[str]],
+        list[str] | None,
         OptimadeField(
             description="""If provided MUST be a list of length 1 or more of strings of chemical symbols for the elements attached to this site, or "X" for a non-chemical element.""",
             support=SupportLevel.OPTIONAL,
@@ -151,7 +152,7 @@ Note: With regards to "source database", we refer to the immediate source being 
     ] = None
 
     nattached: Annotated[
-        Optional[list[int]],
+        list[int] | None,
         OptimadeField(
             description="""If provided MUST be a list of length 1 or more of integers indicating the number of attached atoms of the kind specified in the value of the :field:`attached` key.""",
             support=SupportLevel.OPTIONAL,
@@ -161,8 +162,8 @@ Note: With regards to "source database", we refer to the immediate source being 
 
     @field_validator("concentration", "mass", mode="after")
     def validate_concentration_and_mass(
-        cls, value: Optional[list[float]], info: "ValidationInfo"
-    ) -> Optional[list[float]]:
+        cls, value: list[float] | None, info: "ValidationInfo"
+    ) -> list[float] | None:
         if not value:
             return value
 
@@ -181,8 +182,8 @@ Note: With regards to "source database", we refer to the immediate source being 
     @field_validator("attached", "nattached", mode="after")
     @classmethod
     def validate_minimum_list_length(
-        cls, value: Optional[Union[list[str], list[int]]]
-    ) -> Optional[Union[list[str], list[int]]]:
+        cls, value: list[str] | list[int] | None
+    ) -> list[str] | list[int] | None:
         if value is not None and len(value) < 1:
             raise ValueError(
                 "The list's length MUST be 1 or more, instead it was found to be "
@@ -285,7 +286,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a structure, e.g. unit cell, atoms, positions."""
 
     elements: Annotated[
-        Optional[list[str]],
+        list[str] | None,
         OptimadeField(
             description="""The chemical symbols of the different elements present in the structure.
 
@@ -313,7 +314,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     ] = None
 
     nelements: Annotated[
-        Optional[int],
+        int | None,
         OptimadeField(
             description="""Number of different elements in the structure as an integer.
 
@@ -337,7 +338,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     ] = None
 
     elements_ratios: Annotated[
-        Optional[list[float]],
+        list[float] | None,
         OptimadeField(
             description="""Relative proportions of different elements in the structure.
 
@@ -364,7 +365,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     ] = None
 
     chemical_formula_descriptive: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""The chemical formula for a structure as a string in a form chosen by the API implementation.
 
@@ -394,7 +395,7 @@ class StructureResourceAttributes(EntryResourceAttributes):
     ] = None
 
     chemical_formula_reduced: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""The reduced chemical formula for a structure as a string with element symbols and integer chemical proportion numbers.
 The proportion number MUST be omitted if it is 1.
@@ -426,7 +427,7 @@ The proportion number MUST be omitted if it is 1.
     ] = None
 
     chemical_formula_hill: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""The chemical formula for a structure in [Hill form](https://dx.doi.org/10.1021/ja02046a005) with element symbols followed by integer chemical proportion numbers. The proportion number MUST be omitted if it is 1.
 
@@ -459,7 +460,7 @@ The proportion number MUST be omitted if it is 1.
     ] = None
 
     chemical_formula_anonymous: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""The anonymous formula is the `chemical_formula_reduced`, but where the elements are instead first ordered by their chemical proportion number, and then, in order left to right, replaced by anonymous symbols A, B, C, ..., Z, Aa, Ba, ..., Za, Ab, Bb, ... and so on.
 
@@ -483,7 +484,7 @@ The proportion number MUST be omitted if it is 1.
     ] = None
 
     dimension_types: Annotated[
-        Optional[list[Periodicity]],
+        list[Periodicity] | None,
         OptimadeField(
             min_length=3,
             max_length=3,
@@ -511,7 +512,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     ] = None
 
     nperiodic_dimensions: Annotated[
-        Optional[int],
+        int | None,
         OptimadeField(
             description="""An integer specifying the number of periodic dimensions in the structure, equivalent to the number of non-zero entries in `dimension_types`.
 
@@ -535,7 +536,7 @@ Note: the elements in this list each refer to the direction of the corresponding
     ] = None
 
     lattice_vectors: Annotated[
-        Optional[list[Vector3D_unknown]],
+        list[Vector3D_unknown] | None,
         OptimadeField(
             min_length=3,
             max_length=3,
@@ -564,8 +565,158 @@ Note: the elements in this list each refer to the direction of the corresponding
         ),
     ] = None
 
+    space_group_symmetry_operations_xyz: Annotated[
+        list[SymmetryOperation] | None,
+        OptimadeField(
+            description="""A list of symmetry operations given as general position x, y and z coordinates in algebraic form.
+
+- **Type**: list of strings
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+      - The property is RECOMMENDED if coordinates are returned in a form to which these operations can or must be applied (e.g. fractional atom coordinates of an asymmetric unit).
+      - The property is REQUIRED if symmetry operations are necessary to reconstruct the full model of the material and no other symmetry information (e.g., the Hall symbol) is provided that would allow the user to derive symmetry operations unambiguously.
+    - **Query***: Support for queries on this property is not required and in fact is NOT RECOMMENDED.
+    - MUST be `null` if `nperiodic_dimensions` is equal to 0.
+    - Each symmetry operation is described by a string that gives that symmetry operation in Jones' faithful representation (Bradley & Cracknell, 1972: pp. 35-37), adapted for computer string notation.
+    - The letters `x`, `y` and `z` that are typesetted with overbars in printed text represent coordinate values multiplied by -1 and are encoded as `-x`, `-y` and `-z`, respectively.
+    - The syntax of the strings representing symmetry operations MUST conform to regular expressions given in appendix The Symmetry Operation String Regular Expressions.
+    - The interpretation of the strings MUST follow the conventions of the IUCr CIF core dictionary (IUCr, 2023). In particular, this property MUST explicitly provide all symmetry operations needed to generate all the atoms in the unit cell from the atoms in the asymmetric unit, for the setting used.
+    - This symmetry operation set MUST always include the `x,y,z` identity operation.
+    - The symmetry operations are to be applied to fractional atom coordinates. In case only Cartesian coordinates are available, these Cartesian coordinates must be converted to fractional coordinates before the application of the provided symmetry operations.
+    - If the symmetry operation list is present, it MUST be compatible with other space group specifications (e.g. the ITC space group number, the Hall symbol, the Hermann-Mauguin symbol) if these are present.
+
+- **Examples**:
+    - Space group operations for the space group with ITC number 3 (H-M symbol `P 2`, extended H-M symbol `P 1 2 1`, Hall symbol `P 2y`): `["x,y,z", "-x,y,-z"]`
+    - Space group operations for the space group with ITC number 5 (H-M symbol `C 2`, extended H-M symbol `C 1 2 1`, Hall symbol `C 2y`): `["x,y,z", "-x,y,-z", "x+1/2,y+1/2,z", "-x+1/2,y+1/2,-z"]`
+
+- **Notes**: The list of space group symmetry operations applies to the whole periodic array of atoms and together with the lattice translations given in the `lattice_vectors` property provides the necessary information to reconstruct all atom site positions of the periodic material.
+  Thus, the symmetry operations described in this property are only applicable to material models with at least one periodic dimension.
+  This property is not meant to represent arbitrary symmetries of molecules, non-periodic (finite) collections of atoms or non-crystallographic symmetry.
+
+- **Bibliographic References**:
+  - Bradley, C. J. and Cracknell, A. P. (1972) The Mathematical Theory of Symmetry in Solids. Oxford, Clarendon Press (paperback edition 2010) 745 p. ISBN 978-0-19-958258-7.
+  - IUCr (2023) Core dictionary (coreCIF) version 2.4.5; data name `_space_group_symop_operation_xyz`. Available from: https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_symop_operation_xyz.html [Accessed 2023-06-18T16:46+03:00].""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+        ),
+    ] = None
+
+    space_group_symbol_hall: Annotated[
+        str | None,
+        OptimadeField(
+            description="""A Hall space group symbol representing the symmetry of the structure as defined in (Hall, 1981, 1981a).
+
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+    - The change-of-basis operations are used as defined in the International Tables of Crystallography (ITC) Vol. B, Sect. 1.4, Appendix A1.4.2 (IUCr, 2001).
+    - Each component of the Hall symbol MUST be separated by a single space symbol.
+    - If there exists a standard Hall symbol which represents the symmetry it SHOULD be used.
+    - MUST be `null` if `nperiodic_dimensions` is not equal to 3.
+
+- **Examples**:
+    - Space group symbols with explicit origin (the Hall symbols):
+        - `P 2c -2ac`
+        - `I 4bd 2ab 3`
+    - Space group symbols with change-of-basis operations:
+        - `P 2yb (-1/2*x+z,1/2*x,y)`
+        - `-I 4 2 (1/2*x+1/2*y,-1/2*x+1/2*y,z)`
+
+- **Bibliographic References**:
+    - Hall, S. R. (1981) Space-group notation with an explicit origin. Acta Crystallographica Section A, 37, 517-525, International Union of Crystallography (IUCr), DOI: https://doi.org/10.1107/s0567739481001228
+    - Hall, S. R. (1981a) Space-group notation with an explicit origin; erratum. Acta Crystallographica Section A, 37, 921-921, International Union of Crystallography (IUCr), DOI: https://doi.org/10.1107/s0567739481001976
+    - IUCr (2001). International Tables for Crystallography vol. B. Reciprocal Space. Ed. U. Shmueli. 2-nd edition. Dordrecht/Boston/London, Kluwer Academic Publishers.""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+        ),
+    ] = None
+
+    space_group_symbol_hermann_mauguin: Annotated[
+        str | None,
+        OptimadeField(
+            description="""A human- and machine-readable string containing the short Hermann-Mauguin (H-M) symbol which specifies the space group of the structure in the response.
+
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+    - The H-M symbol SHOULD aim to convey the closest representation of the symmetry information that can be specified using the short format used in the International Tables for Crystallography vol. A (IUCr, 2005), Table 4.3.2.1 as described in the accompanying text.
+    - The symbol MAY be a non-standard short H-M symbol.
+    - The H-M symbol does not unambiguously communicate the axis, cell, and origin choice, and the given symbol SHOULD NOT be amended to convey this information.
+    - To encode as character strings, the following adaptations MUST be made when representing H-M symbols given in their typesetted form:
+        - the overbar above the numbers MUST be changed to the minus sign in front of the digit (e.g. '-2');
+        - subscripts that denote screw axes are written as digits immediately after the axis designator without a space (e.g. 'P 32')
+        - the space group generators MUST be separated by a single space (e.g. 'P 21 21 2');
+        - there MUST be no spaces in the space group generator designation (i.e. use 'P 21/m', not the 'P 21 / m');
+
+- **Examples**:
+    - `C 2`
+    - `P 21 21 21`
+
+- **Bibliographic References**:
+    - IUCr (2005). International Tables for Crystallography vol. A. Space-Group Symmetry. Ed. Theo Hahn. 5-th edition. Dordrecht, Springer.
+""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+            pattern=HM_SYMBOL_REGEXP,
+        ),
+    ] = None
+
+    space_group_symbol_hermann_mauguin_extended: Annotated[
+        str | None,
+        OptimadeField(
+            description="""A human- and machine-readable string containing the extended Hermann-Mauguin (H-M) symbol which specifies the space group of the structure in the response.
+
+- **Type**: string
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+    - The H-M symbols SHOULD be given as specified in the International Tables for Crystallography vol. A (IUCr, 2005), Table 4.3.2.1.
+    - The change-of-basis operation SHOULD be provided for the non-standard axis and cell choices.
+    - The extended H-M symbol does not unambiguously communicate the origin choice, and the given symbol SHOULD NOT be amended to convey this information.
+    - The description of the change-of-basis SHOULD follow conventions of the ITC Vol. B, Sect. 1.4, Appendix A1.4.2 (IUCr, 2001).
+    - The same character string encoding conventions MUST be used as for the specification of the `space_group_symbol_hermann_mauguin` property.
+
+- **Examples**:
+    - `C 1 2 1`
+
+- **Bibliographic References**:
+    - IUCr (2001). International Tables for Crystallography vol. B. Reciprocal Space. Ed. U. Shmueli. 2-nd edition. Dordrecht/Boston/London, Kluwer Academic Publishers.
+    - IUCr (2005). International Tables for Crystallography vol. A. Space-Group Symmetry. Ed. Theo Hahn. 5-th edition. Dordrecht, Springer.
+
+""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+            pattern=HM_SYMBOL_REGEXP,
+        ),
+    ] = None
+
+    space_group_it_number: Annotated[
+        int | None,
+        OptimadeField(
+            description="""Space group number which specifies the space group of the structure as defined in the International Tables for Crystallography Vol. A. (IUCr, 2005).
+
+- **Type**: integer
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+    - The integer value MUST be between 1 and 230.
+    - MUST be null if `nperiodic_dimensions` is not equal to 3.""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+            ge=1,
+            le=230,
+        ),
+    ] = None
+
     cartesian_site_positions: Annotated[
-        Optional[list[Vector3D]],
+        list[Vector3D] | None,
         OptimadeField(
             description="""Cartesian positions of each site in the structure.
 A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
@@ -588,7 +739,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     ] = None
 
     nsites: Annotated[
-        Optional[int],
+        int | None,
         OptimadeField(
             description="""An integer specifying the length of the `cartesian_site_positions` property.
 
@@ -610,7 +761,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     ] = None
 
     species: Annotated[
-        Optional[list[Species]],
+        list[Species] | None,
         OptimadeField(
             description="""A list describing the species of the sites of this structure.
 Species can represent pure chemical elements, virtual-crystal atoms representing a statistical occupation of a given site by multiple chemical elements, and/or a location to which there are attached atoms, i.e., atoms whose precise location are unknown beyond that they are attached to that position (frequently used to indicate hydrogen atoms attached to another element, e.g., a carbon with three attached hydrogens might represent a methyl group, -CH3).
@@ -681,7 +832,7 @@ Species can represent pure chemical elements, virtual-crystal atoms representing
     ] = None
 
     species_at_sites: Annotated[
-        Optional[list[str]],
+        list[str] | None,
         OptimadeField(
             description="""Name of the species at each site (where values for sites are specified with the same order of the property `cartesian_site_positions`).
 The properties of the species are found in the property `species`.
@@ -707,7 +858,7 @@ The properties of the species are found in the property `species`.
     ] = None
 
     assemblies: Annotated[
-        Optional[list[Assembly]],
+        list[Assembly] | None,
         OptimadeField(
             description="""A description of groups of sites that are statistically correlated.
 
@@ -871,8 +1022,8 @@ The properties of the species are found in the property `species`.
     @field_validator("chemical_formula_reduced", "chemical_formula_hill", mode="after")
     @classmethod
     def check_ordered_formula(
-        cls, value: Optional[str], info: "ValidationInfo"
-    ) -> Optional[str]:
+        cls, value: str | None, info: "ValidationInfo"
+    ) -> str | None:
         if value is None:
             return value
 
@@ -904,7 +1055,7 @@ The properties of the species are found in the property `species`.
 
     @field_validator("chemical_formula_anonymous", mode="after")
     @classmethod
-    def check_anonymous_formula(cls, value: Optional[str]) -> Optional[str]:
+    def check_anonymous_formula(cls, value: str | None) -> str | None:
         if value is None:
             return value
 
@@ -934,8 +1085,8 @@ The properties of the species are found in the property `species`.
     )
     @classmethod
     def check_reduced_formulae(
-        cls, value: Optional[str], info: "ValidationInfo"
-    ) -> Optional[str]:
+        cls, value: str | None, info: "ValidationInfo"
+    ) -> str | None:
         if value is None:
             return value
 
@@ -950,9 +1101,7 @@ The properties of the species are found in the property `species`.
 
     @field_validator("elements", mode="after")
     @classmethod
-    def elements_must_be_alphabetical(
-        cls, value: Optional[list[str]]
-    ) -> Optional[list[str]]:
+    def elements_must_be_alphabetical(cls, value: list[str] | None) -> list[str] | None:
         if value is None:
             return value
 
@@ -962,9 +1111,7 @@ The properties of the species are found in the property `species`.
 
     @field_validator("elements_ratios", mode="after")
     @classmethod
-    def ratios_must_sum_to_one(
-        cls, value: Optional[list[float]]
-    ) -> Optional[list[float]]:
+    def ratios_must_sum_to_one(cls, value: list[float] | None) -> list[float] | None:
         if value is None:
             return value
 
@@ -1005,10 +1152,9 @@ The properties of the species are found in the property `species`.
     @classmethod
     def null_values_for_whole_vector(
         cls,
-        value: Optional[
-            Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]
-        ],
-    ) -> Optional[Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]]:
+        value: None
+        | (Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)]),
+    ) -> Annotated[list[Vector3D_unknown], Field(min_length=3, max_length=3)] | None:
         if value is None:
             return value
 
@@ -1061,9 +1207,7 @@ The properties of the species are found in the property `species`.
 
     @field_validator("species", mode="after")
     @classmethod
-    def validate_species(
-        cls, value: Optional[list[Species]]
-    ) -> Optional[list[Species]]:
+    def validate_species(cls, value: list[Species] | None) -> list[Species] | None:
         if value is None:
             return value
 
@@ -1075,6 +1219,23 @@ The properties of the species are found in the property `species`.
             )
 
         return value
+
+    @model_validator(mode="after")
+    def check_symmetry_operations(self) -> "StructureResourceAttributes":
+        if self.nperiodic_dimensions == 0 and self.space_group_symmetry_operations_xyz:
+            raise ValueError(
+                "Non-periodic structures MUST NOT have space group symmetry operations."
+            )
+
+        if (
+            self.space_group_symmetry_operations_xyz
+            and "x,y,z" not in self.space_group_symmetry_operations_xyz
+        ):
+            raise ValueError(
+                "The identity operation 'x,y,z' MUST be included in the space group symmetry operations, if provided."
+            )
+
+        return self
 
     @model_validator(mode="after")
     def validate_structure_features(self) -> "StructureResourceAttributes":
@@ -1111,13 +1272,6 @@ The properties of the species are found in the property `species`.
                             "greater than one element"
                         )
                     break
-            else:
-                if StructureFeatures.DISORDER in self.structure_features:
-                    raise ValueError(
-                        f"{StructureFeatures.DISORDER.value} MUST NOT be present, "
-                        "since all species' chemical_symbols lists are equal to or "
-                        "less than one element"
-                    )
 
             # site_attachments
             for species in self.species:

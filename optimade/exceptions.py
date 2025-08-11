@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Any, Optional
+from typing import Any
 
 __all__ = (
     "OptimadeHTTPException",
@@ -33,12 +33,10 @@ class OptimadeHTTPException(Exception, ABC):
 
     status_code: int
     title: str
-    detail: Optional[str] = None
-    headers: Optional[dict[str, Any]] = None
+    detail: str | None = None
+    headers: dict[str, Any] | None = None
 
-    def __init__(
-        self, detail: Optional[str] = None, headers: Optional[dict] = None
-    ) -> None:
+    def __init__(self, detail: str | None = None, headers: dict | None = None) -> None:
         if self.status_code is None:
             raise AttributeError(
                 "HTTPException class {self.__class__.__name__} is missing required `status_code` attribute."

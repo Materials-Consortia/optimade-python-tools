@@ -1,7 +1,7 @@
 # pre-commit.ci configuration
 ci:
     autofix_prs: false
-    autoupdate_branch: 'master'
+    autoupdate_branch: 'main'
     autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
     autoupdate_schedule: monthly
     # Both of these require `invoke` to be installed in the environment
@@ -9,12 +9,12 @@ ci:
     submodules: true
 
 default_language_version:
-  python: python3.9
+  python: python3.10
 
 # pre-commit hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
     - id: check-symlinks
     - id: check-yaml
@@ -29,13 +29,13 @@ repos:
       args: [--markdown-linebreak-ext=md]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.17.0
+    rev: v3.20.0
     hooks:
     - id: pyupgrade
-      args: ["--py39-plus"]
+      args: [--py310-plus]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.5.6'
+    rev: 'v0.12.7'
 
     hooks:
     - id: ruff
@@ -59,7 +59,7 @@ repos:
       description: Update the API Reference documentation whenever a Python file is touched in the code base.
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.11.1
+    rev: v1.17.1
     hooks:
       - id: mypy
         name: "MyPy"

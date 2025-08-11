@@ -1,4 +1,4 @@
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Literal
 
 from pydantic import BaseModel
 
@@ -35,7 +35,7 @@ class IndexRelationship(BaseModel):
     """Index Meta-Database relationship"""
 
     data: Annotated[
-        Optional[RelatedLinksResource],
+        RelatedLinksResource | None,
         StrictField(
             description="""[JSON API resource linkage](http://jsonapi.org/format/1.0/#document-links).
 It MUST be either `null` or contain a single Links identifier object with the fields `id` and `type`""",
@@ -48,7 +48,7 @@ class IndexInfoResource(BaseInfoResource):
 
     attributes: IndexInfoAttributes
     relationships: Annotated[  # type: ignore[assignment]
-        Optional[dict[Literal["default"], IndexRelationship]],
+        dict[Literal["default"], IndexRelationship] | None,
         StrictField(
             title="Relationships",
             description="""Reference to the Links identifier object under the `links` endpoint that the provider has chosen as their 'default' OPTIMADE API database.

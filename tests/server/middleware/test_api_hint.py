@@ -123,7 +123,7 @@ def test_handle_api_hint():
         )
 
     with pytest.raises(VersionNotSupported):
-        api_hint = f"v{int(BASE_URL_PREFIXES['major'][len('/v'):]) + 1}"
+        api_hint = f"v{int(BASE_URL_PREFIXES['major'][len('/v') :]) + 1}"
         HandleApiHint.handle_api_hint([api_hint])
 
     api_hint = "v0"

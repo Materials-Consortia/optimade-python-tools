@@ -8,7 +8,7 @@ on:
 env:
   GIT_USER_NAME: OPTIMADE Developers
   GIT_USER_EMAIL: "dev@optimade.org"
-  DEFAULT_RELEASE_BRANCH: "master"
+  DEFAULT_RELEASE_BRANCH: "main"
 
 jobs:
   release:

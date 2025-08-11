@@ -1,8 +1,11 @@
+import pytest
+
 from optimade.models import (
     ReferenceResource,
     StructureResponseMany,
     StructureResponseOne,
 )
+from optimade.server.config import CONFIG, SupportedBackend
 
 from ..utils import RegularEndpointTests
 
@@ -78,6 +81,19 @@ def test_check_response_single_structure(check_response):
     expected_ids = "mpf_1"
     request = f"/structures/{test_id}?response_fields=chemical_formula_reduced"
     check_response(request, expected_ids=expected_ids)
+
+
+@pytest.mark.xfail(
+    CONFIG.database_backend == SupportedBackend.ELASTIC,
+    reason="Elasticsearch implementation does not support nested provider fields.",
+)
+def test_awkward_nested_provider_field(check_response):
+    """Tests that structures with a nested provider field that breaks
+    identifier field names can still be filtered on.
+    """
+
+    request = "/structures?filter=_exmpl_stability.gga_gga%2Bu_r2scan < 0"
+    check_response(request, expected_ids=["mpf_3819"])
 
 
 class TestMissingSingleStructureEndpoint(RegularEndpointTests):

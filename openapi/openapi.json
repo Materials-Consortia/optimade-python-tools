@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "OPTIMADE API",
-    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.1.1) v1.1.1.",
-    "version": "1.1.0"
+    "description": "The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n\nThis specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.2.4) v1.2.4.",
+    "version": "1.2.0"
   },
   "paths": {
     "/info": {
@@ -236,10 +236,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -489,10 +495,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -739,10 +751,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -907,10 +925,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -1157,10 +1181,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "format": "email",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "email"
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-              "default": "",
               "title": "Email Address"
             },
             "description": "An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`"
@@ -1876,6 +1906,53 @@
             "title": "Is Index",
             "description": "If true, this is an index meta-database base URL (see section Index Meta-Database). If this member is not provided, the client MUST assume this is not an index meta-database base URL (i.e., the default is for `is_index` to be `false`).",
             "default": false
+          },
+          "license": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Link"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "License",
+            "description": "A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) giving a URL to a web page containing a human-readable text describing the license (or licensing options if there are multiple) covering all the data and metadata provided by this database.\nClients are advised not to try automated parsing of this link or its content, but rather rely on the field `available_licenses` instead."
+          },
+          "available_licenses": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Available Licenses",
+            "description": "List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of alternative licenses available to the client for licensing the complete database, i.e., all the entries, metadata, and the content and structure of the database itself.\n\nIf more than one license is available to the client, the identifier of each one SHOULD be included in the list.\nInclusion of a license identifier in the list is a commitment of the database that the rights are in place to grant clients access to all the individual entries, all metadata, and the content and structure of the database itself according to the terms of any of these licenses (at the choice of the client).\nIf the licensing information provided via the field license omits licensing options specified in `available_licenses`, or if it otherwise contradicts them, a client MUST still be allowed to interpret the inclusion of a license in `available_licenses` as a full commitment from the database without exceptions, under the respective licenses.\nIf the database cannot make that commitment, e.g., if only part of the database is available under a license, the corresponding license identifier MUST NOT appear in `available_licenses` (but, rather, the field license is to be used to clarify the licensing situation.)\nAn empty list indicates that none of the SPDX licenses apply and that the licensing situation is clarified in human readable form in the field `license`.\nAn unknown value means that the database makes no commitment."
+          },
+          "available_licenses_for_entries": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Available Licenses For Entries",
+            "description": "List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of additional alternative licenses available to the client for licensing individual, and non-substantial sets of, database entries, metadata, and extracts from the database that do not constitute substantial parts of the database.\n\nNote that the definition of the field `available_licenses` implies that licenses specified in that field are available also for the licensing specified by this field, even if they are not explicitly included in the field `available_licenses_for_entries` or if it is `null` (however, the opposite relationship does not hold).\nIf `available_licenses` is unknown, only the licenses in `available_licenses_for_entries` apply."
           }
         },
         "type": "object",
@@ -1892,18 +1969,12 @@
         "properties": {
           "id": {
             "type": "string",
-            "enum": [
-              "/"
-            ],
             "const": "/",
             "title": "Id",
             "default": "/"
           },
           "type": {
             "type": "string",
-            "enum": [
-              "info"
-            ],
             "const": "info",
             "title": "Type",
             "default": "info"
@@ -2068,6 +2139,17 @@
       },
       "EntryInfoResource": {
         "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Must precisely match the entry type name for the given info endpoint."
+          },
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "The type of this response.",
+            "default": "info"
+          },
           "formats": {
             "items": {
               "type": "string"
@@ -2106,6 +2188,7 @@
         },
         "type": "object",
         "required": [
+          "id",
           "formats",
           "description",
           "properties",
@@ -2116,19 +2199,11 @@
       "EntryInfoResponse": {
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EntryInfoResource"
-              }
-            ],
+            "$ref": "#/components/schemas/EntryInfoResource",
             "description": "OPTIMADE information for an entry endpoint."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -2261,11 +2336,7 @@
             "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/EntryResourceAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/EntryResourceAttributes",
             "description": "A dictionary, containing key-value pairs representing the entry's properties, except for `type` and `id`.\nDatabase-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes)."
           },
           "relationships": {
@@ -2475,11 +2546,7 @@
             "description": "Outputted Data"
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information."
           },
           "errors": {
@@ -3149,19 +3216,11 @@
       "InfoResponse": {
         "properties": {
           "data": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BaseInfoResource"
-              }
-            ],
+            "$ref": "#/components/schemas/BaseInfoResource",
             "description": "The implementations /info data."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -3300,9 +3359,6 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "links"
-            ],
             "const": "links",
             "pattern": "^links$",
             "title": "Type",
@@ -3332,11 +3388,7 @@
             "description": "a meta object containing non-standard meta-information about a resource that can not be represented as an attribute or relationship."
           },
           "attributes": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LinksResourceAttributes"
-              }
-            ],
+            "$ref": "#/components/schemas/LinksResourceAttributes",
             "description": "A dictionary containing key-value pairs representing the Links resource's properties."
           },
           "relationships": {
@@ -3407,11 +3459,7 @@
             "description": "JSON API links object, pointing to a homepage URL for this implementation"
           },
           "link_type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/LinkType"
-              }
-            ],
+            "$ref": "#/components/schemas/LinkType",
             "title": "Link Type",
             "description": "The type of the linked relation.\nMUST be one of these values: 'child', 'root', 'external', 'providers'."
           },
@@ -3465,6 +3513,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -3475,11 +3524,7 @@
             "description": "List of unique OPTIMADE links resource objects."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -3508,6 +3553,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -3810,9 +3856,6 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "references"
-            ],
             "const": "references",
             "pattern": "^references$",
             "title": "Type",
@@ -4291,6 +4334,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -4301,11 +4345,7 @@
             "description": "List of unique OPTIMADE references entry resource objects."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -4334,6 +4374,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -4384,6 +4425,7 @@
                 "$ref": "#/components/schemas/ReferenceResource"
               },
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -4394,11 +4436,7 @@
             "description": "A single references entry resource."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -4427,6 +4465,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -4608,11 +4647,7 @@
       "ResponseMeta": {
         "properties": {
           "query": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMetaQuery"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMetaQuery",
             "description": "Information on the Query that was requested"
           },
           "api_version": {
@@ -4720,6 +4755,19 @@
             ],
             "title": "Response Message",
             "description": "response string from the server"
+          },
+          "request_delay": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Delay",
+            "description": "A non-negative float giving time in seconds that the client is suggested to wait before issuing a subsequent request.\nImplementation note: the functionality of this field overlaps to some degree with features provided by the HTTP error `429 Too Many Requests` and the `Retry-After` HTTP header.\nImplementations are suggested to provide consistent handling of request overload through both mechanisms."
           },
           "implementation": {
             "anyOf": [
@@ -4949,9 +4997,6 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "structures"
-            ],
             "const": "structures",
             "pattern": "^structures$",
             "title": "Type",
@@ -5212,6 +5257,86 @@
             "x-optimade-support": "should",
             "x-optimade-unit": "\u00c5"
           },
+          "space_group_symmetry_operations_xyz": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "pattern": "^([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?)$"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Space Group Symmetry Operations Xyz",
+            "description": "A list of symmetry operations given as general position x, y and z coordinates in algebraic form.\n\n- **Type**: list of strings\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n      - The property is RECOMMENDED if coordinates are returned in a form to which these operations can or must be applied (e.g. fractional atom coordinates of an asymmetric unit).\n      - The property is REQUIRED if symmetry operations are necessary to reconstruct the full model of the material and no other symmetry information (e.g., the Hall symbol) is provided that would allow the user to derive symmetry operations unambiguously.\n    - **Query***: Support for queries on this property is not required and in fact is NOT RECOMMENDED.\n    - MUST be `null` if `nperiodic_dimensions` is equal to 0.\n    - Each symmetry operation is described by a string that gives that symmetry operation in Jones' faithful representation (Bradley & Cracknell, 1972: pp. 35-37), adapted for computer string notation.\n    - The letters `x`, `y` and `z` that are typesetted with overbars in printed text represent coordinate values multiplied by -1 and are encoded as `-x`, `-y` and `-z`, respectively.\n    - The syntax of the strings representing symmetry operations MUST conform to regular expressions given in appendix The Symmetry Operation String Regular Expressions.\n    - The interpretation of the strings MUST follow the conventions of the IUCr CIF core dictionary (IUCr, 2023). In particular, this property MUST explicitly provide all symmetry operations needed to generate all the atoms in the unit cell from the atoms in the asymmetric unit, for the setting used.\n    - This symmetry operation set MUST always include the `x,y,z` identity operation.\n    - The symmetry operations are to be applied to fractional atom coordinates. In case only Cartesian coordinates are available, these Cartesian coordinates must be converted to fractional coordinates before the application of the provided symmetry operations.\n    - If the symmetry operation list is present, it MUST be compatible with other space group specifications (e.g. the ITC space group number, the Hall symbol, the Hermann-Mauguin symbol) if these are present.\n\n- **Examples**:\n    - Space group operations for the space group with ITC number 3 (H-M symbol `P 2`, extended H-M symbol `P 1 2 1`, Hall symbol `P 2y`): `[\"x,y,z\", \"-x,y,-z\"]`\n    - Space group operations for the space group with ITC number 5 (H-M symbol `C 2`, extended H-M symbol `C 1 2 1`, Hall symbol `C 2y`): `[\"x,y,z\", \"-x,y,-z\", \"x+1/2,y+1/2,z\", \"-x+1/2,y+1/2,-z\"]`\n\n- **Notes**: The list of space group symmetry operations applies to the whole periodic array of atoms and together with the lattice translations given in the `lattice_vectors` property provides the necessary information to reconstruct all atom site positions of the periodic material.\n  Thus, the symmetry operations described in this property are only applicable to material models with at least one periodic dimension.\n  This property is not meant to represent arbitrary symmetries of molecules, non-periodic (finite) collections of atoms or non-crystallographic symmetry.\n\n- **Bibliographic References**:\n  - Bradley, C. J. and Cracknell, A. P. (1972) The Mathematical Theory of Symmetry in Solids. Oxford, Clarendon Press (paperback edition 2010) 745 p. ISBN 978-0-19-958258-7.\n  - IUCr (2023) Core dictionary (coreCIF) version 2.4.5; data name `_space_group_symop_operation_xyz`. Available from: https://www.iucr.org/__data/iucr/cifdic_html/1/cif_core.dic/Ispace_group_symop_operation_xyz.html [Accessed 2023-06-18T16:46+03:00].",
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
+          },
+          "space_group_symbol_hall": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Space Group Symbol Hall",
+            "description": "A Hall space group symbol representing the symmetry of the structure as defined in (Hall, 1981, 1981a).\n\n- **Type**: string\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n    - The change-of-basis operations are used as defined in the International Tables of Crystallography (ITC) Vol. B, Sect. 1.4, Appendix A1.4.2 (IUCr, 2001).\n    - Each component of the Hall symbol MUST be separated by a single space symbol.\n    - If there exists a standard Hall symbol which represents the symmetry it SHOULD be used.\n    - MUST be `null` if `nperiodic_dimensions` is not equal to 3.\n\n- **Examples**:\n    - Space group symbols with explicit origin (the Hall symbols):\n        - `P 2c -2ac`\n        - `I 4bd 2ab 3`\n    - Space group symbols with change-of-basis operations:\n        - `P 2yb (-1/2*x+z,1/2*x,y)`\n        - `-I 4 2 (1/2*x+1/2*y,-1/2*x+1/2*y,z)`\n\n- **Bibliographic References**:\n    - Hall, S. R. (1981) Space-group notation with an explicit origin. Acta Crystallographica Section A, 37, 517-525, International Union of Crystallography (IUCr), DOI: https://doi.org/10.1107/s0567739481001228\n    - Hall, S. R. (1981a) Space-group notation with an explicit origin; erratum. Acta Crystallographica Section A, 37, 921-921, International Union of Crystallography (IUCr), DOI: https://doi.org/10.1107/s0567739481001976\n    - IUCr (2001). International Tables for Crystallography vol. B. Reciprocal Space. Ed. U. Shmueli. 2-nd edition. Dordrecht/Boston/London, Kluwer Academic Publishers.",
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
+          },
+          "space_group_symbol_hermann_mauguin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(P|I|F|A|B|C|R)(\\s+\\d+|\\s+[a-z]+|\\s+\\d+/[a-z]+|\\s+\\d+/\\d+|\\s+-\\d*|\\s+\\d+/m|\\s+[a-z]+/m)*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "pattern": "^(P|I|F|A|B|C|R)(\\s+\\d+|\\s+[a-z]+|\\s+\\d+/[a-z]+|\\s+\\d+/\\d+|\\s+-\\d*|\\s+\\d+/m|\\s+[a-z]+/m)*$",
+            "title": "Space Group Symbol Hermann Mauguin",
+            "description": "A human- and machine-readable string containing the short Hermann-Mauguin (H-M) symbol which specifies the space group of the structure in the response.\n\n- **Type**: string\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n    - The H-M symbol SHOULD aim to convey the closest representation of the symmetry information that can be specified using the short format used in the International Tables for Crystallography vol. A (IUCr, 2005), Table 4.3.2.1 as described in the accompanying text.\n    - The symbol MAY be a non-standard short H-M symbol.\n    - The H-M symbol does not unambiguously communicate the axis, cell, and origin choice, and the given symbol SHOULD NOT be amended to convey this information.\n    - To encode as character strings, the following adaptations MUST be made when representing H-M symbols given in their typesetted form:\n        - the overbar above the numbers MUST be changed to the minus sign in front of the digit (e.g. '-2');\n        - subscripts that denote screw axes are written as digits immediately after the axis designator without a space (e.g. 'P 32')\n        - the space group generators MUST be separated by a single space (e.g. 'P 21 21 2');\n        - there MUST be no spaces in the space group generator designation (i.e. use 'P 21/m', not the 'P 21 / m');\n\n- **Examples**:\n    - `C 2`\n    - `P 21 21 21`\n\n- **Bibliographic References**:\n    - IUCr (2005). International Tables for Crystallography vol. A. Space-Group Symmetry. Ed. Theo Hahn. 5-th edition. Dordrecht, Springer.\n",
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
+          },
+          "space_group_symbol_hermann_mauguin_extended": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(P|I|F|A|B|C|R)(\\s+\\d+|\\s+[a-z]+|\\s+\\d+/[a-z]+|\\s+\\d+/\\d+|\\s+-\\d*|\\s+\\d+/m|\\s+[a-z]+/m)*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "pattern": "^(P|I|F|A|B|C|R)(\\s+\\d+|\\s+[a-z]+|\\s+\\d+/[a-z]+|\\s+\\d+/\\d+|\\s+-\\d*|\\s+\\d+/m|\\s+[a-z]+/m)*$",
+            "title": "Space Group Symbol Hermann Mauguin Extended",
+            "description": "A human- and machine-readable string containing the extended Hermann-Mauguin (H-M) symbol which specifies the space group of the structure in the response.\n\n- **Type**: string\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n    - The H-M symbols SHOULD be given as specified in the International Tables for Crystallography vol. A (IUCr, 2005), Table 4.3.2.1.\n    - The change-of-basis operation SHOULD be provided for the non-standard axis and cell choices.\n    - The extended H-M symbol does not unambiguously communicate the origin choice, and the given symbol SHOULD NOT be amended to convey this information.\n    - The description of the change-of-basis SHOULD follow conventions of the ITC Vol. B, Sect. 1.4, Appendix A1.4.2 (IUCr, 2001).\n    - The same character string encoding conventions MUST be used as for the specification of the `space_group_symbol_hermann_mauguin` property.\n\n- **Examples**:\n    - `C 1 2 1`\n\n- **Bibliographic References**:\n    - IUCr (2001). International Tables for Crystallography vol. B. Reciprocal Space. Ed. U. Shmueli. 2-nd edition. Dordrecht/Boston/London, Kluwer Academic Publishers.\n    - IUCr (2005). International Tables for Crystallography vol. A. Space-Group Symmetry. Ed. Theo Hahn. 5-th edition. Dordrecht, Springer.\n\n",
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
+          },
+          "space_group_it_number": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 230.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Space Group It Number",
+            "description": "Space group number which specifies the space group of the structure as defined in the International Tables for Crystallography Vol. A. (IUCr, 2005).\n\n- **Type**: integer\n\n- **Requirements/Conventions**:\n    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.\n    - **Query**: Support for queries on this property is OPTIONAL.\n    - The integer value MUST be between 1 and 230.\n    - MUST be null if `nperiodic_dimensions` is not equal to 3.",
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "optional"
+          },
           "cartesian_site_positions": {
             "anyOf": [
               {
@@ -5332,6 +5457,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -5342,11 +5468,7 @@
             "description": "List of unique OPTIMADE structures entry resource objects."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -5375,6 +5497,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -5425,6 +5548,7 @@
                 "$ref": "#/components/schemas/StructureResource"
               },
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -5435,11 +5559,7 @@
             "description": "A single structures entry resource."
           },
           "meta": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ResponseMeta"
-              }
-            ],
+            "$ref": "#/components/schemas/ResponseMeta",
             "description": "A meta object containing non-standard information"
           },
           "errors": {
@@ -5468,6 +5588,7 @@
               },
               {
                 "items": {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 "type": "array"
@@ -5698,9 +5819,6 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "warning"
-            ],
             "const": "warning",
             "pattern": "^warning$",
             "title": "Type",

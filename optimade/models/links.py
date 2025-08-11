@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Literal
 
 from pydantic import model_validator
 
@@ -47,14 +47,14 @@ class LinksResourceAttributes(Attributes):
         ),
     ]
     base_url: Annotated[
-        Optional[JsonLinkType],
+        JsonLinkType | None,
         StrictField(
             description="JSON API links object, pointing to the base URL for this implementation",
         ),
     ]
 
     homepage: Annotated[
-        Optional[JsonLinkType],
+        JsonLinkType | None,
         StrictField(
             description="JSON API links object, pointing to a homepage URL for this implementation",
         ),
@@ -70,7 +70,7 @@ MUST be one of these values: 'child', 'root', 'external', 'providers'.""",
     ]
 
     aggregate: Annotated[
-        Optional[Aggregate],
+        Aggregate | None,
         StrictField(
             title="Aggregate",
             description="""A string indicating whether a client that is following links to aggregate results from different OPTIMADE implementations should follow this link or not.
@@ -87,7 +87,7 @@ If specified, it MUST be one of the values listed in section Link Aggregate Opti
     ] = Aggregate.OK
 
     no_aggregate_reason: Annotated[
-        Optional[str],
+        str | None,
         StrictField(
             description="""An OPTIONAL human-readable string indicating the reason for suggesting not to aggregate results following the link.
 It SHOULD NOT be present if `aggregate`=`ok`.""",

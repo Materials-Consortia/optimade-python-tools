@@ -10,7 +10,6 @@ import os
 import warnings
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Optional
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -85,7 +84,7 @@ This specification is generated using [`optimade-python-tools`](https://github.c
 if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
     from optimade.utils import insert_from_jsonl
 
-    def _insert_test_data(endpoint: Optional[str] = None):
+    def _insert_test_data(endpoint: str | None = None):
         import bson.json_util
         from bson.objectid import ObjectId
 
@@ -127,13 +126,19 @@ if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
                 f"Requested JSONL file does not exist: {jsonl_path}. Please specify an absolute group."
             )
 
-        insert_from_jsonl(jsonl_path)
+        insert_from_jsonl(jsonl_path, create_default_index=CONFIG.create_default_index)
 
         LOGGER.debug("Inserted data from JSONL file: %s", jsonl_path)
         if CONFIG.insert_test_data:
             _insert_test_data("links")
     elif CONFIG.insert_test_data:
         _insert_test_data()
+
+    if CONFIG.exit_after_insert:
+        LOGGER.info("Exiting after inserting test data.")
+        import sys
+
+        sys.exit(0)
 
 # Add CORS middleware first
 app.add_middleware(CORSMiddleware, allow_origins=["*"])

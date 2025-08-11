@@ -5,7 +5,7 @@ import re
 import warnings
 from enum import Enum
 from functools import reduce
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any
 
 from pydantic import Field
 from pydantic_core import PydanticUndefined
@@ -40,7 +40,8 @@ class SupportLevel(Enum):
 def StrictField(
     default: "Any" = PydanticUndefined,
     *,
-    description: Optional[str] = None,
+    description: str | None = None,
+    optimade_version: str | None = None,
     **kwargs: "Any",
 ) -> Any:
     """A wrapper around `pydantic.Field` that does the following:
@@ -55,6 +56,8 @@ def StrictField(
         default: The only non-keyword argument allowed for Field.
         description: The description of the `Field`; if this is not
             specified then a `UserWarning` will be emitted.
+        optimade_version: A PEP version specifier indicating which OPTIMADE API version
+            this field is required for.
         **kwargs: Extra keyword arguments to be passed to `Field`.
 
     Raises:
@@ -123,9 +126,9 @@ def StrictField(
 def OptimadeField(
     default: "Any" = PydanticUndefined,
     *,
-    support: Optional[Union[str, SupportLevel]] = None,
-    queryable: Optional[Union[str, SupportLevel]] = None,
-    unit: Optional[str] = None,
+    support: str | SupportLevel | None = None,
+    queryable: str | SupportLevel | None = None,
+    unit: str | None = None,
     **kwargs,
 ) -> Any:
     """A wrapper around `pydantic.Field` that adds OPTIMADE-specific
@@ -233,6 +236,19 @@ ANONYMOUS_ELEMENTS = tuple(itertools.islice(anonymous_element_generator(), 150))
 """ Returns the first 150 values of the anonymous element generator. """
 
 CHEMICAL_FORMULA_REGEXP = r"(^$)|^([A-Z][a-z]?([2-9]|[1-9]\d+)?)+$"
+SYMMETRY_OPERATION_REGEXP = r"^([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?),([-+]?[xyz]([-+][xyz])?([-+](1/2|[12]/3|[1-3]/4|[1-5]/6))?|[-+]?(1/2|[12]/3|[1-3]/4|[1-5]/6)([-+][xyz]([-+][xyz])?)?)$"
+HM_SYMBOL_REGEXP = r"^(P|I|F|A|B|C|R)(\s+\d+|\s+[a-z]+|\s+\d+/[a-z]+|\s+\d+/\d+|\s+-\d*|\s+\d+/m|\s+[a-z]+/m)*$"
+
+
+def _generate_symmetry_operation_regex():
+    translation = "1/2|[12]/3|[1-3]/4|[1-5]/6"
+    translation_appended = f"[-+]? [xyz] ([-+][xyz])? ([-+] ({translation}) )?"
+    translation_prepended = f"[-+]? ({translation}) ([-+] [xyz] ([-+][xyz])? )?"
+    symop = f"({translation_appended}|{translation_prepended})".replace(" ", "")
+    return f"^{symop},{symop},{symop}$"
+
+
+SPACE_GROUP_SYMMETRY_OPERATION_REGEX = _generate_symmetry_operation_regex()
 
 EXTRA_SYMBOLS = ["X", "vacancy"]
 

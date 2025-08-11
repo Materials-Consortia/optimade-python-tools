@@ -3,7 +3,7 @@ import re
 import warnings
 from abc import ABC, abstractmethod
 from collections.abc import Iterable
-from typing import Any, Optional, Union
+from typing import Any
 
 from lark import Transformer
 
@@ -119,16 +119,21 @@ class EntryCollection(ABC):
         """Returns the total number of entries in the collection."""
 
     @abstractmethod
-    def insert(self, data: list[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource | dict]) -> None:
         """Add the given entries to the underlying database.
 
+        Warning:
+            No validation is performed on the incoming data, this data
+            should have been mapped to the appropriate format before
+            insertion.
+
         Arguments:
-            data: The entry resource objects to add to the database.
+            data: The entries to add to the database.
 
         """
 
     @abstractmethod
-    def count(self, **kwargs: Any) -> Optional[int]:
+    def count(self, **kwargs: Any) -> int | None:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
@@ -138,10 +143,10 @@ class EntryCollection(ABC):
         """
 
     def find(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
     ) -> tuple[
-        Optional[Union[dict[str, Any], list[dict[str, Any]]]],
-        Optional[int],
+        dict[str, Any] | list[dict[str, Any]] | None,
+        int | None,
         bool,
         set[str],
         set[str],
@@ -203,7 +208,7 @@ class EntryCollection(ABC):
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
 
-        results: Optional[Union[list[dict[str, Any]], dict[str, Any]]] = None
+        results: list[dict[str, Any]] | dict[str, Any] | None = None
 
         if raw_results:
             results = [self.resource_mapper.map_back(doc) for doc in raw_results]
@@ -233,7 +238,7 @@ class EntryCollection(ABC):
     @abstractmethod
     def _run_db_query(
         self, criteria: dict[str, Any], single_entry: bool = False
-    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
+    ) -> tuple[list[dict[str, Any]], int | None, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -274,6 +279,30 @@ class EntryCollection(ABC):
 
         return self._all_fields
 
+    def create_index(self, field: str, unique: bool = False) -> None:
+        """Create an index on the given field, as stored in the database.
+
+        Arguments:
+            field: The database field to index (i.e., if different from the OPTIMADE field,
+                the mapper should be used to convert between the two).
+            unique: Whether or not the index should be unique.
+
+        """
+        raise NotImplementedError
+
+    def create_default_index(self) -> None:
+        """Create the default index for the collection.
+
+        For example, a database backend could override this method to
+        create a unique index on the `id` field, so that it can be called
+        on server startup.
+
+        This method should use a mapper to convert any OPTIMADE field names
+        to the corresponding stored names in the database.
+
+        """
+        raise NotImplementedError
+
     def get_attribute_fields(self) -> set[str]:
         """Get the set of attribute fields
 
@@ -301,7 +330,7 @@ class EntryCollection(ABC):
         return set(annotation.model_fields)  # type: ignore[attr-defined]
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
     ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
@@ -468,7 +497,7 @@ class EntryCollection(ABC):
     def get_next_query_params(
         self,
         params: EntryListingQueryParams,
-        results: Optional[Union[dict[str, Any], list[dict[str, Any]]]],
+        results: dict[str, Any] | list[dict[str, Any]] | None,
     ) -> dict[str, list[str]]:
         """Provides url query pagination parameters that will be used in the next
         link.

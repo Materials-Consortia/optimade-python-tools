@@ -1,11 +1,11 @@
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING, Union
 
 import pytest
 
 from optimade.warnings import OptimadeWarning
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from collections.abc import Callable
 
     from requests import Response
 
@@ -73,10 +73,10 @@ def get_good_response(
 
     def inner(
         request: str,
-        server: Union[str, OptimadeTestClient] = "regular",
+        server: str | OptimadeTestClient = "regular",
         return_json: bool = True,
         **kwargs,
-    ) -> Union[dict, Response]:
+    ) -> dict | Response:
         if isinstance(server, str):
             if server == "regular":
                 used_client = client
@@ -96,9 +96,9 @@ def get_good_response(
             response_json = response.json()
             assert response.status_code == 200, f"Request failed: {response_json}"
             expected_mime_type = "application/vnd.api+json"
-            assert (
-                response.headers["content-type"] == expected_mime_type
-            ), f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
+            assert response.headers["content-type"] == expected_mime_type, (
+                f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
+            )
         except json.JSONDecodeError:
             print(
                 f"Request attempted:\n{used_client.base_url}{used_client.version}"
@@ -142,12 +142,12 @@ def check_response(get_good_response):
 
     def inner(
         request: str,
-        expected_ids: Union[str, list[str]],
+        expected_ids: str | list[str],
         page_limit: int = CONFIG.page_limit,
-        expected_return: Optional[int] = None,
+        expected_return: int | None = None,
         expected_as_is: bool = False,
-        expected_warnings: Optional[list[dict[str, str]]] = None,
-        server: Union[str, OptimadeTestClient] = "regular",
+        expected_warnings: list[dict[str, str]] | None = None,
+        server: str | OptimadeTestClient = "regular",
     ):
         if expected_warnings:
             with pytest.warns(OptimadeWarning):
@@ -193,10 +193,10 @@ def check_error_response(client, index_client):
 
     def inner(
         request: str,
-        expected_status: Optional[int] = None,
-        expected_title: Optional[str] = None,
-        expected_detail: Optional[str] = None,
-        server: Union[str, OptimadeTestClient] = "regular",
+        expected_status: int | None = None,
+        expected_title: str | None = None,
+        expected_detail: str | None = None,
+        server: str | OptimadeTestClient = "regular",
     ):
         response = None
         if isinstance(server, str):
@@ -220,9 +220,9 @@ def check_error_response(client, index_client):
                 f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
             )
             expected_mime_type = "application/vnd.api+json"
-            assert (
-                response.headers["content-type"] == expected_mime_type
-            ), f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
+            assert response.headers["content-type"] == expected_mime_type, (
+                f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
+            )
 
             response = response.json()
             assert len(response["errors"]) == 1, response.get(

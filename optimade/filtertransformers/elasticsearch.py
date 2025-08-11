@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional
 
 from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
@@ -35,18 +35,18 @@ class ElasticsearchQuantity(Quantity):
     """
 
     name: str
-    backend_field: Optional[str]
+    backend_field: str | None
     length_quantity: Optional["ElasticsearchQuantity"]
-    elastic_mapping_type: Optional[Field]
+    elastic_mapping_type: Field | None
     has_only_quantity: Optional["ElasticsearchQuantity"]
     nested_quantity: Optional["ElasticsearchQuantity"]
 
     def __init__(
         self,
         name: str,
-        backend_field: Optional[str] = None,
+        backend_field: str | None = None,
         length_quantity: Optional["ElasticsearchQuantity"] = None,
-        elastic_mapping_type: Optional[Field] = None,
+        elastic_mapping_type: Field | None = None,
         has_only_quantity: Optional["ElasticsearchQuantity"] = None,
         nested_quantity: Optional["ElasticsearchQuantity"] = None,
     ):
@@ -102,16 +102,14 @@ class ElasticTransformer(BaseTransformer):
     def __init__(
         self,
         mapper: type[BaseResourceMapper],
-        quantities: Optional[dict[str, Quantity]] = None,
+        quantities: dict[str, Quantity] | None = None,
     ):
         if quantities is not None:
             self.quantities = quantities
 
         super().__init__(mapper=mapper)
 
-    def _field(
-        self, quantity: Union[str, Quantity], nested: Optional[Quantity] = None
-    ) -> str:
+    def _field(self, quantity: str | Quantity, nested: Quantity | None = None) -> str:
         """Used to unwrap from `property` to the string backend field name.
 
         If passed a `Quantity` (or a derived `ElasticsearchQuantity`), this method
@@ -149,10 +147,10 @@ class ElasticTransformer(BaseTransformer):
 
     def _query_op(
         self,
-        quantity: Union[ElasticsearchQuantity, str],
+        quantity: ElasticsearchQuantity | str,
         op: str,
-        value: Union[str, float, int],
-        nested: Optional[ElasticsearchQuantity] = None,
+        value: str | float | int,
+        nested: ElasticsearchQuantity | None = None,
     ) -> Q:
         """Return a range, match, or term query for the given quantity, comparison
         operator, and value.
@@ -462,7 +460,7 @@ class ElasticTransformer(BaseTransformer):
     def number(self, number):
         # number: SIGNED_INT | SIGNED_FLOAT
         if TYPE_CHECKING:  # pragma: no cover
-            type_: Union[type[int], type[float]]
+            type_: type[int] | type[float]
 
         if number.type == "SIGNED_INT":
             type_ = int

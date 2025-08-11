@@ -7,16 +7,16 @@ name = "optimade"
 description = "Tools for implementing and consuming OPTIMADE APIs."
 readme = "README.md"
 keywords = ["optimade", "jsonapi", "materials"]
-license = { text = "MIT" }
+license = "MIT"
 authors = [{ name = "OPTIMADE development team", email = "dev@optimade.org" }]
 dynamic = ["version"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Topic :: Database",
@@ -24,7 +24,7 @@ classifiers = [
     "Topic :: Database :: Database Engines/Servers",
     "Topic :: Database :: Front-Ends",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "lark~=1.1",
     "pydantic[email]~=2.2",
@@ -67,6 +67,7 @@ mongo = ["pymongo~=4.0", "mongomock~=4.1"]
 server = [
     "uvicorn[standard]~=0.19",
     "fastapi>=0.103.1",
+    "starlette ~= 0.38, >= 0.38.3",
     "pyyaml~=6.0",
     "optimade[mongo]",
 ]
@@ -76,37 +77,38 @@ aiida = ["aiida-core~=2.1"]
 
 http-client = [
     "httpx~=0.23",
-    "rich~=13.0",
+    "rich>=13,<15",
     "click~=8.1",
 ]
 
 ase = ["ase~=3.22"]
 cif = ["numpy>=1.22,<3.0"]
-pymatgen = ["pymatgen>=2022", "pandas~=2.2"]
-jarvis = ["jarvis-tools>=2023.1.8,!=2024.4.20,!=2024.4.30"]
+pymatgen = ["pymatgen>=2022; python_version < '3.13'", "pandas~=2.2"]
+jarvis = ["jarvis-tools>=2023.1.8,!=2024.4.20,!=2024.4.30; python_version < '3.13'"]
 client = ["optimade[cif]"]
 
 # General
 docs = [
     "mike~=2.0",
-    "mkdocs~=1.4",
-    "mkdocs-autorefs~=1.0,<1.1",
+    "mkdocs~=1.6",
+    "mkdocs-autorefs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.8",
     "mkdocs-material~=9.0",
-    "mkdocstrings[python]~=0.20",
+    "mkdocstrings[python]~=0.26",
 ]
 
 testing = [
     "build~=1.0",
     "jsondiff~=2.0",
-    "pytest>=7.2,<9.0",
-    "pytest-cov>=4,<6",
+    "pytest~=8.3",
+    "pytest-asyncio>=0.25,<2.0",
+    "pytest-cov~=6.0",
     "optimade[server]",
 ]
 
 dev = [
    "mypy~=1.0",
-   "pre-commit~=3.0",
+   "pre-commit>=3,<5",
    "invoke~=2.0",
    "types-requests",
    "types-pyyaml",
@@ -166,4 +168,5 @@ filterwarnings = [
     "ignore:.*The 'app' shortcut is now deprecated.*:DeprecationWarning", # Raised by httpx for test client code; would rather not force upgrade of httpx to deal with it for now
     "ignore::pytest.PytestUnraisableExceptionWarning",  # Started raising with pytest 8.2.1, seemingly related to anyio warnings
     "ignore:.*Unclosed.*:ResourceWarning", # Also started raising with pytest 8.2.1, seemingly related to anyio warnings
+    "ignore:.*Accessing the 'model_fields' attribute on the instance is deprecated.*:DeprecationWarning"  # Raised by pydantic 2.11, needs to be resolved for pydantic 3.0
 ]

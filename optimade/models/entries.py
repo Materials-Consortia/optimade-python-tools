@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, Any, ClassVar, Literal, Optional, Union
+from typing import Annotated, Any, ClassVar, Literal
 
 from pydantic import BaseModel, field_validator
 
@@ -27,7 +27,7 @@ class TypedRelationship(Relationship):
     @field_validator("data", mode="after")
     @classmethod
     def check_rel_type(
-        cls, data: Union[BaseRelationshipResource, list[BaseRelationshipResource]]
+        cls, data: BaseRelationshipResource | list[BaseRelationshipResource]
     ) -> list[BaseRelationshipResource]:
         if not isinstance(data, list):
             # All relationships at this point are empty-to-many relationships in JSON:API:
@@ -52,14 +52,14 @@ class EntryRelationships(Relationships):
     """This model wraps the JSON API Relationships to include type-specific top level keys."""
 
     references: Annotated[
-        Optional[ReferenceRelationship],
+        ReferenceRelationship | None,
         StrictField(
             description="Object containing links to relationships with entries of the `references` type.",
         ),
     ] = None
 
     structures: Annotated[
-        Optional[StructureRelationship],
+        StructureRelationship | None,
         StrictField(
             description="Object containing links to relationships with entries of the `structures` type.",
         ),
@@ -70,7 +70,7 @@ class EntryResourceAttributes(Attributes):
     """Contains key-value pairs representing the entry's properties."""
 
     immutable_id: Annotated[
-        Optional[str],
+        str | None,
         OptimadeField(
             description="""The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to "the latest version" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.
 
@@ -89,7 +89,7 @@ class EntryResourceAttributes(Attributes):
     ] = None
 
     last_modified: Annotated[
-        Optional[datetime],
+        datetime | None,
         OptimadeField(
             description="""Date and time representing when the entry was last modified.
 
@@ -172,7 +172,7 @@ Database-provider-specific properties need to include the database-provider-spec
     ]
 
     relationships: Annotated[
-        Optional[EntryRelationships],
+        EntryRelationships | None,
         StrictField(
             description="""A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).
 The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.""",
@@ -187,7 +187,7 @@ class EntryInfoProperty(BaseModel):
     ]
 
     unit: Annotated[
-        Optional[str],
+        str | None,
         StrictField(
             description="""The physical unit of the entry property.
 This MUST be a valid representation of units according to version 2.1 of [The Unified Code for Units of Measure](https://unitsofmeasure.org/ucum.html).
@@ -196,7 +196,7 @@ It is RECOMMENDED that non-standard (non-SI) units are described in the descript
     ] = None
 
     sortable: Annotated[
-        Optional[bool],
+        bool | None,
         StrictField(
             description="""Defines whether the entry property can be used for sorting with the "sort" parameter.
 If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`.""",
@@ -204,7 +204,7 @@ If the entry listing endpoint supports sorting, this key MUST be present for sor
     ] = None
 
     type: Annotated[
-        Optional[DataType],
+        DataType | None,
         StrictField(
             title="Type",
             description="""The type of the property's value.
@@ -217,6 +217,23 @@ E.g., for the entry resource `structures`, the `species` property is defined as 
 
 
 class EntryInfoResource(BaseModel):
+    id: Annotated[
+        str,
+        StrictField(
+            optimade_version=">= 1.2",
+            description="Must precisely match the entry type name for the given info endpoint.",
+        ),
+    ]
+
+    type: Annotated[
+        str,
+        StrictField(
+            optimade_version=">= 1.2",
+            description="The type of this response.",
+            default="info",
+        ),
+    ]
+
     formats: Annotated[
         list[str],
         StrictField(

@@ -1,7 +1,7 @@
 import warnings
 from collections.abc import Iterable
 from functools import lru_cache
-from typing import Any, Optional, Union
+from typing import Any
 
 from optimade.models.entries import EntryResource
 
@@ -29,7 +29,7 @@ class classproperty(property):
         self.__doc__ = func.__doc__
         self.__wrapped__ = func
 
-    def __get__(self, _: Any, owner: Optional[type] = None) -> Any:
+    def __get__(self, _: Any, owner: type | None = None) -> Any:
         return self.__wrapped__(owner)
 
 
@@ -188,7 +188,7 @@ class BaseResourceMapper:
 
     @classmethod
     @lru_cache(maxsize=128)
-    def length_alias_for(cls, field: str) -> Optional[str]:
+    def length_alias_for(cls, field: str) -> str | None:
         """Returns the length alias for the particular field,
         or `None` if no such alias is found.
 
@@ -366,8 +366,8 @@ class BaseResourceMapper:
 
     @classmethod
     def deserialize(
-        cls, results: Union[dict, Iterable[dict]]
-    ) -> Union[list[EntryResource], EntryResource]:
+        cls, results: dict | Iterable[dict]
+    ) -> list[EntryResource] | EntryResource:
         """Converts the raw database entries for this class into serialized models,
         mapping the data along the way.
 

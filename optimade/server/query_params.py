@@ -195,11 +195,11 @@ class EntryListingQueryParams(BaseQueryParams):
             ),
         ] = "json",
         email_address: Annotated[
-            EmailStr,
+            EmailStr | None,
             Query(
                 description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
             ),
-        ] = "",
+        ] = None,
         response_fields: Annotated[
             str,
             Query(
@@ -336,11 +336,11 @@ class SingleEntryQueryParams(BaseQueryParams):
             ),
         ] = "json",
         email_address: Annotated[
-            EmailStr,
+            EmailStr | None,
             Query(
                 description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
             ),
-        ] = "",
+        ] = None,
         response_fields: Annotated[
             str,
             Query(

@@ -191,6 +191,11 @@ def compare_lossy_conversion(
         "immutable_id",
         "species",
         "fractional_site_positions",
+        "space_group_symmetry_operations_xyz",
+        "space_group_symbol_hall",
+        "space_group_symbol_hermann_mauguin",
+        "space_group_symbol_hermann_mauguin_extended",
+        "space_group_it_number",
     )
     array_keys = ("cartesian_site_positions", "lattice_vectors")
 

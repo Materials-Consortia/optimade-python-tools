@@ -1,9 +1,9 @@
 import re
-from typing import Annotated, Literal, Optional
+from typing import Annotated, Literal
 
 from pydantic import AnyHttpUrl, BaseModel, field_validator, model_validator
 
-from optimade.models.jsonapi import Resource
+from optimade.models.jsonapi import Link, Resource
 from optimade.models.types import SemanticVersion
 from optimade.models.utils import StrictField
 
@@ -101,13 +101,46 @@ Examples: `1.0.0`, `1.0.0-rc.2`.""",
         ),
     ]
     is_index: Annotated[
-        Optional[bool],
+        bool | None,
         StrictField(
             description="If true, this is an index meta-database base URL (see section Index Meta-Database). "
             "If this member is not provided, the client MUST assume this is not an index meta-database base URL "
             "(i.e., the default is for `is_index` to be `false`).",
         ),
     ] = False
+    license: Annotated[
+        Link | AnyHttpUrl | None,
+        StrictField(
+            ...,
+            description="""A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) giving a URL to a web page containing a human-readable text describing the license (or licensing options if there are multiple) covering all the data and metadata provided by this database.
+Clients are advised not to try automated parsing of this link or its content, but rather rely on the field `available_licenses` instead.""",
+        ),
+    ] = None
+    available_licenses: Annotated[
+        list[str] | None,
+        StrictField(
+            ...,
+            description="""List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of alternative licenses available to the client for licensing the complete database, i.e., all the entries, metadata, and the content and structure of the database itself.
+
+If more than one license is available to the client, the identifier of each one SHOULD be included in the list.
+Inclusion of a license identifier in the list is a commitment of the database that the rights are in place to grant clients access to all the individual entries, all metadata, and the content and structure of the database itself according to the terms of any of these licenses (at the choice of the client).
+If the licensing information provided via the field license omits licensing options specified in `available_licenses`, or if it otherwise contradicts them, a client MUST still be allowed to interpret the inclusion of a license in `available_licenses` as a full commitment from the database without exceptions, under the respective licenses.
+If the database cannot make that commitment, e.g., if only part of the database is available under a license, the corresponding license identifier MUST NOT appear in `available_licenses` (but, rather, the field license is to be used to clarify the licensing situation.)
+An empty list indicates that none of the SPDX licenses apply and that the licensing situation is clarified in human readable form in the field `license`.
+An unknown value means that the database makes no commitment.""",
+        ),
+    ] = None
+
+    available_licenses_for_entries: Annotated[
+        list[str] | None,
+        StrictField(
+            ...,
+            description="""List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of additional alternative licenses available to the client for licensing individual, and non-substantial sets of, database entries, metadata, and extracts from the database that do not constitute substantial parts of the database.
+
+Note that the definition of the field `available_licenses` implies that licenses specified in that field are available also for the licensing specified by this field, even if they are not explicitly included in the field `available_licenses_for_entries` or if it is `null` (however, the opposite relationship does not hold).
+If `available_licenses` is unknown, only the licenses in `available_licenses_for_entries` apply.""",
+        ),
+    ] = None
 
     @model_validator(mode="after")
     def formats_and_endpoints_must_be_valid(self) -> "BaseInfoAttributes":

@@ -1,12 +1,12 @@
-name: CI/CD - New updates to `master`
+name: CI/CD - New updates to `main`
 
 on:
   push:
     branches:
-      - master
+      - main
 
 env:
-  DEFAULT_REPO_BRANCH: master
+  DEFAULT_REPO_BRANCH: main
   GIT_USER_NAME: OPTIMADE Developers
   GIT_USER_EMAIL: "dev@optimade.org"
 
@@ -42,11 +42,11 @@ jobs:
         fetch-depth: 0
         submodules: true
 
-    - name: Set up Python 3.9
+    - name: Set up Python 3.10
       if: steps.release_check.outputs.release_run == 'false'
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.10'
 
     - name: Install dependencies
       if: steps.release_check.outputs.release_run == 'false'
@@ -109,7 +109,7 @@ jobs:
         submodules: true
 
     - name: Set up Fly
-      uses: superfly/flyctl-actions/setup-flyctl@master
+      uses: superfly/flyctl-actions/setup-flyctl@v1
 
     - name: Combine requirements for builder
       run: cat requirements-server.txt >> requirements.txt

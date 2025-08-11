@@ -4,12 +4,12 @@ on:
   pull_request:
   push:
     branches:
-    - master
+    - main
     - 'push-action/**'
 
 env:
   PYTEST_ADDOPTS: "--color=yes"
-  LINTING_PY_VERSION: "3.9"  # The version of Python to use for linting (typically the minimum supported)
+  LINTING_PY_VERSION: "3.10"  # The version of Python to use for linting (typically the minimum supported)
 
 # Cancel running workflows when additional changes are pushed
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
@@ -94,7 +94,8 @@ jobs:
         sleep 15
 
     - name: Test server, including OPTIONAL base URLs
-      uses: Materials-Consortia/optimade-validator-action@v2
+      # Pin validator action until merge of Materials-Consortia/optimade-validator-action#175
+      uses: Materials-Consortia/optimade-validator-action@dc4a7b6a83da42e5341a1a401e36d83375550fb7
       with:
         port: 3213
         path: /
@@ -108,7 +109,8 @@ jobs:
         sleep 15
 
     - name: Test index server, including OPTIONAL base URLs
-      uses: Materials-Consortia/optimade-validator-action@v2
+      # Pin validator action until merge of Materials-Consortia/optimade-validator-action#175
+      uses: Materials-Consortia/optimade-validator-action@dc4a7b6a83da42e5341a1a401e36d83375550fb7
       with:
         port: 3214
         path: /
@@ -126,7 +128,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12']
+        python-version: ['3.10', '3.11', '3.12', '3.13']
 
     services:
       mongo:
@@ -177,25 +179,25 @@ jobs:
         pip install -e .
 
     - name: Run non-server tests
-      run: pytest -rs -vvv --durations=0 --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
+      run: pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
 
     - name: Install latest server dependencies
       run: pip install -r requirements-server.txt
 
     - name: Run server tests (using `mongomock`)
-      run: pytest -rs -vvv --durations=0 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      run: pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
     - name: Run server tests with no API validation (using `mongomock`)
       run:
-        pytest -rs -vvv --durations=0 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+        pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
         OPTIMADE_VALIDATE_API_RESPONSE: false
 
     - name: Run server tests (using a real MongoDB)
-      run: pytest -rs -vvv --durations=0 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      run: pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
 
@@ -274,7 +276,7 @@ jobs:
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.11' && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         name: project
@@ -283,7 +285,7 @@ jobs:
 
     - name: Upload validator coverage to Codecov
       if: matrix.python-version == '3.11' && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         name: validator

@@ -1,4 +1,4 @@
-from typing import Any, Optional, Union
+from typing import Any
 
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
@@ -68,7 +68,7 @@ class MongoCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return self.collection.estimated_document_count()
 
-    def count(self, **kwargs: Any) -> Union[int, None]:
+    def count(self, **kwargs: Any) -> int | None:
         """Returns the number of entries matching the query specified
         by the keyword arguments, or `None` if the count timed out.
 
@@ -85,26 +85,52 @@ class MongoCollection(EntryCollection):
             return self.collection.estimated_document_count()
         else:
             if "maxTimeMS" not in kwargs:
-                kwargs["maxTimeMS"] = 1000 * CONFIG.mongo_count_timeout
+                kwargs["maxTimeMS"] = int(1000 * CONFIG.mongo_count_timeout)
             try:
                 return self.collection.count_documents(**kwargs)
             except ExecutionTimeout:
                 return None
 
-    def insert(self, data: list[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource | dict]) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
-            No validation is performed on the incoming data.
+            No validation is performed on the incoming data, this data
+            should have been mapped to the appropriate format before
+            insertion.
 
         Arguments:
-            data: The entry resource objects to add to the database.
+            data: The entries to add to the database.
 
         """
-        self.collection.insert_many(data)
+        self.collection.insert_many(data, ordered=False)
+
+    def create_index(self, field: str, unique: bool = False) -> None:
+        """Create an index on the given field, as stored in the database.
+
+        If any error is raised during index creation, this method should faithfully
+        return it, except for the simple case where an identical index already exists.
+
+        Arguments:
+            field: The database field to index (i.e., if different from the OPTIMADE field,
+                the mapper should be used to convert between the two).
+            unique: Whether or not the index should be unique.
+
+        """
+        self.collection.create_index(field, unique=unique, background=True)
+
+    def create_default_index(self) -> None:
+        """Create the default index for the collection.
+
+        For MongoDB, the default is to create a unique index
+        on the `id` field. This method should obey any configured
+        mappers.
+
+        """
+        self.create_index(self.resource_mapper.get_backend_field("id"), unique=True)
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
     ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
@@ -143,7 +169,7 @@ class MongoCollection(EntryCollection):
 
     def _run_db_query(
         self, criteria: dict[str, Any], single_entry: bool = False
-    ) -> tuple[list[dict[str, Any]], Optional[int], bool]:
+    ) -> tuple[list[dict[str, Any]], int | None, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:

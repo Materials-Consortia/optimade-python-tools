@@ -5,7 +5,7 @@ from fastapi.exceptions import StarletteHTTPException
 
 from optimade import __api_version__
 from optimade.models import EntryInfoResource, EntryInfoResponse, InfoResponse
-from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource
+from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource, Link
 from optimade.server.config import CONFIG
 from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import (
@@ -44,6 +44,10 @@ def get_info(request: Request) -> InfoResponse:
                 available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS.keys()),
                 entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
                 is_index=False,
+                license=Link(href=CONFIG.license) if CONFIG.license else None,
+                available_licenses=[str(CONFIG.license).split("/")[-1]]
+                if "https://spdx.org" in str(CONFIG.license)
+                else None,
             ),
         )
 
@@ -91,6 +95,7 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
         output_fields_by_format = {"json": list(properties)}
 
         return EntryInfoResource(
+            id=entry,
             formats=list(output_fields_by_format),
             description=getattr(schema, "__doc__", "Entry Resources"),
             properties=properties,

@@ -2,7 +2,7 @@
 
 This package can be installed from PyPI, or by cloning the repository, depending on your use-case.
 
-1. To use the `optimade` Python package as a library, (e.g., using the models for validation, parsing filters with the grammar, or using the command-line tool `optimade-validator` tool), it is recommended that you install the latest release of the package from PyPI with `pip install optimade`. If you also want to use the OPTIMADE client to query OPTIMADE APIs, you should install with the additional dependencies: `pip install optimade[http_client]`.
+1. To use the `optimade` Python package as a library, (e.g., using the models for validation, parsing filters with the grammar, or using the command-line tool `optimade-validator` tool), it is recommended that you install the latest release of the package from PyPI with `pip install optimade`. If you also want to use the OPTIMADE client to query OPTIMADE APIs, you should install with the additional dependencies: `pip install 'optimade[http-client]'`.
 2. If you want to run, use or modify the reference server implementation, then it is recommended that you clone this repository and install it from your local files (with `pip install .`, or `pip install -e .` for an editable installation).
    As an alternative, you can run the `optimade` container image (see the [Container image](#container-image) section below).
 
@@ -133,7 +133,7 @@ If you'd like to pull a specific version, this can be done by replacing `latest`
 To see which versions are available, please go [here](https://github.com/Materials-Consortia/optimade-python-tools/pkgs/container/optimade/versions).
 
 You can also install the `develop` version.
-This is an image built from the latest commit on the `master` branch and should never be used for production.
+This is an image built from the latest commit on the `main` branch and should never be used for production.
 
 ### Run a container
 

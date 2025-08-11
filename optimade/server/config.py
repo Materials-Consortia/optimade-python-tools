@@ -3,10 +3,16 @@ import os
 import warnings
 from enum import Enum
 from pathlib import Path
-from typing import Annotated, Any, Literal, Optional, Union
+from typing import Annotated, Any, Literal
 
 import yaml
-from pydantic import AnyHttpUrl, Field, field_validator, model_validator
+from pydantic import (
+    AnyHttpUrl,
+    Field,
+    NonNegativeFloat,
+    field_validator,
+    model_validator,
+)
 from pydantic.fields import FieldInfo
 from pydantic_settings import (
     BaseSettings,
@@ -93,7 +99,9 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
     def parse_config_file(self) -> dict[str, Any]:
         """Parse the config file and return a dictionary of its content."""
         encoding = self.config.get("env_file_encoding")
-        config_file = Path(os.getenv("OPTIMADE_CONFIG_FILE", DEFAULT_CONFIG_FILE_PATH))
+
+        config_file_env = os.getenv("OPTIMADE_CONFIG_FILE")
+        config_file = Path(config_file_env or DEFAULT_CONFIG_FILE_PATH)
 
         parsed_config_file = {}
         if config_file.is_file():
@@ -112,11 +120,8 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
                         "YAML, using the default settings instead..\n"
                         f"Errors:\n  JSON:\n{json_exc}.\n\n  YAML:\n{yaml_exc}"
                     )
-        else:
-            warnings.warn(
-                f"Unable to find config file at {config_file}, using the default "
-                "settings instead."
-            )
+        elif config_file_env:
+            warnings.warn(f"Unable to find requested config file at {config_file}.")
 
         if parsed_config_file is None:
             # This can happen if the yaml loading doesn't succeed properly, e.g., if
@@ -171,7 +176,7 @@ class ServerConfig(BaseSettings):
     ] = True
 
     insert_from_jsonl: Annotated[
-        Optional[Path],
+        Path | None,
         Field(
             description=(
                 "The absolute path to an OPTIMADE JSONL file to use to initialize the database. "
@@ -180,8 +185,22 @@ class ServerConfig(BaseSettings):
         ),
     ] = None
 
+    exit_after_insert: Annotated[
+        bool, Field(description="Exit the API after inserting data")
+    ] = False
+
+    create_default_index: Annotated[
+        bool,
+        Field(
+            description=(
+                "Whether to create a set of default indices "
+                "for supporting databases after inserting JSONL data."
+            )
+        ),
+    ] = False
+
     use_real_mongo: Annotated[
-        Optional[bool],
+        bool | None,
         Field(description="DEPRECATED: force usage of MongoDB over any other backend."),
     ] = None
 
@@ -193,14 +212,14 @@ class ServerConfig(BaseSettings):
     ] = SupportedBackend.MONGOMOCK
 
     elastic_hosts: Annotated[
-        Optional[Union[str, list[str], dict[str, Any], list[dict[str, Any]]]],
+        str | list[str] | dict[str, Any] | list[dict[str, Any]] | None,
         Field(
             description="Host settings to pass through to the `Elasticsearch` class."
         ),
     ] = None
 
     mongo_count_timeout: Annotated[
-        int,
+        float,
         Field(
             description=(
                 "Number of seconds to allow MongoDB to perform a full database count "
@@ -210,20 +229,40 @@ class ServerConfig(BaseSettings):
                 "response times."
             ),
         ),
-    ] = 5
+    ] = 0.5
 
     mongo_database: Annotated[
-        str, Field(description="Mongo database for collection data")
+        str,
+        Field(
+            description="MongoDB database name to use; will be overwritten if also present in `mongo_uri`"
+        ),
     ] = "optimade"
-    mongo_uri: Annotated[str, Field(description="URI for the Mongo server")] = (
-        "localhost:27017"
-    )
+      
     files_collection: Annotated[
         str,
         Field(
             description="Mongo collection name for /files endpoint resources",
         ),
     ] = "files"
+      
+    mongo_uri: Annotated[
+        str,
+        Field(
+            description="URI for the MongoDB instance",
+            examples=["mongodb://localhost:27017/optimade", "localhost:1000"],
+        ),
+    ] = "localhost:27017"
+
+    license: Annotated[
+        AnyHttpUrl | str | None,
+        Field(
+            description="""Either an SPDX license identifier or a URL to a human-readable license, used to populate the `license` field in the info response.
+
+If provided an SPDX license identifier, the `license` field value will be constructed from this identifier preprended with `https://spdx.org/licenses/CC-BY-4.0`, and the identifier will also be added to the `available_licenses` field directly.
+Otherwise, the license will be given as the provided URL and no SPDX identifier will be added to the `available_licenses` field. If your desired licensing scenario is more complex, please open an issue.""",
+        ),
+    ] = None
+
     links_collection: Annotated[
         str, Field(description="Mongo collection name for /links endpoint resources")
     ] = "links"
@@ -255,7 +294,7 @@ class ServerConfig(BaseSettings):
         ),
     ] = "test_server"
     root_path: Annotated[
-        Optional[str],
+        str | None,
         Field(
             description=(
                 "Sets the FastAPI app `root_path` parameter. This can be used to serve the"
@@ -267,7 +306,7 @@ class ServerConfig(BaseSettings):
         ),
     ] = None
     base_url: Annotated[
-        Optional[str], Field(description="Base URL for this implementation")
+        str | None, Field(description="Base URL for this implementation")
     ] = None
     implementation: Annotated[
         Implementation,
@@ -285,7 +324,7 @@ class ServerConfig(BaseSettings):
         homepage="https://optimade.org/optimade-python-tools",
     )
     index_base_url: Annotated[
-        Optional[AnyHttpUrl],
+        AnyHttpUrl | None,
         Field(
             description=(
                 "An optional link to the base URL for the index meta-database of the "
@@ -311,7 +350,7 @@ class ServerConfig(BaseSettings):
     provider_fields: Annotated[
         dict[
             Literal["links", "references", "structures"],
-            list[Union[str, dict[Literal["name", "type", "unit", "description"], str]]],
+            list[str | dict[Literal["name", "type", "unit", "description"], str]],
         ],
         Field(
             description=(
@@ -353,7 +392,7 @@ class ServerConfig(BaseSettings):
     ] = Path(__file__).parent.joinpath("index_links.json")
 
     is_index: Annotated[
-        Optional[bool],
+        bool | None,
         Field(
             description=(
                 "A runtime setting to dynamically switch between index meta-database and "
@@ -365,7 +404,7 @@ class ServerConfig(BaseSettings):
     ] = False
 
     schema_url: Annotated[
-        Optional[Union[str, AnyHttpUrl]],
+        str | AnyHttpUrl | None,
         Field(
             description=(
                 "A URL that will be provided in the `meta->schema` field for every response"
@@ -374,7 +413,7 @@ class ServerConfig(BaseSettings):
     ] = f"https://schemas.optimade.org/openapi/v{__api_version__}/optimade.json"
 
     custom_landing_page: Annotated[
-        Optional[Union[str, Path]],
+        str | Path | None,
         Field(
             description=(
                 "The location of a custom landing page (Jinja template) to use for the API."
@@ -383,7 +422,7 @@ class ServerConfig(BaseSettings):
     ] = None
 
     index_schema_url: Annotated[
-        Optional[Union[str, AnyHttpUrl]],
+        str | AnyHttpUrl | None,
         Field(
             description=(
                 "A URL that will be provided in the `meta->schema` field for every "
@@ -402,7 +441,7 @@ class ServerConfig(BaseSettings):
         ),
     ] = Path("/var/log/optimade/")
     validate_query_parameters: Annotated[
-        Optional[bool],
+        bool | None,
         Field(
             description=(
                 "If True, the server will check whether the query parameters given in the "
@@ -410,9 +449,15 @@ class ServerConfig(BaseSettings):
             ),
         ),
     ] = True
+    request_delay: Annotated[
+        NonNegativeFloat | None,
+        Field(
+            description="The value to use for the `meta->request_delay` field, which indicates to clients how long they should leave between success queries."
+        ),
+    ] = None
 
     validate_api_response: Annotated[
-        Optional[bool],
+        bool | None,
         Field(
             description=(
                 "If False, data from the database will not undergo validation before being"
@@ -423,10 +468,19 @@ class ServerConfig(BaseSettings):
 
     @field_validator("insert_from_jsonl", mode="before")
     @classmethod
-    def check_jsonl_path(cls, value: Any) -> Optional[Path]:
+    def check_jsonl_path(cls, value: Any) -> Path | None:
         """Check that the path to the JSONL file is valid."""
-        if value in ("null", ""):
+        if value in ("null", "", None, "None"):
             return None
+
+        return value
+
+    @field_validator("request_delay", mode="before")
+    @classmethod
+    def check_request_delay(cls, value: Any) -> Path | None:
+        """Make sure the request delay is not adversarially large."""
+        if value and value > 5:
+            raise ValueError("Request delay must be less than 5 seconds.")
 
         return value
 
@@ -445,6 +499,29 @@ class ServerConfig(BaseSettings):
         res = {"version": __version__}
         res.update(value)
         return res
+
+    @field_validator("license", mode="before")
+    @classmethod
+    def check_license_info(cls, value: Any) -> AnyHttpUrl | None:
+        """Check that the license is either an spdx identifier or an accessible URL."""
+        import requests
+
+        if not value:
+            return None
+
+        try:
+            value = AnyHttpUrl(value)
+        except ValueError:
+            value = f"https://spdx.org/licenses/{value}"
+
+        # Check if license URL is accessible
+        try:
+            response = requests.head(str(value))
+            response.raise_for_status()
+        except requests.RequestException as exc:
+            raise ValueError(f"License URL '{value}' is not accessible: {exc}") from exc
+
+        return value
 
     @model_validator(mode="after")
     def use_real_mongo_override(self) -> "ServerConfig":
@@ -469,6 +546,29 @@ class ServerConfig(BaseSettings):
 
             if use_real_mongo:
                 self.database_backend = SupportedBackend.MONGODB
+
+        return self
+
+    @model_validator(mode="after")
+    def align_mongo_uri_and_mongo_database(self) -> "ServerConfig":
+        """Prefer the value of database name if set from `mongo_uri` rather than
+        `mongo_database`.
+
+        """
+        if self.database_backend == SupportedBackend.MONGODB:
+            if self.mongo_uri:
+                import pymongo.uri_parser
+
+                if not (
+                    self.mongo_uri.startswith("mongodb://")
+                    or self.mongo_uri.startswith("mongodb+srv://")
+                ):
+                    self.mongo_uri = f"mongodb://{self.mongo_uri}"
+                uri: dict[str, Any] = pymongo.uri_parser.parse_uri(
+                    self.mongo_uri, warn=True
+                )
+                if uri.get("database"):
+                    self.mongo_database = uri["database"]
 
         return self
 

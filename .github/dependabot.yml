@@ -8,7 +8,7 @@ updates:
     time: "05:43"
   # Needs to be larger than the number of total requirements (currently 31)
   open-pull-requests-limit: 50
-  target-branch: master
+  target-branch: main
   labels:
   - dependency_updates
   # Turn off automatic rebases so that auto-merge can work without needed N**2 CI runs
@@ -16,8 +16,6 @@ updates:
   ignore:
   - dependency-name: "elasticsearch*"
     versions: [ ">=8" ]
-  - dependency-name: "jarvis-tools"
-    versions: [ "==2024.4.20", "==2024.4.30" ]
   groups:
     python-dependencies:
       applies-to: version-updates
@@ -33,7 +31,7 @@ updates:
   schedule:
     interval: daily
     time: "05:38"
-  target-branch: master
+  target-branch: main
   labels:
   - providers_updates
 - package-ecosystem: github-actions
@@ -41,7 +39,7 @@ updates:
   schedule:
     interval: daily
     time: "05:33"
-  target-branch: master
+  target-branch: main
   labels:
   - CI
   groups:
