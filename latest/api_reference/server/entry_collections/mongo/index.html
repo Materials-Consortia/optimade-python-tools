@@ -3319,7 +3319,10 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
-<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MongoCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MongoCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for querying MongoDB collections (implemented by either pymongo or mongomock)</span>
 <span class="sd">    containing serialized [`EntryResource`][optimade.models.entries.EntryResource]s objects.</span>
 
@@ -3485,6 +3488,9 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
             <span class="n">criteria_nolimit</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="n">skip</span> <span class="o">=</span> <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># If we&#39;re on the first page, set a much higher timeout for counting the results (10 s)</span>
+            <span class="k">if</span> <span class="n">skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">criteria_nolimit</span><span class="p">[</span><span class="s2">&quot;maxTimeMS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">10</span>
             <span class="n">data_returned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="o">**</span><span class="n">criteria_nolimit</span><span class="p">)</span>
             <span class="c1"># Only correct most of the time: if the total number of remaining results is exactly the page limit</span>
             <span class="c1"># then this will incorrectly say there is more_data_available</span>
