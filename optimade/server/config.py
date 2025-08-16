@@ -237,6 +237,14 @@ class ServerConfig(BaseSettings):
             description="MongoDB database name to use; will be overwritten if also present in `mongo_uri`"
         ),
     ] = "optimade"
+      
+    files_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for /files endpoint resources",
+        ),
+    ] = "files"
+      
     mongo_uri: Annotated[
         str,
         Field(
@@ -352,7 +360,7 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         ),
     ] = {}
     aliases: Annotated[
-        dict[Literal["links", "references", "structures"], dict[str, str]],
+        dict[Literal["links", "references", "structures", "files"], dict[str, str]],
         Field(
             description=(
                 "A mapping between field names in the database with their corresponding "
@@ -361,7 +369,7 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         ),
     ] = {}
     length_aliases: Annotated[
-        dict[Literal["links", "references", "structures"], dict[str, str]],
+        dict[Literal["links", "references", "structures", "files"], dict[str, str]],
         Field(
             description=(
                 "A mapping between a list property (or otherwise) and an integer property "
