@@ -72,6 +72,12 @@ class TestSingleStructureEndpoint(RegularEndpointTests):
         assert self.json_response["data"]["type"] == "structures"
         assert "attributes" in self.json_response["data"]
         assert "_exmpl_chemsys" in self.json_response["data"]["attributes"]
+        assert (
+            self.json_response["data"]["meta"]["property_metadata"]["elements_ratios"][
+                "_exmpl_originates_from_project"
+            ]
+            == "Pure Metals"
+        )
 
 
 def test_check_response_single_structure(check_response):
