@@ -10,9 +10,21 @@ from typing import Any
 
 from lark import Token, v_args
 
-from optimade.exceptions import BadRequest
-from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
-from optimade.warnings import TimestampNotRFCCompliant
+from optimade.filtertransformers.base_transformer import (
+    BaseTransformer,
+    FilterTransformerError,
+    Quantity,
+)
+
+try:
+    from optimade.warnings import TimestampNotRFCCompliant
+except ImportError:
+
+    class TimestampNotRFCCompliant(UserWarning):  # type: ignore[no-redef]
+        """A timestamp value was not RFC3339 compliant, which may lead to undefined behaviour.
+        This shim class is only used if the `optimade` package is not installed.
+        """
+
 
 __all__ = ("MongoTransformer",)
 
@@ -425,7 +437,9 @@ class MongoTransformer(BaseTransformer):
                     "relationships.references.data.id",
                     "relationships.structures.data.id",
                 ):
-                    raise BadRequest(f"Unable to query on unrecognised field {prop}.")
+                    raise FilterTransformerError(
+                        detail=f"Unable to query on unrecognised field {prop}."
+                    )
                 first_part_prop = ".".join(prop.split(".")[:-1])
                 subdict["$and"].append(
                     {
