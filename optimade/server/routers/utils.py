@@ -258,12 +258,21 @@ def get_entries(
 
     if params.search and collection.resource_cls == "structures":
         import ccdc.search
+
         smarts_query = ccdc.search.SMARTSSubstructure(params.search)
         smarts_search = ccdc.search.SubstructureSearch()
         smarts_search.add(smarts_query)
-        hits = smarts_search.search(max_hits_per_structure=1, max_hit_structures=1000)
+        # Limit the max hits to avoid very long response times,
+        hits = smarts_search.search(max_hits_per_structure=1, max_hit_structures=10)
         # create filter of IDs from hits
-        params.filter = " OR ".join((f"id={hit.identifier}" for hit in hits))
+        substructure_optimade_query = " OR ".join(
+            (f"id={hit.identifier}" for hit in hits)
+        )
+        # Chain together substructure query with any existing filter
+        if params.filter:
+            params.filter = f"({params.filter}) AND ({substructure_optimade_query})"
+        else:
+            params.filter = substructure_optimade_query
 
     (
         results,
