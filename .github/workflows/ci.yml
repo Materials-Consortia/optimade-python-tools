@@ -28,7 +28,7 @@ jobs:
         submodules: true
 
     - name: Set up Python ${{ env.LINTING_PY_VERSION }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ env.LINTING_PY_VERSION }}
         cache: 'pip'
@@ -54,7 +54,7 @@ jobs:
         submodules: true
 
     - name: Set up Python ${{ env.LINTING_PY_VERSION }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ env.LINTING_PY_VERSION }}
         cache: 'pip'
@@ -164,7 +164,7 @@ jobs:
         fetch-depth: 2
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
@@ -300,7 +300,7 @@ jobs:
       with:
         submodules: true
 
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: ${{ env.LINTING_PY_VERSION }}
         cache: 'pip'
@@ -329,7 +329,7 @@ jobs:
       uses: actions/checkout@v5
 
     - name: Set up Python ${{ env.LINTING_PY_VERSION }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ env.LINTING_PY_VERSION }}
         cache: 'pip'
