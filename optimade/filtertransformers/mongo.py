@@ -3,15 +3,16 @@
 which takes the parsed filter and converts it to a valid pymongo/BSON query.
 """
 
-
 import copy
-import warnings
 import itertools
-from typing import Dict, List, Any, Union
-from lark import v_args, Token
+import warnings
+from typing import Any
+
+from lark import Token, v_args
+
+from optimade.exceptions import BadRequest
 from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
-from optimade.server.exceptions import BadRequest
-from optimade.server.warnings import TimestampNotRFCCompliant
+from optimade.warnings import TimestampNotRFCCompliant
 
 __all__ = ("MongoTransformer",)
 
@@ -54,7 +55,7 @@ class MongoTransformer(BaseTransformer):
         "$nin": "$in",
     }
 
-    def postprocess(self, query: Dict[str, Any]):
+    def postprocess(self, query: dict[str, Any]):
         """Used to post-process the nested dictionary of the parsed query."""
         query = self._apply_relationship_filtering(query)
         query = self._apply_length_operators(query)
@@ -122,7 +123,7 @@ class MongoTransformer(BaseTransformer):
                 is not None
             ):
                 size_query = {
-                    self.backend_mapping[
+                    self.backend_mapping[  # type: ignore[union-attr]
                         quantity
                     ].length_quantity.backend_field: query.pop("$size")
                 }
@@ -228,7 +229,7 @@ class MongoTransformer(BaseTransformer):
         # property_zip_addon: ":" property (":" property)*
         raise NotImplementedError("Correlated list queries are not supported.")
 
-    def _recursive_expression_phrase(self, arg: List) -> Dict[str, Any]:
+    def _recursive_expression_phrase(self, arg: list) -> dict[str, Any]:
         """Helper function for parsing `expression_phrase`. Recursively sorts out
         the correct precedence for `$not`, `$and` and `$or`.
 
@@ -241,7 +242,7 @@ class MongoTransformer(BaseTransformer):
 
         """
 
-        def handle_not_and(arg: Dict[str, List]) -> Dict[str, List]:
+        def handle_not_and(arg: dict[str, list]) -> dict[str, list]:
             """Handle the case of `~(A & B) -> (~A | ~B)`.
 
             We have to check for the special case in which the "and" was created
@@ -270,7 +271,7 @@ class MongoTransformer(BaseTransformer):
                 ]
             }
 
-        def handle_not_or(arg: Dict[str, List]) -> Dict[str, List]:
+        def handle_not_or(arg: dict[str, list]) -> dict[str, list]:
             """Handle the case of ~(A | B) -> (~A & ~B).
 
             !!! note
@@ -312,7 +313,7 @@ class MongoTransformer(BaseTransformer):
         if operator in self.inverse_operator_map:
             filter_ = {prop: {self.inverse_operator_map[operator]: value}}
             if operator in ("$in", "$eq"):
-                filter_ = {"$and": [filter_, {prop: {"$ne": None}}]}
+                filter_ = {"$and": [filter_, {prop: {"$ne": None}}]}  # type: ignore[dict-item]
             return filter_
 
         filter_ = {prop: {"$not": expr}}
@@ -593,7 +594,7 @@ class MongoTransformer(BaseTransformer):
         )
 
 
-def recursive_postprocessing(filter_: Union[Dict, List], condition, replacement):
+def recursive_postprocessing(filter_: dict | list, condition, replacement):
     """Recursively descend into the query, checking each dictionary
     (contained in a list, or as an entry in another dictionary) for
     the condition passed. If the condition is true, apply the

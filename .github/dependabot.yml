@@ -8,17 +8,30 @@ updates:
     time: "05:43"
   # Needs to be larger than the number of total requirements (currently 31)
   open-pull-requests-limit: 50
-  target-branch: dependabot_updates
+  target-branch: main
   labels:
   - dependency_updates
   # Turn off automatic rebases so that auto-merge can work without needed N**2 CI runs
   rebase-strategy: "disabled"
+  ignore:
+  - dependency-name: "elasticsearch*"
+    versions: [ ">=8" ]
+  groups:
+    python-dependencies:
+      applies-to: version-updates
+      dependency-type: production
+    python-dependencies-dev:
+      applies-to: version-updates
+      dependency-type: development
+    python-dependencies-security:
+      applies-to: security-updates
+      dependency-type: production
 - package-ecosystem: gitsubmodule
   directory: "/"
   schedule:
     interval: daily
     time: "05:38"
-  target-branch: master
+  target-branch: main
   labels:
   - providers_updates
 - package-ecosystem: github-actions
@@ -26,6 +39,10 @@ updates:
   schedule:
     interval: daily
     time: "05:33"
-  target-branch: dependabot_updates
+  target-branch: main
   labels:
   - CI
+  groups:
+    github-actions:
+      applies-to: version-updates
+      dependency-type: production

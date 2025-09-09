@@ -1,3 +1,5 @@
+from typing import Annotated, Any
+
 from fastapi import APIRouter, Depends, Request
 
 from optimade.models import (
@@ -12,7 +14,6 @@ from optimade.server.query_params import EntryListingQueryParams, SingleEntryQue
 from optimade.server.routers.utils import get_entries, get_single_entry
 from optimade.server.schemas import ERROR_RESPONSES
 
-
 router = APIRouter(redirect_slashes=True)
 
 references_coll = create_collection(
@@ -24,17 +25,18 @@ references_coll = create_collection(
 
 @router.get(
     "/references",
-    response_model=ReferenceResponseMany,
+    response_model=ReferenceResponseMany
+    if CONFIG.validate_api_response
+    else dict[str, Any],
     response_model_exclude_unset=True,
     tags=["References"],
     responses=ERROR_RESPONSES,
 )
 def get_references(
-    request: Request, params: EntryListingQueryParams = Depends()
-) -> ReferenceResponseMany:
+    request: Request, params: Annotated[EntryListingQueryParams, Depends()]
+) -> dict[str, Any]:
     return get_entries(
         collection=references_coll,
-        response=ReferenceResponseMany,
         request=request,
         params=params,
     )
@@ -42,18 +44,21 @@ def get_references(
 
 @router.get(
     "/references/{entry_id:path}",
-    response_model=ReferenceResponseOne,
+    response_model=ReferenceResponseOne
+    if CONFIG.validate_api_response
+    else dict[str, Any],
     response_model_exclude_unset=True,
     tags=["References"],
     responses=ERROR_RESPONSES,
 )
 def get_single_reference(
-    request: Request, entry_id: str, params: SingleEntryQueryParams = Depends()
-) -> ReferenceResponseOne:
+    request: Request,
+    entry_id: str,
+    params: Annotated[SingleEntryQueryParams, Depends()],
+) -> dict[str, Any]:
     return get_single_entry(
         collection=references_coll,
         entry_id=entry_id,
-        response=ReferenceResponseOne,
         request=request,
         params=params,
     )

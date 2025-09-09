@@ -1,5 +1,5 @@
-from pydantic import ValidationError
 import pytest
+from pydantic import ValidationError
 
 
 def test_hashability():
@@ -8,7 +8,7 @@ def test_hashability():
     from optimade.models.jsonapi import Error
 
     error = Error(id="test")
-    assert set([error])
+    assert {error}
 
 
 def test_toplevel_links():

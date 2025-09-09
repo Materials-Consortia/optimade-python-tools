@@ -1,13 +1,16 @@
-from typing import Callable, Dict, Type
-from optimade.models import StructureResource
+from collections.abc import Callable
+
 from optimade.adapters.base import EntryAdapter
+from optimade.models import StructureResource
 
 from .aiida import get_aiida_structure_data
-from .ase import get_ase_atoms
+from .ase import Atoms as ASEAtoms
+from .ase import from_ase_atoms, get_ase_atoms
 from .cif import get_cif
-from .proteindatabank import get_pdb, get_pdbx_mmcif
-from .pymatgen import get_pymatgen, from_pymatgen
 from .jarvis import get_jarvis_atoms
+from .proteindatabank import get_pdb, get_pdbx_mmcif
+from .pymatgen import Structure as PymatgenStructure
+from .pymatgen import from_pymatgen, get_pymatgen
 
 
 class Structure(EntryAdapter):
@@ -41,8 +44,8 @@ class Structure(EntryAdapter):
 
     """
 
-    ENTRY_RESOURCE: Type[StructureResource] = StructureResource
-    _type_converters: Dict[str, Callable] = {
+    ENTRY_RESOURCE: type[StructureResource] = StructureResource
+    _type_converters: dict[str, Callable] = {
         "aiida_structuredata": get_aiida_structure_data,
         "ase": get_ase_atoms,
         "cif": get_cif,
@@ -52,6 +55,12 @@ class Structure(EntryAdapter):
         "jarvis": get_jarvis_atoms,
     }
 
-    _type_ingesters: Dict[str, Callable] = {
+    _type_ingesters: dict[str, Callable] = {
         "pymatgen": from_pymatgen,
+        "ase": from_ase_atoms,
+    }
+
+    _type_ingesters_by_type: dict[str, type] = {
+        "pymatgen": PymatgenStructure,
+        "ase": ASEAtoms,
     }

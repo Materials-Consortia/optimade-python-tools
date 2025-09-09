@@ -1,16 +1,18 @@
+import functools
+
 from fastapi import APIRouter, Request
 from fastapi.exceptions import StarletteHTTPException
 
 from optimade import __api_version__
-from optimade.models import InfoResponse, EntryInfoResponse
-from optimade.server.routers.utils import meta_values, get_base_url
+from optimade.models import EntryInfoResource, EntryInfoResponse, InfoResponse
+from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource, Link
 from optimade.server.config import CONFIG
+from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import (
     ENTRY_INFO_SCHEMAS,
     ERROR_RESPONSES,
     retrieve_queryable_properties,
 )
-
 
 router = APIRouter(redirect_slashes=True)
 
@@ -23,18 +25,13 @@ router = APIRouter(redirect_slashes=True)
     responses=ERROR_RESPONSES,
 )
 def get_info(request: Request) -> InfoResponse:
-    from optimade.models import BaseInfoResource, BaseInfoAttributes
+    @functools.lru_cache(maxsize=1)
+    def _generate_info_response() -> BaseInfoResource:
+        """Cached closure that generates the info response for the implementation."""
 
-    entry_types_by_format_dict = {}
-    for _ in CONFIG.get_enabled_response_formats():
-        entry_types_by_format_dict[_] = list(ENTRY_INFO_SCHEMAS)
-    return InfoResponse(
-        meta=meta_values(
-            request.url, 1, 1, more_data_available=False, schema=CONFIG.schema_url
-        ),
-        data=BaseInfoResource(
-            id=BaseInfoResource.schema()["properties"]["id"]["default"],
-            type=BaseInfoResource.schema()["properties"]["type"]["default"],
+        return BaseInfoResource(
+            id=BaseInfoResource.model_fields["id"].default,
+            type=BaseInfoResource.model_fields["type"].default,
             attributes=BaseInfoAttributes(
                 api_version=__api_version__,
                 available_api_versions=[
@@ -47,8 +44,18 @@ def get_info(request: Request) -> InfoResponse:
                 available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS),
                 entry_types_by_format=entry_types_by_format_dict,
                 is_index=False,
+                license=Link(href=CONFIG.license) if CONFIG.license else None,
+                available_licenses=[str(CONFIG.license).split("/")[-1]]
+                if "https://spdx.org" in str(CONFIG.license)
+                else None,
             ),
+        )
+
+    return InfoResponse(
+        meta=meta_values(
+            request.url, 1, 1, more_data_available=False, schema=CONFIG.schema_url
         ),
+        data=_generate_info_response(),
     )
 
 
@@ -60,33 +67,44 @@ def get_info(request: Request) -> InfoResponse:
     responses=ERROR_RESPONSES,
 )
 def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
-    from optimade.models import EntryInfoResource
+    @functools.lru_cache(maxsize=len(ENTRY_INFO_SCHEMAS))
+    def _generate_entry_info_response(entry: str) -> EntryInfoResource:
+        """Cached closure that generates the entry info response for the given type.
 
-    valid_entry_info_endpoints = ENTRY_INFO_SCHEMAS.keys()
-    if entry not in valid_entry_info_endpoints:
-        raise StarletteHTTPException(
-            status_code=404,
-            detail=f"Entry info not found for {entry}, valid entry info endpoints are: {', '.join(valid_entry_info_endpoints)}",
+        Parameters:
+            entry: The OPTIMADE type to generate the info response for, e.g.,
+                `"structures"`. Must be a key in `ENTRY_INFO_SCHEMAS`.
+
+        """
+        valid_entry_info_endpoints = ENTRY_INFO_SCHEMAS.keys()
+        if entry not in valid_entry_info_endpoints:
+            raise StarletteHTTPException(
+                status_code=404,
+                detail=(
+                    f"Entry info not found for {entry}, valid entry info endpoints "
+                    f"are: {', '.join(valid_entry_info_endpoints)}"
+                ),
+            )
+
+        schema = ENTRY_INFO_SCHEMAS[entry]
+        queryable_properties = {"id", "type", "attributes"}
+        properties = retrieve_queryable_properties(
+            schema, queryable_properties, entry_type=entry
         )
 
-    schema = ENTRY_INFO_SCHEMAS[entry]()
-    queryable_properties = {"id", "type", "attributes"}
-    properties = retrieve_queryable_properties(
-        schema, queryable_properties, entry_type=entry
-    )
-    output_fields_by_format = {}
-    for outputformat in CONFIG.get_enabled_response_formats():
-        output_fields_by_format[outputformat] = list(properties)
+        output_fields_by_format = {"json": list(properties)}
+
+        return EntryInfoResource(
+            id=entry,
+            formats=list(output_fields_by_format),
+            description=getattr(schema, "__doc__", "Entry Resources"),
+            properties=properties,
+            output_fields_by_format=output_fields_by_format,
+        )
 
     return EntryInfoResponse(
         meta=meta_values(
             request.url, 1, 1, more_data_available=False, schema=CONFIG.schema_url
         ),
-        data=EntryInfoResource(
-            formats=list(output_fields_by_format.keys()),
-            description=schema.get("description", "Entry Resources"),
-            properties=properties,
-            output_fields_by_format=output_fields_by_format,
-            schema=CONFIG.schema_url,
-        ),
+        data=_generate_entry_info_response(entry),
     )

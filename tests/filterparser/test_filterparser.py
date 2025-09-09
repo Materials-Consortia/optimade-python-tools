@@ -1,18 +1,16 @@
 import abc
-from typing import Tuple
 
 import pytest
-
 from lark import Tree
 
+from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
-from optimade.server.exceptions import BadRequest
 
 
 class BaseTestFilterParser(abc.ABC):
     """Base class for parsing different versions of the grammar using `LarkParser`."""
 
-    version: Tuple[int, int, int]
+    version: tuple[int, int, int]
     variant: str = "default"
 
     @pytest.fixture(autouse=True)
@@ -271,7 +269,7 @@ class TestParserV1_2_0(TestParserV1_0_0):
     """
 
     version = (1, 2, 0)
-    variant = "develop"
+    variant = "default"
 
     def test_boolean_values(self):
         assert isinstance(
@@ -293,3 +291,4 @@ class TestParserV1_2_0(TestParserV1_0_0):
             self.parse("NOT _exmpl_element_counts = TRUE"),
             Tree,
         )
+        assert isinstance(self.parse("_mp_stability.gga_gga+u_r2scan <= 0.0"), Tree)

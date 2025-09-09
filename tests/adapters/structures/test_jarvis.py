@@ -1,4 +1,3 @@
-# pylint: disable=import-error
 import pytest
 
 from .utils import get_min_ver
@@ -12,6 +11,7 @@ jarvis = pytest.importorskip(
 )
 
 from jarvis.core.atoms import Atoms
+
 from optimade.adapters import Structure
 from optimade.adapters.exceptions import ConversionError
 from optimade.adapters.structures.jarvis import get_jarvis_atoms

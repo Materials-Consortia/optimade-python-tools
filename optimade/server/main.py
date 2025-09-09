@@ -5,8 +5,11 @@ The server is based on MongoDB, using either `pymongo` or `mongomock`.
 This is an example implementation with example data.
 To implement your own server see the documentation at https://optimade.org/optimade-python-tools.
 """
+
 import os
 import warnings
+from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,10 +21,9 @@ with warnings.catch_warnings(record=True) as w:
 
 from optimade import __api_version__, __version__
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.logger import LOGGER
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
+from optimade.server.logger import LOGGER
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
-
 from optimade.server.routers import (
     info,
     landing,
@@ -46,6 +48,19 @@ else:
 if CONFIG.debug:  # pragma: no cover
     LOGGER.info("DEBUG MODE")
 
+
+@asynccontextmanager  # type: ignore[arg-type]
+async def lifespan(app: FastAPI):
+    """Add dynamic endpoints on startup."""
+    # Add API endpoints for MANDATORY base URL `/vMAJOR`
+    add_major_version_base_url(app)
+    # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
+    add_optional_versioned_base_urls(app)
+
+    # Yield so that the app can start
+    yield
+
+
 app = FastAPI(
     root_path=CONFIG.root_path,
     title="OPTIMADE API",
@@ -59,38 +74,69 @@ This specification is generated using [`optimade-python-tools`](https://github.c
     redoc_url=f"{BASE_URL_PREFIXES['major']}/extensions/redoc",
     openapi_url=f"{BASE_URL_PREFIXES['major']}/extensions/openapi.json",
     default_response_class=JSONAPIResponse,
+    separate_input_output_schemas=False,
+    lifespan=lifespan,
 )
 
 
-if CONFIG.insert_test_data:
-    import bson.json_util
-    from bson.objectid import ObjectId
-    import optimade.server.data as data
-    from optimade.server.routers import ENTRY_COLLECTIONS
-    from optimade.server.routers.utils import get_providers
+if CONFIG.insert_test_data or CONFIG.insert_from_jsonl:
+    from optimade.utils import insert_from_jsonl
 
-    def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
-        LOGGER.debug("Loading test %s...", endpoint_name)
+    def _insert_test_data(endpoint: str | None = None):
+        import bson.json_util
+        from bson.objectid import ObjectId
 
-        endpoint_collection.insert(getattr(data, endpoint_name, []))
-        if (
-            CONFIG.database_backend.value in ("mongomock", "mongodb")
-            and endpoint_name == "links"
-        ):
-            LOGGER.debug(
-                "Adding Materials-Consortia providers to links from optimade.org"
-            )
-            providers = get_providers(add_mongo_id=True)
-            for doc in providers:
-                endpoint_collection.collection.replace_one(
-                    filter={"_id": ObjectId(doc["_id"]["$oid"])},
-                    replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
-                    upsert=True,
+        import optimade.server.data as data
+        from optimade.server.routers import ENTRY_COLLECTIONS
+        from optimade.server.routers.utils import get_providers
+
+        def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
+            LOGGER.debug("Loading test %s...", endpoint_name)
+
+            endpoint_collection.insert(getattr(data, endpoint_name, []))
+            if (
+                CONFIG.database_backend.value in ("mongomock", "mongodb")
+                and endpoint_name == "links"
+            ):
+                LOGGER.debug(
+                    "Adding Materials-Consortia providers to links from optimade.org"
                 )
-        LOGGER.debug("Done inserting test %s!", endpoint_name)
+                providers = get_providers(add_mongo_id=True)
+                for doc in providers:
+                    endpoint_collection.collection.replace_one(  # type: ignore[attr-defined]
+                        filter={"_id": ObjectId(doc["_id"]["$oid"])},
+                        replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
+                        upsert=True,
+                    )
+            LOGGER.debug("Done inserting test %s!", endpoint_name)
 
-    for name, collection in ENTRY_COLLECTIONS.items():
-        load_entries(name, collection)
+        if endpoint:
+            load_entries(endpoint, ENTRY_COLLECTIONS[endpoint])
+        else:
+            for name, collection in ENTRY_COLLECTIONS.items():
+                load_entries(name, collection)
+
+    if CONFIG.insert_from_jsonl:
+        jsonl_path = Path(CONFIG.insert_from_jsonl)
+        LOGGER.debug("Inserting data from JSONL file: %s", jsonl_path)
+        if not jsonl_path.exists():
+            raise RuntimeError(
+                f"Requested JSONL file does not exist: {jsonl_path}. Please specify an absolute group."
+            )
+
+        insert_from_jsonl(jsonl_path, create_default_index=CONFIG.create_default_index)
+
+        LOGGER.debug("Inserted data from JSONL file: %s", jsonl_path)
+        if CONFIG.insert_test_data:
+            _insert_test_data("links")
+    elif CONFIG.insert_test_data:
+        _insert_test_data()
+
+    if CONFIG.exit_after_insert:
+        LOGGER.info("Exiting after inserting test data.")
+        import sys
+
+        sys.exit(0)
 
 # Add CORS middleware first
 app.add_middleware(CORSMiddleware, allow_origins=["*"])
@@ -124,11 +170,3 @@ def add_optional_versioned_base_urls(app: FastAPI):
     for version in ("minor", "patch"):
         for endpoint in (info, links, references, structures, trajectories, landing):
             app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES[version])
-
-
-@app.on_event("startup")
-async def startup_event():
-    # Add API endpoints for MANDATORY base URL `/vMAJOR`
-    add_major_version_base_url(app)
-    # Add API endpoints for OPTIONAL base URLs `/vMAJOR.MINOR` and `/vMAJOR.MINOR.PATCH`
-    add_optional_versioned_base_urls(app)

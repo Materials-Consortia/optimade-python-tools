@@ -2,16 +2,15 @@ from fastapi import APIRouter, Request
 
 from optimade import __api_version__
 from optimade.models import (
-    IndexInfoResponse,
     IndexInfoAttributes,
     IndexInfoResource,
+    IndexInfoResponse,
     IndexRelationship,
     RelatedLinksResource,
 )
 from optimade.server.config import CONFIG
-from optimade.server.routers.utils import meta_values, get_base_url
+from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import ERROR_RESPONSES
-
 
 router = APIRouter(redirect_slashes=True)
 
@@ -33,8 +32,8 @@ def get_info(request: Request) -> IndexInfoResponse:
             schema=CONFIG.index_schema_url,
         ),
         data=IndexInfoResource(
-            id=IndexInfoResource.schema()["properties"]["id"]["default"],
-            type=IndexInfoResource.schema()["properties"]["type"]["default"],
+            id=IndexInfoResource.model_fields["id"].default,
+            type=IndexInfoResource.model_fields["type"].default,
             attributes=IndexInfoAttributes(
                 api_version=f"{__api_version__}",
                 available_api_versions=[
@@ -51,9 +50,7 @@ def get_info(request: Request) -> IndexInfoResponse:
             relationships={
                 "default": IndexRelationship(
                     data={
-                        "type": RelatedLinksResource.schema()["properties"]["type"][
-                            "default"
-                        ],
+                        "type": RelatedLinksResource.model_fields["type"].default,
                         "id": CONFIG.default_db,
                     }
                 )

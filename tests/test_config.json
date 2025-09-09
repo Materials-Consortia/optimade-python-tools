@@ -103,11 +103,29 @@
         ],
         "references": ["orcid", "num_citations"]
     },
+    "mongo_count_timeout": 0,
+    "index_base_url": "http://localhost:5001",
+    "insert_from_jsonl": "optimade/server/data/test_data.jsonl",
+    "create_default_index": true,
+    "provider_fields": {
+        "structures": [
+            "band_gap",
+            {"name": "chemsys", "type": "string", "description": "A string representing the chemical system in an ordered fashion"},
+            {"name": "_exmpl_this_provider_field", "type": "string", "description": "A field defined by this provider, added to this config to check whether the server will pass it through without adding two prefixes."},
+            {"name": "_exmpl_stability", "type": "dictionary", "description": "A dictionary field with some naughty keys that contain non-URL-safe characters."}
+        ]
+    },
     "aliases": {
         "trajectories":{
           "id": "accession",
           "reference_structure.nsites": "metadata.atomCount",
           "nframes": "metadata.SNAPSHOTS"
+        },
+        "structures": {
+            "id": "task_id",
+            "chemical_formula_descriptive": "pretty_formula",
+            "chemical_formula_reduced": "pretty_formula",
+            "chemical_formula_anonymous": "formula_anonymous"
         }
     },
     "length_aliases": {
@@ -115,5 +133,7 @@
         }
     },
     "enabled_response_formats": ["json", "hdf5"],
-    "max_response_size": {"json": 40, "hdf5": 200}
+    "max_response_size": {"json": 40, "hdf5": 200},
+    "license": "CC-BY-4.0",
+    "request_delay": 0.1
 }

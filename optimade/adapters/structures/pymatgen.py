@@ -7,27 +7,28 @@ This conversion function relies on the [pymatgen](https://github.com/materialspr
 
 For more information on the pymatgen code see [their documentation](https://pymatgen.org).
 """
-from typing import Union, Dict, List, Optional
 
-from optimade.models import Species as OptimadeStructureSpecies
-from optimade.models import StructureResource as OptimadeStructure
+from warnings import warn
+
 from optimade.adapters.structures.utils import (
     species_from_species_at_sites,
     valid_lattice_vector,
 )
+from optimade.models import Species as OptimadeStructureSpecies
+from optimade.models import StructureResource as OptimadeStructure
 from optimade.models import StructureResourceAttributes
-
+from optimade.models.utils import anonymize_formula, reduce_formula
 
 try:
-    from pymatgen.core import Structure, Molecule, Composition, Lattice
+    from pymatgen.core import Lattice, Molecule, Structure
 
 except (ImportError, ModuleNotFoundError):
-    from warnings import warn
     from optimade.adapters.warnings import AdapterPackageNotFound
 
     Structure = type("Structure", (), {})
     Molecule = type("Molecule", (), {})
     Composition = type("Composition", (), {})
+    Lattice = type("Lattice", (), {})
     PYMATGEN_NOT_FOUND = "Pymatgen not found, cannot convert structure to a pymatgen Structure or Molecule"
 
 
@@ -37,7 +38,7 @@ __all__ = (
 )
 
 
-def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Molecule]:
+def get_pymatgen(optimade_structure: OptimadeStructure) -> Structure | Molecule:
     """Get pymatgen `Structure` or `Molecule` from OPTIMADE structure.
 
     This function will return either a pymatgen `Structure` or `Molecule` based
@@ -61,9 +62,9 @@ def get_pymatgen(optimade_structure: OptimadeStructure) -> Union[Structure, Mole
         warn(PYMATGEN_NOT_FOUND, AdapterPackageNotFound)
         return None
 
-    if valid_lattice_vector(optimade_structure.attributes.lattice_vectors) and (
-        optimade_structure.attributes.nperiodic_dimensions > 0
-        or any(optimade_structure.attributes.dimension_types)
+    if valid_lattice_vector(optimade_structure.attributes.lattice_vectors) and (  # type: ignore[arg-type]
+        optimade_structure.attributes.nperiodic_dimensions > 0  # type: ignore[operator]
+        or any(optimade_structure.attributes.dimension_types)  # type: ignore[arg-type]
     ):
         return _get_structure(optimade_structure)
 
@@ -76,11 +77,14 @@ def _get_structure(optimade_structure: OptimadeStructure) -> Structure:
     attributes = optimade_structure.attributes
 
     return Structure(
-        lattice=Lattice(attributes.lattice_vectors, attributes.dimension_types),
+        lattice=Lattice(
+            attributes.lattice_vectors,
+            [bool(d) for d in attributes.dimension_types],  # type: ignore[union-attr]
+        ),
         species=_pymatgen_species(
-            nsites=attributes.nsites,
+            nsites=attributes.nsites,  # type: ignore[arg-type]
             species=attributes.species,
-            species_at_sites=attributes.species_at_sites,
+            species_at_sites=attributes.species_at_sites,  # type: ignore[arg-type]
         ),
         coords=attributes.cartesian_site_positions,
         coords_are_cartesian=True,
@@ -94,9 +98,9 @@ def _get_molecule(optimade_structure: OptimadeStructure) -> Molecule:
 
     return Molecule(
         species=_pymatgen_species(
-            nsites=attributes.nsites,
-            species=attributes.species,
-            species_at_sites=attributes.species_at_sites,
+            nsites=attributes.nsites,  # type: ignore[arg-type]
+            species=attributes.species,  # type: ignore[arg-type]
+            species_at_sites=attributes.species_at_sites,  # type: ignore[arg-type]
         ),
         coords=attributes.cartesian_site_positions,
     )
@@ -104,14 +108,14 @@ def _get_molecule(optimade_structure: OptimadeStructure) -> Molecule:
 
 def _pymatgen_species(
     nsites: int,
-    species: Optional[List[OptimadeStructureSpecies]],
-    species_at_sites: List[str],
-) -> List[Dict[str, float]]:
+    species: list[OptimadeStructureSpecies] | None,
+    species_at_sites: list[str],
+) -> list[dict[str, float]]:
     """
     Create list of {"symbol": "concentration"} per site for values to pymatgen species parameters.
     Remove vacancies, if they are present.
     """
-    if not species:
+    if species is None:
         # If species is missing, infer data from species_at_sites
         species = species_from_species_at_sites(species_at_sites)
 
@@ -146,7 +150,7 @@ def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
 
     Returns:
         An OPTIMADE `StructureResourceAttributes` model, which can be converted to a raw Python
-            dictionary with `.dict()` or to JSON with `.json()`.
+            dictionary with `.model_dump()` or to JSON with `.model_dump_json()`.
 
     """
 
@@ -168,14 +172,14 @@ def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
     attributes["dimension_types"] = [int(_) for _ in pmg_structure.lattice.pbc]
     attributes["nperiodic_dimensions"] = sum(attributes["dimension_types"])
     attributes["nelements"] = len(pmg_structure.composition.elements)
-    attributes["chemical_formula_anonymous"] = _pymatgen_anonymized_formula_to_optimade(
-        pmg_structure.composition
+    attributes["chemical_formula_anonymous"] = anonymize_formula(
+        pmg_structure.composition.formula
     )
     attributes["elements"] = sorted(
         [_.symbol for _ in pmg_structure.composition.elements]
     )
-    attributes["chemical_formula_reduced"] = _pymatgen_reduced_formula_to_optimade(
-        pmg_structure.composition
+    attributes["chemical_formula_reduced"] = reduce_formula(
+        pmg_structure.composition.formula
     )
     attributes["chemical_formula_descriptive"] = pmg_structure.composition.formula
     attributes["elements_ratios"] = [
@@ -188,32 +192,3 @@ def from_pymatgen(pmg_structure: Structure) -> StructureResourceAttributes:
     attributes["structure_features"] = []
 
     return StructureResourceAttributes(**attributes)
-
-
-def _pymatgen_anonymized_formula_to_optimade(composition: Composition) -> str:
-    """Construct an OPTIMADE `chemical_formula_anonymous` from a pymatgen `Composition`."""
-    import re
-    from optimade.models.utils import anonymous_element_generator
-
-    return "".join(
-        [
-            "".join(x)
-            for x in zip(
-                anonymous_element_generator(),
-                reversed(re.split("[A-Z]", composition.anonymized_formula)[1:]),
-            )
-        ]
-    )
-
-
-def _pymatgen_reduced_formula_to_optimade(composition: Composition) -> str:
-    """Construct an OPTIMADE `chemical_formula_reduced` from a pymatgen `Composition`."""
-    import numpy
-
-    numbers = [int(_) for _ in composition.to_reduced_dict.values()]
-    gcd = numpy.gcd.reduce(numbers)
-    return "".join(
-        _
-        + f"{int(composition.to_reduced_dict[_]) // gcd if composition.to_reduced_dict[_] // gcd > 1 else ''}"
-        for _ in sorted([_.symbol for _ in composition.elements])
-    )

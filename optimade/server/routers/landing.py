@@ -1,19 +1,19 @@
-""" OPTIMADE landing page router. """
+"""OPTIMADE landing page router."""
 
-from pathlib import Path
 from functools import lru_cache
+from pathlib import Path
 
 from fastapi import Request
 from fastapi.responses import HTMLResponse
-from starlette.routing import Router, Route
+from starlette.routing import Route, Router
+
 from optimade import __api_version__
-
-from optimade.server.routers import ENTRY_COLLECTIONS
-from optimade.server.routers.utils import meta_values, get_base_url
 from optimade.server.config import CONFIG
+from optimade.server.routers import ENTRY_COLLECTIONS
+from optimade.server.routers.utils import get_base_url, meta_values
 
 
-@lru_cache()
+@lru_cache
 def render_landing_page(url: str) -> HTMLResponse:
     """Render and cache the landing page.
 
@@ -30,9 +30,11 @@ def render_landing_page(url: str) -> HTMLResponse:
     major_version = __api_version__.split(".")[0]
     versioned_url = f"{get_base_url(url)}/v{major_version}/"
 
-    template_dir = Path(__file__).parent.joinpath("static").resolve()
-
-    html = (template_dir / "landing_page.html").read_text()
+    if CONFIG.custom_landing_page:
+        html = Path(CONFIG.custom_landing_page).resolve().read_text()
+    else:
+        template_dir = Path(__file__).parent.joinpath("static").resolve()
+        html = (template_dir / "landing_page.html").read_text()
 
     # Build a dictionary that maps the old Jinja keys to the new simplified replacements
     replacements = {

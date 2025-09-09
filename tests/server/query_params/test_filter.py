@@ -1,5 +1,7 @@
 """Make sure filters are handled correctly"""
+
 import pytest
+
 from optimade.server.config import CONFIG, SupportedBackend
 
 
@@ -62,7 +64,6 @@ def test_page_limit(check_response):
 
 
 def test_page_limit_max(check_error_response):
-
     request = f"/structures?page_limit={CONFIG.page_limit_max + 1}"
     check_error_response(
         request,
@@ -214,7 +215,6 @@ def test_list_correlated(check_error_response):
 
 
 def test_timestamp_query(check_response):
-
     request = '/structures?filter=last_modified="2019-06-08T05:13:37.331Z"&page_limit=5'
     expected_ids = ["mpf_1", "mpf_2", "mpf_3"]
     expected_warnings = None
@@ -529,7 +529,6 @@ def test_filter_on_relationships(check_response, check_error_response):
 
 
 def test_filter_on_unknown_fields(check_response, check_error_response):
-
     request = "/structures?filter=unknown_field = 1"
     error_detail = "'unknown_field' is not a known or searchable quantity"
     check_error_response(

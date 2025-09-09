@@ -1,4 +1,3 @@
-# pylint: disable=import-outside-toplevel,too-many-locals
 import re
 import sys
 import urllib.parse
@@ -18,10 +17,9 @@ from optimade.models import (
     EntryResponseOne,
     ToplevelLinks,
 )
-
+from optimade.exceptions import BadRequest, InternalServerError
 from optimade.server.config import CONFIG, SupportedResponseFormats
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.exceptions import BadRequest, InternalServerError
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.utils import mongo_id_for_database, get_providers, PROVIDER_LIST_URLS
 from optimade.adapters.hdf5 import generate_hdf5_file_content
@@ -60,11 +58,11 @@ class JSONAPIResponse(JSONResponse):
 
 
 def meta_values(
-    url: Union[urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str],
-    data_returned: int,
+    url: urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str,
+    data_returned: int | None,
     data_available: int,
     more_data_available: bool,
-    schema: Optional[str] = None,
+    schema: str | None = None,
     **kwargs,
 ) -> ResponseMeta:
     """Helper to initialize the meta values"""
@@ -86,6 +84,9 @@ def meta_values(
     prov_dict.homepage = CONFIG.provider_homepage.get(
         get_base_url(url), CONFIG.provider.homepage
     )
+    if CONFIG.request_delay:
+        # Double-guard against the server setting an adversarially large request delay
+        kwargs["request_delay"] = min(CONFIG.request_delay, 10.0)
 
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{url.query}"),
@@ -307,7 +308,7 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method:
             return values
     else:
         raise InternalServerError(
-            f"Unable to retrieve data for the field {field} with _storage_method field:{storage_method}"
+            f"Unable to retrieve data for the field {field} with storage_method field:{storage_method}"
         )
 
 
@@ -396,10 +397,10 @@ def get_from_binary_gridfs(
 
 
 def get_included_relationships(
-    results: Union[EntryResource, List[EntryResource]],
-    ENTRY_COLLECTIONS: Dict[str, EntryCollection],
-    include_param: List[str],
-) -> Dict[str, List[EntryResource]]:
+    results: EntryResource | list[EntryResource] | dict | list[dict],
+    ENTRY_COLLECTIONS: dict[str, EntryCollection],
+    include_param: list[str],
+) -> list[EntryResource | dict[str, Any]]:
     """Filters the included relationships and makes the appropriate compound request
     to include them in the response.
 
@@ -427,17 +428,27 @@ def get_included_relationships(
                 f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
             )
 
-    endpoint_includes = defaultdict(dict)
+    endpoint_includes: dict[Any, dict] = defaultdict(dict)
+
+    if not include_param:
+        return []
+
     for doc in results:
         # convert list of references into dict by ID to only included unique IDs
         if doc is None:
             continue
 
-        relationships = doc.relationships
+        try:
+            relationships = doc.relationships  # type: ignore
+        except AttributeError:
+            relationships = doc.get("relationships", None)
+
         if relationships is None:
             continue
 
-        relationships = relationships.dict()
+        if not isinstance(relationships, dict):
+            relationships = relationships.model_dump()
+
         for entry_type in ENTRY_COLLECTIONS:
             # Skip entry type if it is not in `include_param`
             if entry_type not in include_param:
@@ -450,32 +461,37 @@ def get_included_relationships(
                     if ref["id"] not in endpoint_includes[entry_type]:
                         endpoint_includes[entry_type][ref["id"]] = ref
 
-    included = {}
+    included: dict[
+        str,
+        list[EntryResource] | list[dict[str, Any]],
+    ] = {}
     for entry_type in endpoint_includes:
         compound_filter = " OR ".join(
-            ['id="{}"'.format(ref_id) for ref_id in endpoint_includes[entry_type]]
+            [f'id="{ref_id}"' for ref_id in endpoint_includes[entry_type]]
         )
         params = EntryListingQueryParams(
             filter=compound_filter,
             response_format="json",
-            response_fields=None,
-            sort=None,
+            response_fields="",
+            sort="",
             page_limit=0,
             page_offset=0,
         )
 
         # still need to handle pagination
         ref_results, _, _, _, _ = ENTRY_COLLECTIONS[entry_type].find(params)
-        included[entry_type] = ref_results
+        if ref_results is None:
+            ref_results = []
+        included[entry_type] = ref_results  # type: ignore[assignment]
 
     # flatten dict by endpoint to list
     return [obj for endp in included.values() for obj in endp]
 
 
 def get_base_url(
-    parsed_url_request: Union[
-        urllib.parse.ParseResult, urllib.parse.SplitResult, StarletteURL, str
-    ]
+    parsed_url_request: (
+        urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str
+    ),
 ) -> str:
     """Get base URL for current server
 
@@ -498,10 +514,9 @@ def get_base_url(
 
 def get_entries(
     collection: EntryCollection,
-    response: EntryResponseMany,
     request: Request,
     params: EntryListingQueryParams,
-) -> EntryResponseMany:
+) -> dict[str, Any]:
     """Generalized /{entry} endpoint getter"""
     from optimade.server.routers import ENTRY_COLLECTIONS
 
@@ -517,7 +532,10 @@ def get_entries(
     include = []
     if getattr(params, "include", False):
         include.extend(params.include.split(","))
-    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+
+    included = []
+    if results is not None:
+        included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     traj_trunc = False
     if fields or include_fields:
@@ -530,10 +548,8 @@ def get_entries(
     if more_data_available:
         # Deduce the `next` link from the current request
         query = urllib.parse.parse_qs(request.url.query)
-        query["page_offset"] = int(query.get("page_offset", [0])[0]) + len(results)
-        if traj_trunc:
-            query["page_offset"] -= 1
-            query["continue_from_frame"] = last_frame + 2
+        query.update(collection.get_next_query_params(params, results))
+
         urlencoded = urllib.parse.urlencode(query, doseq=True)
         base_url = get_base_url(request.url)
 
@@ -541,10 +557,13 @@ def get_entries(
     else:
         links = ToplevelLinks(next=None)
 
-    response_object = response(
-        links=links,
-        data=results,
-        meta=meta_values(
+    if results is not None and (fields or include_fields):
+        results = handle_response_fields(results, fields, include_fields, params)  # type: ignore[assignment]
+
+    response_object = {
+        "links": links,
+        "data": results if results else [],
+        "meta": meta_values(
             url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
@@ -553,8 +572,8 @@ def get_entries(
             if not CONFIG.is_index
             else CONFIG.index_schema_url,
         ),
-        included=included,
-    )
+        "included": included,
+    }
 
     if params.response_format in CONFIG.get_enabled_response_formats():
         if params.response_format == "json":
@@ -576,10 +595,9 @@ def get_entries(
 def get_single_entry(
     collection: EntryCollection,
     entry_id: str,
-    response: EntryResponseOne,
     request: Request,
     params: SingleEntryQueryParams,
-) -> EntryResponseOne:
+) -> dict[str, Any]:
     from optimade.server.routers import ENTRY_COLLECTIONS
 
     params.check_params(request.query_params)
@@ -596,11 +614,6 @@ def get_single_entry(
         include_fields,
     ) = collection.find(params)
 
-    include = []
-    if getattr(params, "include", False):
-        include.extend(params.include.split(","))
-    included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
-
     if more_data_available:
         raise InternalServerError(
             detail=f"more_data_available MUST be False for single entry response, however it is {more_data_available}",
@@ -613,6 +626,14 @@ def get_single_entry(
         )
         # results = handle_response_fields(results, fields, include_fields, params)[0]
 
+    include = []
+    if getattr(params, "include", False):
+        include.extend(params.include.split(","))
+
+    included = []
+    if results is not None:
+        included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+
     if traj_trunc:
         more_data_available = True
         # Deduce the `next` link from the current request
@@ -624,10 +645,13 @@ def get_single_entry(
     else:
         links = ToplevelLinks(next=None)
 
-    response_object = response(
-        links=links,
-        data=results,
-        meta=meta_values(
+    if results is not None and (fields or include_fields):
+        results = handle_response_fields(results, fields, include_fields, params)[0]  # type: ignore[assignment]
+
+    response_object = {
+        "links": links,
+        "data": results if results else None,
+        "meta": meta_values(
             url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
@@ -636,8 +660,9 @@ def get_single_entry(
             if not CONFIG.is_index
             else CONFIG.index_schema_url,
         ),
-        included=included,
-    )
+        "included": included,
+    }
+
     if params.response_format in CONFIG.get_enabled_response_formats():
         if params.response_format == "json":
             return response_object

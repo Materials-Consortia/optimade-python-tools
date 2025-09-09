@@ -4,8 +4,12 @@ on:
   pull_request:
   push:
     branches:
-    - master
+    - main
     - 'push-action/**'
+
+env:
+  PYTEST_ADDOPTS: "--color=yes"
+  LINTING_PY_VERSION: "3.10"  # The version of Python to use for linting (typically the minimum supported)
 
 # Cancel running workflows when additional changes are pushed
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
@@ -14,75 +18,55 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -U setuptools wheel
-        pip install flake8
-
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --statistics
 
   pre-commit:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
       with:
         submodules: true
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v4
+    - name: Set up Python ${{ env.LINTING_PY_VERSION }}
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: ${{ env.LINTING_PY_VERSION }}
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-server.txt -r requirements-dev.txt
         pip install -e .
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
 
     - name: Run pre-commit
-      run: |
-        pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+      run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
   openapi:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
       with:
         submodules: true
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v4
+    - name: Set up Python ${{ env.LINTING_PY_VERSION }}
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: ${{ env.LINTING_PY_VERSION }}
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
 
     - name: Install tools
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-server.txt -r requirements-dev.txt
         pip install -e .
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
 
     - name: Pass generated OpenAPI schemas through validator.swagger.io
       run: |
@@ -96,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
       with:
         submodules: true
 
@@ -110,7 +94,8 @@ jobs:
         sleep 15
 
     - name: Test server, including OPTIONAL base URLs
-      uses: Materials-Consortia/optimade-validator-action@v2
+      # Pin validator action until merge of Materials-Consortia/optimade-validator-action#175
+      uses: Materials-Consortia/optimade-validator-action@dc4a7b6a83da42e5341a1a401e36d83375550fb7
       with:
         port: 3213
         path: /
@@ -124,7 +109,8 @@ jobs:
         sleep 15
 
     - name: Test index server, including OPTIONAL base URLs
-      uses: Materials-Consortia/optimade-validator-action@v2
+      # Pin validator action until merge of Materials-Consortia/optimade-validator-action#175
+      uses: Materials-Consortia/optimade-validator-action@dc4a7b6a83da42e5341a1a401e36d83375550fb7
       with:
         port: 3214
         path: /
@@ -142,11 +128,11 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.10', '3.11', '3.12', '3.13']
 
     services:
       mongo:
-        image: mongo:4
+        image: mongo:7
         ports:
         - 27017:27017
       postgres:
@@ -162,7 +148,7 @@ jobs:
         ports:
         - 5432:5432
       elasticsearch:
-        image: elasticsearch:7.17.1
+        image: elasticsearch:7.17.7
         ports:
           - 9200:9200
           - 9300:9300
@@ -172,48 +158,63 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
       with:
         submodules: true
         fetch-depth: 2
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
 
     - name: Install latest compatible versions of immediate dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-dev.txt -r requirements-http-client.txt
         pip install -e .
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
-        pip install -r requirements-http-client.txt
 
-    - name: Run all tests (using `mongomock`)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml tests/
+    - name: Run non-server tests
+      run: pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
+
+    - name: Install latest server dependencies
+      run: pip install -r requirements-server.txt
+
+    - name: Run server tests (using `mongomock`)
+      run: pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
+    - name: Run server tests with no API validation (using `mongomock`)
+      run:
+        pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      env:
+        OPTIMADE_DATABASE_BACKEND: 'mongomock'
+        OPTIMADE_VALIDATE_API_RESPONSE: false
 
     - name: Run server tests (using a real MongoDB)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server
+      run: pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
 
     - name: Run server tests (using Elasticsearch)
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server
+      run: |
+        .github/utils/wait_for_it.sh localhost:9200 -t 120
+        .github/utils/wait_for_it.sh localhost:9300 -t 120
+        pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
 
     - name: Install adapter conversion dependencies
-      run: |
-        pip install -r requirements-client.txt
+      run: pip install -r requirements-client.txt
 
     - name: Setup environment for AiiDA
       env:
-        AIIDA_TEST_BACKEND: psql_dos
+        AIIDA_TEST_BACKEND: core.psql_dos
       run: |
         .github/aiida/setup_aiida.sh
 
@@ -221,36 +222,40 @@ jobs:
       run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
     - name: Run tests for validator only to assess coverage (mongomock)
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == '3.11'
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
     - name: Run tests for validator only to assess coverage (Elasticsearch)
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == '3.11'
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
-        OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
+        OPTIMADE_INSERT_TEST_DATA: false  # Must be specified as previous steps will have already inserted the test data
+        OPTIMADE_INSERT_FROM_JSONL: ''    # Must be specified as previous steps will have already inserted the test data
 
     - name: Run tests for validator only to assess coverage (MongoDB)
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == '3.11'
       run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
-        OPTIMADE_INSERT_TEST_DATA: false # Must be specified as previous steps will have already inserted the test data
+        OPTIMADE_INSERT_TEST_DATA: false  # Must be specified as previous steps will have already inserted the test data
+        OPTIMADE_INSERT_FROM_JSONL: ''    # Must be specified as previous steps will have already inserted the test data
 
     - name: Run the OPTIMADE Client CLI
-      if: matrix.python-version == 3.10
+      if: matrix.python-version == '3.11'
       run: |
         coverage run --append --source optimade optimade/client/cli.py \
            --filter 'nsites = 1' \
+           --http-timeout 10.0 \
            --output-file test_get_async.json \
            https://optimade.fly.dev
         test test_get_async.json
 
         coverage run --append --source optimade optimade/client/cli.py \
           --filter 'nsites = 1' \
+           --http-timeout 10.0 \
           --count \
           --output-file test_count.json \
           https://optimade.fly.dev
@@ -259,6 +264,7 @@ jobs:
         coverage run --append --source optimade optimade/client/cli.py \
           --no-async \
           --filter 'nsites = 1' \
+           --http-timeout 10.0 \
           --count \
           --output-file test_count_no_async.json \
           https://optimade.fly.dev
@@ -269,17 +275,19 @@ jobs:
         coverage xml
 
     - name: Upload coverage to Codecov
-      if: matrix.python-version == '3.10' && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v3
+      if: matrix.python-version == '3.11' && github.repository == 'Materials-Consortia/optimade-python-tools'
+      uses: codecov/codecov-action@v5
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         name: project
         file: ./coverage.xml
         flags: project
 
     - name: Upload validator coverage to Codecov
-      if: matrix.python-version == '3.10' && github.repository == 'Materials-Consortia/optimade-python-tools'
-      uses: codecov/codecov-action@v3
+      if: matrix.python-version == '3.11' && github.repository == 'Materials-Consortia/optimade-python-tools'
+      uses: codecov/codecov-action@v5
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         name: validator
         file: ./validator_cov.xml
         flags: validator
@@ -288,23 +296,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
       with:
         submodules: true
 
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: ${{ env.LINTING_PY_VERSION }}
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-server.txt -r requirements-dev.txt -r requirements-http-client.txt -r requirements-docs.txt
         pip install -e .
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
-        pip install -r requirements-http-client.txt
-        pip install -r requirements-docs.txt
 
     # NOTE: While we're now using `mike`, this is still useful
     # to test the integrity of the documentation build.
@@ -318,12 +326,15 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v4
+    - name: Set up Python ${{ env.LINTING_PY_VERSION }}
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: ${{ env.LINTING_PY_VERSION }}
+        cache: 'pip'
+        cache-dependency-path: |
+          requirements*.txt
 
     - name: Install Python dependencies
       run: |
@@ -336,4 +347,4 @@ jobs:
           pip install -e .[all]
 
     - name: Build source distribution
-      run: python ./setup.py sdist
+      run: python -m build

@@ -10,7 +10,7 @@ on:
         type: boolean
       checkout_ref:
         description: 'The git ref to checkout and use as source.'
-        default: master
+        default: main
         required: false
         type: string
 
@@ -20,18 +20,20 @@ jobs:
     if: github.repository_owner == 'Materials-Consortia'
     runs-on: ubuntu-latest
 
-    env:
-      IMAGE_NAME: optimade
+    environment:
+      name: container-image
+      url: https://github.com/${{ github.repository }}/pkgs/container/${{ vars.IMAGE_NAME }}
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
         submodules: true
         ref: ${{ inputs.checkout_ref }}
 
     - name: Retrieve version
+      id: get_version
       run: |
         # Get current OPTIMADE version from optimade/__init__.py
         regex="^__version__ = (\"|')(.*)(\"|')$"
@@ -41,61 +43,63 @@ jobs:
           fi
         done < optimade/__init__.py
 
-        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+        echo "version=${VERSION}" >> $GITHUB_OUTPUT
         echo VERSION=${VERSION}
 
     - name: Set source ref
+      id: set_source_ref
       run: |
         if [[ "${{ inputs.release }}" == "true" ]]; then
           # Use tag for metadata instead of commit SHA
-          SOURCE_REF=v${{ env.VERSION }}
+          SOURCE_REF=v${{ steps.get_version.outputs.version }}
         else
           SOURCE_REF=$(git rev-parse HEAD)
         fi
 
-        echo "SOURCE_REF=${SOURCE_REF}" >> $GITHUB_ENV
+        echo "source_ref=${SOURCE_REF}" >> $GITHUB_OUTPUT
         echo SOURCE_REF=${SOURCE_REF}
 
     - name: Build image
       run: |
         docker build \
           --file Dockerfile \
-          --tag "${IMAGE_NAME}" \
+          --tag "${{ vars.IMAGE_NAME }}" \
           --label "gh_actions_runnumber=${GITHUB_RUN_ID}" \
           --label "org.openctonainers.image.title=OPTIMADE" \
           --label "org.opencontainers.image.description=A server implementation for serving an OPTIMADE API." \
-          --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}/tree/${{ env.SOURCE_REF }}" \
-          --label "org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/${{ env.SOURCE_REF }}/README.md" \
+          --label "org.opencontainers.image.source=https://github.com/${{ github.repository }}/tree/${{ steps.set_source_ref.outputs.source_ref }}" \
+          --label "org.opencontainers.image.documentation=https://github.com/${{ github.repository }}/blob/${{ steps.set_source_ref.outputs.source_ref }}/README.md" \
           --label "org.opencontainers.image.licenses=MIT" \
-          --label "org.opencontainers.image.url=https://github.com/${{ github.repository }}/pkgs/container/${IMAGE_NAME}" \
+          --label "org.opencontainers.image.url=https://github.com/${{ github.repository }}/pkgs/container/${{ vars.IMAGE_NAME }}" \
           --label "org.opencontainers.image.vendor=${{ github.repository_owner }}" \
-          --label "org.opencontainers.image.version=${{ env.VERSION }}" \
+          --label "org.opencontainers.image.version=${{ steps.get_version.outputs.version }}" \
           --label "org.opencontainers.image.base.name=docker.io/library/python:3.10-slim" \
           .
 
     - name: Create full image ID and tag with 'develop'
+      id: create_tags
       run: |
-        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${IMAGE_NAME}
+        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ vars.IMAGE_NAME }}
 
         # Change all uppercase to lowercase
         IMAGE_ID=$(echo ${IMAGE_ID} | tr '[A-Z]' '[a-z]')
 
-        echo "IMAGE_ID=${IMAGE_ID}" >> $GITHUB_ENV
+        echo "image_id=${IMAGE_ID}" >> $GITHUB_OUTPUT
         echo IMAGE_ID=${IMAGE_ID}
 
         # Tag with "develop"
-        docker tag ${IMAGE_NAME} ${IMAGE_ID}:develop
+        docker tag ${{ vars.IMAGE_NAME }} ${IMAGE_ID}:develop
 
     - name: Tag with version and `latest` - if it's a release
       if: inputs.release
       run: |
-        docker tag ${IMAGE_NAME} ${{ env.IMAGE_ID }}:${{ env.VERSION }}
-        docker tag ${IMAGE_NAME} ${{ env.IMAGE_ID }}:latest
+        docker tag ${{ vars.IMAGE_NAME }} ${{ steps.create_tags.outputs.image_id }}:${{ steps.get_version.outputs.version }}
+        docker tag ${{ vars.IMAGE_NAME }} ${{ steps.create_tags.outputs.image_id }}:latest
 
     - name: Log in to registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
     - name: Push image
       run: |
-        docker image inspect ${IMAGE_NAME}
-        docker push --all-tags ${{ env.IMAGE_ID }}
+        docker image inspect ${{ vars.IMAGE_NAME }}
+        docker push --all-tags ${{ steps.create_tags.outputs.image_id }}

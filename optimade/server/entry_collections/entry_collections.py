@@ -1,25 +1,30 @@
-from abc import abstractmethod, ABC
-from typing import Tuple, List, Union, Dict, Any, Set
-import warnings
+import enum
 import re
+import warnings
+from abc import ABC, abstractmethod
+from collections.abc import Iterable
+from typing import Any
 
 from lark import Transformer
 
+from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
-from optimade.models import EntryResource
+from optimade.models import Attributes, EntryResource
+from optimade.models.types import NoneType, _get_origin_type
 from optimade.server.config import CONFIG, SupportedBackend
-from optimade.server.exceptions import BadRequest, Forbidden, NotFound
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
-from optimade.server.warnings import (
+from optimade.warnings import (
     FieldValueNotRecognized,
-    UnknownProviderProperty,
     QueryParamNotUsed,
+    UnknownProviderProperty,
 )
 
 
 def create_collection(
-    name: str, resource_cls: EntryResource, resource_mapper: BaseResourceMapper
+    name: str,
+    resource_cls: type[EntryResource],
+    resource_mapper: type[BaseResourceMapper],
 ) -> "EntryCollection":
     """Create an `EntryCollection` of the configured type, depending on the value of
     `CONFIG.database_backend`.
@@ -59,14 +64,29 @@ def create_collection(
     )
 
 
+class PaginationMechanism(enum.Enum):
+    """The supported pagination mechanisms."""
+
+    OFFSET = "page_offset"
+    NUMBER = "page_number"
+    CURSOR = "page_cursor"
+    ABOVE = "page_above"
+    BELOW = "page_below"
+
+
 class EntryCollection(ABC):
     """Backend-agnostic base class for querying collections of
     [`EntryResource`][optimade.models.entries.EntryResource]s."""
 
+    pagination_mechanism = PaginationMechanism("page_offset")
+    """The default pagination mechansim to use with a given collection,
+    if the user does not provide any pagination query parameters.
+    """
+
     def __init__(
         self,
-        resource_cls: EntryResource,
-        resource_mapper: BaseResourceMapper,
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         transformer: Transformer,
     ):
         """Initialize the collection for the given parameters.
@@ -92,23 +112,28 @@ class EntryCollection(ABC):
             for field in CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
         ]
 
-        self._all_fields: Set[str] = None
+        self._all_fields: set[str] = set()
 
     @abstractmethod
     def __len__(self) -> int:
         """Returns the total number of entries in the collection."""
 
     @abstractmethod
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource | dict]) -> None:
         """Add the given entries to the underlying database.
 
+        Warning:
+            No validation is performed on the incoming data, this data
+            should have been mapped to the appropriate format before
+            insertion.
+
         Arguments:
-            data: The entry resource objects to add to the database.
+            data: The entries to add to the database.
 
         """
 
     @abstractmethod
-    def count(self, **kwargs: Any) -> int:
+    def count(self, **kwargs: Any) -> int | None:
         """Returns the number of entries matching the query specified
         by the keyword arguments.
 
@@ -118,9 +143,13 @@ class EntryCollection(ABC):
         """
 
     def find(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Tuple[
-        Union[List[EntryResource], EntryResource, None], int, bool, Set[str], Set[str]
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
+    ) -> tuple[
+        dict[str, Any] | list[dict[str, Any]] | None,
+        int | None,
+        bool,
+        set[str],
+        set[str],
     ]:
         """
         Fetches results and indicates if more data is available.
@@ -128,6 +157,10 @@ class EntryCollection(ABC):
         Also gives the total number of data available in the absence of `page_limit`.
         See [`EntryListingQueryParams`][optimade.server.query_params.EntryListingQueryParams]
         for more information.
+
+        Returns a list of the mapped database reponse.
+
+        If no results match the query, then `results` is set to `None`.
 
         Parameters:
             params: Entry listing URL query params.
@@ -139,32 +172,21 @@ class EntryCollection(ABC):
         """
         criteria = self.handle_query_params(params)
         single_entry = isinstance(params, SingleEntryQueryParams)
-        response_fields = criteria.pop("fields")
+        response_fields: set[str] = criteria.pop("fields")
 
-        results, data_returned, more_data_available = self._run_db_query(
+        raw_results, data_returned, more_data_available = self._run_db_query(
             criteria, single_entry
         )
 
-        if single_entry:
-            results = results[0] if results else None
-
-            if data_returned > 1:
-                raise NotFound(
-                    detail=f"Instead of a single entry, {data_returned} entries were found",
-                )
-
-        exclude_fields = (
-            self.all_fields.union(getattr(self.resource_mapper, "HIDDEN_FIELDS", []))
-            - response_fields
-        )
+        exclude_fields = self.all_fields - response_fields
         include_fields = (
             response_fields - self.resource_mapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS
         )
 
-        bad_optimade_fields = set()
-        bad_provider_fields = set()
+        bad_optimade_fields: set[str] = set()
+        bad_provider_fields: set[str] = set()
         supported_prefixes = self.resource_mapper.SUPPORTED_PREFIXES
-        all_attributes = self.resource_mapper.ALL_ATTRIBUTES
+        all_attributes: set[str] = self.resource_mapper.ALL_ATTRIBUTES
         for field in include_fields:
             if field not in all_attributes:
                 if field.startswith("_"):
@@ -186,8 +208,24 @@ class EntryCollection(ABC):
                 detail=f"Unrecognised OPTIMADE field(s) in requested `response_fields`: {bad_optimade_fields}."
             )
 
-        if results:
-            results = self.resource_mapper.deserialize(results)
+        results: list[dict[str, Any]] | dict[str, Any] | None = None
+
+        if raw_results:
+            results = [self.resource_mapper.map_back(doc) for doc in raw_results]
+
+            if single_entry:
+                results = results[0]
+
+                if (
+                    CONFIG.validate_api_response
+                    and data_returned is not None
+                    and data_returned > 1
+                ):
+                    raise NotFound(
+                        detail=f"Instead of a single entry, {data_returned} entries were found",
+                    )
+                else:
+                    data_returned = 1
 
         return (
             results,
@@ -199,8 +237,8 @@ class EntryCollection(ABC):
 
     @abstractmethod
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+        self, criteria: dict[str, Any], single_entry: bool = False
+    ) -> tuple[list[dict[str, Any]], int | None, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -214,7 +252,7 @@ class EntryCollection(ABC):
         """
 
     @property
-    def all_fields(self) -> Set[str]:
+    def all_fields(self) -> set[str]:
         """Get the set of all fields handled in this collection,
         from attribute fields in the schema, provider fields and top-level OPTIMADE fields.
 
@@ -234,12 +272,38 @@ class EntryCollection(ABC):
             # All provider-specific fields
             self._all_fields |= {
                 f"_{self.provider_prefix}_{field_name}"
+                if not field_name.startswith("_")
+                else field_name
                 for field_name in self.provider_fields
             }
 
         return self._all_fields
 
-    def get_attribute_fields(self) -> Set[str]:
+    def create_index(self, field: str, unique: bool = False) -> None:
+        """Create an index on the given field, as stored in the database.
+
+        Arguments:
+            field: The database field to index (i.e., if different from the OPTIMADE field,
+                the mapper should be used to convert between the two).
+            unique: Whether or not the index should be unique.
+
+        """
+        raise NotImplementedError
+
+    def create_default_index(self) -> None:
+        """Create the default index for the collection.
+
+        For example, a database backend could override this method to
+        create a unique index on the `id` field, so that it can be called
+        on server startup.
+
+        This method should use a mapper to convert any OPTIMADE field names
+        to the corresponding stored names in the database.
+
+        """
+        raise NotImplementedError
+
+    def get_attribute_fields(self) -> set[str]:
         """Get the set of attribute fields
 
         Return only the _first-level_ attribute fields from the schema of the resource class,
@@ -254,24 +318,20 @@ class EntryCollection(ABC):
             Property names.
 
         """
+        annotation = _get_origin_type(
+            self.resource_cls.model_fields["attributes"].annotation
+        )
 
-        schema = self.resource_cls.schema()
-        attributes = schema["properties"]["attributes"]
-        if "allOf" in attributes:
-            allOf = attributes.pop("allOf")
-            for dict_ in allOf:
-                attributes.update(dict_)
-        if "$ref" in attributes:
-            path = attributes["$ref"].split("/")[1:]
-            attributes = schema.copy()
-            while path:
-                next_key = path.pop(0)
-                attributes = attributes[next_key]
-        return set(attributes["properties"].keys())
+        if annotation in (None, NoneType) or not issubclass(annotation, Attributes):
+            raise TypeError(
+                "resource class 'attributes' field must be a subclass of 'EntryResourceAttributes'"
+            )
+
+        return set(annotation.model_fields)  # type: ignore[attr-defined]
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Dict[str, Any]:
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by the specific backend.
 
@@ -296,7 +356,7 @@ class EntryCollection(ABC):
         # filter
         if getattr(params, "filter", False):
             cursor_kwargs["filter"] = self.transformer.transform(
-                self.parser.parse(params.filter)
+                self.parser.parse(params.filter)  # type: ignore[union-attr]
             )
         else:
             cursor_kwargs["filter"] = {}
@@ -312,7 +372,7 @@ class EntryCollection(ABC):
 
         # page_limit
         if getattr(params, "page_limit", False):
-            limit = params.page_limit
+            limit = params.page_limit  # type: ignore[union-attr]
             if limit > CONFIG.page_limit_max:
                 raise Forbidden(
                     detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {limit}",
@@ -353,26 +413,47 @@ class EntryCollection(ABC):
 
         # sort
         if getattr(params, "sort", False):
-            cursor_kwargs["sort"] = self.parse_sort_params(params.sort)
+            cursor_kwargs["sort"] = self.parse_sort_params(params.sort)  # type: ignore[union-attr]
 
-        # page_offset and page_number
+        # warn if multiple pagination keys are present, and only use the first from this list
+        received_pagination_option = False
+        warn_multiple_keys = False
+
         if getattr(params, "page_offset", False):
-            if getattr(params, "page_number", False):
-                warnings.warn(
-                    message="Only one of the query parameters 'page_number' and 'page_offset' should be set - 'page_number' will be ignored.",
-                    category=QueryParamNotUsed,
-                )
+            received_pagination_option = True
+            cursor_kwargs["skip"] = params.page_offset  # type: ignore[union-attr]
 
-            cursor_kwargs["skip"] = params.page_offset
-        elif getattr(params, "page_number", False):
-            if isinstance(params.page_number, int):
-                cursor_kwargs["skip"] = (params.page_number - 1) * cursor_kwargs[
-                    "limit"
-                ]
+        if isinstance(getattr(params, "page_number", None), int):
+            if received_pagination_option:
+                warn_multiple_keys = True
+            else:
+                received_pagination_option = True
+                if params.page_number < 1:  # type: ignore[union-attr]
+                    warnings.warn(
+                        message=f"'page_number' is 1-based, using 'page_number=1' instead of {params.page_number}",  # type: ignore[union-attr]
+                        category=QueryParamNotUsed,
+                    )
+                    page_number = 1
+                else:
+                    page_number = params.page_number  # type: ignore[union-attr]
+                cursor_kwargs["skip"] = (page_number - 1) * cursor_kwargs["limit"]
+
+        if isinstance(getattr(params, "page_above", None), str):
+            if received_pagination_option:
+                warn_multiple_keys = True
+            else:
+                received_pagination_option = True
+                cursor_kwargs["page_above"] = params.page_above  # type: ignore[union-attr]
+
+        if warn_multiple_keys:
+            warnings.warn(
+                message="Multiple pagination keys were provided, only using the first one of 'page_offset', 'page_number' or 'page_above'",
+                category=QueryParamNotUsed,
+            )
 
         return cursor_kwargs
 
-    def parse_sort_params(self, sort_params: str) -> Tuple[Tuple[str, int]]:
+    def parse_sort_params(self, sort_params: str) -> Iterable[tuple[str, int]]:
         """Handles any sort parameters passed to the collection,
         resolving aliases and dealing with any invalid fields.
 
@@ -380,11 +461,11 @@ class EntryCollection(ABC):
             BadRequest: if an invalid sort is requested.
 
         Returns:
-            A tuple of tuples containing the aliased field name and
+            A list of tuples containing the aliased field name and
             sort direction encoded as 1 (ascending) or -1 (descending).
 
         """
-        sort_spec = []
+        sort_spec: list[tuple[str, int]] = []
         for field in sort_params.split(","):
             sort_dir = 1
             if field.startswith("-"):
@@ -421,10 +502,47 @@ class EntryCollection(ABC):
                 raise BadRequest(detail=error_detail)
 
         # If at least one valid field has been provided for sorting, then use that
-        sort_spec = tuple(
+        sort_spec = [
             (field, sort_dir)
             for field, sort_dir in sort_spec
             if field not in unknown_fields
-        )
+        ]
 
         return sort_spec
+
+    def get_next_query_params(
+        self,
+        params: EntryListingQueryParams,
+        results: dict[str, Any] | list[dict[str, Any]] | None,
+    ) -> dict[str, list[str]]:
+        """Provides url query pagination parameters that will be used in the next
+        link.
+
+        Arguments:
+            results: The results produced by find.
+            params: The parsed request params produced by handle_query_params.
+
+        Returns:
+            A dictionary with the necessary query parameters.
+
+        """
+        query: dict[str, list[str]] = dict()
+        if isinstance(results, list) and results:
+            # If a user passed a particular pagination mechanism, keep using it
+            # Otherwise, use the default pagination mechanism of the collection
+            pagination_mechanism = PaginationMechanism.OFFSET
+            for pagination_key in (
+                "page_offset",
+                "page_number",
+                "page_above",
+            ):
+                if getattr(params, pagination_key, None) is not None:
+                    pagination_mechanism = PaginationMechanism(pagination_key)
+                    break
+
+            if pagination_mechanism == PaginationMechanism.OFFSET:
+                query["page_offset"] = [
+                    str(params.page_offset + len(results))  # type: ignore[list-item]
+                ]
+
+        return query

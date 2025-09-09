@@ -1,0 +1,172 @@
+[build-system]
+requires = ["setuptools >= 61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "optimade"
+description = "Tools for implementing and consuming OPTIMADE APIs."
+readme = "README.md"
+keywords = ["optimade", "jsonapi", "materials"]
+license = "MIT"
+authors = [{ name = "OPTIMADE development team", email = "dev@optimade.org" }]
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Database",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Database :: Front-Ends",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "lark~=1.1",
+    "pydantic[email]~=2.2",
+    "pydantic-settings~=2.0",
+    "requests~=2.28",
+]
+
+[project.scripts]
+optimade-validator = "optimade.validator:validate"
+optimade-get = "optimade.client.cli:get"
+
+
+[project.urls]
+"Homepage" = "https://github.com/Materials-Consortia/optimade-python-tools"
+"Bug Tracker" = "https://github.com/Materials-Consortia/optimade-python-tools/issues"
+"Documentation" = "https://optimade.org/optimade-python-tools"
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "optimade.__version__"}
+
+[tool.setuptools.packages.find]
+namespaces = false
+
+[tool.setuptools.package-data]
+optimade = ["py.typed"]
+"optimade.server" = ["*.json"]
+"optimade.server.data" = ["*.json"]
+"optimade.server.routers" = ["static/*.html"]
+"optimade.grammar" = ["*.lark"]
+
+
+
+[project.optional-dependencies]
+elastic = ["elasticsearch-dsl~=7.4,<8.0", "elasticsearch~=7.17"]
+mongo = ["pymongo~=4.0", "mongomock~=4.1"]
+server = [
+    "uvicorn[standard]~=0.19",
+    "fastapi>=0.103.1",
+    "starlette ~= 0.38, >= 0.38.3",
+    "pyyaml~=6.0",
+    "optimade[mongo]",
+]
+
+# Client minded
+aiida = ["aiida-core~=2.1"]
+
+http-client = [
+    "httpx~=0.23",
+    "rich>=13,<15",
+    "click~=8.1",
+]
+
+ase = ["ase~=3.22"]
+cif = ["numpy>=1.22,<3.0"]
+pymatgen = ["pymatgen>=2022; python_version < '3.13'", "pandas~=2.2"]
+jarvis = ["jarvis-tools>=2023.1.8,!=2024.4.20,!=2024.4.30; python_version < '3.13'"]
+client = ["optimade[cif]"]
+
+# General
+docs = [
+    "mike~=2.0",
+    "mkdocs~=1.6",
+    "mkdocs-autorefs~=1.2",
+    "mkdocs-awesome-pages-plugin~=2.8",
+    "mkdocs-material~=9.0",
+    "mkdocstrings[python]~=0.26",
+]
+
+testing = [
+    "build~=1.0",
+    "jsondiff~=2.0",
+    "pytest~=8.3",
+    "pytest-asyncio>=0.25,<2.0",
+    "pytest-cov~=6.0",
+    "optimade[server]",
+]
+
+dev = [
+   "mypy~=1.0",
+   "pre-commit>=3,<5",
+   "invoke~=2.0",
+   "types-requests",
+   "types-pyyaml",
+   "ruff~=0.1",
+   "optimade[docs,testing,client,http-client]"
+]
+
+http_client = [
+   "optimade[http-client]"
+]
+
+all = ["optimade[dev,elastic,aiida,ase,pymatgen,jarvis,http-client,client]"]
+
+[tool.ruff]
+extend-exclude = [
+    "providers",
+]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "Q"]
+ignore = ["E501", "E402"]
+fixable = ["A", "B", "C", "D", "E", "F", "I"]
+unfixable = []
+per-file-ignores = {}
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.mypy]
+plugins = "pydantic.mypy"
+ignore_missing_imports = true
+follow_imports = "skip"
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+addopts = "-rs"
+filterwarnings = [
+    "error",
+    "ignore:.*flaky.*:UserWarning",
+    "ignore:.*parameter is deprecated for the.*:DeprecationWarning",
+    "ignore:.*read_text is deprecated.*:DeprecationWarning",
+    "ignore:.*open_text is deprecated.*:DeprecationWarning",
+    "ignore:.*SixMetaPathImporter.*:ImportWarning",
+    "ignore:.*PY_SSIZE_T_CLEAN will be required for.*:DeprecationWarning",
+    "ignore:.*not found, cannot convert structure.*:",
+    "ignore:.*will default to setting mass to 1.0.:",
+    "ignore:.*is missing fields.*which are required if.*:",
+    "ignore:.*the imp module is deprecated in favour of importlib.*:DeprecationWarning",
+    "ignore:.*has an unrecognised prefix.*:",
+    "ignore:.*pkg_resources is deprecated as an API*:DeprecationWarning",
+    "ignore:.*Deprecated call to `pkg_resources.declare_namespace*:DeprecationWarning",
+    "ignore:.*datetime.datetime.utcfromtimestamp()*:DeprecationWarning",  # Raised indirectly by elasticsearch-DSL for Python 3.12
+    "ignore:.*ast.Num is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:.*ast.Str is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:.*ast.* is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
+    "ignore:\\nPyarrow will become a required dependency of pandas.*:DeprecationWarning", # Raised indirectly by pymatgen for Python 3.12
+    "ignore:.*The 'app' shortcut is now deprecated.*:DeprecationWarning", # Raised by httpx for test client code; would rather not force upgrade of httpx to deal with it for now
+    "ignore::pytest.PytestUnraisableExceptionWarning",  # Started raising with pytest 8.2.1, seemingly related to anyio warnings
+    "ignore:.*Unclosed.*:ResourceWarning", # Also started raising with pytest 8.2.1, seemingly related to anyio warnings
+    "ignore:.*Accessing the 'model_fields' attribute on the instance is deprecated.*:DeprecationWarning"  # Raised by pydantic 2.11, needs to be resolved for pydantic 3.0
+]

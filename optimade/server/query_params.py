@@ -1,12 +1,15 @@
-from fastapi import Query
-from pydantic import EmailStr  # pylint: disable=no-name-in-module
-from typing import Iterable, List
-from optimade.server.config import CONFIG
-from warnings import warn
-from optimade.server.mappers import BaseResourceMapper
-from optimade.server.exceptions import BadRequest
-from optimade.server.warnings import UnknownProviderQueryParameter, QueryParamNotUsed
 from abc import ABC
+from collections.abc import Iterable
+from typing import Annotated
+from warnings import warn
+
+from fastapi import Query
+from pydantic import EmailStr
+
+from optimade.exceptions import BadRequest
+from optimade.server.config import CONFIG
+from optimade.server.mappers import BaseResourceMapper
+from optimade.warnings import QueryParamNotUsed, UnknownProviderQueryParameter
 
 
 class BaseQueryParams(ABC):
@@ -19,7 +22,7 @@ class BaseQueryParams(ABC):
 
     """
 
-    unsupported_params: List[str] = []
+    unsupported_params: list[str] = []
 
     def check_params(self, query_params: Iterable[str]) -> None:
         """This method checks whether all the query parameters that are specified
@@ -141,12 +144,12 @@ class EntryListingQueryParams(BaseQueryParams):
 
         page_cursor (int): RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.
 
-        page_above (int): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.
+        page_above (str): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.
 
             **Example**: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by
             increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.
 
-        page_below (int): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.
+        page_below (str): RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.
 
         include (str): A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents)
             by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).
@@ -185,96 +188,127 @@ class EntryListingQueryParams(BaseQueryParams):
             The default value is 1.
     """
 
-    # The reference server implementation only supports offset-based pagination
-    unsupported_params: List[str] = [
+    # The reference server implementation only supports offset/number-based pagination
+    unsupported_params: list[str] = [
         "page_cursor",
         "page_below",
-        "page_above",
     ]
 
     def __init__(
         self,
         *,
-        filter: str = Query(  # pylint: disable=redefined-builtin
-            "",
-            description="A filter string, in the format described in section API Filtering Format Specification of the specification.",
-        ),
-        response_format: str = Query(
-            "json",
-            description="The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
-        ),
-        email_address: EmailStr = Query(
-            "",
-            description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-        ),
-        response_fields: str = Query(
-            "",
-            description="A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
-            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
-        ),
-        sort: str = Query(
-            "",
-            description='If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query.\nIf it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an entry listing endpoint, then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`.\nIf a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name.\nThe set of field names, with `sortable` equal to `true` are allowed to be used in the "sort fields" list according to its definition in the JSON API 1.0 specification.\nThe field `sortable` is in addition to each property description and other OPTIONAL fields.\nAn example is shown in the section Entry Listing Info Endpoints.',
-            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
-        ),
-        page_limit: int = Query(
-            CONFIG.page_limit,
-            description="Sets a numerical limit on the number of entries returned.\nSee [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination).\nThe API implementation MUST return no more than the number specified.\nIt MAY return fewer.\nThe database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned).\nThe default limit value is up to the API implementation to decide.\nExample: `http://example.com/optimade/v1/structures?page_limit=100`",
-            ge=0,
-        ),
-        page_offset: int = Query(
-            0,
-            description="RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.\nExample: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&page_limit=100`.",
-            ge=0,
-        ),
-        page_number: int = Query(
-            None,
-            description="RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
-            ge=1,
-        ),
-        page_cursor: int = Query(
-            0,
-            description="RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.",
-            ge=0,
-        ),
-        page_above: int = Query(
-            0,
-            description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
-            ge=0,
-        ),
-        page_below: int = Query(
-            0,
-            description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
-            ge=0,
-        ),
-        include: str = Query(
-            "references",
-            description='A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.\n\nThe value of `include` MUST be a comma-separated list of "relationship paths", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).\nIf relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`.\nThis means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.\nNote, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.\n\n> **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.',
-        ),
-        first_frame: int = Query(
-            1,
-            description="The first frame of the trajectory that should be returned.",
-            ge=1,
-        ),
-        last_frame: int = Query(
-            None,
-            description="The last frame of the trajectory that should be returned.",
-            ge=1,
-        ),
-        frame_step: int = Query(
-            None,
-            description="Specifies that only one out of every frame_step frames should be returned.",
-            ge=1,
-        ),
-        api_hint: str = Query(
-            "",
-            description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
-            regex=r"(v[0-9]+(\.[0-9]+)?)?",
-        ),
-        continue_from_frame: int = Query(
-            None,
-            description="Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
-        ),
+        filter: Annotated[
+            str,
+            Query(
+                description="A filter string, in the format described in section API Filtering Format Specification of the specification.",
+            ),
+        ] = "",
+        response_format: Annotated[
+            str,
+            Query(
+                description="The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
+            ),
+        ] = "json",
+        email_address: Annotated[
+            EmailStr | None,
+            Query(
+                description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
+            ),
+        ] = None,
+        response_fields: Annotated[
+            str,
+            Query(
+                description="A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
+                pattern=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+            ),
+        ] = "",
+        sort: Annotated[
+            str,
+            Query(
+                description='If supporting sortable queries, an implementation MUST use the `sort` query parameter with format as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-sorting).\n\nAn implementation MAY support multiple sort fields for a single query.\nIf it does, it again MUST conform to the JSON API 1.0 specification.\n\nIf an implementation supports sorting for an entry listing endpoint, then the `/info/<entries>` endpoint MUST include, for each field name `<fieldname>` in its `data.properties.<fieldname>` response value that can be used for sorting, the key `sortable` with value `true`.\nIf a field name under an entry listing endpoint supporting sorting cannot be used for sorting, the server MUST either leave out the `sortable` key or set it equal to `false` for the specific field name.\nThe set of field names, with `sortable` equal to `true` are allowed to be used in the "sort fields" list according to its definition in the JSON API 1.0 specification.\nThe field `sortable` is in addition to each property description and other OPTIONAL fields.\nAn example is shown in the section Entry Listing Info Endpoints.',
+                pattern=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+            ),
+        ] = "",
+        page_limit: Annotated[
+            int,
+            Query(
+                description="Sets a numerical limit on the number of entries returned.\nSee [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination).\nThe API implementation MUST return no more than the number specified.\nIt MAY return fewer.\nThe database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned).\nThe default limit value is up to the API implementation to decide.\nExample: `http://example.com/optimade/v1/structures?page_limit=100`",
+                ge=0,
+            ),
+        ] = CONFIG.page_limit,
+        page_offset: Annotated[
+            int,
+            Query(
+                description="RECOMMENDED for use with _offset-based_ pagination: using `page_offset` and `page_limit` is RECOMMENDED.\nExample: Skip 50 structures and fetch up to 100: `/structures?page_offset=50&page_limit=100`.",
+                ge=0,
+            ),
+        ] = 0,
+        page_number: Annotated[
+            int,
+            Query(
+                description="RECOMMENDED for use with _page-based_ pagination: using `page_number` and `page_limit` is RECOMMENDED.\nIt is RECOMMENDED that the first page has number 1, i.e., that `page_number` is 1-based.\nExample: Fetch page 2 of up to 50 structures per page: `/structures?page_number=2&page_limit=50`.",
+                # ge=1,  # This constraint is only 'RECOMMENDED' in the specification, so should not be included here or in the OpenAPI schema
+            ),
+        ] = None,  # type: ignore[assignment]
+        page_cursor: Annotated[
+            int,
+            Query(
+                description="RECOMMENDED for use with _cursor-based_ pagination: using `page_cursor` and `page_limit` is RECOMMENDED.",
+                ge=0,
+            ),
+        ] = 0,
+        page_above: Annotated[
+            str,
+            Query(
+                description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.\nExample: Fetch up to 100 structures above sort-field value 4000 (in this example, server chooses to fetch results sorted by increasing `id`, so `page_above` value refers to an `id` value): `/structures?page_above=4000&page_limit=100`.",
+            ),
+        ] = None,  # type: ignore[assignment]
+        page_below: Annotated[
+            str,
+            Query(
+                description="RECOMMENDED for use with _value-based_ pagination: using `page_above`/`page_below` and `page_limit` is RECOMMENDED.",
+            ),
+        ] = None,  # type: ignore[assignment]
+        include: Annotated[
+            str,
+            Query(
+                description='A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.\n\nThe value of `include` MUST be a comma-separated list of "relationship paths", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).\nIf relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`.\nThis means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.\nNote, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.\n\n> **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.',
+            ),
+        ] = "references",
+        first_frame: Annotated[
+            int,
+            Query(
+                description="The first frame of the trajectory that should be returned.",
+                ge=1,
+            ),
+        ] = 1,
+        last_frame: Annotated[
+            int,
+            Query(
+                description="The last frame of the trajectory that should be returned.",
+                ge=1,
+            ),
+        ] = None,
+        frame_step: Annotated[
+            int,
+            Query(
+                description="Specifies that only one out of every frame_step frames should be returned.",
+                ge=1,
+            ),
+        ] = None,
+        continue_from_frame: Annotated[
+            int,
+            Query(
+                description="Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+            ),
+        ] = None,
+        api_hint: Annotated[
+            str,
+            Query(
+                description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+                pattern=r"(v[0-9]+(\.[0-9]+)?)?",
+            ),
+        ] = "",
     ):
         self.filter = filter
         self.response_format = response_format
@@ -359,47 +393,65 @@ class SingleEntryQueryParams(BaseQueryParams):
     def __init__(
         self,
         *,
-        response_format: str = Query(
-            "json",
-            description="The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
-        ),
-        email_address: EmailStr = Query(
-            "",
-            description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
-        ),
-        response_fields: str = Query(
-            "",
-            description="A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
-            regex=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
-        ),
-        include: str = Query(
-            "references",
-            description='A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.\n\nThe value of `include` MUST be a comma-separated list of "relationship paths", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).\nIf relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`.\nThis means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.\nNote, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.\n\n> **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.',
-        ),
-        first_frame: int = Query(
-            1,
-            description="The first frame of the trajectory that should be returned.",
-            ge=1,
-        ),
-        last_frame: int = Query(
-            None,
-            description="The last frame of the trajectory that should be returned.",
-            ge=1,
-        ),
-        frame_step: int = Query(
-            None,
-            description="Specifies that only one out of every frame_step frames should be returned.",
-            ge=1,
-        ),
-        api_hint: str = Query(
-            "",
-            description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
-            regex=r"(v[0-9]+(\.[0-9]+)?)?",
-        ),
-        continue_from_frame: int = Query(
-            None,
-            description="Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
-        ),
+        response_format: Annotated[
+            str,
+            Query(
+                description="The output format requested (see section Response Format).\nDefaults to the format string 'json', which specifies the standard output format described in this specification.\nExample: `http://example.com/v1/structures?response_format=xml`",
+            ),
+        ] = "json",
+        email_address: Annotated[
+            EmailStr | None,
+            Query(
+                description="An email address of the user making the request.\nThe email SHOULD be that of a person and not an automatic system.\nExample: `http://example.com/v1/structures?email_address=user@example.com`",
+            ),
+        ] = None,
+        response_fields: Annotated[
+            str,
+            Query(
+                description="A comma-delimited set of fields to be provided in the output.\nIf provided, these fields MUST be returned along with the REQUIRED fields.\nOther OPTIONAL fields MUST NOT be returned when this parameter is present.\nExample: `http://example.com/v1/structures?response_fields=last_modified,nsites`",
+                pattern=r"([a-z_][a-z_0-9]*(,[a-z_][a-z_0-9]*)*)?",
+            ),
+        ] = "",
+        include: Annotated[
+            str,
+            Query(
+                description='A server MAY implement the JSON API concept of returning [compound documents](https://jsonapi.org/format/1.0/#document-compound-documents) by utilizing the `include` query parameter as specified by [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-includes).\n\nAll related resource objects MUST be returned as part of an array value for the top-level `included` field, see the section JSON Response Schema: Common Fields.\n\nThe value of `include` MUST be a comma-separated list of "relationship paths", as defined in the [JSON API](https://jsonapi.org/format/1.0/#fetching-includes).\nIf relationship paths are not supported, or a server is unable to identify a relationship path a `400 Bad Request` response MUST be made.\n\nThe **default value** for `include` is `references`.\nThis means `references` entries MUST always be included under the top-level field `included` as default, since a server assumes if `include` is not specified by a client in the request, it is still specified as `include=references`.\nNote, if a client explicitly specifies `include` and leaves out `references`, `references` resource objects MUST NOT be included under the top-level field `included`, as per the definition of `included`, see section JSON Response Schema: Common Fields.\n\n> **Note**: A query with the parameter `include` set to the empty string means no related resource objects are to be returned under the top-level field `included`.',
+            ),
+        ] = "references",
+        first_frame: Annotated[
+            int,
+            Query(
+                description="The first frame of the trajectory that should be returned.",
+                ge=1,
+            ),
+        ] = 1,
+        last_frame: Annotated[
+            int,
+            Query(
+                description="The last frame of the trajectory that should be returned.",
+                ge=1,
+            ),
+        ] = None,
+        frame_step: Annotated[
+            int,
+            Query(
+                description="Specifies that only one out of every frame_step frames should be returned.",
+                ge=1,
+            ),
+        ] = None,
+        continue_from_frame: Annotated[
+            int,
+            Query(
+                description="Large entries may need to be broken down to pices so the response time does not become too long. In that case this parameter indicates from which frame onward the trajectory can be returned.",
+            ),
+        ] = None,
+        api_hint: Annotated[
+            str,
+            Query(
+                description="If the client provides the parameter, the value SHOULD have the format `vMAJOR` or `vMAJOR.MINOR`, where MAJOR is a major version and MINOR is a minor version of the API. For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.",
+                pattern=r"(v[0-9]+(\.[0-9]+)?)?",
+            ),
+        ] = "",
     ):
         self.response_format = response_format
         self.email_address = email_address

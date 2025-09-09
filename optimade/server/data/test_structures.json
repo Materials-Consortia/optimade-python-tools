@@ -73,7 +73,8 @@
           }
         ]
       }
-    }
+    },
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -189,7 +190,8 @@
           }
         ]
       }
-    }
+    },
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -267,7 +269,16 @@
         "concentration": [
           1.0
         ],
-        "name": "Ac"
+        "name": "Ac1"
+      },
+      {
+        "chemical_symbols": [
+          "Ac"
+        ],
+        "concentration": [
+          1.0
+        ],
+        "name": "Ac2"
       },
       {
         "chemical_symbols": [
@@ -289,8 +300,8 @@
       }
     ],
     "species_at_sites": [
-      "Ac",
-      "Ac",
+      "Ac1",
+      "Ac2",
       "Ag",
       "Pb"
     ],
@@ -305,7 +316,8 @@
           }
         ]
       }
-    }
+    },
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -394,7 +406,8 @@
       "Mg"
     ],
     "structure_features": [],
-    "task_id": "mpf_23"
+    "task_id": "mpf_23",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -495,7 +508,8 @@
       "O"
     ],
     "structure_features": [],
-    "task_id": "mpf_30"
+    "task_id": "mpf_30",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -618,7 +632,8 @@
       "O"
     ],
     "structure_features": [],
-    "task_id": "mpf_110"
+    "task_id": "mpf_110",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -684,7 +699,8 @@
       "Ag"
     ],
     "structure_features": [],
-    "task_id": "mpf_200"
+    "task_id": "mpf_200",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -873,7 +889,8 @@
       "Te"
     ],
     "structure_features": [],
-    "task_id": "mpf_220"
+    "task_id": "mpf_220",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -1048,7 +1065,8 @@
       "S"
     ],
     "structure_features": [],
-    "task_id": "mpf_259"
+    "task_id": "mpf_259",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -1297,7 +1315,8 @@
       "N"
     ],
     "structure_features": [],
-    "task_id": "mpf_272"
+    "task_id": "mpf_272",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -1554,7 +1573,8 @@
       "O"
     ],
     "structure_features": [],
-    "task_id": "mpf_276"
+    "task_id": "mpf_276",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -1819,7 +1839,8 @@
       "S"
     ],
     "structure_features": [],
-    "task_id": "mpf_281"
+    "task_id": "mpf_281",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -2042,7 +2063,8 @@
       "S"
     ],
     "structure_features": [],
-    "task_id": "mpf_446"
+    "task_id": "mpf_446",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -2624,7 +2646,8 @@
       "P"
     ],
     "structure_features": [],
-    "task_id": "mpf_551"
+    "task_id": "mpf_551",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -2925,7 +2948,8 @@
       "S"
     ],
     "structure_features": [],
-    "task_id": "mpf_632"
+    "task_id": "mpf_632",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -3326,7 +3350,8 @@
       "Ti"
     ],
     "structure_features": [],
-    "task_id": "mpf_3803"
+    "task_id": "mpf_3803",
+    "_exmpl_this_provider_field": "test"
   },
   {
     "_id": {
@@ -3739,6 +3764,7 @@
     ],
     "structure_features": [],
     "task_id": "mpf_3819",
+    "_exmpl_stability": {"gga_gga+u_r2scan": -0.2},
     "relationships": {
       "references": {
         "data": [

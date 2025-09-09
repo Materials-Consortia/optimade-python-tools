@@ -1,17 +1,16 @@
-from typing import Dict, Tuple, List, Any, Union
+from typing import Any
 
-from optimade.filterparser import LarkParser
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
 from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.query_params import SingleEntryQueryParams, EntryListingQueryParams
-
+from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
 if CONFIG.database_backend.value == "mongodb":
     from pymongo import MongoClient, version_tuple
+    from pymongo.errors import ExecutionTimeout
 
     if version_tuple[0] < 4:
         LOGGER.warning(
@@ -39,8 +38,8 @@ class MongoCollection(EntryCollection):
     def __init__(
         self,
         name: str,
-        resource_cls: EntryResource,
-        resource_mapper: BaseResourceMapper,
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         database: str = CONFIG.mongo_database,
     ):
         """Initialize the MongoCollection for the given parameters.
@@ -59,7 +58,6 @@ class MongoCollection(EntryCollection):
             MongoTransformer(mapper=resource_mapper),
         )
 
-        self.parser = LarkParser(version=(1, 0, 0), variant="default")
         self.collection = CLIENT[database][name]
 
         # check aliases do not clash with mongo operators
@@ -70,9 +68,9 @@ class MongoCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return self.collection.estimated_document_count()
 
-    def count(self, **kwargs: Any) -> int:
+    def count(self, **kwargs: Any) -> int | None:
         """Returns the number of entries matching the query specified
-        by the keyword arguments.
+        by the keyword arguments, or `None` if the count timed out.
 
         Parameters:
             **kwargs: Query parameters as keyword arguments. The keys
@@ -83,38 +81,57 @@ class MongoCollection(EntryCollection):
         for k in list(kwargs.keys()):
             if k not in ("filter", "skip", "limit", "hint", "maxTimeMS"):
                 del kwargs[k]
-        if "filter" not in kwargs:  # "filter" is needed for count_documents()
-            kwargs["filter"] = {}
-        return self.collection.count_documents(**kwargs)
+        if "filter" not in kwargs:
+            return self.collection.estimated_document_count()
+        else:
+            if "maxTimeMS" not in kwargs:
+                kwargs["maxTimeMS"] = int(1000 * CONFIG.mongo_count_timeout)
+            try:
+                return self.collection.count_documents(**kwargs)
+            except ExecutionTimeout:
+                return None
 
-    def insert(self, data: List[EntryResource]):
+    def insert(self, data: list[EntryResource | dict]) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
-            No validation is performed on the incoming data.
+            No validation is performed on the incoming data, this data
+            should have been mapped to the appropriate format before
+            insertion.
 
         Arguments:
-            data: The entry resource objects to add to the database.
+            data: The entries to add to the database.
 
         """
-        return self.collection.insert_many(data)
+        self.collection.insert_many(data, ordered=False)
 
-    def update_field(self, filter, updated_value):
-        """adds or updates a field of the documents specified by the filer
+    def create_index(self, field: str, unique: bool = False) -> None:
+        """Create an index on the given field, as stored in the database.
 
-        Warning:
-            No validation is performed on the incoming data.
+        If any error is raised during index creation, this method should faithfully
+        return it, except for the simple case where an identical index already exists.
 
         Arguments:
-            filter: The filter use to select the documents that need to be updated
-            updated_value: a dictionary holding the property and the value or a method to generate a value.
+            field: The database field to index (i.e., if different from the OPTIMADE field,
+                the mapper should be used to convert between the two).
+            unique: Whether or not the index should be unique.
 
         """
-        return self.collection.update_one(filter, updated_value)
+        self.collection.create_index(field, unique=unique, background=True)
+
+    def create_default_index(self) -> None:
+        """Create the default index for the collection.
+
+        For MongoDB, the default is to create a unique index
+        on the `id` field. This method should obey any configured
+        mappers.
+
+        """
+        self.create_index(self.resource_mapper.get_backend_field("id"), unique=True)
 
     def handle_query_params(
-        self, params: Union[EntryListingQueryParams, SingleEntryQueryParams]
-    ) -> Dict[str, Any]:
+        self, params: EntryListingQueryParams | SingleEntryQueryParams
+    ) -> dict[str, Any]:
         """Parse and interpret the backend-agnostic query parameter models into a dictionary
         that can be used by MongoDB.
 
@@ -140,14 +157,19 @@ class MongoCollection(EntryCollection):
         if "_id" not in criteria.get("projection", {}):
             criteria["projection"]["_id"] = False
 
+        if "page_above" in criteria:
+            raise NotImplementedError(
+                "`page_above` is not implemented for this backend."
+            )
+
         if criteria.get("projection", {}).get("_id"):
             criteria["projection"]["_id"] = {"$toString": "$_id"}
 
         return criteria
 
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry: bool = False
-    ) -> Tuple[List[Dict[str, Any]], int, bool]:
+        self, criteria: dict[str, Any], single_entry: bool = False
+    ) -> tuple[list[dict[str, Any]], int | None, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -173,8 +195,16 @@ class MongoCollection(EntryCollection):
             criteria_nolimit = criteria.copy()
             criteria_nolimit.pop("limit", None)
             skip = criteria_nolimit.pop("skip", 0)
+            # If we're on the first page, set a much higher timeout for counting the results (10 s)
+            if skip == 0:
+                criteria_nolimit["maxTimeMS"] = 1000 * 10
             data_returned = self.count(**criteria_nolimit)
-            more_data_available = nresults_now + skip < data_returned
+            # Only correct most of the time: if the total number of remaining results is exactly the page limit
+            # then this will incorrectly say there is more_data_available
+            if data_returned is None:
+                more_data_available = nresults_now == criteria.get("limit", 0)
+            else:
+                more_data_available = nresults_now + skip < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = nresults_now

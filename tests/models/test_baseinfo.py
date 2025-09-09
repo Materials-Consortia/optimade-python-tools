@@ -1,6 +1,8 @@
 import pytest
+from pydantic import ValidationError
 
 from optimade.models.baseinfo import AvailableApiVersion
+from optimade.models.entries import EntryInfoResource
 
 
 def test_available_api_versions():
@@ -39,27 +41,55 @@ def test_available_api_versions():
     ]
 
     for data in bad_urls:
-        with pytest.raises(ValueError) as exc:
-            AvailableApiVersion(**data)
-        assert (
-            "url MUST be a versioned base URL" in exc.exconly()
-            or "URL scheme not permitted" in exc.exconly()
-        ), f"Validator 'url_must_be_versioned_base_url' not triggered as it should.\nException message: {exc.exconly()}.\nInputs: {data}"
+        if not data["url"].startswith("http"):
+            with pytest.raises(ValidationError):
+                AvailableApiVersion(**data)
+        else:
+            with pytest.raises(ValueError):
+                AvailableApiVersion(**data)
 
     for data in bad_versions:
-        with pytest.raises(ValueError) as exc:
+        with pytest.raises(ValueError):
             AvailableApiVersion(**data)
-        assert (
-            f"Unable to validate the version string {data['version']!r} as a semantic version (expected <major>.<minor>.<patch>)"
-            in exc.exconly()
-        ), f"SemVer validator not triggered as it should.\nException message: {exc.exconly()}.\nInputs: {data}"
 
     for data in bad_combos:
-        with pytest.raises(ValueError) as exc:
+        with pytest.raises(ValueError):
             AvailableApiVersion(**data)
-        assert "is not compatible with url version" in exc.exconly(), (
-            f"Validator 'crosscheck_url_and_version' not triggered as it should.\nException message: {exc.exconly()}.\nInputs: {data}",
-        )
 
     for data in good_combos:
         assert isinstance(AvailableApiVersion(**data), AvailableApiVersion)
+
+
+def test_good_entry_info_custom_properties():
+    test_good_info = {
+        "id": "structures",
+        "type": "info",
+        "formats": ["json", "xml"],
+        "description": "good info data",
+        "output_fields_by_format": {"json": ["nelements", "id"]},
+        "properties": {
+            "nelements": {"description": "num elements", "type": "integer"},
+            "_custom_field": {"description": "good custom field", "type": "string"},
+        },
+    }
+    assert EntryInfoResource(**test_good_info)
+
+
+def test_bad_entry_info_custom_properties():
+    """Checks that error is raised if custom field contains upper case letter."""
+    test_bad_info = {
+        "id": "structures",
+        "type": "info",
+        "formats": ["json", "xml"],
+        "description": "bad info data",
+        "output_fields_by_format": {"json": ["nelements", "id"]},
+        "properties": {
+            "nelements": {"description": "num elements", "type": "integer"},
+            "_custom_Field": {"description": "bad custom field", "type": "string"},
+        },
+    }
+    with pytest.raises(
+        ValueError,
+        match=".*[type=string_pattern_mismatch, input_value='_custom_Field', input_type=str].*",
+    ):
+        EntryInfoResource(**test_bad_info)

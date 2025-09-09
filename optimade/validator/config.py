@@ -1,4 +1,4 @@
-""" This submodule defines constant values and definitions
+"""This submodule defines constant values and definitions
 from the OPTIMADE specification for use by the validator.
 
 The `VALIDATOR_CONFIG` object can be imported and modified
@@ -7,22 +7,27 @@ the hardcoded values.
 
 """
 
-from typing import Dict, Any, Set, List, Container
-from pydantic import BaseSettings, Field
+from collections.abc import Container
+from typing import Any
+
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 from optimade.models import (
-    InfoResponse,
-    IndexInfoResponse,
     DataType,
+    IndexInfoResponse,
+    InfoResponse,
     StructureFeatures,
     SupportLevel,
 )
+from optimade.server.mappers import BaseResourceMapper
+from optimade.server.schemas import ENTRY_INFO_SCHEMAS, retrieve_queryable_properties
 from optimade.validator.utils import (
     ValidatorLinksResponse,
-    ValidatorReferenceResponseOne,
     ValidatorReferenceResponseMany,
-    ValidatorStructureResponseOne,
+    ValidatorReferenceResponseOne,
     ValidatorStructureResponseMany,
+    ValidatorStructureResponseOne,
     ValidatorTrajectoryResponseOne,
     ValidatorTrajectoryResponseMany,
 )
@@ -36,7 +41,7 @@ __all__ = ("ValidatorConfig", "VALIDATOR_CONFIG")
 
 _ENTRY_SCHEMAS = {
     endp: retrieve_queryable_properties(
-        ENTRY_INFO_SCHEMAS[endp](), ("id", "type", "attributes")
+        ENTRY_INFO_SCHEMAS[endp], ("id", "type", "attributes")
     )
     for endp in ENTRY_INFO_SCHEMAS
 }
@@ -85,7 +90,7 @@ _INCLUSIVE_OPERATORS = {
     ),
     DataType.INTEGER: inclusive_ops,
     DataType.FLOAT: (),
-    DataType.LIST: ("HAS", "HAS ALL", "HAS ANY"),
+    DataType.LIST: ("HAS", "HAS ALL", "HAS ANY", "LENGTH"),
 }
 
 exclusive_ops = ("!=", "<", ">")
@@ -114,6 +119,9 @@ _FIELD_SPECIFIC_OVERRIDES = {
             if op != "="
         ],
     },
+    "structure_features": {
+        SupportLevel.OPTIONAL: "LENGTH",
+    },
 }
 
 
@@ -125,26 +133,26 @@ class ValidatorConfig(BaseSettings):
 
     """
 
-    response_classes: Dict[str, Any] = Field(
+    response_classes: dict[str, Any] = Field(
         _RESPONSE_CLASSES,
         description="Dictionary containing the mapping between endpoints and response classes for the main database",
     )
 
-    response_classes_index: Dict[str, Any] = Field(
+    response_classes_index: dict[str, Any] = Field(
         _RESPONSE_CLASSES_INDEX,
         description="Dictionary containing the mapping between endpoints and response classes for the index meta-database",
     )
 
-    entry_schemas: Dict[str, Any] = Field(
+    entry_schemas: dict[str, Any] = Field(
         _ENTRY_SCHEMAS, description="The entry listing endpoint schemas"
     )
 
-    entry_endpoints: Set[str] = Field(
+    entry_endpoints: set[str] = Field(
         _ENTRY_ENDPOINTS,
         description="The entry endpoints to validate, if present in the API's `/info` response `entry_types_by_format['json']`",
     )
 
-    unique_properties: Set[str] = Field(
+    unique_properties: set[str] = Field(
         _UNIQUE_PROPERTIES,
         description=(
             "Fields that should be treated as unique indexes for all endpoints, "
@@ -152,7 +160,7 @@ class ValidatorConfig(BaseSettings):
         ),
     )
 
-    inclusive_operators: Dict[DataType, Set[str]] = Field(
+    inclusive_operators: dict[DataType, set[str]] = Field(
         _INCLUSIVE_OPERATORS,
         description=(
             "Dictionary mapping OPTIMADE `DataType`s to a list of operators that are 'inclusive', "
@@ -160,7 +168,7 @@ class ValidatorConfig(BaseSettings):
         ),
     )
 
-    exclusive_operators: Dict[DataType, Set[str]] = Field(
+    exclusive_operators: dict[DataType, set[str]] = Field(
         _EXCLUSIVE_OPERATORS,
         description=(
             "Dictionary mapping OPTIMADE `DataType`s to a list of operators that are 'exclusive', "
@@ -168,7 +176,7 @@ class ValidatorConfig(BaseSettings):
         ),
     )
 
-    field_specific_overrides: Dict[str, Dict[SupportLevel, Container[str]]] = Field(
+    field_specific_overrides: dict[str, dict[SupportLevel, Container[str]]] = Field(
         _FIELD_SPECIFIC_OVERRIDES,
         description=(
             "Some fields do not require all type comparison operators to be supported. "
@@ -184,16 +192,16 @@ class ValidatorConfig(BaseSettings):
     )
 
     info_endpoint: str = Field("info", description="The name of the info endpoint")
-    non_entry_endpoints: Set[str] = Field(
+    non_entry_endpoints: set[str] = Field(
         _NON_ENTRY_ENDPOINTS,
         description="The list specification-mandated endpoint names that do not contain entries",
     )
-    top_level_non_attribute_fields: Set[str] = Field(
+    top_level_non_attribute_fields: set[str] = Field(
         BaseResourceMapper.TOP_LEVEL_NON_ATTRIBUTES_FIELDS,
         description="Field names to treat as top-level",
     )
 
-    enum_fallback_values: Dict[str, Dict[str, List[str]]] = Field(
+    enum_fallback_values: dict[str, dict[str, list[str]]] = Field(
         _ENUM_DUMMY_VALUES,
         description="Provide fallback values for enum fields to use when validating filters.",
     )

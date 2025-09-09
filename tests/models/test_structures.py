@@ -1,32 +1,28 @@
-# pylint: disable=no-member
-import pytest
 import itertools
+from typing import TYPE_CHECKING
 
-from pydantic import ValidationError
+import pytest
 
-from optimade.models.structures import StructureResource, CORRELATED_STRUCTURE_FIELDS
-from optimade.server.warnings import MissingExpectedField
+from optimade.models.structures import Periodicity, StructureFeatures
+from optimade.warnings import MissingExpectedField
 
+if TYPE_CHECKING:
+    from collections.abc import Callable, Generator
+    from typing import Any, Optional
+
+    from optimade.server.mappers import BaseResourceMapper
 
 MAPPER = "StructureMapper"
 
 
-def test_good_structures(mapper):
-    """Check well-formed structures used as example data"""
-    import optimade.server.data
-
-    good_structures = optimade.server.data.structures
-
-    for structure in good_structures:
-        StructureResource(**mapper(MAPPER).map_back(structure))
-
-
 @pytest.mark.filterwarnings("ignore", category=MissingExpectedField)
-def test_good_structure_with_missing_data(mapper, good_structure):
+def test_good_structure_with_missing_data(good_structure: "dict[str, Any]") -> None:
     """Check deserialization of well-formed structure used
     as example data with all combinations of null values
     in non-mandatory fields.
     """
+    from optimade.models.structures import StructureResource
+
     structure = {field: good_structure[field] for field in good_structure}
 
     # Have to include `assemblies` here, although it is only optional,
@@ -48,11 +44,22 @@ def test_good_structure_with_missing_data(mapper, good_structure):
             StructureResource(**incomplete_structure)
 
 
-def test_more_good_structures(good_structures, mapper):
+def test_more_good_structures(
+    good_structures: "list[dict[str, Any]]",
+    mapper: "Callable[[str], BaseResourceMapper]",
+) -> None:
     """Check well-formed structures with specific edge-cases"""
+    from pydantic import ValidationError
+
+    from optimade.models.structures import StructureResource
+
     for index, structure in enumerate(good_structures):
         try:
-            StructureResource(**mapper(MAPPER).map_back(structure))
+            s = StructureResource(**mapper(MAPPER).map_back(structure))
+            if s.attributes.structure_features:
+                assert isinstance(s.attributes.structure_features[0], StructureFeatures)
+            for dim in s.attributes.dimension_types:
+                assert isinstance(dim, Periodicity)
         except ValidationError:
             # Printing to keep the original exception as is, while still being informational
             print(
@@ -61,15 +68,29 @@ def test_more_good_structures(good_structures, mapper):
             raise
 
 
-def test_bad_structures(bad_structures, mapper):
-    """Check badly formed structures"""
-    for index, structure in enumerate(bad_structures):
-        # This is for helping devs finding any errors that may occur
-        print(
-            f"Trying structure number {index}/{len(bad_structures)} from 'test_bad_structures.json'"
-        )
-        with pytest.raises(ValidationError):
-            StructureResource(**mapper(MAPPER).map_back(structure))
+def test_bad_structures(
+    bad_structures: "list[dict[str, Any]]",
+    mapper: "Callable[[str], BaseResourceMapper]",
+) -> None:
+    """Check badly formed structures.
+
+    NOTE: Only ValueError, AssertionError, and PydanticCustomError are wrapped in
+    ValidationError exceptions. All other exceptions are "bubbled up" as is. See
+    https://docs.pydantic.dev/latest/concepts/validators/#handling-errors-in-validators
+    for more information.
+    """
+    from pydantic import ValidationError
+
+    from optimade.models.structures import StructureResource
+
+    with pytest.warns(MissingExpectedField):
+        for index, structure in enumerate(bad_structures):
+            # This is for helping devs finding any errors that may occur
+            print(
+                f"Trying structure number {index}/{len(bad_structures)} from 'test_bad_structures.json'"
+            )
+            with pytest.raises((ValidationError, TypeError)):
+                StructureResource(**mapper(MAPPER).map_back(structure))
 
 
 deformities = (
@@ -84,11 +105,11 @@ deformities = (
     ),
     (
         {"chemical_formula_anonymous": "A1B1"},
-        "string does not match regex",
+        "String should match pattern",
     ),
     (
         {"chemical_formula_anonymous": "BC1"},
-        "string does not match regex",
+        "String should match pattern",
     ),
     (
         {"chemical_formula_anonymous": "A9C"},
@@ -96,7 +117,7 @@ deformities = (
     ),
     (
         {"chemical_formula_anonymous": "A9.2B"},
-        "chemical_formula_anonymous\n  string does not match regex",
+        "chemical_formula_anonymous\n  String should match pattern",
     ),
     (
         {"chemical_formula_anonymous": "A2B90"},
@@ -124,23 +145,23 @@ deformities = (
     ),
     (
         {"chemical_formula_reduced": "Ge1.0Si1.0"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "GeSi2.0"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "GeSi.2"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "Ge1Si"},
-        "string does not match regex",
+        "String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "GeSi1"},
-        "string does not match regex",
+        "String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "SiGe2"},
@@ -152,66 +173,91 @@ deformities = (
     ),
     (
         {"chemical_formula_reduced": "abcd"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "a2BeH"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "............"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "Ag6 Cl2"},
-        "chemical_formula_reduced\n  string does not match regex",
+        "chemical_formula_reduced\n  String should match pattern",
     ),
     (
         {"chemical_formula_reduced": "Ge2Si2"},
-        "chemical_formula_reduced 'Ge2Si2' is not properly reduced: greatest common divisor was 2, expected 1.",
+        "chemical_formula_reduced 'Ge2Si2' is not properly reduced: expected 'GeSi'.",
     ),
     (
         {"chemical_formula_reduced": "Ge144Si60V24"},
-        "chemical_formula_reduced 'Ge144Si60V24' is not properly reduced: greatest common divisor was 12, expected 1.",
+        "chemical_formula_reduced 'Ge144Si60V24' is not properly reduced: expected 'Ge12Si5V2'.",
     ),
     (
         {"chemical_formula_anonymous": "A10B5C5"},
-        "chemical_formula_anonymous 'A10B5C5' is not properly reduced: greatest common divisor was 5, expected 1.",
+        "chemical_formula_anonymous 'A10B5C5' is not properly reduced: expected 'A2BC'",
     ),
     (
         {"chemical_formula_anonymous": "A44B15C9D4E3F2GHI0J0K0L0"},
-        "string does not match regex",
+        "String should match pattern",
+    ),
+    (
+        {"space_group_symmetry_operations_xyz": ["-x,-y,-z"]},
+        "The identity operation 'x,y,z' MUST be included in the space group symmetry operations, if provided.",
+    ),
+    (
+        {"space_group_symmetry_operations_xyz": ["xy,z"]},
+        "String should match pattern",
+    ),
+    (
+        {"space_group_symbol_hermann_mauguin": "P1"},
+        "String should match pattern",
     ),
 )
 
 
 @pytest.mark.parametrize("deformity", deformities)
-def test_structure_fatal_deformities(good_structure, deformity):
+def test_structure_fatal_deformities(
+    good_structure: "dict[str, Any]", deformity: "Optional[tuple[dict[str, str], str]]"
+) -> None:
     """Make specific checks upon performing single invalidating deformations
     of the data of a good structure.
 
     """
     import re
 
-    if deformity is None:
-        return StructureResource(**good_structure)
+    from pydantic import ValidationError
 
-    deformity, message = deformity
-    good_structure["attributes"].update(deformity)
+    from optimade.models.structures import StructureResource
+
+    if deformity is None:
+        StructureResource(**good_structure)
+        return
+
+    deformity_change, message = deformity
+    good_structure["attributes"].update(deformity_change)
     with pytest.raises(ValidationError, match=rf".*{re.escape(message)}.*"):
         StructureResource(**good_structure)
 
 
-minor_deformities = (
-    {f: None} for f in set(f for _ in CORRELATED_STRUCTURE_FIELDS for f in _)
-)
+def _minor_deformities() -> "Generator[dict[str, Any], None, None]":
+    """Generate minor deformities from correlated structure fields"""
+    from optimade.models.structures import CORRELATED_STRUCTURE_FIELDS
+
+    return ({f: None} for f in {f for _ in CORRELATED_STRUCTURE_FIELDS for f in _})
 
 
-@pytest.mark.parametrize("deformity", minor_deformities)
-def test_structure_minor_deformities(good_structure, deformity):
+@pytest.mark.parametrize("deformity", _minor_deformities())
+def test_structure_minor_deformities(
+    good_structure: "dict[str, Any]", deformity: "Optional[dict[str, Any]]"
+) -> None:
     """Make specific checks upon performing single minor invalidations
     of the data of a good structure that should emit warnings.
     """
+    from optimade.models.structures import StructureResource
+
     if deformity is None:
         StructureResource(**good_structure)
     else:

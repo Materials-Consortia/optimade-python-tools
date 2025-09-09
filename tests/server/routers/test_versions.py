@@ -1,9 +1,9 @@
 from optimade import __api_version__
+
 from ..utils import NoJsonEndpointTests
 
 
 class TestVersionsEndpoint(NoJsonEndpointTests):
-
     request_str = "/versions"
     response_cls = str
 

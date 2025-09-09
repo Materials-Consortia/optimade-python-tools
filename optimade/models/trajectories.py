@@ -1,6 +1,6 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 # import warnings
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Annotated
 from enum import IntEnum
 from pydantic import BaseModel
 
@@ -166,10 +166,10 @@ class AvailablePropertyAttributes(BaseModel):
 class TrajectoryDataAttributes(AvailablePropertySubfields):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        if "_storage_method" in kwargs:
-            self._storage_method = kwargs["_storage_method"]
+        if "storage_method" in kwargs:
+            self.storage_method = kwargs["storage_method"]
 
-    _storage_method: str = OptimadeField(
+    storage_method: str = OptimadeField(
         ...,
         description="""The location where the data belonging to this property is stored. For now either 'mongo' or file.""",
         support=SupportLevel.MUST,
@@ -406,7 +406,7 @@ class TrajectoryResourceAttributes(EntryResourceAttributes):
         support=SupportLevel.MUST,
         queryable=SupportLevel.MUST,
     )
-    _storage_path: Optional[str] = OptimadeField(
+    storage_path: Optional[str] = OptimadeField(
         None,
         description="""The path of the file in which the trajectory information is stored.""",  # TODO: Use pathlib for the file_path. This property probably does not need to be an OPTIMADE property because
         support=SupportLevel.OPTIONAL,
@@ -561,11 +561,10 @@ Examples:
 
 class TrajectoryResource(EntryResource):
     """Representing a trajectory."""
-
-    type: str = StrictField(
-        "trajectories",
-        const="trajectories",
-        description="""The name of the type of an entry.
+    description: Annotated[
+        str,
+        StrictField(
+            description="""The name of the type of an entry.
 
 - **Type**: string.
 
@@ -578,9 +577,10 @@ class TrajectoryResource(EntryResource):
 
 - **Examples**:
     - `"trajectories"`""",
-        pattern="^trajectories$",
-        support=SupportLevel.MUST,
-        queryable=SupportLevel.MUST,
-    )
+            pattern="^trajectories$",
+            support=SupportLevel.MUST,
+            queryable=SupportLevel.MUST,
+        ),
+    ]
 
     attributes: TrajectoryResourceAttributes

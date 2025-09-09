@@ -2,7 +2,7 @@
 
 This package can be installed from PyPI, or by cloning the repository, depending on your use-case.
 
-1. To use the `optimade` Python package as a library, (e.g., using the models for validation, parsing filters with the grammar, or using the command-line tool `optimade-validator` tool), it is recommended that you install the latest release of the package from PyPI with `pip install optimade`. If you also want to use the OPTIMADE client to query OPTIMADE APIs, you should install with the additional dependencies: `pip install optimade[http_client]`.
+1. To use the `optimade` Python package as a library, (e.g., using the models for validation, parsing filters with the grammar, or using the command-line tool `optimade-validator` tool), it is recommended that you install the latest release of the package from PyPI with `pip install optimade`. If you also want to use the OPTIMADE client to query OPTIMADE APIs, you should install with the additional dependencies: `pip install 'optimade[http-client]'`.
 2. If you want to run, use or modify the reference server implementation, then it is recommended that you clone this repository and install it from your local files (with `pip install .`, or `pip install -e .` for an editable installation).
    As an alternative, you can run the `optimade` container image (see the [Container image](#container-image) section below).
 
@@ -23,8 +23,8 @@ You can find it at the base URL: <http://localhost:5001/v1>.
 Here is an example of how it may look to start your server:
 
 ```sh
-:~$ export OPTIMADE_CONFIG_FILE=/home/optimade_server/config.json
-:~$ ./path/to/optimade/run.sh index
+export OPTIMADE_CONFIG_FILE=/home/optimade_server/config.json
+./path/to/optimade/run.sh index
 ```
 
 ## Full development installation
@@ -98,11 +98,11 @@ The easiest way to deploy these databases and run the tests is with Docker, as s
 [Docker installation instructions](https://docs.docker.com/engine/install/) will depend on your system; on Linux, the `docker` commands below may need to be prepended with `sudo`, depending on your distribution.
 These commands should be run from a local optimade-python-tools directory.
 
-The following command starts a local Elasticsearch v6 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):
+The following command starts a local Elasticsearch v7 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):
 
 ```shell
-docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:7.17.1 \
-&& sleep 10 \
+docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:7.17.7 \
+&& sleep 20 \
 && OPTIMADE_DATABASE_BACKEND="elastic" py.test; \
 docker container stop elasticsearch_test; docker container rm elasticsearch_test
 ```
@@ -133,7 +133,7 @@ If you'd like to pull a specific version, this can be done by replacing `latest`
 To see which versions are available, please go [here](https://github.com/Materials-Consortia/optimade-python-tools/pkgs/container/optimade/versions).
 
 You can also install the `develop` version.
-This is an image built from the latest commit on the `master` branch and should never be used for production.
+This is an image built from the latest commit on the `main` branch and should never be used for production.
 
 ### Run a container
 

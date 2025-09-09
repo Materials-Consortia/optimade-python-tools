@@ -13,9 +13,9 @@ This list outlines the current and planned features for the client:
 - [x] Automatically paginate through the results for each query.
 - [x] Validate filters against the OPTIMADE grammar before they are sent to each database.
 - [x] Count the number of results for a query without downloading them all.
-- [ ] Valiate the results against the optimade-python-tools models and export into other supported formats (ASE, pymatgen, CIF, AiiDA).
+- [x] Cache the results for queries to disk, and use them in future sessions without making new requests (achieved via callbacks).
+- [ ] Validate the results against the optimade-python-tools models and export into other supported formats (ASE, pymatgen, CIF, AiiDA).
 - [ ] Enable asynchronous use in cases where there is already a running event loop (e.g., inside a Jupyter notebook).
-- [ ] Cache the results for queries to disk, and use them in future sessions without making new requests.
 - [ ] Support for querying databases indirectly via an [OPTIMADE gateway server](https://github.com/Materials-Consortia/optimade-gateway).
 
 ## Installation
@@ -72,6 +72,62 @@ We can refine the search by manually specifying some URLs:
     client.get()
     ```
 
+or by including/excluding some providers by their registered IDs in the [Providers list](https://providers.optimade.org).
+
+Query only a list of included providers (after a lookup of the providers list):
+
+=== "Command line"
+    ```shell
+    # Only query databases served by the example providers
+    optimade-get --include-providers exmpl,optimade
+    ```
+
+=== "Python"
+    ```python
+    # Only query databases served by the example providers
+    from optimade.client import OptimadeClient
+    client = OptimadeClient(
+        include_providers={"exmpl", "optimade"},
+    )
+    client.get()
+    ```
+
+Exclude certain providers:
+
+=== "Command line"
+    ```shell
+    # Exclude example providers from global list
+    optimade-get --exclude-providers exmpl,optimade
+    ```
+
+=== "Python"
+    ```python
+    # Exclude example providers from global list
+    from optimade.client import OptimadeClient
+    client = OptimadeClient(
+        exclude_providers={"exmpl", "optimade"},
+    )
+    client.get()
+    ```
+
+Exclude particular databases by URL:
+
+=== "Command line"
+    ```shell
+    # Exclude specific example databases
+    optimade-get --exclude-databases https://example.org/optimade,https://optimade.org/example
+    ```
+
+=== "Python"
+    ```python
+    # Exclude specific example databases
+    from optimade.client import OptimadeClient
+    client = OptimadeClient(
+        exclude_databases={"https://example.org/optimade", "https://optimade.org/example"}
+    )
+    client.get()
+    ```
+
 ### Filtering
 
 By default, an empty filter will be used (which will return all entries in a database).
@@ -107,7 +163,7 @@ has the following (truncated) output:
 {
   // The endpoint that was queried
   "structures": {
-    // The filter applied to that endpointk
+    // The filter applied to that endpoint
     "nsites = 1": {
       // The base URL of the OPTIMADE API
       "https://optimade.fly.dev": {
@@ -205,6 +261,37 @@ In the Python interface, the different endpoints can be queried as attributes of
 
     client.extensions.properties.get()
     client.get(endpoint="extensions/properties")
+    ```
+
+### Listing the properties served by a database
+
+You can also retrieve the list of properties served by a database using the
+`--list-properties` flag:
+
+=== "Command line"
+    ```
+    optimade-get --list-properties structures --include-providers odbx
+    ```
+
+=== "Python"
+    ```
+    from optimade.client import OptimadeClient
+    client = OptimadeClient(include_providers={"odbx"})
+    client.list_properties("structures")
+    ```
+
+and do simple string matching filtering of the response:
+
+=== "Command line"
+    ```
+    optimade-get --list-properties structures --search-property gap
+    ```
+
+=== "Python"
+    ```
+    from optimade.client import OptimadeClient
+    client = OptimadeClient()
+    client.list_properties("structures")
     ```
 
 ### Limiting the number of responses
@@ -326,3 +413,43 @@ which, at the timing of writing, yields the results:
   }
 }
 ```
+
+### Callbacks
+
+In Python, the client can also be initialized with a list of callbacks.
+These will be executed after every request and will have access to the JSON response and the request URL.
+
+For example, callbacks be used, to save to a file or write to a database, without having to pull all the results into memory.
+Care should be taken if combining an asynchronous client with callbacks, as the callbacks may depend on the execution order of various asynchronous requests and the callbacks themselves may be blocking.
+
+
+=== "Python"
+    ```python
+    # Write a callback that saves into a MongoDB (fake or otherwise)
+    import mongomock as pymongo
+    from optimade.client import OptimadeClient
+
+    db = pymongo.MongoClient().database.structures
+
+    def write_to_db(url, results):
+        for entry in results["data"]:
+            entry.update(entry.pop("attributes"))
+            entry["immutable_id"] = url
+            db.insert_one(entry)
+
+    client = OptimadeClient(callbacks=[write_to_db], silent=True)
+
+    client.get()
+
+    print(db.find_one())
+    ```
+
+Callbacks can also optionally return a dictionary of data that can be used by the client.
+
+Currently the supported keys are:
+
+- `next` (string): To override the next URL returned by the API. This can be used to dynamically change queries based on the results, or to skip pages that have already been queried previously.
+- `advance_results` (integer): To skip the progress bar forward by the set amount.
+
+When multiple callbacks are provided, only the final callback will have its
+result captured.

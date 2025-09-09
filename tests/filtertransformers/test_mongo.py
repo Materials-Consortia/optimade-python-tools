@@ -1,13 +1,19 @@
 import pytest
 
+_ = pytest.importorskip(
+    "bson",
+    reason="MongoDB dependency set (pymongo, bson) are required to run these tests.",
+)
+
 from lark.exceptions import VisitError
 
+from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
-from optimade.server.exceptions import BadRequest
+from optimade.warnings import UnknownProviderProperty
 
 
 class TestMongoTransformer:
-    version = (1, 0, 0)
+    version = (1, 2, 0)
     variant = "default"
 
     @pytest.fixture(autouse=True)
@@ -34,6 +40,11 @@ class TestMongoTransformer:
 
         with pytest.raises(BadRequest):
             self.transform("BadLuck IS KNOWN")  # contains upper-case letters
+
+    def test_awkward_nested_field(self):
+        assert self.transform("_mp_stability.gga_gga+u_r2scan <= 0.0") == {
+            "_mp_stability.gga_gga+u_r2scan": {"$lte": 0.0}
+        }
 
     def test_provider_property_name(self):
         # database-provider-specific prefixes
@@ -442,9 +453,10 @@ class TestMongoTransformer:
 
         t = MongoTransformer(mapper=mapper("StructureMapper"))
         p = LarkParser(version=self.version, variant=self.variant)
-        assert t.transform(p.parse("_other_provider_field > 1")) == {
-            "_other_provider_field": {"$gt": 1}
-        }
+        with pytest.warns(UnknownProviderProperty):
+            assert t.transform(p.parse("_other_provider_field > 1")) == {
+                "_other_provider_field": {"$gt": 1}
+            }
 
     def test_prepend_reference_structure(self, mapper):
         """For the trajectories endpoint the queries should be performed on the reference structure.
@@ -534,9 +546,11 @@ class TestMongoTransformer:
 
     def test_suspected_timestamp_fields(self, mapper):
         import datetime
+
         import bson.tz_util
+
         from optimade.filtertransformers.mongo import MongoTransformer
-        from optimade.server.warnings import TimestampNotRFCCompliant
+        from optimade.warnings import TimestampNotRFCCompliant
 
         example_RFC3339_date = "2019-06-08T04:13:37Z"
         example_RFC3339_date_2 = "2019-06-08T04:13:37"
@@ -599,9 +613,9 @@ class TestMongoTransformer:
         }
 
     def test_mongo_special_id(self, mapper):
+        from bson import ObjectId
 
         from optimade.filtertransformers.mongo import MongoTransformer
-        from bson import ObjectId
 
         class MyMapper(mapper("StructureMapper")):
             ALIASES = (("immutable_id", "_id"),)

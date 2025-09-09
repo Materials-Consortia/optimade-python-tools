@@ -1,14 +1,14 @@
 import json
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Tuple, List, Optional, Dict, Any, Iterable, Union
+from typing import Any, Optional
 
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
-from optimade.server.config import CONFIG
-from optimade.server.logger import LOGGER
 from optimade.models import EntryResource
+from optimade.server.config import CONFIG
+from optimade.server.entry_collections import EntryCollection, PaginationMechanism
+from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
-from optimade.server.entry_collections import EntryCollection
-
 
 if CONFIG.database_backend.value == "elastic":
     from elasticsearch import Elasticsearch
@@ -20,11 +20,13 @@ if CONFIG.database_backend.value == "elastic":
 
 
 class ElasticCollection(EntryCollection):
+    pagination_mechanism = PaginationMechanism("page_offset")
+
     def __init__(
         self,
         name: str,
-        resource_cls: EntryResource,
-        resource_mapper: BaseResourceMapper,
+        resource_cls: type[EntryResource],
+        resource_mapper: type[BaseResourceMapper],
         client: Optional["Elasticsearch"] = None,
     ):
         """Initialize the ElasticCollection for the given parameters.
@@ -46,13 +48,18 @@ class ElasticCollection(EntryCollection):
         self.client = client if client else CLIENT
         self.name = name
 
-        # If we are creating a new collection from scratch, also create the index,
-        # otherwise assume it has already been created externally
-        if CONFIG.insert_test_data:
-            self.create_optimade_index()
-
     def count(self, *args, **kwargs) -> int:
         raise NotImplementedError
+
+    def create_default_index(self) -> None:
+        """Create the default index for the collection.
+
+        For Elastic, the default is to create a search index
+        over all relevant OPTIMADE fields based on the configured
+        mapper.
+
+        """
+        return self.create_optimade_index()
 
     def create_optimade_index(self) -> None:
         """Load or create an index that can handle aliased OPTIMADE fields and attach it
@@ -72,12 +79,12 @@ class ElasticCollection(EntryCollection):
             ]["properties"].pop(field)
         properties["id"] = {"type": "keyword"}
         body["mappings"]["properties"] = properties
-        self.client.indices.create(index=self.name, body=body, ignore=400)
+        self.client.indices.create(index=self.name, ignore=400, **body)
 
-        LOGGER.debug(f"Created Elastic index for {self.name!r} with body {body}")
+        LOGGER.debug(f"Created Elastic index for {self.name!r} with parameters {body}")
 
     @property
-    def predefined_index(self) -> Dict[str, Any]:
+    def predefined_index(self) -> dict[str, Any]:
         """Loads and returns the default pre-defined index."""
         with open(Path(__file__).parent.joinpath("elastic_indexes.json")) as f:
             index = json.load(f)
@@ -85,8 +92,8 @@ class ElasticCollection(EntryCollection):
 
     @staticmethod
     def create_elastic_index_from_mapper(
-        resource_mapper: BaseResourceMapper, fields: Iterable[str]
-    ) -> Dict[str, Any]:
+        resource_mapper: type[BaseResourceMapper], fields: Iterable[str]
+    ) -> dict[str, Any]:
         """Create a fallback elastic index based on a resource mapper.
 
         Arguments:
@@ -94,7 +101,8 @@ class ElasticCollection(EntryCollection):
             fields: The list of fields to use in the index.
 
         Returns:
-            The `body` parameter to pass to `client.indices.create(..., body=...)`.
+            The parameters to pass to `client.indices.create(...)` (previously
+                the 'body' parameters).
 
         """
         properties = {
@@ -108,7 +116,7 @@ class ElasticCollection(EntryCollection):
         """Returns the total number of entries in the collection."""
         return Search(using=self.client, index=self.name).execute().hits.total.value
 
-    def insert(self, data: List[EntryResource]) -> None:
+    def insert(self, data: list[EntryResource | dict]) -> None:
         """Add the given entries to the underlying database.
 
         Warning:
@@ -121,7 +129,7 @@ class ElasticCollection(EntryCollection):
 
         def get_id(item):
             if self.name == "links":
-                id_ = "%s-%s" % (item["id"], item["type"])
+                id_ = f"{item['id']}-{item['type']}"
             elif "id" in item:
                 id_ = item["id"]
             elif "_id" in item:
@@ -135,20 +143,19 @@ class ElasticCollection(EntryCollection):
 
         bulk(
             self.client,
-            [
+            (
                 {
                     "_index": self.name,
                     "_id": get_id(item),
-                    "_type": "_doc",
                     "_source": item,
                 }
                 for item in data
-            ],
+            ),
         )
 
     def _run_db_query(
-        self, criteria: Dict[str, Any], single_entry=False
-    ) -> Tuple[Union[List[Dict[str, Any]], Dict[str, Any]], int, bool]:
+        self, criteria: dict[str, Any], single_entry=False
+    ) -> tuple[list[dict[str, Any]], int, bool]:
         """Run the query on the backend and collect the results.
 
         Arguments:
@@ -166,7 +173,9 @@ class ElasticCollection(EntryCollection):
         if criteria.get("filter", False):
             search = search.query(criteria["filter"])
 
-        page_offset = criteria.get("skip", 0)
+        page_offset = criteria.get("skip", None)
+        page_above = criteria.get("page_above", None)
+
         limit = criteria.get("limit", CONFIG.page_limit)
 
         all_aliased_fields = [
@@ -179,24 +188,36 @@ class ElasticCollection(EntryCollection):
             for field, sort_dir in criteria.get("sort", {})
         ]
         if not elastic_sort:
-            elastic_sort = {
-                self.resource_mapper.get_backend_field("id"): {"order": "asc"}
-            }
+            elastic_sort = [
+                {self.resource_mapper.get_backend_field("id"): {"order": "asc"}}
+            ]
 
         search = search.sort(*elastic_sort)
 
-        search = search[page_offset : page_offset + limit]
+        if page_offset:
+            search = search[page_offset : page_offset + limit]
+
+        elif page_above:
+            search = search.extra(search_after=page_above, limit=limit)
+
+        else:
+            search = search[0:limit]
+            page_offset = 0
+
         search = search.extra(track_total_hits=True)
         response = search.execute()
 
         results = [hit.to_dict() for hit in response.hits]
 
+        more_data_available = False
         if not single_entry:
             data_returned = response.hits.total.value
-            more_data_available = page_offset + limit < data_returned
+            if page_above is not None:
+                more_data_available = len(results) == limit and data_returned != limit
+            else:
+                more_data_available = page_offset + limit < data_returned
         else:
             # SingleEntryQueryParams, e.g., /structures/{entry_id}
             data_returned = len(results)
-            more_data_available = False
 
         return results, data_returned, more_data_available

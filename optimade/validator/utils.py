@@ -1,4 +1,4 @@
-""" This submodule contains utility methods and models
+"""This submodule contains utility methods and models
 used by the validator. The two main features being:
 
 1. The `@test_case` decorator can be used to decorate validation
@@ -12,31 +12,28 @@ used by the validator. The two main features being:
 
 """
 
-import time
-import sys
-import urllib.parse
 import dataclasses
+import json
+import sys
+import time
 import traceback as tb
-from typing import List, Optional, Dict, Any, Callable, Tuple
-
-try:
-    import simplejson as json
-except ImportError:
-    import json
+import urllib.parse
+from collections.abc import Callable
+from typing import Any
 
 import requests
 from pydantic import Field, ValidationError
 
 from optimade import __version__
-from optimade.models.optimade_json import Success
 from optimade.models import (
-    ResponseMeta,
     EntryResource,
     LinksResource,
     ReferenceResource,
+    ResponseMeta,
     StructureResource,
     TrajectoryResource,
 )
+from optimade.models.optimade_json import Success
 
 # Default connection timeout allows for one default-sized TCP retransmission window
 # (see https://docs.python-requests.org/en/latest/user/advanced/#timeouts)
@@ -56,22 +53,22 @@ class InternalError(Exception):
     """
 
 
-def print_warning(string, **kwargs):
+def print_warning(string: str, **kwargs) -> None:
     """Print but angry."""
     print(f"\033[93m{string}\033[0m", **kwargs)
 
 
-def print_notify(string, **kwargs):
+def print_notify(string: str, **kwargs) -> None:
     """Print but louder."""
     print(f"\033[94m\033[1m{string}\033[0m", **kwargs)
 
 
-def print_failure(string, **kwargs):
+def print_failure(string: str, **kwargs) -> None:
     """Print but sad."""
     print(f"\033[91m\033[1m{string}\033[0m", **kwargs)
 
 
-def print_success(string, **kwargs):
+def print_success(string: str, **kwargs) -> None:
     """Print but happy."""
     print(f"\033[92m\033[1m{string}\033[0m", **kwargs)
 
@@ -85,16 +82,16 @@ class ValidatorResults:
     internal_failure_count: int = 0
     optional_success_count: int = 0
     optional_failure_count: int = 0
-    failure_messages: List[Tuple[str, str]] = dataclasses.field(default_factory=list)
-    internal_failure_messages: List[Tuple[str, str]] = dataclasses.field(
+    failure_messages: list[tuple[str, str]] = dataclasses.field(default_factory=list)
+    internal_failure_messages: list[tuple[str, str]] = dataclasses.field(
         default_factory=list
     )
-    optional_failure_messages: List[Tuple[str, str]] = dataclasses.field(
+    optional_failure_messages: list[tuple[str, str]] = dataclasses.field(
         default_factory=list
     )
     verbosity: int = 0
 
-    def add_success(self, summary: str, success_type: Optional[str] = None):
+    def add_success(self, summary: str, success_type: str | None = None):
         """Register a validation success to the results class.
 
         Parameters:
@@ -118,13 +115,11 @@ class ValidatorResults:
         pretty_print = print if success_type == "optional" else print_success
 
         if self.verbosity > 0:
-            pretty_print(message)
+            pretty_print(message)  # type: ignore[operator]
         elif self.verbosity == 0:
-            pretty_print(".", end="", flush=True)
+            pretty_print(".", end="", flush=True)  # type: ignore[operator]
 
-    def add_failure(
-        self, summary: str, message: str, failure_type: Optional[str] = None
-    ):
+    def add_failure(self, summary: str, message: str, failure_type: str | None = None):
         """Register a validation failure to the results class with
         corresponding summary, message and type.
 
@@ -151,12 +146,12 @@ class ValidatorResults:
             self.optional_failure_count += 1
             self.optional_failure_messages.append((summary, message))
 
-        pprint_types = {
+        pprint_types: dict[str, tuple[Callable, Callable]] = {
             "internal": (print_notify, print_warning),
             "optional": (print, print),
         }
         pprint, warning_pprint = pprint_types.get(
-            failure_type, (print_failure, print_warning)
+            str(failure_type), (print_failure, print_warning)
         )
 
         symbol = "!" if failure_type == "internal" else "✖"
@@ -173,9 +168,9 @@ class Client:  # pragma: no cover
         self,
         base_url: str,
         max_retries: int = 5,
-        headers: Dict[str, str] = None,
-        timeout: Optional[float] = DEFAULT_CONN_TIMEOUT,
-        read_timeout: Optional[float] = DEFAULT_READ_TIMEOUT,
+        headers: dict[str, str] | None = None,
+        timeout: float | None = DEFAULT_CONN_TIMEOUT,
+        read_timeout: float | None = DEFAULT_READ_TIMEOUT,
     ) -> None:
         """Initialises the Client with the given `base_url` without testing
         if it is valid.
@@ -197,9 +192,9 @@ class Client:  # pragma: no cover
             read_timeout: Read timeout in seconds.
 
         """
-        self.base_url = base_url
-        self.last_request = None
-        self.response = None
+        self.base_url: str = base_url
+        self.last_request: str | None = None
+        self.response: requests.Response | None = None
         self.max_retries = max_retries
         self.headers = headers or {}
         if "User-Agent" not in self.headers:
@@ -272,7 +267,7 @@ class Client:  # pragma: no cover
             raise ResponseError(message)
 
 
-def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
+def test_case(test_fn: Callable[..., tuple[Any, str]]):
     """Wrapper for test case functions, which pretty-prints any errors
     depending on verbosity level, collates the number and severity of
     test failures, returns the response and summary string to the caller.
@@ -295,7 +290,7 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
     def wrapper(
         validator,
         *args,
-        request: str = None,
+        request: str | None = None,
         optional: bool = False,
         multistage: bool = False,
         **kwargs,
@@ -360,13 +355,15 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
             # If the result was None, return it here and ignore statuses
             if result is None:
                 return result, msg
+            display_request = requests.utils.requote_uri(request.replace("\n", ""))  # type: ignore[union-attr]
 
             if not isinstance(result, Exception):
                 if not multistage:
                     success_type = "optional" if optional else None
-                    validator.results.add_success(f"{request} - {msg}", success_type)
+                    validator.results.add_success(
+                        f"{display_request} - {msg}", success_type
+                    )
             else:
-                request = request.replace("\n", "")
                 message = msg.split("\n")
                 if validator.verbosity > 1:
                     # ValidationErrors from pydantic already include very detailed errors
@@ -374,19 +371,18 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
                     if not isinstance(result, ValidationError):
                         message += traceback.split("\n")
 
-                message = "\n".join(message)
-
+                failure_type: str | None = None
                 if isinstance(result, InternalError):
-                    summary = (
-                        f"{request} - {test_fn.__name__} - failed with internal error"
-                    )
+                    summary = f"{display_request} - {test_fn.__name__} - failed with internal error"
                     failure_type = "internal"
                 else:
-                    summary = f"{request} - {test_fn.__name__} - failed with error"
+                    summary = (
+                        f"{display_request} - {test_fn.__name__} - failed with error"
+                    )
                     failure_type = "optional" if optional else None
 
                 validator.results.add_failure(
-                    summary, message, failure_type=failure_type
+                    summary, "\n".join(message), failure_type=failure_type
                 )
 
                 # set failure result to None as this is expected by other functions
@@ -408,19 +404,19 @@ def test_case(test_fn: Callable[[Any], Tuple[Any, str]]):
 
 class ValidatorLinksResponse(Success):
     meta: ResponseMeta = Field(...)
-    data: List[LinksResource] = Field(...)
+    data: list[LinksResource] = Field(...)
 
 
 class ValidatorEntryResponseOne(Success):
     meta: ResponseMeta = Field(...)
     data: EntryResource = Field(...)
-    included: Optional[List[Dict[str, Any]]] = Field(None)
+    included: list[dict[str, Any]] | None = Field(None)  # type: ignore[assignment]
 
 
 class ValidatorEntryResponseMany(Success):
     meta: ResponseMeta = Field(...)
-    data: List[EntryResource] = Field(...)
-    included: Optional[List[Dict[str, Any]]] = Field(None)
+    data: list[EntryResource] = Field(...)
+    included: list[dict[str, Any]] | None = Field(None)  # type: ignore[assignment]
 
 
 class ValidatorReferenceResponseOne(ValidatorEntryResponseOne):
@@ -428,7 +424,7 @@ class ValidatorReferenceResponseOne(ValidatorEntryResponseOne):
 
 
 class ValidatorReferenceResponseMany(ValidatorEntryResponseMany):
-    data: List[ReferenceResource] = Field(...)
+    data: list[ReferenceResource] = Field(...)
 
 
 class ValidatorStructureResponseOne(ValidatorEntryResponseOne):
@@ -436,7 +432,7 @@ class ValidatorStructureResponseOne(ValidatorEntryResponseOne):
 
 
 class ValidatorStructureResponseMany(ValidatorEntryResponseMany):
-    data: List[StructureResource] = Field(...)
+    data: list[StructureResource] = Field(...)
 
 
 class ValidatorTrajectoryResponseOne(ValidatorEntryResponseOne):
@@ -444,4 +440,4 @@ class ValidatorTrajectoryResponseOne(ValidatorEntryResponseOne):
 
 
 class ValidatorTrajectoryResponseMany(ValidatorEntryResponseMany):
-    data: List[TrajectoryResource] = Field(...)
+    data: list[TrajectoryResource] = Field(...)

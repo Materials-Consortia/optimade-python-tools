@@ -3,21 +3,24 @@ Utility functions to help the conversion functions along.
 
 Most of these functions rely on the [NumPy](https://numpy.org/) library.
 """
-from typing import List, Optional, Tuple, Iterable
-from optimade.models.structures import Vector3D
+
+from collections.abc import Iterable
+
 from optimade.models.structures import Species as OptimadeStructureSpecies
+from optimade.models.structures import Vector3D
 
 try:
     import numpy as np
 except ImportError:
     from warnings import warn
+
     from optimade.adapters.warnings import AdapterPackageNotFound
 
-    np = None
+    np = None  # type: ignore[assignment]
     NUMPY_NOT_FOUND = "NumPy not found, cannot convert structure to your desired format"
 
 
-def valid_lattice_vector(lattice_vec: Tuple[Vector3D, Vector3D, Vector3D]):
+def valid_lattice_vector(lattice_vec: tuple[Vector3D, Vector3D, Vector3D]):
     if len(lattice_vec) != 3:
         return False
     for vector in lattice_vec:
@@ -29,8 +32,8 @@ def valid_lattice_vector(lattice_vec: Tuple[Vector3D, Vector3D, Vector3D]):
 
 
 def scaled_cell(
-    cell: Tuple[Vector3D, Vector3D, Vector3D]
-) -> Tuple[Vector3D, Vector3D, Vector3D]:
+    cell: tuple[Vector3D, Vector3D, Vector3D],
+) -> tuple[Vector3D, Vector3D, Vector3D]:
     """Return a scaled 3x3 cell from cartesian 3x3 cell (`lattice_vectors`).
     This 3x3 matrix can be used to calculate the fractional coordinates from the cartesian_site_positions.
 
@@ -47,7 +50,7 @@ def scaled_cell(
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     cell = np.asarray(cell)
 
@@ -56,12 +59,12 @@ def scaled_cell(
     for i in range(3):
         vector = np.cross(cell[(i + 1) % 3], cell[(i + 2) % 3]) / volume
         scale.append(tuple(vector))
-    return tuple(scale)
+    return tuple(scale)  # type: ignore[return-value]
 
 
 def fractional_coordinates(
-    cell: Tuple[Vector3D, Vector3D, Vector3D], cartesian_positions: List[Vector3D]
-) -> List[Vector3D]:
+    cell: tuple[Vector3D, Vector3D, Vector3D], cartesian_positions: list[Vector3D]
+) -> list[Vector3D]:
     """Returns fractional coordinates and wraps coordinates to `[0,1[`.
 
     Note:
@@ -80,12 +83,12 @@ def fractional_coordinates(
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
-    cell = np.asarray(cell)
-    cartesian_positions = np.asarray(cartesian_positions)
+    cell_array = np.asarray(cell)
+    cartesian_positions_array = np.asarray(cartesian_positions)
 
-    fractional = np.linalg.solve(cell.T, cartesian_positions.T).T
+    fractional = np.linalg.solve(cell_array.T, cartesian_positions_array.T).T
 
     # Expecting a bulk 3D structure here, note, this may change in the future.
     # See `ase.atoms:Atoms.get_scaled_positions()` for ideas on how to handle lower dimensional structures.
@@ -95,12 +98,12 @@ def fractional_coordinates(
         fractional[:, i] %= 1.0
         fractional[:, i] %= 1.0
 
-    return [tuple(position) for position in fractional]
+    return [tuple(position) for position in fractional]  # type: ignore
 
 
 def cell_to_cellpar(
-    cell: Tuple[Vector3D, Vector3D, Vector3D], radians: bool = False
-) -> List[float]:
+    cell: tuple[Vector3D, Vector3D, Vector3D], radians: bool = False
+) -> list[float]:
     """Returns the cell parameters `[a, b, c, alpha, beta, gamma]`.
 
     Angles are in degrees unless `radian=True` is used.
@@ -119,7 +122,7 @@ def cell_to_cellpar(
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     cell = np.asarray(cell)
 
@@ -152,17 +155,17 @@ def unit_vector(x: Vector3D) -> Vector3D:
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     y = np.array(x, dtype="float")
-    return y / np.linalg.norm(y)
+    return y / np.linalg.norm(y)  # type: ignore
 
 
 def cellpar_to_cell(
-    cellpar: List[float],
-    ab_normal: Tuple[int, int, int] = (0, 0, 1),
-    a_direction: Tuple[int, int, int] = None,
-) -> List[Vector3D]:
+    cellpar: list[float],
+    ab_normal: tuple[int, int, int] = (0, 0, 1),
+    a_direction: tuple[int, int, int] | None = None,
+) -> list[Vector3D]:
     """Return a 3x3 cell matrix from `cellpar=[a,b,c,alpha,beta,gamma]`.
 
     Angles must be in degrees.
@@ -205,7 +208,7 @@ def cellpar_to_cell(
     """
     if globals().get("np", None) is None:
         warn(NUMPY_NOT_FOUND, AdapterPackageNotFound)
-        return None
+        return None  # type: ignore[return-value]
 
     if a_direction is None:
         if np.linalg.norm(np.cross(ab_normal, (1, 0, 0))) < 1e-5:
@@ -216,7 +219,7 @@ def cellpar_to_cell(
     # Define rotated X,Y,Z-system, with Z along ab_normal and X along
     # the projection of a_direction onto the normal plane of Z.
     a_direction_array = np.array(a_direction)
-    Z = unit_vector(ab_normal)
+    Z = unit_vector(ab_normal)  # type: ignore
     X = unit_vector(a_direction_array - np.dot(a_direction_array, Z) * Z)
     Y = np.cross(Z, X)
 
@@ -274,13 +277,13 @@ def cellpar_to_cell(
 
 def _pad_iter_of_iters(
     iterable: Iterable[Iterable],
-    padding: Optional[float] = None,
-    outer: Optional[Iterable] = None,
-    inner: Optional[Iterable] = None,
-) -> Tuple[Iterable[Iterable], bool]:
+    padding: float | None = None,
+    outer: type | None = None,
+    inner: type | None = None,
+) -> tuple[Iterable[Iterable], bool]:
     """Turn any null/None values into a float in given iterable of iterables"""
     try:
-        padding = float(padding)
+        padding = float(padding)  # type: ignore[arg-type]
     except (TypeError, ValueError):
         padding = float("nan")
 
@@ -294,7 +297,7 @@ def _pad_iter_of_iters(
     if padded_iterable:
         padded_iterable_of_iterables = []
         for inner_iterable in iterable:
-            new_inner_iterable = inner(
+            new_inner_iterable = inner(  # type: ignore[misc]
                 value if value is not None else padding for value in inner_iterable
             )
             padded_iterable_of_iterables.append(new_inner_iterable)
@@ -304,8 +307,8 @@ def _pad_iter_of_iters(
 
 
 def pad_cell(
-    lattice_vectors: Tuple[Vector3D, Vector3D, Vector3D],
-    padding: Optional[float] = None,
+    lattice_vectors: tuple[Vector3D, Vector3D, Vector3D],
+    padding: float | None = None,
 ) -> tuple:  # Setting this properly makes MkDocs fail.
     """Turn any `null`/`None` values into a `float` in given `tuple` of
     [`lattice_vectors`][optimade.models.structures.StructureResourceAttributes.lattice_vectors].
@@ -331,8 +334,8 @@ def pad_cell(
 
 
 def species_from_species_at_sites(
-    species_at_sites: List[str],
-) -> List[OptimadeStructureSpecies]:
+    species_at_sites: list[str],
+) -> list[OptimadeStructureSpecies]:
     """When a list of species dictionaries is not provided, this function
     can be used to infer the species from the provided species_at_sites.
 
@@ -353,3 +356,14 @@ def species_from_species_at_sites(
         OptimadeStructureSpecies(name=_, concentration=[1.0], chemical_symbols=[_])
         for _ in set(species_at_sites)
     ]
+
+
+def elements_ratios_from_species_at_sites(species_at_sites: list[str]) -> list[float]:
+    """Compute the OPTIMADE `elements_ratios` field from `species_at_sites` in the case where `species_at_sites` refers
+    to sites wholly occupied by the given elements, e.g., not arbitrary species labels or with partial/mixed occupancy.
+
+    """
+    elements = set(species_at_sites)
+    counts = {e: species_at_sites.count(e) for e in elements}
+    num_sites = len(species_at_sites)
+    return [counts[e] / num_sites for e in sorted(elements)]

@@ -5,12 +5,10 @@ into `Lark.Tree` objects for use by the filter transformers.
 """
 
 from pathlib import Path
-from typing import Dict, Tuple
-from collections import defaultdict
 
 from lark import Lark, Tree
 
-from optimade.server.exceptions import BadRequest
+from optimade.exceptions import BadRequest
 
 __all__ = ("ParserError", "LarkParser")
 
@@ -21,7 +19,7 @@ class ParserError(Exception):
     """
 
 
-def get_versions() -> Dict[Tuple[int, int, int], Dict[str, str]]:
+def get_versions() -> dict[tuple[int, int, int], dict[str, Path]]:
     """Find grammar files within this package's grammar directory,
     returning a dictionary broken down by scraped grammar version
     (major, minor, patch) and variant (a string tag).
@@ -30,13 +28,15 @@ def get_versions() -> Dict[Tuple[int, int, int], Dict[str, str]]:
         A mapping from version, variant to grammar file name.
 
     """
-    dct = defaultdict(dict)
+    dct: dict[tuple[int, int, int], dict[str, Path]] = {}
     for filename in Path(__file__).parent.joinpath("../grammar").glob("*.lark"):
         tags = filename.stem.lstrip("v").split(".")
-        version = tuple(map(int, tags[:3]))
-        variant = "default" if len(tags) == 3 else tags[-1]
+        version: tuple[int, int, int] = (int(tags[0]), int(tags[1]), int(tags[2]))
+        variant: str = "default" if len(tags) == 3 else str(tags[-1])
+        if version not in dct:
+            dct[version] = {}
         dct[version][variant] = filename
-    return dict(dct)
+    return dct
 
 
 AVAILABLE_PARSERS = get_versions()
@@ -48,7 +48,9 @@ class LarkParser:
 
     """
 
-    def __init__(self, version: Tuple[int, int, int] = None, variant: str = "default"):
+    def __init__(
+        self, version: tuple[int, int, int] | None = None, variant: str = "default"
+    ):
         """For a given version and variant, try to load the corresponding grammar.
 
         Parameters:
@@ -78,8 +80,8 @@ class LarkParser:
         with open(AVAILABLE_PARSERS[version][variant]) as f:
             self.lark = Lark(f, maybe_placeholders=False)
 
-        self.tree = None
-        self.filter = None
+        self.tree: Tree | None = None
+        self.filter: str | None = None
 
     def parse(self, filter_: str) -> Tree:
         """Parse a filter string into a `lark.Tree`.

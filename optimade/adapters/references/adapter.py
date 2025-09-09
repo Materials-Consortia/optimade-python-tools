@@ -1,5 +1,5 @@
-from optimade.models import ReferenceResource
 from optimade.adapters.base import EntryAdapter
+from optimade.models import ReferenceResource
 
 
 class Reference(EntryAdapter):
@@ -19,4 +19,4 @@ class Reference(EntryAdapter):
 
     """
 
-    ENTRY_RESOURCE: ReferenceResource = ReferenceResource
+    ENTRY_RESOURCE: type[ReferenceResource] = ReferenceResource
