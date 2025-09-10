@@ -6,6 +6,12 @@ import os
 import sys
 from pathlib import Path
 
+# Make some loggers shut up so they do not repeat every friking error 5 times
+mutted_loggers = {'asyncio', 'uvicorn.error'}
+for logger_name in mutted_loggers:
+    logger = logging.getLogger(logger_name)
+    logger.disabled = True
+
 # Instantiate LOGGER
 LOGGER = logging.getLogger("optimade")
 LOGGER.setLevel(logging.DEBUG)
