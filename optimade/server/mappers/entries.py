@@ -386,6 +386,8 @@ class BaseResourceMapper:
         for field in list(newdoc.keys()):
             if field not in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
                 del newdoc[field]
+        # Remove the mongo internal id since it is not serializable
+        if attributes.get("_id", None): del attributes["_id"]
 
         newdoc["type"] = cls.ENDPOINT
         newdoc["attributes"] = attributes
