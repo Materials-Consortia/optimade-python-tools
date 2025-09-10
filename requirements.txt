@@ -4,7 +4,6 @@ pydantic_settings==2.10.1
 pyyaml==6.0.2
 requests==2.32.4
 uvicorn==0.35.0
-# DANI: not sure
 elasticsearch-dsl==7.4.0
 email_validator==1.2.1
 fastapi==0.82.0

@@ -70,6 +70,7 @@ server = [
     "starlette ~= 0.38, >= 0.38.3",
     "pyyaml~=6.0",
     "optimade[mongo]",
+    "h5py>=3.7"
 ]
 
 # Client minded
