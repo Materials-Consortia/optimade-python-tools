@@ -30,30 +30,42 @@ class TrajectoryMapper(BaseResourceMapper):
 
     @classmethod
     def map_back(cls, doc: dict) -> dict:
-        mapped_doc = super().map_back(
-            doc
-        )  # ToDo check whether fields are not in the exclude fields so we do not needlessly make an effort to generate them here.
+        # DANI: The system is too limited to handle what we have in the database
+        # DANI: A project may have multiple trajectories
+        # DANI: In order to keep things simple we will return the reference MD trajectory
+        project_id = doc["_id"]
+        reference_md_index = doc["mdref"]
+        reference_md = doc["mds"][reference_md_index]
+        nframes = reference_md["frames"]
+        reference_frame = reference_md.get("refframe", nframes)
+        natoms = reference_md["atoms"]
+        # Clean some fields from the project data so they are further parsed and renamed
+        if doc.get("_id", None): del doc["_id"]
+        if doc.get("mds", None): del doc["mds"]
+        # Map the project document to an optimade format
+        # TODO check whether fields are not in the exclude fields so we do not needlessly make an effort to generate them here.
+        mapped_doc = super().map_back(doc)
         if mapped_doc["id"] is None:
-            mapped_doc["id"] = doc["_id"]
-
+            mapped_doc["id"] = project_id
+        if "nframes" not in mapped_doc["attributes"]:
+            mapped_doc["attributes"]["nframes"] = nframes
         if "last_modified" not in mapped_doc["attributes"]:
-            mapped_doc["attributes"][
-                "last_modified"
-            ] = None  # TODO Add the Modification date to the database.
+            # TODO Add the Modification date to the database.
+            mapped_doc["attributes"]["last_modified"] = None
         if "reference_frame" not in mapped_doc["attributes"]:
-            mapped_doc["attributes"]["reference_frame"] = mapped_doc["attributes"][
-                "nframes"
-            ]  # Sometimes the trajectory starts with an unequilibrated structure so the last frame is more representative.
+            # Sometimes the trajectory starts with an unequilibrated structure so the last frame is more representative.
+            mapped_doc["attributes"]["reference_frame"] = reference_frame
 
         # get species from sites
         from optimade.server.entry_collections.mongo import CLIENT
         from optimade.server.routers.utils import get_from_binary_gridfs
 
+        # Get the topology associated to this project
         db = CLIENT[CONFIG.mongo_database]
-        topology_coll = db["topologies"]
-        topology = topology_coll.find_one(
-            {"project": ObjectId(mapped_doc["attributes"]["_id"])}
-        )
+        topology_collection = db["topologies"]
+        topology = topology_collection.find_one({"project": ObjectId(project_id)})
+        # Modifiy the reference structure to make it optimade-compliant
+        mapped_doc["attributes"]["reference_structure"] = {"nsites": natoms}
         if "species_at_sites" not in CONFIG.exclude_from_reference_structure:
             mapped_doc["attributes"]["reference_structure"][
                 "species_at_sites"
@@ -103,7 +115,7 @@ class TrajectoryMapper(BaseResourceMapper):
             mapped_doc["attributes"]["reference_structure"][
                 "cartesian_site_positions"
             ] = get_from_binary_gridfs(
-                mapped_doc["attributes"]["_id"],
+                project_id,
                 "trajectory.bin",
                 mapped_doc["attributes"]["reference_frame"] - 1,
                 mapped_doc["attributes"]["reference_frame"],

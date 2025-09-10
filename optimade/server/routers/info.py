@@ -42,7 +42,7 @@ def get_info(request: Request) -> InfoResponse:
                 ],
                 formats=CONFIG.get_enabled_response_formats(),
                 available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS),
-                entry_types_by_format=entry_types_by_format_dict,
+                entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
                 is_index=False,
                 license=Link(href=CONFIG.license) if CONFIG.license else None,
                 available_licenses=[str(CONFIG.license).split("/")[-1]]

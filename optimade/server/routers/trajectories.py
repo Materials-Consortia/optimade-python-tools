@@ -33,7 +33,6 @@ def get_trajectories(
 ) -> TrajectoryResponseMany:
     return get_entries(
         collection=trajectories_coll,
-        response=TrajectoryResponseMany,
         request=request,
         params=params,
     )

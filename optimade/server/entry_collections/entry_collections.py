@@ -404,11 +404,6 @@ class EntryCollection(ABC):
                 ]
             )
 
-        # TODO here I use a quick and dirty way to get some extra fields from the server it would be nice if there is a more systematic method for adding fields to the projection
-        cursor_kwargs["projection"]["metadata.atomCount"] = True
-        cursor_kwargs["projection"]["metadata.SNAPSHOTS"] = True
-        cursor_kwargs["projection"]["_id"] = True
-
         cursor_kwargs["fields"] = response_fields
 
         # sort

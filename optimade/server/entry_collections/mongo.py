@@ -58,11 +58,15 @@ class MongoCollection(EntryCollection):
             MongoTransformer(mapper=resource_mapper),
         )
 
+        self.name = name
         self.collection = CLIENT[database][name]
 
         # check aliases do not clash with mongo operators
         self._check_aliases(self.resource_mapper.all_aliases())
         self._check_aliases(self.resource_mapper.all_length_aliases())
+
+    def __str__(self) -> str:
+        return f'<MongoCollection "{self.name}">'
 
     def __len__(self) -> int:
         """Returns the total number of entries in the collection."""
@@ -154,8 +158,8 @@ class MongoCollection(EntryCollection):
         # Handle MongoDB ObjectIDs:
         # - If they were not requested, then explicitly remove them
         # - If they were requested, then cast them to strings in the response
-        if "_id" not in criteria.get("projection", {}):
-            criteria["projection"]["_id"] = False
+        if criteria.get("projection", None) == None:
+            criteria["projection"] = {}
 
         if "page_above" in criteria:
             raise NotImplementedError(

@@ -147,7 +147,7 @@ def handle_response_fields(
     while results:
         one_doc = results.pop(0)
         if one_doc:
-            new_entry = one_doc.dict(exclude_unset=True, by_alias=True)
+            new_entry = one_doc
         else:
             new_results = [[]]
             break
@@ -227,7 +227,7 @@ def handle_response_fields(
                         "frame_serialization_format"
                     ] = "explicit"
                     values = get_values_from_file(
-                        field, "trajectory.bin", new_entry, "bioxl"
+                        field, "trajectory.bin", new_entry, "mddb"
                     )
                     new_entry["attributes"][field]["values"] = values
                     new_entry["attributes"][field]["nvalues"] = len(values)
@@ -294,7 +294,7 @@ def get_values_from_file(field: str, path: str, new_entry: Dict, storage_method:
     if storage_method == "hdf5":
         return get_hdf5_value(field, path, first_frame, last_frame, frame_step)
     elif field == "cartesian_site_positions":
-        if storage_method == "bioxl":
+        if storage_method == "mddb":
             return get_from_binary_gridfs(
                 new_entry["attributes"]["_id"],
                 path,
@@ -538,7 +538,7 @@ def get_entries(
         included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
 
     traj_trunc = False
-    if fields or include_fields:
+    if results is not None and (fields or include_fields):
         results, traj_trunc, last_frame = handle_response_fields(
             results, fields, include_fields, params
         )
@@ -556,9 +556,6 @@ def get_entries(
         links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
     else:
         links = ToplevelLinks(next=None)
-
-    if results is not None and (fields or include_fields):
-        results = handle_response_fields(results, fields, include_fields, params)  # type: ignore[assignment]
 
     response_object = {
         "links": links,
