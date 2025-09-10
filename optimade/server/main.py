@@ -13,6 +13,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 with warnings.catch_warnings(record=True) as w:
     from optimade.server.config import CONFIG, DEFAULT_CONFIG_FILE_PATH
@@ -170,3 +171,11 @@ def add_optional_versioned_base_urls(app: FastAPI):
     for version in ("minor", "patch"):
         for endpoint in (info, links, references, structures, trajectories, landing):
             app.include_router(endpoint.router, prefix=BASE_URL_PREFIXES[version])
+
+# Handle returning the favicon
+@app.get('/favicon.ico', include_in_schema=False)
+async def favicon():
+    return None
+    # DANI: This is raising a error god knows why. It worked before the merge
+    # UnicodeDecodeError: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+    #return FileResponse(path='images/favicon.png', media_type="image/png")
