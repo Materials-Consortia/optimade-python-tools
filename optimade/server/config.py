@@ -9,6 +9,7 @@ import yaml
 from pydantic import (
     AnyHttpUrl,
     Field,
+    BaseModel,
     NonNegativeFloat,
     field_validator,
     model_validator,
@@ -145,6 +146,23 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
         return self.parse_config_file()
 
 
+class GzipConfig(BaseModel):
+    enabled: Annotated[
+        bool,
+        Field(description="Enable GZip compression for API responses."),
+    ] = True
+
+    minimum_size: Annotated[
+        int,
+        Field(description="Minimum response size (in bytes) before compression is applied."),
+    ] = 5000 
+
+    compresslevel: Annotated[
+        int,
+        Field(description="Compression level (1=fastest, 9=best compression)."),
+    ] = 3
+
+
 class ServerConfig(BaseSettings):
     """This class stores server config parameters in a way that
     can be easily extended for new config file types.
@@ -198,6 +216,12 @@ class ServerConfig(BaseSettings):
             )
         ),
     ] = False
+
+
+    gzip: Annotated[
+        GzipConfig,
+        Field(description="Configuration options for GZip compression."),
+    ] = GzipConfig()
 
     use_real_mongo: Annotated[
         bool | None,
