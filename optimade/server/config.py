@@ -8,8 +8,8 @@ from typing import Annotated, Any, Literal
 import yaml
 from pydantic import (
     AnyHttpUrl,
-    Field,
     BaseModel,
+    Field,
     NonNegativeFloat,
     field_validator,
     model_validator,
@@ -154,8 +154,10 @@ class GzipConfig(BaseModel):
 
     minimum_size: Annotated[
         int,
-        Field(description="Minimum response size (in bytes) before compression is applied."),
-    ] = 5000 
+        Field(
+            description="Minimum response size (in bytes) before compression is applied."
+        ),
+    ] = 5000
 
     compresslevel: Annotated[
         int,
@@ -216,7 +218,6 @@ class ServerConfig(BaseSettings):
             )
         ),
     ] = False
-
 
     gzip: Annotated[
         GzipConfig,
