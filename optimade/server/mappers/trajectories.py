@@ -1,10 +1,12 @@
-from optimade.server.mappers.entries import BaseResourceMapper
-from optimade.models.entries import EntryResourceAttributes
-from optimade.models.trajectories import TrajectoryResource
-from optimade.models.structures import StructureResourceAttributes
-from bson.objectid import ObjectId
 from collections import Counter
+
+from bson.objectid import ObjectId
+
+from optimade.models.entries import EntryResourceAttributes
+from optimade.models.structures import StructureResourceAttributes
+from optimade.models.trajectories import TrajectoryResource
 from optimade.server.config import CONFIG
+from optimade.server.mappers.entries import BaseResourceMapper
 
 __all__ = ("TrajectoryMapper",)
 
@@ -19,11 +21,14 @@ class TrajectoryMapper(BaseResourceMapper):
     )
     HIDDEN_FIELDS = ["_id"]
 
-    REFERENCE_STRUCTURE_FIELDS = list(StructureResourceAttributes.__fields__.keys())
-    STANDARD_FIELDS = (
-        {"reference_structure", "reference_frame", "nframes", "available_properties"}
-        .union(BaseResourceMapper.get_required_fields())
-        .union(EntryResourceAttributes.__fields__.keys())
+    REFERENCE_STRUCTURE_FIELDS = list(StructureResourceAttributes.model_fields.keys())
+    STANDARD_FIELDS = {
+        "reference_structure",
+        "reference_frame",
+        "nframes",
+        "available_properties",
+    }.union(BaseResourceMapper.get_required_fields()).union(
+        EntryResourceAttributes.model_fields.keys()
     )
     ENTRY_RESOURCE_CLASS = TrajectoryResource
     ENDPOINT = "trajectories"
@@ -40,8 +45,10 @@ class TrajectoryMapper(BaseResourceMapper):
         reference_frame = reference_md.get("refframe", nframes)
         natoms = reference_md["atoms"]
         # Clean some fields from the project data so they are further parsed and renamed
-        if doc.get("_id", None): del doc["_id"]
-        if doc.get("mds", None): del doc["mds"]
+        if doc.get("_id", None):
+            del doc["_id"]
+        if doc.get("mds", None):
+            del doc["mds"]
         # Map the project document to an optimade format
         # TODO check whether fields are not in the exclude fields so we do not needlessly make an effort to generate them here.
         mapped_doc = super().map_back(doc)
@@ -67,9 +74,9 @@ class TrajectoryMapper(BaseResourceMapper):
         # Modifiy the reference structure to make it optimade-compliant
         mapped_doc["attributes"]["reference_structure"] = {"nsites": natoms}
         if "species_at_sites" not in CONFIG.exclude_from_reference_structure:
-            mapped_doc["attributes"]["reference_structure"][
-                "species_at_sites"
-            ] = topology["atom_names"]
+            mapped_doc["attributes"]["reference_structure"]["species_at_sites"] = (
+                topology["atom_names"]
+            )
         # generate the species
         species = []
         found = []
@@ -108,9 +115,9 @@ class TrajectoryMapper(BaseResourceMapper):
         if "nperiodic_dimensions" not in CONFIG.exclude_from_reference_structure:
             mapped_doc["attributes"]["reference_structure"]["nperiodic_dimensions"] = 3
         if "lattice_vectors" not in CONFIG.exclude_from_reference_structure:
-            mapped_doc["attributes"]["reference_structure"][
-                "lattice_vectors"
-            ] = None  # Todo: At the moment the lattice vectors are not curated Only the length of the vectors is stored in the database but not the angles.
+            mapped_doc["attributes"]["reference_structure"]["lattice_vectors"] = (
+                None  # Todo: At the moment the lattice vectors are not curated Only the length of the vectors is stored in the database but not the angles.
+            )
         if "cartesian_site_positions" not in CONFIG.exclude_from_reference_structure:
             mapped_doc["attributes"]["reference_structure"][
                 "cartesian_site_positions"
