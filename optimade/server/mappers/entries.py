@@ -235,9 +235,6 @@ class BaseResourceMapper:
         alias = dict(cls.all_aliases()).get(split[0], None)
         if alias is not None:
             return alias + ("." + ".".join(split[1:]) if len(split) > 1 else "")
-        prefix = f"_{CONFIG.provider.prefix}_"
-        if split[0].startswith(prefix):
-            return optimade_field.replace(prefix, "")
         return optimade_field
 
     @classmethod

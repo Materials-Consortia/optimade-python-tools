@@ -2,6 +2,7 @@
 # import warnings
 from typing import List, Optional, Any, Annotated
 from enum import IntEnum
+from datetime import datetime
 from pydantic import ConfigDict, BaseModel
 
 from optimade.models.entries import EntryResourceAttributes, EntryResource
@@ -176,6 +177,24 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
+    last_modified: Annotated[
+        datetime | None,
+        OptimadeField(
+            description="""Date and time representing when the entry was last modified.
+
+- **Type**: timestamp.
+
+- **Requirements/Conventions**:
+    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
+    - **Query**: MUST be a queryable property with support for all mandatory filter features.
+    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.
+
+- **Example**:
+    - As part of JSON response format: `"2007-04-05T14:30:20Z"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)""",
+            support=SupportLevel.SHOULD,
+            queryable=SupportLevel.MUST,
+        ),
+    ]
     offset_sparse: Optional[int] = OptimadeField(
         None,
         description="""If :property:`frame_serialization_format` is set to :val:` "explicit_regular_sparse"` this property gives the frame number to which the first value belongs.

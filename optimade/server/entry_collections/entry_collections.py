@@ -382,28 +382,16 @@ class EntryCollection(ABC):
             cursor_kwargs["limit"] = CONFIG.page_limit
 
         # response_fields
+        cursor_kwargs["projection"] = {
+            f"{self.resource_mapper.get_backend_field(f)}": True
+            for f in self.all_fields
+        }
 
         if getattr(params, "response_fields", False):
             response_fields = set(params.response_fields.split(","))
             response_fields |= self.resource_mapper.get_required_fields()
-            cursor_kwargs["projection"] = {
-                f"{self.resource_mapper.get_backend_field(f)}": True
-                for f in response_fields  # self.all_fields
-            }
         else:
-            response_fields = getattr(
-                self.resource_mapper, "STANDARD_FIELDS", self.all_fields.copy()
-            )
-            cursor_kwargs["projection"] = {
-                f"{self.resource_mapper.get_backend_field(f)}": True
-                for f in self.all_fields
-            }
-            response_fields |= set(
-                [
-                    f"_{self.provider_prefix}_{field_name}" 
-                    for field_name in self.provider_fields
-                ]
-            )
+            response_fields = self.all_fields.copy()
 
         cursor_kwargs["fields"] = response_fields
 
