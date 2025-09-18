@@ -31,6 +31,7 @@ from optimade.models import (
     ReferenceResource,
     ResponseMeta,
     StructureResource,
+    TrajectoryResource,
 )
 from optimade.models.optimade_json import Success
 
@@ -432,3 +433,9 @@ class ValidatorStructureResponseOne(ValidatorEntryResponseOne):
 
 class ValidatorStructureResponseMany(ValidatorEntryResponseMany):
     data: list[StructureResource] = Field(...)
+
+class ValidatorTrajectoryResponseOne(ValidatorEntryResponseOne):
+    data: TrajectoryResource = Field(...)
+
+class ValidatorTrajectoryResponseMany(ValidatorEntryResponseMany):
+    data: list[TrajectoryResource] = Field(...)

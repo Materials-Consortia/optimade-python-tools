@@ -4,6 +4,7 @@ from functools import lru_cache
 from typing import Any
 
 from optimade.models.entries import EntryResource
+from optimade.server.config import CONFIG
 
 # A number that approximately tracks the number of types with mappers
 # so that the global caches can be set to the correct size.
@@ -73,7 +74,7 @@ class BaseResourceMapper:
     LENGTH_ALIASES: tuple[tuple[str, str], ...] = ()
     PROVIDER_FIELDS: tuple[str, ...] = ()
     ENTRY_RESOURCE_CLASS: type[EntryResource] = EntryResource
-    RELATIONSHIP_ENTRY_TYPES: set[str] = {"references", "structures"}
+    RELATIONSHIP_ENTRY_TYPES: set[str] = {"references", "structures", "trajectories"}
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set[str] = {"id", "type", "relationships", "links"}
 
     @classmethod
@@ -234,6 +235,9 @@ class BaseResourceMapper:
         alias = dict(cls.all_aliases()).get(split[0], None)
         if alias is not None:
             return alias + ("." + ".".join(split[1:]) if len(split) > 1 else "")
+        prefix = f"_{CONFIG.provider.prefix}_"
+        if split[0].startswith(prefix):
+            return optimade_field.replace(prefix, "")
         return optimade_field
 
     @classmethod
@@ -358,6 +362,9 @@ class BaseResourceMapper:
         for field in list(newdoc.keys()):
             if field not in cls.TOP_LEVEL_NON_ATTRIBUTES_FIELDS:
                 del newdoc[field]
+
+        # Remove the mongo internal id since it is not serializable
+        if attributes.get("_id", None): del attributes["_id"]
 
         newdoc["type"] = cls.ENDPOINT
         newdoc["attributes"] = attributes

@@ -171,6 +171,21 @@ class EntryListingQueryParams(BaseQueryParams):
             where MAJOR is a major version and MINOR is a minor version of the API.
             For example, if a client appends `api_hint=v1.0` to the query string, the hint provided is for major version 1 and minor version 0.
 
+        first_frame (int): first_frame specifies the first frame that should be returned from a trajectory.
+            The value MUST be larger than 0 and MUST be less than or equal to nframes.(The total number of frames in the trajectory)
+            If this is not the case :http-error:`400 Bad Request` MUST be returned with a message indicating that the value for this field is incorrect. ToDo implement this check
+            The first frame is frame 1.
+            The default value is 1.
+
+        last_frame (int): last_frame specifies the last frame that should be returned from a trajectory.
+            The value MUST be larger or equal to :property:`first_frame` and MUST be less than or equal to `nframes`_ (the total number of frames in the trajectory).
+            If this is not the case :http-error:`400 Bad Request` MUST be returned with a message indicating that the value for this field is incorrect. ToDo implement this check
+            The default value is `nframes`_-1.
+            
+        frame_step (int): Specifies that data should only be returned for one out of every :property:`frame_step` frames.
+            The value MUST be larger or equal to 1 and MUST be less than or equal to the total number of frames.
+            If this is not the case :http-error:`400 Bad Request` MUST be returned with a message indicating that the value for this field is incorrect.
+            The default value is 1.
     """
 
     # The reference server implementation only supports offset/number-based pagination

@@ -28,6 +28,8 @@ from optimade.validator.utils import (
     ValidatorReferenceResponseOne,
     ValidatorStructureResponseMany,
     ValidatorStructureResponseOne,
+    ValidatorTrajectoryResponseOne,
+    ValidatorTrajectoryResponseMany,
 )
 
 __all__ = ("ValidatorConfig", "VALIDATOR_CONFIG")
@@ -39,7 +41,7 @@ _ENTRY_SCHEMAS = {
     for endp in ENTRY_INFO_SCHEMAS
 }
 
-_ENTRY_ENDPOINTS = ("structures", "references", "calculations")
+_ENTRY_ENDPOINTS = ("structures", "references", "calculations", "trajectories")
 
 _NON_ENTRY_ENDPOINTS = ("info", "links", "versions")
 
@@ -49,6 +51,8 @@ _RESPONSE_CLASSES = {
     "references/": ValidatorReferenceResponseOne,
     "structures": ValidatorStructureResponseMany,
     "structures/": ValidatorStructureResponseOne,
+    "trajectories": ValidatorTrajectoryResponseMany,
+    "trajectories/": ValidatorTrajectoryResponseOne,
     "info": InfoResponse,
     "links": ValidatorLinksResponse,
 }
