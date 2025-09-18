@@ -2,7 +2,7 @@
 # import warnings
 from typing import List, Optional, Any, Annotated
 from enum import IntEnum
-from pydantic import BaseModel
+from pydantic import ConfigDict, BaseModel
 
 from optimade.models.entries import EntryResourceAttributes, EntryResource
 from optimade.models.utils import (
@@ -138,9 +138,7 @@ class AvailablePropertyAttributes(BaseModel):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-
-    class Config:
-        extra = "allow"
+    model_config = ConfigDict(extra="allow")
 
 
 class TrajectoryDataAttributes(AvailablePropertySubfields):
@@ -226,9 +224,6 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-
-    class Config:
-        underscore_attrs_are_private = True
 
 
 class TrajectoryResourceAttributes(EntryResourceAttributes):
