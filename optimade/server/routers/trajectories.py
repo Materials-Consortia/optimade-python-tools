@@ -51,7 +51,6 @@ def get_single_trajectory(
     return get_single_entry(
         collection=trajectories_coll,
         entry_id=entry_id,
-        response=TrajectoryResponseOne,
         request=request,
         params=params,
     )

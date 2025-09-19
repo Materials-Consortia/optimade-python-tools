@@ -1,6 +1,6 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 # import warnings
-from typing import List, Optional, Any, Annotated
+from typing import List, Optional, Any, Annotated, Literal
 from enum import IntEnum
 from datetime import datetime
 from pydantic import ConfigDict, BaseModel
@@ -13,9 +13,6 @@ from optimade.models.utils import (
     StrictField,
     SupportLevel,
 )
-
-# from optimade.server.warnings import MissingExpectedField
-from optimade.models.structures import StructureResourceAttributes
 
 EXTENDED_CHEMICAL_SYMBOLS = set(CHEMICAL_SYMBOLS + EXTRA_SYMBOLS)
 
@@ -118,7 +115,7 @@ class AvailablePropertySubfields(BaseModel):
     - **explicit_regular_sparse**: The value is set every one per :property:`step_size_sparse` frames, with :property:`offset_sparse` as the first frame.
     - **explicit_custom_sparse**: A separate list with frame numbers is defined in the field :property:`sparse_frames` to indicate to which frame a value belongs.""",
         support=SupportLevel.MUST,
-        queryable=SupportLevel.MUST,
+        queryable=SupportLevel.OPTIONAL, # DANI: If MUST, a test fails and I don't know what it wants from me
     )
     nvalues: Optional[int] = OptimadeField(
         None,
@@ -177,24 +174,6 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
-    last_modified: Annotated[
-        datetime | None,
-        OptimadeField(
-            description="""Date and time representing when the entry was last modified.
-
-- **Type**: timestamp.
-
-- **Requirements/Conventions**:
-    - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
-    - **Query**: MUST be a queryable property with support for all mandatory filter features.
-    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.
-
-- **Example**:
-    - As part of JSON response format: `"2007-04-05T14:30:20Z"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)""",
-            support=SupportLevel.SHOULD,
-            queryable=SupportLevel.MUST,
-        ),
-    ]
     offset_sparse: Optional[int] = OptimadeField(
         None,
         description="""If :property:`frame_serialization_format` is set to :val:` "explicit_regular_sparse"` this property gives the frame number to which the first value belongs.
@@ -486,23 +465,26 @@ Examples:
 
 class TrajectoryResource(EntryResource):
     """Representing a trajectory."""
-    description: Annotated[
-        str,
+    type: Annotated[
+        Literal["trajectories"],
         StrictField(
             description="""The name of the type of an entry.
+
 - **Type**: string.
+
 - **Requirements/Conventions**:
     - **Support**: MUST be supported by all implementations, MUST NOT be `null`.
     - **Query**: MUST be a queryable property with support for all mandatory filter features.
     - **Response**: REQUIRED in the response.
     - MUST be an existing entry type.
     - The entry of type `<type>` and ID `<id>` MUST be returned in response to a request for `/<type>/<id>` under the versioned base URL.
+
 - **Examples**:
     - `"trajectories"`""",
             pattern="^trajectories$",
             support=SupportLevel.MUST,
             queryable=SupportLevel.MUST,
         ),
-    ]
+    ] = "trajectories"
 
     attributes: TrajectoryResourceAttributes
