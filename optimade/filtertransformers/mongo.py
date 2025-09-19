@@ -574,7 +574,7 @@ def recursive_postprocessing(filter_: dict | list, condition, replacement):
     replacement to the dictionary.
 
     Parameters:
-        filter_ : the filter_ to process.
+        filter_: the filter_ to process.
         condition (callable): a function that returns True if the
             replacement function should be applied. It should take
             as arguments the property and expression from the filter_,
