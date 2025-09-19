@@ -248,46 +248,13 @@ class TrajectoryDataAttributes(AvailablePropertySubfields):
 class TrajectoryResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a trajectory, e.g. reference structure."""
 
-    reference_structure: StructureResourceAttributes = OptimadeField(
-        ...,
-        description="""This is an example of the structures that can be found in the trajectory.
-  It can be used to select trajectories with queries and to give a quick visual impression of the structures in this trajectory.
-- **Type**: dictionary
-- **Requirements/Conventions**:
-  - Each trajectory MUST have a :property:`reference_structure`.
-  - This :property:`reference_structure` MAY be one of the frames from the trajectory, in that case the `reference_frame`_ field MUST specify which frame has been used.
-  - Queries on the trajectories MUST be done on the information supplied in the :property:`reference_structure` when the queried property is in the :property:`reference_structure`.
-    The subfields of the reference_structure MUST have the same queryability as in the `structures entries`_.
-    For example, the query : http://example.com/optimade/v1/trajectories?filter=nelements=2 would use the `nelements`_ property within the reference_structure.
-  - This reference frame has the same properties as the structure entries namely:
-    - `elements`
-    - `nelements`
-    - `elements_ratios`
-    - `chemical_formula_descriptive`
-    - `chemical_formula_reduced`
-    - `chemical_formula_hill`
-    - `chemical_formula_anonymous`
-    - `dimension_types`
-    - `nperiodic_dimensions`
-    - `lattice_vectors`
-    - `cartesian_site_positions`
-    - `nsites`
-    - `species_at_sites`
-    - `species`
-    - `assemblies`
-    - `structure_features`""",
-        support=SupportLevel.MUST,
-        queryable=SupportLevel.MUST,
-    )
-
     reference_frame: Optional[int] = OptimadeField(
         None,
-        description="""The number of the frame at which the `reference_structure` was taken.
+        description="""The number of the frame to be used as reference (e.g. when taking a representative screenshot).
   The first frame is frame 1.
 - **Type**: integer
 - **Requirements/Conventions**: The value MUST be equal or larger than 1 and less than nframes.
-  - **Support**: MUST be supported if the `reference_structure`_ is taken from the trajectory.
-    If the `reference_structure`_ is not in the trajectory, the value MUST NOT be present.
+  - **Support**: SHOULD be supported.
   - **Query**: Support for queries on this property is OPTIONAL.
     If supported, filters MAY support only a subset of comparison operators.
 - **Examples**:

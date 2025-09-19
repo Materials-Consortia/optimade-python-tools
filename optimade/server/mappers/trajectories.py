@@ -21,9 +21,7 @@ class TrajectoryMapper(BaseResourceMapper):
     )
     #HIDDEN_FIELDS = ["_id"]
 
-    #REFERENCE_STRUCTURE_FIELDS = list(set(StructureResourceAttributes.model_fields.keys()) - {"last_modified"})
     # STANDARD_FIELDS = {
-    #     "reference_structure",
     #     "reference_frame",
     #     "nframes",
     #     "available_properties",
