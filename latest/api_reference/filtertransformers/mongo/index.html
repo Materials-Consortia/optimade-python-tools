@@ -3244,8 +3244,7 @@ various field-related configuration.</p>
 
               <details class="quote">
                 <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 20</span>
-<span class="normal"> 21</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
 <span class="normal"> 22</span>
 <span class="normal"> 23</span>
 <span class="normal"> 24</span>
@@ -3791,7 +3790,8 @@ various field-related configuration.</p>
 <span class="normal">564</span>
 <span class="normal">565</span>
 <span class="normal">566</span>
-<span class="normal">567</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MongoTransformer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
+<span class="normal">567</span>
+<span class="normal">568</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MongoTransformer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A filter transformer for the MongoDB backend.</span>
 
 <span class="sd">    Parses a lark tree into a dictionary representation to be</span>
@@ -4711,15 +4711,15 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">58</span>
-<span class="normal">59</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
 <span class="normal">63</span>
 <span class="normal">64</span>
 <span class="normal">65</span>
-<span class="normal">66</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+<span class="normal">66</span>
+<span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Used to post-process the nested dictionary of the parsed query.&quot;&quot;&quot;</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_relationship_filtering</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_length_operators</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -4899,10 +4899,11 @@ replacement to the dictionary.</p>
                 <code>filter_</code>
             </td>
             <td>
+                  <code><span title="dict">dict</span> | <span title="list">list</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>the filter_ to process.</p>
+                <p>the filter to process.</p>
               </div>
             </td>
             <td>
@@ -4914,7 +4915,7 @@ replacement to the dictionary.</p>
                 <code>condition</code>
             </td>
             <td>
-                  <code><span title="callable">callable</span></code>
+                  <code><span title="collections.abc.Callable">Callable</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4933,7 +4934,7 @@ as would be returned by iterating over <code>filter_.items()</code>.</p>
                 <code>replacement</code>
             </td>
             <td>
-                  <code><span title="callable">callable</span></code>
+                  <code><span title="collections.abc.Callable">Callable</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4969,8 +4970,7 @@ another, the following functions could be used:</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">570</span>
-<span class="normal">571</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">571</span>
 <span class="normal">572</span>
 <span class="normal">573</span>
 <span class="normal">574</span>
@@ -5020,19 +5020,24 @@ another, the following functions could be used:</p>
 <span class="normal">618</span>
 <span class="normal">619</span>
 <span class="normal">620</span>
-<span class="normal">621</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">recursive_postprocessing</span><span class="p">(</span><span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">recursive_postprocessing</span><span class="p">(</span>
+    <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">,</span> <span class="n">condition</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">replacement</span><span class="p">:</span> <span class="n">Callable</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively descend into the query, checking each dictionary</span>
 <span class="sd">    (contained in a list, or as an entry in another dictionary) for</span>
 <span class="sd">    the condition passed. If the condition is true, apply the</span>
 <span class="sd">    replacement to the dictionary.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        filter_ : the filter_ to process.</span>
-<span class="sd">        condition (callable): a function that returns True if the</span>
+<span class="sd">        filter_: the filter to process.</span>
+<span class="sd">        condition: a function that returns True if the</span>
 <span class="sd">            replacement function should be applied. It should take</span>
 <span class="sd">            as arguments the property and expression from the filter_,</span>
 <span class="sd">            as would be returned by iterating over `filter_.items()`.</span>
-<span class="sd">        replacement (callable): a function that returns the processed</span>
+<span class="sd">        replacement: a function that returns the processed</span>
 <span class="sd">            dictionary. It should take as arguments the dictionary</span>
 <span class="sd">            to modify, the property and the expression (as described</span>
 <span class="sd">            above).</span>
