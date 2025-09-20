@@ -6,6 +6,7 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.
 import copy
 import itertools
 import warnings
+from collections.abc import Callable
 from typing import Any
 
 from lark import Token, v_args
@@ -567,19 +568,21 @@ class MongoTransformer(BaseTransformer):
         )
 
 
-def recursive_postprocessing(filter_: dict | list, condition, replacement):
+def recursive_postprocessing(
+    filter_: dict | list, condition: Callable, replacement: Callable
+):
     """Recursively descend into the query, checking each dictionary
     (contained in a list, or as an entry in another dictionary) for
     the condition passed. If the condition is true, apply the
     replacement to the dictionary.
 
     Parameters:
-        filter_: the filter_ to process.
-        condition (callable): a function that returns True if the
+        filter_: the filter to process.
+        condition: a function that returns True if the
             replacement function should be applied. It should take
             as arguments the property and expression from the filter_,
             as would be returned by iterating over `filter_.items()`.
-        replacement (callable): a function that returns the processed
+        replacement: a function that returns the processed
             dictionary. It should take as arguments the dictionary
             to modify, the property and the expression (as described
             above).
