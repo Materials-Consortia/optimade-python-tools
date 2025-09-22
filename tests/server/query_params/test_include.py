@@ -61,13 +61,17 @@ def test_empty_value_single_entry(check_include_response):
 
 def test_wrong_relationship_type(check_error_response):
     """A wrong type should result in a `400 Bad Request` response"""
-    from optimade.server.routers import ENTRY_COLLECTIONS
+    from optimade.server.config import ServerConfig
+    from optimade.server.entry_collections import create_entry_collections
+
+    config = ServerConfig()
+    entry_collections = create_entry_collections(config)
 
     for wrong_type in ("test", '""', "''"):
         request = f"/structures?include={wrong_type}"
         error_detail = (
             f"'{wrong_type}' cannot be identified as a valid relationship type. "
-            f"Known relationship types: {sorted(ENTRY_COLLECTIONS.keys())}"
+            f"Known relationship types: {sorted(entry_collections.keys())}"
         )
         check_error_response(
             request,

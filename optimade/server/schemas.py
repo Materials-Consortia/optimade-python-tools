@@ -11,6 +11,7 @@ from optimade.models import (
     StructureResource,
 )
 from optimade.models.types import NoneType, _get_origin_type
+from optimade.server.config import ServerConfig
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Literal, Union
@@ -54,6 +55,7 @@ def retrieve_queryable_properties(
     schema: type[EntryResource],
     queryable_properties: Iterable[str] | None = None,
     entry_type: str | None = None,
+    config: ServerConfig | None = None,
 ) -> "QueryableProperties":
     """Recursively loops through a pydantic model, returning a dictionary of all the
     OPTIMADE-queryable properties of that model.
@@ -123,17 +125,15 @@ def retrieve_queryable_properties(
             )
 
     # If specified, check the config for any additional well-described provider fields
-    if entry_type:
-        from optimade.server.config import CONFIG
-
+    if entry_type and config:
         described_provider_fields = [
             field
-            for field in CONFIG.provider_fields.get(entry_type, {})  # type: ignore[call-overload]
+            for field in config.provider_fields.get(entry_type, {})  # type: ignore[call-overload]
             if isinstance(field, dict)
         ]
         for field in described_provider_fields:
             name = (
-                f"_{CONFIG.provider.prefix}_{field['name']}"
+                f"_{config.provider.prefix}_{field['name']}"
                 if not field["name"].startswith("_")
                 else field["name"]
             )

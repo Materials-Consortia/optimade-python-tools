@@ -6,23 +6,26 @@ import os
 import sys
 from pathlib import Path
 
+from optimade.server.config import ServerConfig
+
 # Instantiate LOGGER
 LOGGER = logging.getLogger("optimade")
 LOGGER.setLevel(logging.DEBUG)
 
+CONFIG = ServerConfig()
+
 # Handler
 CONSOLE_HANDLER = logging.StreamHandler(sys.stdout)
 try:
-    from optimade.server.config import CONFIG
-
     CONSOLE_HANDLER.setLevel(CONFIG.log_level.value.upper())
 
     if CONFIG.debug:
         CONSOLE_HANDLER.setLevel(logging.DEBUG)
 
-
 except ImportError:
     CONSOLE_HANDLER.setLevel(os.getenv("OPTIMADE_LOG_LEVEL", "INFO").upper())
+
+CONSOLE_HANDLER.setLevel(os.getenv("OPTIMADE_LOG_LEVEL", "DEBUG").upper())
 
 # Formatter; try to use uvicorn default, otherwise just use built-in default
 try:
@@ -39,8 +42,6 @@ LOGGER.addHandler(CONSOLE_HANDLER)
 
 # Save a file with all messages (DEBUG level)
 try:
-    from optimade.server.config import CONFIG
-
     LOGS_DIR = CONFIG.log_dir
 except ImportError:
     LOGS_DIR = Path(os.getenv("OPTIMADE_LOG_DIR", "/var/log/optimade/")).resolve()

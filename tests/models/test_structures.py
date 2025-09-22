@@ -4,15 +4,12 @@ from typing import TYPE_CHECKING
 import pytest
 
 from optimade.models.structures import Periodicity, StructureFeatures
+from optimade.server.mappers import StructureMapper
 from optimade.warnings import MissingExpectedField
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Generator
+    from collections.abc import Generator
     from typing import Any, Optional
-
-    from optimade.server.mappers import BaseResourceMapper
-
-MAPPER = "StructureMapper"
 
 
 @pytest.mark.filterwarnings("ignore", category=MissingExpectedField)
@@ -46,7 +43,6 @@ def test_good_structure_with_missing_data(good_structure: "dict[str, Any]") -> N
 
 def test_more_good_structures(
     good_structures: "list[dict[str, Any]]",
-    mapper: "Callable[[str], BaseResourceMapper]",
 ) -> None:
     """Check well-formed structures with specific edge-cases"""
     from pydantic import ValidationError
@@ -55,7 +51,7 @@ def test_more_good_structures(
 
     for index, structure in enumerate(good_structures):
         try:
-            s = StructureResource(**mapper(MAPPER).map_back(structure))
+            s = StructureResource(**StructureMapper().map_back(structure))
             if s.attributes.structure_features:
                 assert isinstance(s.attributes.structure_features[0], StructureFeatures)
             for dim in s.attributes.dimension_types:
@@ -70,7 +66,6 @@ def test_more_good_structures(
 
 def test_bad_structures(
     bad_structures: "list[dict[str, Any]]",
-    mapper: "Callable[[str], BaseResourceMapper]",
 ) -> None:
     """Check badly formed structures.
 
@@ -90,7 +85,7 @@ def test_bad_structures(
                 f"Trying structure number {index}/{len(bad_structures)} from 'test_bad_structures.json'"
             )
             with pytest.raises((ValidationError, TypeError)):
-                StructureResource(**mapper(MAPPER).map_back(structure))
+                StructureResource(**StructureMapper().map_back(structure))
 
 
 deformities = (

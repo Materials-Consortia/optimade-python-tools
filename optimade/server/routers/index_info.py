@@ -8,7 +8,6 @@ from optimade.models import (
     IndexRelationship,
     RelatedLinksResource,
 )
-from optimade.server.config import CONFIG
 from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import ERROR_RESPONSES
 
@@ -23,13 +22,16 @@ router = APIRouter(redirect_slashes=True)
     responses=ERROR_RESPONSES,
 )
 def get_info(request: Request) -> IndexInfoResponse:
+    config = request.app.state.config
+
     return IndexInfoResponse(
         meta=meta_values(
+            config,
             request.url,
             1,
             1,
             more_data_available=False,
-            schema=CONFIG.index_schema_url,
+            schema=config.index_schema_url,
         ),
         data=IndexInfoResource(
             id=IndexInfoResource.model_fields["id"].default,
@@ -38,7 +40,7 @@ def get_info(request: Request) -> IndexInfoResponse:
                 api_version=f"{__api_version__}",
                 available_api_versions=[
                     {
-                        "url": f"{get_base_url(request.url)}/v{__api_version__.split('.')[0]}/",
+                        "url": f"{get_base_url(config, request.url)}/v{__api_version__.split('.')[0]}/",
                         "version": f"{__api_version__}",
                     }
                 ],
@@ -51,7 +53,7 @@ def get_info(request: Request) -> IndexInfoResponse:
                 "default": IndexRelationship(
                     data={
                         "type": RelatedLinksResource.model_fields["type"].default,
-                        "id": CONFIG.default_db,
+                        "id": config.default_db,
                     }
                 )
             },

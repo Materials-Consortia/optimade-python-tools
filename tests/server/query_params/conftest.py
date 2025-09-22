@@ -71,7 +71,7 @@ def check_required_fields_response(get_good_response):
         server: str = "regular",
     ):
         expected_fields |= (
-            get_mapper[endpoint].get_required_fields() - known_unused_fields
+            get_mapper[endpoint]().get_required_fields() - known_unused_fields
         )
         request = f"/{endpoint}?response_fields={','.join(expected_fields)}"
 

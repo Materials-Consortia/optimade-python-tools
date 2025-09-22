@@ -24,7 +24,9 @@ PROVIDER_LIST_URLS = (
 )
 
 
-def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> None:
+def insert_from_jsonl(
+    jsonl_path: Path, entry_collections, create_default_index: bool = False
+) -> None:
     """Insert OPTIMADE JSON lines data into the database.
 
     Arguments:
@@ -37,7 +39,6 @@ def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> N
     import bson.json_util
 
     from optimade.server.logger import LOGGER
-    from optimade.server.routers import ENTRY_COLLECTIONS
 
     batch = defaultdict(list)
     batch_size: int = 1000
@@ -53,9 +54,9 @@ def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> N
 
     # If the chosen database backend supports it, make the default indices
     if create_default_index:
-        for entry_type in ENTRY_COLLECTIONS:
+        for entry_type in entry_collections:
             try:
-                ENTRY_COLLECTIONS[entry_type].create_default_index()
+                entry_collections[entry_type].create_default_index()
             except NotImplementedError:
                 pass
 
@@ -103,7 +104,7 @@ def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> N
                 continue
 
             if len(batch[_type]) >= batch_size:
-                ENTRY_COLLECTIONS[_type].insert(batch[_type])
+                entry_collections[_type].insert(batch[_type])
                 batch[_type] = []
 
             good_rows += 1
@@ -111,7 +112,7 @@ def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> N
         # Insert any remaining data
         for entry_type in batch:
             if batch[entry_type]:
-                ENTRY_COLLECTIONS[entry_type].insert(batch[entry_type])
+                entry_collections[entry_type].insert(batch[entry_type])
                 batch[entry_type] = []
 
         if bad_rows:
