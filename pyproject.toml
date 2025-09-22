@@ -30,6 +30,7 @@ dependencies = [
     "pydantic[email]~=2.2",
     "pydantic-settings~=2.0",
     "requests~=2.28",
+    "pyyaml~=6.0",
 ]
 
 [project.scripts]
@@ -68,7 +69,6 @@ server = [
     "uvicorn[standard]~=0.19",
     "fastapi>=0.103.1",
     "starlette ~= 0.38, >= 0.38.3",
-    "pyyaml~=6.0",
     "optimade[mongo]",
 ]
 

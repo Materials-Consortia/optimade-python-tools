@@ -6,12 +6,6 @@ from typing import Any, Literal
 from optimade.models.entries import EntryResource
 from optimade.server.config import ServerConfig
 
-# A number that approximately tracks the number of types with mappers
-# so that the global caches can be set to the correct size.
-# See https://github.com/Materials-Consortia/optimade-python-tools/issues/1434
-# for the details.
-NUM_ENTRY_TYPES = 4
-
 __all__ = ("BaseResourceMapper",)
 
 

@@ -23,7 +23,9 @@ class BaseQueryParams(ABC):
 
     unsupported_params: list[str] = []
 
-    def check_params(self, query_params: Iterable[str]) -> None:
+    def check_params(
+        self, query_params: Iterable[str], base_resource_mapper: BaseResourceMapper
+    ) -> None:
         """This method checks whether all the query parameters that are specified
         in the URL string are implemented in the relevant `*QueryParams` class.
 
@@ -57,9 +59,9 @@ class BaseQueryParams(ABC):
                 split_param = param.split("_")
                 if param.startswith("_") and len(split_param) > 2:
                     prefix = split_param[1]
-                    if prefix in BaseResourceMapper().SUPPORTED_PREFIXES:
+                    if prefix in base_resource_mapper.SUPPORTED_PREFIXES:
                         errors.append(param)
-                    elif prefix not in BaseResourceMapper().KNOWN_PROVIDER_PREFIXES:
+                    elif prefix not in base_resource_mapper.KNOWN_PROVIDER_PREFIXES:
                         warnings.append(param)
                 else:
                     errors.append(param)
