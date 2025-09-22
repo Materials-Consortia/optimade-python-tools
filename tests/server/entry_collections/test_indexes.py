@@ -11,14 +11,9 @@ def test_indexes_are_created_where_appropriate(client):
     """
     import pymongo.errors
 
-    from optimade.server.config import ServerConfig
-    from optimade.server.create_app import create_app
     from optimade.server.query_params import EntryListingQueryParams
 
-    # get default config
-    config = ServerConfig()
-    # create the app, which also inserts the test data and sets up entry collections
-    app = create_app(config)
+    app = client.app
 
     entry_collections = app.state.entry_collections
 

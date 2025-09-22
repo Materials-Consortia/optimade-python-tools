@@ -138,6 +138,11 @@ def insert_index_data(
     from optimade.server.routers.utils import get_providers, mongo_id_for_database
 
     links_coll = entry_collections["links"]
+
+    if links_coll.collection.estimated_document_count() > 0:
+        LOGGER.info("Skipping index links insert: links collection already populated.")
+        return
+
     LOGGER.debug("Loading index links...")
     with open(config.index_links_path) as f:
         data = json.load(f)

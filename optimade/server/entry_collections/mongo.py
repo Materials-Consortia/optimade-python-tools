@@ -1,3 +1,4 @@
+import atexit
 from typing import Any
 
 from pymongo.errors import ExecutionTimeout
@@ -10,27 +11,49 @@ from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
+_CLIENTS: dict[tuple[str, str], Any] = {}
+
+
+def _close_all_clients(log: bool = True):
+    for (backend, uri), client in list(_CLIENTS.items()):
+        try:
+            client.close()
+            if log:
+                LOGGER.debug(f"Closed MongoClient for {backend} {uri}")
+        except Exception as exc:
+            if log:
+                LOGGER.warning(f"Failed closing MongoClient {backend} {uri}: {exc}")
+        finally:
+            _CLIENTS.pop((backend, uri), None)
+
+
+atexit.register(lambda: _close_all_clients(log=False))
+
 
 def get_mongo_client(config: ServerConfig):
-    if config.database_backend.value == "mongodb":
-        from pymongo import MongoClient, version_tuple
+    """Return a cached MongoClient for (backend, uri), creating it if necessary."""
+    backend = config.database_backend.value
+    uri = config.mongo_uri
+    key = (backend, uri)
 
-        if version_tuple[0] < 4:
-            LOGGER.warning(
-                "Support for pymongo<=3 (and thus MongoDB v3) is deprecated and will be "
-                "removed in the next minor release."
-            )
+    if key in _CLIENTS:
+        return _CLIENTS[key]
 
-        LOGGER.info("Using: Real MongoDB (pymongo)")
+    if backend == "mongodb":
+        from pymongo import MongoClient
 
-    elif config.database_backend.value == "mongomock":
+        LOGGER.info(f"Using: Real MongoDB (pymongo) @ {uri}")
+        client = MongoClient(uri)
+    elif backend == "mongomock":
         from mongomock import MongoClient
 
-        LOGGER.info("Using: Mock MongoDB (mongomock)")
+        LOGGER.info(f"Using: Mock MongoDB (mongomock) @ {uri}")
+        client = MongoClient(uri)
+    else:
+        raise ValueError(f"Unsupported backend {backend}")
 
-    if config.database_backend.value in ("mongomock", "mongodb"):
-        CLIENT = MongoClient(config.mongo_uri)
-    return CLIENT
+    _CLIENTS[key] = client
+    return client
 
 
 class MongoCollection(EntryCollection):
