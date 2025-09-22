@@ -175,6 +175,7 @@ class ServerConfig(BaseSettings):
         extra="allow",
         env_file_encoding="utf-8",
         case_sensitive=False,
+        validate_assignment=True,
     )
 
     debug: Annotated[
@@ -370,12 +371,13 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
             list[str | dict[Literal["name", "type", "unit", "description"], str]],
         ],
         Field(
+            default_factory=dict,
             description=(
                 "A list of additional fields to be served with the provider's prefix "
                 "attached, broken down by endpoint."
             ),
         ),
-    ] = {}
+    ]
     aliases: Annotated[
         dict[Literal["links", "references", "structures"], dict[str, str]],
         Field(
@@ -541,32 +543,6 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         return value
 
     @model_validator(mode="after")
-    def use_real_mongo_override(self) -> "ServerConfig":
-        """Overrides the `database_backend` setting with MongoDB and
-        raises a deprecation warning.
-        """
-        use_real_mongo = self.use_real_mongo
-
-        # Remove from model
-        del self.use_real_mongo
-
-        # Remove from set of user-defined fields
-        if "use_real_mongo" in self.model_fields_set:
-            self.model_fields_set.remove("use_real_mongo")
-
-        if use_real_mongo is not None:
-            warnings.warn(
-                "'use_real_mongo' is deprecated, please set the appropriate 'database_backend' "
-                "instead.",
-                DeprecationWarning,
-            )
-
-            if use_real_mongo:
-                self.database_backend = SupportedBackend.MONGODB
-
-        return self
-
-    @model_validator(mode="after")
     def align_mongo_uri_and_mongo_database(self) -> "ServerConfig":
         """Prefer the value of database name if set from `mongo_uri` rather than
         `mongo_database`.
@@ -623,7 +599,7 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         )
 
 
-CONFIG: ServerConfig = ServerConfig()
+# CONFIG: ServerConfig = ServerConfig()
 """This singleton loads the config from a hierarchy of sources (see
 [`customise_sources`][optimade.server.config.ServerConfig.settings_customise_sources])
 and makes it importable in the server code.

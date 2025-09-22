@@ -5,9 +5,11 @@ from optimade.models import (
     StructureResponseMany,
     StructureResponseOne,
 )
-from optimade.server.config import CONFIG, SupportedBackend
+from optimade.server.config import ServerConfig, SupportedBackend
 
 from ..utils import RegularEndpointTests
+
+CONFIG = ServerConfig()
 
 
 class TestStructuresEndpoint(RegularEndpointTests):

@@ -11,7 +11,7 @@ from optimade.exceptions import BadRequest, Forbidden, NotFound
 from optimade.filterparser import LarkParser
 from optimade.models import Attributes, EntryResource
 from optimade.models.types import NoneType, _get_origin_type
-from optimade.server.config import CONFIG, SupportedBackend
+from optimade.server.config import ServerConfig, SupportedBackend
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.warnings import (
@@ -24,10 +24,11 @@ from optimade.warnings import (
 def create_collection(
     name: str,
     resource_cls: type[EntryResource],
-    resource_mapper: type[BaseResourceMapper],
+    resource_mapper: BaseResourceMapper,
+    config: ServerConfig,
 ) -> "EntryCollection":
     """Create an `EntryCollection` of the configured type, depending on the value of
-    `CONFIG.database_backend`.
+    `config.database_backend`.
 
     Arguments:
         name: The collection name.
@@ -38,7 +39,7 @@ def create_collection(
         The created `EntryCollection`.
 
     """
-    if CONFIG.database_backend in (
+    if config.database_backend in (
         SupportedBackend.MONGODB,
         SupportedBackend.MONGOMOCK,
     ):
@@ -48,19 +49,21 @@ def create_collection(
             name=name,
             resource_cls=resource_cls,
             resource_mapper=resource_mapper,
+            config=config,
         )
 
-    if CONFIG.database_backend is SupportedBackend.ELASTIC:
+    if config.database_backend is SupportedBackend.ELASTIC:
         from optimade.server.entry_collections.elasticsearch import ElasticCollection
 
         return ElasticCollection(
             name=name,
             resource_cls=resource_cls,
             resource_mapper=resource_mapper,
+            config=config,
         )
 
     raise NotImplementedError(
-        f"The database backend {CONFIG.database_backend!r} is not implemented"
+        f"The database backend {config.database_backend!r} is not implemented"
     )
 
 
@@ -86,8 +89,9 @@ class EntryCollection(ABC):
     def __init__(
         self,
         resource_cls: type[EntryResource],
-        resource_mapper: type[BaseResourceMapper],
+        resource_mapper: BaseResourceMapper,
         transformer: Transformer,
+        config: ServerConfig,
     ):
         """Initialize the collection for the given parameters.
 
@@ -105,11 +109,12 @@ class EntryCollection(ABC):
         self.resource_cls = resource_cls
         self.resource_mapper = resource_mapper
         self.transformer = transformer
+        self.config = config
 
-        self.provider_prefix = CONFIG.provider.prefix
+        self.provider_prefix = config.provider.prefix
         self.provider_fields = [
             field if isinstance(field, str) else field["name"]
-            for field in CONFIG.provider_fields.get(resource_mapper.ENDPOINT, [])
+            for field in config.provider_fields.get(resource_mapper.ENDPOINT, [])
         ]
 
         self._all_fields: set[str] = set()
@@ -217,7 +222,7 @@ class EntryCollection(ABC):
                 results = results[0]
 
                 if (
-                    CONFIG.validate_api_response
+                    self.config.validate_api_response
                     and data_returned is not None
                     and data_returned > 1
                 ):
@@ -373,13 +378,13 @@ class EntryCollection(ABC):
         # page_limit
         if getattr(params, "page_limit", False):
             limit = params.page_limit  # type: ignore[union-attr]
-            if limit > CONFIG.page_limit_max:
+            if limit > self.config.page_limit_max:
                 raise Forbidden(
-                    detail=f"Max allowed page_limit is {CONFIG.page_limit_max}, you requested {limit}",
+                    detail=f"Max allowed page_limit is {self.config.page_limit_max}, you requested {limit}",
                 )
             cursor_kwargs["limit"] = limit
         else:
-            cursor_kwargs["limit"] = CONFIG.page_limit
+            cursor_kwargs["limit"] = self.config.page_limit
 
         # response_fields
         cursor_kwargs["projection"] = {
@@ -530,3 +535,31 @@ class EntryCollection(ABC):
                 ]
 
         return query
+
+
+from optimade.models import LinksResource, ReferenceResource, StructureResource
+from optimade.server.config import ServerConfig
+from optimade.server.mappers import LinksMapper, ReferenceMapper, StructureMapper
+
+
+def create_entry_collections(config: ServerConfig):
+    return {
+        "links": create_collection(
+            name=config.links_collection,
+            resource_cls=LinksResource,
+            resource_mapper=LinksMapper(config),
+            config=config,
+        ),
+        "references": create_collection(
+            name=config.references_collection,
+            resource_cls=ReferenceResource,
+            resource_mapper=ReferenceMapper(config),
+            config=config,
+        ),
+        "structures": create_collection(
+            name=config.structures_collection,
+            resource_cls=StructureResource,
+            resource_mapper=StructureMapper(config),
+            config=config,
+        ),
+    }

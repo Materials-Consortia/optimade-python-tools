@@ -45,11 +45,14 @@ def test_showwarning_debug(both_clients, recwarn):
     """Make sure warnings.showwarning adds 'meta' field in DEBUG MODE"""
     import warnings
 
-    from optimade.server.config import CONFIG
+    from optimade.server.config import ServerConfig
     from optimade.server.middleware import AddWarnings
     from optimade.server.warnings import OptimadeWarning
 
-    add_warning_middleware = AddWarnings(both_clients.app)
+    CONFIG = ServerConfig()
+    CONFIG.debug = True
+
+    add_warning_middleware = AddWarnings(both_clients.app, CONFIG)
     # Set up things that are setup usually in `dispatch()`
     add_warning_middleware._warnings = []
 
@@ -57,25 +60,19 @@ def test_showwarning_debug(both_clients, recwarn):
 
     warning_message = "It's all gone awry!"
 
-    org_debug = CONFIG.debug
-    try:
-        CONFIG.debug = True
+    warnings.warn(OptimadeWarning(detail=warning_message))
 
-        warnings.warn(OptimadeWarning(detail=warning_message))
-
-        assert add_warning_middleware._warnings != [
-            {"title": OptimadeWarning.__name__, "detail": warning_message}
-        ]
-        warning = add_warning_middleware._warnings[0]
-        assert "meta" in warning
-        for meta_field in ("filename", "lineno", "line"):
-            assert meta_field in warning["meta"]
-        assert (
-            len(recwarn.list) >= 1
-        )  # Ensure at least one warning was raised (the one we just added)
-        assert recwarn.pop(OptimadeWarning)
-    finally:
-        CONFIG.debug = org_debug
+    assert add_warning_middleware._warnings != [
+        {"title": OptimadeWarning.__name__, "detail": warning_message}
+    ]
+    warning = add_warning_middleware._warnings[0]
+    assert "meta" in warning
+    for meta_field in ("filename", "lineno", "line"):
+        assert meta_field in warning["meta"]
+    assert (
+        len(recwarn.list) >= 1
+    )  # Ensure at least one warning was raised (the one we just added)
+    assert recwarn.pop(OptimadeWarning)
 
 
 def test_chunk_it_up():

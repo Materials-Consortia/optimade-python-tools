@@ -2,7 +2,9 @@
 
 import pytest
 
-from optimade.server.config import CONFIG, SupportedBackend
+from optimade.server.config import ServerConfig, SupportedBackend
+
+CONFIG = ServerConfig()
 
 
 @pytest.mark.xfail(

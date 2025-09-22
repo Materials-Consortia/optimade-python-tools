@@ -203,8 +203,6 @@ def client_factory() -> "ClientFactoryInner":
             module_name += "_index"
         server_module = importlib.import_module(module_name)
         app = server_module.app
-        server_module.add_major_version_base_url(app)
-        server_module.add_optional_versioned_base_urls(app)
 
         if add_empty_endpoint:
             from fastapi import APIRouter

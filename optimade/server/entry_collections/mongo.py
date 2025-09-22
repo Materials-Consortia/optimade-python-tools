@@ -1,32 +1,36 @@
 from typing import Any
 
+from pymongo.errors import ExecutionTimeout
+
 from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
-from optimade.server.config import CONFIG, SupportedBackend
+from optimade.server.config import ServerConfig, SupportedBackend
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
-if CONFIG.database_backend.value == "mongodb":
-    from pymongo import MongoClient, version_tuple
-    from pymongo.errors import ExecutionTimeout
 
-    if version_tuple[0] < 4:
-        LOGGER.warning(
-            "Support for pymongo<=3 (and thus MongoDB v3) is deprecated and will be "
-            "removed in the next minor release."
-        )
+def get_mongo_client(config: ServerConfig):
+    if config.database_backend.value == "mongodb":
+        from pymongo import MongoClient, version_tuple
 
-    LOGGER.info("Using: Real MongoDB (pymongo)")
+        if version_tuple[0] < 4:
+            LOGGER.warning(
+                "Support for pymongo<=3 (and thus MongoDB v3) is deprecated and will be "
+                "removed in the next minor release."
+            )
 
-elif CONFIG.database_backend.value == "mongomock":
-    from mongomock import MongoClient
+        LOGGER.info("Using: Real MongoDB (pymongo)")
 
-    LOGGER.info("Using: Mock MongoDB (mongomock)")
+    elif config.database_backend.value == "mongomock":
+        from mongomock import MongoClient
 
-if CONFIG.database_backend.value in ("mongomock", "mongodb"):
-    CLIENT = MongoClient(CONFIG.mongo_uri)
+        LOGGER.info("Using: Mock MongoDB (mongomock)")
+
+    if config.database_backend.value in ("mongomock", "mongodb"):
+        CLIENT = MongoClient(config.mongo_uri)
+    return CLIENT
 
 
 class MongoCollection(EntryCollection):
@@ -39,8 +43,8 @@ class MongoCollection(EntryCollection):
         self,
         name: str,
         resource_cls: type[EntryResource],
-        resource_mapper: type[BaseResourceMapper],
-        database: str = CONFIG.mongo_database,
+        resource_mapper: BaseResourceMapper,
+        config: ServerConfig,
     ):
         """Initialize the MongoCollection for the given parameters.
 
@@ -49,20 +53,24 @@ class MongoCollection(EntryCollection):
             resource_cls: The type of entry resource that is stored by the collection.
             resource_mapper: A resource mapper object that handles aliases and
                 format changes between deserialization and response.
-            database: The name of the underlying MongoDB database to connect to.
-
         """
         super().__init__(
             resource_cls,
             resource_mapper,
             MongoTransformer(mapper=resource_mapper),
+            config,
         )
 
-        self.collection = CLIENT[database][name]
+        self.config = config
+        database = config.mongo_database
+
+        client = get_mongo_client(config)
+
+        self.collection = client[database][name]
 
         # check aliases do not clash with mongo operators
-        self._check_aliases(self.resource_mapper.all_aliases())
-        self._check_aliases(self.resource_mapper.all_length_aliases())
+        self._check_aliases(self.resource_mapper.all_aliases)
+        self._check_aliases(self.resource_mapper.all_length_aliases)
 
     def __len__(self) -> int:
         """Returns the total number of entries in the collection."""
@@ -85,7 +93,7 @@ class MongoCollection(EntryCollection):
             return self.collection.estimated_document_count()
         else:
             if "maxTimeMS" not in kwargs:
-                kwargs["maxTimeMS"] = int(1000 * CONFIG.mongo_count_timeout)
+                kwargs["maxTimeMS"] = int(1000 * self.config.mongo_count_timeout)
             try:
                 return self.collection.count_documents(**kwargs)
             except ExecutionTimeout:
@@ -183,7 +191,7 @@ class MongoCollection(EntryCollection):
         """
         results = list(self.collection.find(**criteria))
 
-        if CONFIG.database_backend == SupportedBackend.MONGOMOCK and criteria.get(
+        if self.config.database_backend == SupportedBackend.MONGOMOCK and criteria.get(
             "projection", {}
         ).get("_id"):
             # mongomock does not support `$toString`` in projection, so we have to do it manually

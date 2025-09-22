@@ -2,14 +2,14 @@ import pytest
 
 from optimade.models import LinksResponse
 from optimade.models.links import Aggregate, LinksResource, LinkType
+from optimade.server.mappers import LinksMapper
 
-MAPPER = "LinksMapper"
 
-
-def test_good_links(starting_links, mapper):
+def test_good_links(starting_links):
     """Check well-formed links used as example data"""
     # Test starting_links is a good links resource
-    resource = LinksResource(**mapper(MAPPER).map_back(starting_links))
+
+    resource = LinksResource(**LinksMapper().map_back(starting_links))
     assert resource.attributes.link_type == LinkType.CHILD
     assert resource.attributes.aggregate == Aggregate.TEST
 
@@ -40,7 +40,7 @@ def test_edge_case_links():
     assert response.data[0].attributes.link_type == LinkType.CHILD
 
 
-def test_bad_links(starting_links, mapper):
+def test_bad_links(starting_links):
     """Check badly formed links"""
     from pydantic import ValidationError
 
@@ -58,5 +58,5 @@ def test_bad_links(starting_links, mapper):
         bad_link = starting_links.copy()
         bad_link.update(links)
         with pytest.raises(ValidationError):
-            LinksResource(**mapper(MAPPER).map_back(bad_link))
+            LinksResource(**LinksMapper().map_back(bad_link))
         del bad_link

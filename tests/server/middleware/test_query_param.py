@@ -3,7 +3,6 @@
 import pytest
 
 from optimade.exceptions import BadRequest
-from optimade.server.config import CONFIG, SupportedBackend
 from optimade.server.middleware import EnsureQueryParamIntegrity
 from optimade.warnings import FieldValueNotRecognized
 
@@ -183,11 +182,4 @@ def test_default_pagination(check_response):
     request = "/structures?page_limit=1"
     expected_ids = ["mpf_1"]
     response = check_response(request, expected_ids)
-    if CONFIG.database_backend in (
-        SupportedBackend.MONGODB,
-        SupportedBackend.MONGOMOCK,
-    ):
-        assert "page_offset" in response["links"]["next"]
-    if CONFIG.database_backend == SupportedBackend.ELASTIC:
-        # Replace with `page_above` once default is changed
-        assert "page_offset" in response["links"]["next"]
+    assert "page_offset" in response["links"]["next"]

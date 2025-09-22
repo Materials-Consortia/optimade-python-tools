@@ -3,20 +3,21 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any, Optional
 
+from elasticsearch import Elasticsearch
+
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
 from optimade.models import EntryResource
-from optimade.server.config import CONFIG
+from optimade.server.config import ServerConfig
 from optimade.server.entry_collections import EntryCollection, PaginationMechanism
 from optimade.server.logger import LOGGER
 from optimade.server.mappers import BaseResourceMapper
 
-if CONFIG.database_backend.value == "elastic":
-    from elasticsearch import Elasticsearch
-    from elasticsearch.helpers import bulk
-    from elasticsearch_dsl import Search
 
-    CLIENT = Elasticsearch(hosts=CONFIG.elastic_hosts)
-    LOGGER.info("Using: Elasticsearch backend at %s", CONFIG.elastic_hosts)
+def get_elastic_client(config: ServerConfig) -> Optional["Elasticsearch"]:
+    if config.database_backend.value == "elastic":
+        LOGGER.info("Using: Elasticsearch backend at %s", config.elastic_hosts)
+        return Elasticsearch(hosts=config.elastic_hosts)
+    return None
 
 
 class ElasticCollection(EntryCollection):
@@ -26,7 +27,8 @@ class ElasticCollection(EntryCollection):
         self,
         name: str,
         resource_cls: type[EntryResource],
-        resource_mapper: type[BaseResourceMapper],
+        resource_mapper: BaseResourceMapper,
+        config: ServerConfig,
         client: Optional["Elasticsearch"] = None,
     ):
         """Initialize the ElasticCollection for the given parameters.
@@ -43,9 +45,20 @@ class ElasticCollection(EntryCollection):
             resource_cls=resource_cls,
             resource_mapper=resource_mapper,
             transformer=ElasticTransformer(mapper=resource_mapper),
+            config=config,
         )
 
-        self.client = client if client else CLIENT
+        self.config = config
+
+        # Normalize: always end with a concrete Elasticsearch client
+        tmp_client = client if client is not None else get_elastic_client(config)
+        if tmp_client is None:
+            raise RuntimeError(
+                "Tried to create ElasticCollection without an Elasticsearch backend"
+            )
+
+        self.client: Elasticsearch = tmp_client
+
         self.name = name
 
     def count(self, *args, **kwargs) -> int:
@@ -92,7 +105,7 @@ class ElasticCollection(EntryCollection):
 
     @staticmethod
     def create_elastic_index_from_mapper(
-        resource_mapper: type[BaseResourceMapper], fields: Iterable[str]
+        resource_mapper: BaseResourceMapper, fields: Iterable[str]
     ) -> dict[str, Any]:
         """Create a fallback elastic index based on a resource mapper.
 
@@ -114,6 +127,8 @@ class ElasticCollection(EntryCollection):
 
     def __len__(self):
         """Returns the total number of entries in the collection."""
+        from elasticsearch_dsl import Search
+
         return Search(using=self.client, index=self.name).execute().hits.total.value
 
     def insert(self, data: list[EntryResource | dict]) -> None:
@@ -141,6 +156,8 @@ class ElasticCollection(EntryCollection):
             item.pop("_id", None)
             return id_
 
+        from elasticsearch.helpers import bulk
+
         bulk(
             self.client,
             (
@@ -167,6 +184,7 @@ class ElasticCollection(EntryCollection):
             entries matching the query and a boolean for whether or not there is more data available.
 
         """
+        from elasticsearch_dsl import Search
 
         search = Search(using=self.client, index=self.name)
 
@@ -176,7 +194,7 @@ class ElasticCollection(EntryCollection):
         page_offset = criteria.get("skip", None)
         page_above = criteria.get("page_above", None)
 
-        limit = criteria.get("limit", CONFIG.page_limit)
+        limit = criteria.get("limit", self.config.page_limit)
 
         all_aliased_fields = [
             self.resource_mapper.get_backend_field(field) for field in self.all_fields

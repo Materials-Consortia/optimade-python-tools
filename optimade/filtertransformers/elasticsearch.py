@@ -101,7 +101,7 @@ class ElasticTransformer(BaseTransformer):
 
     def __init__(
         self,
-        mapper: type[BaseResourceMapper],
+        mapper: BaseResourceMapper,
         quantities: dict[str, Quantity] | None = None,
     ):
         if quantities is not None:

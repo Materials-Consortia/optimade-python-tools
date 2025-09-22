@@ -1,20 +1,14 @@
 """Tests for optimade.filtertransformers.BaseTransformer"""
 
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from collections.abc import Callable
-
-    from optimade.server.mappers import BaseResourceMapper
-
-
-def test_quantity_builder(mapper: "Callable[[str], type[BaseResourceMapper]]") -> None:
+def test_quantity_builder() -> None:
     from optimade.filtertransformers.base_transformer import BaseTransformer, Quantity
+    from optimade.server.mappers import StructureMapper
 
     class DummyTransformer(BaseTransformer):
         pass
 
-    class AwkwardMapper(mapper("StructureMapper")):
+    class AwkwardMapper(StructureMapper):
         ALIASES = (("elements", "my_elements"), ("nelements", "nelem"))
         LENGTH_ALIASES = (
             ("chemsys", "nelements"),
@@ -23,7 +17,7 @@ def test_quantity_builder(mapper: "Callable[[str], type[BaseResourceMapper]]") -
         )
         PROVIDER_FIELDS = ("chemsys",)
 
-    m = AwkwardMapper
+    m = AwkwardMapper()
     t = DummyTransformer(mapper=m)
 
     assert "_exmpl_chemsys" in t.quantities

@@ -156,8 +156,10 @@ def test_meta_schema_value_obeys_index(
     servers.
     """
 
-    from optimade.server.config import CONFIG
+    from optimade.server.config import ServerConfig
     from optimade.server.routers.utils import BASE_URL_PREFIXES
+
+    config = ServerConfig()
 
     clients = {
         "regular": client,
@@ -166,7 +168,7 @@ def test_meta_schema_value_obeys_index(
 
     for version in BASE_URL_PREFIXES.values():
         # Mimic the effect of the relevant server's startup
-        CONFIG.is_index = server == "index"
+        config.is_index = server == "index"
         response = clients[server].get(url=version + "/links")
         json_response = response.json()
 
@@ -180,6 +182,6 @@ def test_meta_schema_value_obeys_index(
         )
 
         if server == "regular":
-            assert json_response["meta"].get("schema") == CONFIG.schema_url
+            assert json_response["meta"].get("schema") == config.schema_url
         else:
-            assert json_response["meta"].get("schema") == CONFIG.index_schema_url
+            assert json_response["meta"].get("schema") == config.index_schema_url
