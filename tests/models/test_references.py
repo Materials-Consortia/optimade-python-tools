@@ -2,15 +2,14 @@ import pytest
 from pydantic import ValidationError
 
 from optimade.models.references import ReferenceResource
+from optimade.server.mappers import ReferenceMapper
 
-MAPPER = "ReferenceMapper"
 
-
-def test_more_good_references(good_references, mapper):
+def test_more_good_references(good_references):
     """Check well-formed structures with specific edge-cases"""
     for index, structure in enumerate(good_references):
         try:
-            ReferenceResource(**mapper(MAPPER).map_back(structure))
+            ReferenceResource(**ReferenceMapper().map_back(structure))
         except ValidationError:
             # Printing to keep the original exception as is, while still being informational
             print(
@@ -19,7 +18,7 @@ def test_more_good_references(good_references, mapper):
             raise
 
 
-def test_bad_references(mapper):
+def test_bad_references():
     """Check badly formed references"""
     from pydantic import ValidationError
 
@@ -31,4 +30,4 @@ def test_bad_references(mapper):
 
     for ref in bad_refs:
         with pytest.raises(ValidationError):
-            ReferenceResource(**mapper(MAPPER).map_back(ref))
+            ReferenceResource(**ReferenceMapper().map_back(ref))

@@ -358,15 +358,16 @@ class TestMongoTransformer:
         with pytest.raises(VisitError):
             self.transform('"some string" > "some other string"')
 
-    def test_filtering_on_relationships(self, mapper):
+    def test_filtering_on_relationships(self):
         """Test the nested properties with special names
         like "structures", "references" etc. are applied
         to the relationships field.
 
         """
         from optimade.filtertransformers.mongo import MongoTransformer
+        from optimade.server.mappers import StructureMapper
 
-        t = MongoTransformer(mapper=mapper("StructureMapper"))
+        t = MongoTransformer(mapper=StructureMapper())
         p = LarkParser(version=self.version, variant=self.variant)
 
         assert t.transform(p.parse('references.id HAS "dummy/2019"')) == {
@@ -444,14 +445,15 @@ class TestMongoTransformer:
                 ]
             }
 
-    def test_other_provider_fields(self, mapper):
+    def test_other_provider_fields(self):
         """Test that fields from other providers generate
         queries that treat the value of the field as `null`.
 
         """
         from optimade.filtertransformers.mongo import MongoTransformer
+        from optimade.server.mappers import StructureMapper
 
-        t = MongoTransformer(mapper=mapper("StructureMapper"))
+        t = MongoTransformer(mapper=StructureMapper())
         p = LarkParser(version=self.version, variant=self.variant)
         with pytest.warns(UnknownProviderProperty):
             assert t.transform(p.parse("_other_provider_field > 1")) == {
@@ -501,10 +503,11 @@ class TestMongoTransformer:
 
         assert self.transform("list LENGTH > 3") == {"list.4": {"$exists": True}}
 
-    def test_list_length_aliases(self, mapper):
+    def test_list_length_aliases(self):
         from optimade.filtertransformers.mongo import MongoTransformer
+        from optimade.server.mappers import StructureMapper
 
-        transformer = MongoTransformer(mapper=mapper("StructureMapper"))
+        transformer = MongoTransformer(mapper=StructureMapper())
         parser = LarkParser(version=self.version, variant=self.variant)
 
         assert transformer.transform(parser.parse("elements LENGTH 3")) == {
@@ -531,12 +534,13 @@ class TestMongoTransformer:
             parser.parse("cartesian_site_positions LENGTH >= 3")
         ) == {"nsites": {"$gte": 3}}
 
-    def test_suspected_timestamp_fields(self, mapper):
+    def test_suspected_timestamp_fields(self):
         import datetime
 
         import bson.tz_util
 
         from optimade.filtertransformers.mongo import MongoTransformer
+        from optimade.server.mappers import StructureMapper
         from optimade.warnings import TimestampNotRFCCompliant
 
         example_RFC3339_date = "2019-06-08T04:13:37Z"
@@ -568,10 +572,10 @@ class TestMongoTransformer:
                 "last_modified": {"$gt": non_rfc_datetime}
             }
 
-        class MyMapper(mapper("StructureMapper")):
+        class MyMapper(StructureMapper):
             ALIASES = (("last_modified", "ctime"),)
 
-        transformer = MongoTransformer(mapper=MyMapper)
+        transformer = MongoTransformer(mapper=MyMapper())
         parser = LarkParser(version=self.version, variant=self.variant)
 
         assert transformer.transform(
@@ -599,15 +603,16 @@ class TestMongoTransformer:
             "cartesian_site_positions.11": {"$exists": True}
         }
 
-    def test_mongo_special_id(self, mapper):
+    def test_mongo_special_id(self):
         from bson import ObjectId
 
         from optimade.filtertransformers.mongo import MongoTransformer
+        from optimade.server.mappers import StructureMapper
 
-        class MyMapper(mapper("StructureMapper")):
+        class MyMapper(StructureMapper):
             ALIASES = (("immutable_id", "_id"),)
 
-        transformer = MongoTransformer(mapper=MyMapper)
+        transformer = MongoTransformer(mapper=MyMapper())
         parser = LarkParser(version=self.version, variant=self.variant)
 
         assert transformer.transform(
@@ -630,10 +635,11 @@ class TestMongoTransformer:
             ):
                 transformer.transform(parser.parse(f'immutable_id {op} "abcdef"'))
 
-    def test_aliased_length_operator(self, mapper):
+    def test_aliased_length_operator(self):
         from optimade.filtertransformers.mongo import MongoTransformer
+        from optimade.server.mappers import StructureMapper
 
-        class MyMapper(mapper("StructureMapper")):
+        class MyMapper(StructureMapper):
             ALIASES = (
                 ("elements", "my_elements"),
                 ("nelements", "nelem"),
@@ -646,8 +652,7 @@ class TestMongoTransformer:
             )
             PROVIDER_FIELDS = ("chemsys",)
 
-        m = MyMapper
-        transformer = MongoTransformer(mapper=m)
+        transformer = MongoTransformer(mapper=MyMapper())
         parser = LarkParser(version=self.version, variant=self.variant)
 
         assert transformer.transform(
@@ -689,11 +694,12 @@ class TestMongoTransformer:
             "nelem": 3
         }
 
-    def test_aliases(self, mapper):
+    def test_aliases(self):
         """Test that valid aliases are allowed, but do not affect r-values."""
         from optimade.filtertransformers.mongo import MongoTransformer
+        from optimade.server.mappers import StructureMapper
 
-        class MyStructureMapper(mapper("StructureMapper")):
+        class MyStructureMapper(StructureMapper):
             ALIASES = (
                 ("elements", "my_elements"),
                 ("A", "D"),
@@ -705,7 +711,7 @@ class TestMongoTransformer:
 
             PROVIDER_FIELDS = ("D", "E", "F", "nested_field")
 
-        mapper = MyStructureMapper
+        mapper = MyStructureMapper()
         t = MongoTransformer(mapper=mapper)
         p = LarkParser(version=self.version, variant=self.variant)
 

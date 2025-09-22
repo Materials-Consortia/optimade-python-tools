@@ -40,16 +40,19 @@ def test_provider_field_schemas() -> None:
     are dereferenced appropriately.
 
     """
+    from optimade.server.config import ServerConfig
     from optimade.server.schemas import (
         ENTRY_INFO_SCHEMAS,
         retrieve_queryable_properties,
     )
 
+    config = ServerConfig()
+
     entry = "structures"
     test_field = "chemsys"
     schema = ENTRY_INFO_SCHEMAS[entry]
     top_level_props = ("id", "type", "attributes")
-    properties = retrieve_queryable_properties(schema, top_level_props, entry)
+    properties = retrieve_queryable_properties(schema, top_level_props, entry, config)
     name = f"_exmpl_{test_field}"
 
     assert name in properties

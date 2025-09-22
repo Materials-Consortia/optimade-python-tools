@@ -6,7 +6,6 @@ from fastapi.exceptions import StarletteHTTPException
 from optimade import __api_version__
 from optimade.models import EntryInfoResource, EntryInfoResponse, InfoResponse
 from optimade.models.baseinfo import BaseInfoAttributes, BaseInfoResource, Link
-from optimade.server.config import CONFIG
 from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import (
     ENTRY_INFO_SCHEMAS,
@@ -25,6 +24,8 @@ router = APIRouter(redirect_slashes=True)
     responses=ERROR_RESPONSES,
 )
 def get_info(request: Request) -> InfoResponse:
+    config = request.app.state.config
+
     @functools.lru_cache(maxsize=1)
     def _generate_info_response() -> BaseInfoResource:
         """Cached closure that generates the info response for the implementation."""
@@ -36,7 +37,7 @@ def get_info(request: Request) -> InfoResponse:
                 api_version=__api_version__,
                 available_api_versions=[
                     {
-                        "url": f"{get_base_url(request.url)}/v{__api_version__.split('.')[0]}",
+                        "url": f"{get_base_url(config, request.url)}/v{__api_version__.split('.')[0]}",
                         "version": __api_version__,
                     }
                 ],
@@ -44,16 +45,21 @@ def get_info(request: Request) -> InfoResponse:
                 available_endpoints=["info", "links"] + list(ENTRY_INFO_SCHEMAS.keys()),
                 entry_types_by_format={"json": list(ENTRY_INFO_SCHEMAS.keys())},
                 is_index=False,
-                license=Link(href=CONFIG.license) if CONFIG.license else None,
-                available_licenses=[str(CONFIG.license).split("/")[-1]]
-                if "https://spdx.org" in str(CONFIG.license)
+                license=Link(href=config.license) if config.license else None,
+                available_licenses=[str(config.license).split("/")[-1]]
+                if "https://spdx.org" in str(config.license)
                 else None,
             ),
         )
 
     return InfoResponse(
         meta=meta_values(
-            request.url, 1, 1, more_data_available=False, schema=CONFIG.schema_url
+            config,
+            request.url,
+            1,
+            1,
+            more_data_available=False,
+            schema=config.schema_url,
         ),
         data=_generate_info_response(),
     )
@@ -67,6 +73,8 @@ def get_info(request: Request) -> InfoResponse:
     responses=ERROR_RESPONSES,
 )
 def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
+    config = request.app.state.config
+
     @functools.lru_cache(maxsize=len(ENTRY_INFO_SCHEMAS))
     def _generate_entry_info_response(entry: str) -> EntryInfoResource:
         """Cached closure that generates the entry info response for the given type.
@@ -89,7 +97,7 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
         schema = ENTRY_INFO_SCHEMAS[entry]
         queryable_properties = {"id", "type", "attributes"}
         properties = retrieve_queryable_properties(
-            schema, queryable_properties, entry_type=entry
+            schema, queryable_properties, entry_type=entry, config=config
         )
 
         output_fields_by_format = {"json": list(properties)}
@@ -104,7 +112,12 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
 
     return EntryInfoResponse(
         meta=meta_values(
-            request.url, 1, 1, more_data_available=False, schema=CONFIG.schema_url
+            config,
+            request.url,
+            1,
+            1,
+            more_data_available=False,
+            schema=config.schema_url,
         ),
         data=_generate_entry_info_response(entry),
     )

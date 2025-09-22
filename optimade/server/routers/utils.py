@@ -10,7 +10,7 @@ from starlette.datastructures import URL as StarletteURL
 from optimade import __api_version__
 from optimade.exceptions import BadRequest, InternalServerError
 from optimade.models import EntryResource, ResponseMeta, ToplevelLinks
-from optimade.server.config import CONFIG
+from optimade.server.config import ServerConfig
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.utils import PROVIDER_LIST_URLS, get_providers, mongo_id_for_database
@@ -47,6 +47,7 @@ class JSONAPIResponse(JSONResponse):
 
 
 def meta_values(
+    config: ServerConfig,
     url: urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str,
     data_returned: int | None,
     data_available: int,
@@ -67,11 +68,11 @@ def meta_values(
         url_path = url.path
 
     if schema is None:
-        schema = CONFIG.schema_url if not CONFIG.is_index else CONFIG.index_schema_url
+        schema = config.schema_url if not config.is_index else config.index_schema_url
 
-    if CONFIG.request_delay:
+    if config.request_delay:
         # Double-guard against the server setting an adversarially large request delay
-        kwargs["request_delay"] = min(CONFIG.request_delay, 10.0)
+        kwargs["request_delay"] = min(config.request_delay, 10.0)
 
     return ResponseMeta(
         query=ResponseMetaQuery(representation=f"{url_path}?{url.query}"),
@@ -79,9 +80,9 @@ def meta_values(
         time_stamp=datetime.now(),
         data_returned=data_returned,
         more_data_available=more_data_available,
-        provider=CONFIG.provider,
+        provider=config.provider,
         data_available=data_available,
-        implementation=CONFIG.implementation,
+        implementation=config.implementation,
         schema=schema,
         **kwargs,
     )
@@ -226,6 +227,7 @@ def get_included_relationships(
 
 
 def get_base_url(
+    config: ServerConfig,
     parsed_url_request: (
         urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str
     ),
@@ -240,19 +242,21 @@ def get_base_url(
         else parsed_url_request
     )
     return (
-        CONFIG.base_url.rstrip("/")
-        if CONFIG.base_url
+        config.base_url.rstrip("/")
+        if config.base_url
         else f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
     )
 
 
 def get_entries(
+    config: ServerConfig,
     collection: EntryCollection,
     request: Request,
     params: EntryListingQueryParams,
 ) -> dict[str, Any]:
     """Generalized /{entry} endpoint getter"""
-    from optimade.server.routers import ENTRY_COLLECTIONS
+
+    entry_collections = request.app.state.entry_collections
 
     params.check_params(request.query_params)
     (
@@ -269,7 +273,7 @@ def get_entries(
 
     included = []
     if results is not None:
-        included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+        included = get_included_relationships(results, entry_collections, include)
 
     if more_data_available:
         # Deduce the `next` link from the current request
@@ -277,7 +281,12 @@ def get_entries(
         query.update(collection.get_next_query_params(params, results))
 
         urlencoded = urllib.parse.urlencode(query, doseq=True)
-        base_url = get_base_url(request.url)
+        base_url = get_base_url(config, request.url)
+
+        # if base_url contains a subpath, it is already included in request.url.path
+        # so remove it from base_url
+        parsed_base = urllib.parse.urlparse(base_url)
+        base_url = f"{parsed_base.scheme}://{parsed_base.netloc}"
 
         links = ToplevelLinks(next=f"{base_url}{request.url.path}?{urlencoded}")
     else:
@@ -290,25 +299,27 @@ def get_entries(
         "links": links,
         "data": results if results else [],
         "meta": meta_values(
+            config=config,
             url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
-            schema=CONFIG.schema_url
-            if not CONFIG.is_index
-            else CONFIG.index_schema_url,
+            schema=config.schema_url
+            if not config.is_index
+            else config.index_schema_url,
         ),
         "included": included,
     }
 
 
 def get_single_entry(
+    config: ServerConfig,
     collection: EntryCollection,
     entry_id: str,
     request: Request,
     params: SingleEntryQueryParams,
 ) -> dict[str, Any]:
-    from optimade.server.routers import ENTRY_COLLECTIONS
+    entry_collections = request.app.state.entry_collections
 
     params.check_params(request.query_params)
     params.filter = f'id="{entry_id}"'  # type: ignore[attr-defined]
@@ -331,7 +342,7 @@ def get_single_entry(
 
     included = []
     if results is not None:
-        included = get_included_relationships(results, ENTRY_COLLECTIONS, include)
+        included = get_included_relationships(results, entry_collections, include)
 
     links = ToplevelLinks(next=None)
 
@@ -342,13 +353,14 @@ def get_single_entry(
         "links": links,
         "data": results if results else None,
         "meta": meta_values(
+            config=config,
             url=request.url,
             data_returned=data_returned,
             data_available=len(collection),
             more_data_available=more_data_available,
-            schema=CONFIG.schema_url
-            if not CONFIG.is_index
-            else CONFIG.index_schema_url,
+            schema=config.schema_url
+            if not config.is_index
+            else config.index_schema_url,
         ),
         "included": included,
     }

@@ -74,26 +74,30 @@ def test_url_changes(both_clients, get_good_response):
 
 def test_is_versioned_base_url(both_clients):
     """Check is_versioned_base_url method"""
-    from optimade.server.config import CONFIG
+    from optimade.server.config import ServerConfig
     from optimade.server.routers.utils import BASE_URL_PREFIXES
 
     valid_version = BASE_URL_PREFIXES["major"]
 
+    CONFIG = ServerConfig()
+
     versioned_base_url = f"{CONFIG.base_url}{valid_version}/info"
-    assert HandleApiHint.is_versioned_base_url(versioned_base_url)
+    assert HandleApiHint.is_versioned_base_url(CONFIG, versioned_base_url)
 
     unversioned_base_url = f"{CONFIG.base_url}/info"
-    assert not HandleApiHint.is_versioned_base_url(unversioned_base_url)
+    assert not HandleApiHint.is_versioned_base_url(CONFIG, unversioned_base_url)
 
     org_base_url = CONFIG.base_url
     try:
         CONFIG.base_url = f"{both_clients.base_url}{valid_version}/optimade"
 
         embedded_versioned_base_url = f"{CONFIG.base_url}{valid_version}/info"
-        assert HandleApiHint.is_versioned_base_url(embedded_versioned_base_url)
+        assert HandleApiHint.is_versioned_base_url(CONFIG, embedded_versioned_base_url)
 
         embedded_unversioned_base_url = f"{CONFIG.base_url}/info"
-        assert not HandleApiHint.is_versioned_base_url(embedded_unversioned_base_url)
+        assert not HandleApiHint.is_versioned_base_url(
+            CONFIG, embedded_unversioned_base_url
+        )
     finally:
         if org_base_url:
             CONFIG.base_url = org_base_url

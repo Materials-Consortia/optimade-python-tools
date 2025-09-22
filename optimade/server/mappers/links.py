@@ -7,8 +7,7 @@ __all__ = ("LinksMapper",)
 class LinksMapper(BaseResourceMapper):
     ENTRY_RESOURCE_CLASS = LinksResource
 
-    @classmethod
-    def map_back(cls, doc: dict) -> dict:
+    def map_back(self, doc: dict) -> dict:
         """Map properties from MongoDB to OPTIMADE
 
         :param doc: A resource object in MongoDB format

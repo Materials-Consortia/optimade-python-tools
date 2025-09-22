@@ -511,11 +511,12 @@ class OptimadeClient:
                 )
             )
 
+            # if we got any data, we are below the target value
+            below = bool(result[base_url].data)
+
             self._progress.disable = self.silent
 
-            window, probe = self._update_probe_and_window(
-                window, probe, bool(result[base_url].data)
-            )
+            window, probe = self._update_probe_and_window(window, probe, below)
 
             if window[0] == window[1] and window[0] == probe:
                 return probe
@@ -557,16 +558,15 @@ class OptimadeClient:
             raise RuntimeError(
                 "Invalid arguments: must provide all or none of window, last_probe and below parameters"
             )
-
         probe: int = last_probe
 
         # Exit condition: find a range of (count, count+1) values
         # and determine whether the probe was above or below in the last guess
         if window[1] is not None and window[1] - window[0] == 1:
             if below:
-                return (window[0], window[0]), window[0]
-            else:
                 return (window[1], window[1]), window[1]
+            else:
+                return (window[0], window[0]), window[0]
 
         # Enclose the real value in the window, with `None` indicating an open boundary
         if below:
@@ -578,12 +578,13 @@ class OptimadeClient:
         if window[1] is None:
             probe *= 10
 
-        # Otherwise, if we're in the window and the ends of the window now have the same power of 10, take the average (102 => 108) => 105
-        elif round(math.log10(window[0])) == round(math.log10(window[0])):
+        # Otherwise, if we're in the window and the ends of the window now have the same power of 10 (or within +-1),
+        # take the average (102 => 108) => 105
+        elif abs(math.log10(window[1]) - math.log10(window[0])) <= 1:
             probe = (window[1] + window[0]) // 2
         # otherwise use logarithmic average (10, 1000) => 100
         else:
-            probe = int(10 ** (math.log10(window[1]) + math.log10(window[0]) / 2))
+            probe = int(10 ** ((math.log10(window[1]) + math.log10(window[0])) / 2))
 
         return window, probe
 
