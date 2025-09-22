@@ -139,8 +139,8 @@ def insert_index_data(
 
     links_coll = entry_collections["links"]
 
-    if links_coll.collection.estimated_document_count() > 0:
-        LOGGER.info("Skipping index links insert: links collection already populated.")
+    if len(links_coll) > 0:
+        LOGGER.info("Skipping index links inserct: links collection already populated.")
         return
 
     LOGGER.debug("Loading index links...")

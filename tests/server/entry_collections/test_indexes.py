@@ -1,7 +1,15 @@
 import pytest
 from bson import ObjectId
 
+from optimade.server.config import ServerConfig
 
+CONFIG = ServerConfig()
+
+
+@pytest.mark.skipif(
+    CONFIG.database_backend.value not in ("mongomock", "mongodb"),
+    reason="Skipping index test when testing the elasticsearch backend.",
+)
 def test_indexes_are_created_where_appropriate(client):
     """Test that with the test config, default indices are made by
     supported backends. This is tested by checking that we cannot insert

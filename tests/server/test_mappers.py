@@ -4,7 +4,13 @@ from optimade.models import StructureResource
 from optimade.server.config import ServerConfig
 from optimade.server.mappers import BaseResourceMapper
 
+CONFIG = ServerConfig()
 
+
+@pytest.mark.skipif(
+    CONFIG.database_backend.value not in ("mongomock", "mongodb"),
+    reason="Skipping mongo-related test when testing the elasticsearch backend.",
+)
 def test_disallowed_aliases():
     from optimade.server.entry_collections.mongo import MongoCollection
 
@@ -14,7 +20,7 @@ def test_disallowed_aliases():
 
     mapper = MyMapper()
     with pytest.raises(RuntimeError):
-        MongoCollection("fake", StructureResource, mapper, config=ServerConfig())
+        MongoCollection("fake", StructureResource, mapper, config=CONFIG)
 
 
 def test_property_aliases():
