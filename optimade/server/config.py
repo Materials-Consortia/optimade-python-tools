@@ -8,6 +8,7 @@ from typing import Annotated, Any, Literal
 import yaml
 from pydantic import (
     AnyHttpUrl,
+    BaseModel,
     Field,
     NonNegativeFloat,
     field_validator,
@@ -145,6 +146,25 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
         return self.parse_config_file()
 
 
+class GZipConfig(BaseModel):
+    enabled: Annotated[
+        bool,
+        Field(description="Enable GZip compression for API responses."),
+    ] = False
+
+    minimum_size: Annotated[
+        int,
+        Field(
+            description="Minimum response size (in bytes) before compression is applied."
+        ),
+    ] = 5000
+
+    compresslevel: Annotated[
+        int,
+        Field(description="Compression level (1=fastest, 9=best compression)."),
+    ] = 3
+
+
 class ServerConfig(BaseSettings):
     """This class stores server config parameters in a way that
     can be easily extended for new config file types.
@@ -198,6 +218,11 @@ class ServerConfig(BaseSettings):
             )
         ),
     ] = False
+
+    gzip: Annotated[
+        GZipConfig,
+        Field(description="Configuration options for GZip compression."),
+    ] = GZipConfig()
 
     use_real_mongo: Annotated[
         bool | None,

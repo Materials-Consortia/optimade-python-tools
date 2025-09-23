@@ -13,6 +13,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 
 with warnings.catch_warnings(record=True) as w:
     from optimade.server.config import CONFIG, DEFAULT_CONFIG_FILE_PATH
@@ -143,6 +144,15 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"])
 # Then add required OPTIMADE middleware
 for middleware in OPTIMADE_MIDDLEWARE:
     app.add_middleware(middleware)
+
+# Enable GZIP after other middleware.
+if CONFIG.gzip.enabled:
+    app.add_middleware(
+        GZipMiddleware,
+        minimum_size=CONFIG.gzip.minimum_size,
+        compresslevel=CONFIG.gzip.compresslevel,
+    )
+
 
 # Add exception handlers
 for exception, handler in OPTIMADE_EXCEPTIONS:
