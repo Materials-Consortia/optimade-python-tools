@@ -39,7 +39,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        uv sync --locked --extra server --extra dev
+        uv sync --locked --extra server --extra dev --extra elastic
 
     - name: Run pre-commit
       run: uv run pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
@@ -168,8 +168,8 @@ jobs:
     - name: Run non-server tests
       run: uv run pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
 
-    - name: Install latest server dependencies
-      run: uv sync --locked --extra http-client --extra dev --extra server
+    - name: Install latest server dependencies 
+      run: uv sync --locked --extra http-client --extra dev --extra server --extra elastic
 
     - name: Run server tests (using `mongomock`)
       run: uv run pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
@@ -197,7 +197,7 @@ jobs:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
 
     - name: Install adapter conversion dependencies
-      run: uv sync --locked --extra http-client --extra dev --extra server --extra client
+      run: uv sync --locked --extra http-client --extra dev --extra server --extra client --extra elastic
 
     - name: Setup environment for AiiDA
       env:
