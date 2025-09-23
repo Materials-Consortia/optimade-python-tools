@@ -220,7 +220,7 @@ class ServerConfig(BaseSettings):
     ] = False
 
     gzip: Annotated[
-        GzipConfig,
+        GZipConfig,
         Field(description="Configuration options for GZip compression."),
     ] = GZipConfig()
 
