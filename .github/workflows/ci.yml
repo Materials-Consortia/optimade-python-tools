@@ -31,19 +31,18 @@ jobs:
       uses: actions/setup-python@v6
       with:
         python-version: ${{ env.LINTING_PY_VERSION }}
-        cache: 'pip'
-        cache-dependency-path: |
-          requirements*.txt
+
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: "latest"
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -U setuptools wheel
-        pip install -r requirements.txt -r requirements-server.txt -r requirements-dev.txt
-        pip install -e .
+        uv sync --locked --extra server --extra dev
 
     - name: Run pre-commit
-      run: pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+      run: uv run pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
   openapi:
     runs-on: ubuntu-latest
@@ -53,28 +52,22 @@ jobs:
       with:
         submodules: true
 
-    - name: Set up Python ${{ env.LINTING_PY_VERSION }}
-      uses: actions/setup-python@v6
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
       with:
-        python-version: ${{ env.LINTING_PY_VERSION }}
-        cache: 'pip'
-        cache-dependency-path: |
-          requirements*.txt
+        version: "latest"
 
-    - name: Install tools
+    - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -U setuptools wheel
-        pip install -r requirements.txt -r requirements-server.txt -r requirements-dev.txt
-        pip install -e .
+        uv sync --locked --extra server --extra dev
 
     - name: Pass generated OpenAPI schemas through validator.swagger.io
       run: |
-        invoke swagger-validator openapi/openapi.json
-        invoke swagger-validator openapi/index_openapi.json
+        uv run invoke swagger-validator openapi/openapi.json
+        uv run invoke swagger-validator openapi/index_openapi.json
 
     - name: Check OpenAPI Schemas have not changed
-      run: invoke check-openapi-diff
+      run: uv run invoke check-openapi-diff
 
   docker-image:
     runs-on: ubuntu-latest
@@ -163,41 +156,35 @@ jobs:
         submodules: true
         fetch-depth: 2
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v6
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
       with:
-        python-version: ${{ matrix.python-version }}
-        cache: 'pip'
-        cache-dependency-path: |
-          requirements*.txt
+        version: "latest"
 
-    - name: Install latest compatible versions of immediate dependencies
+    - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -U setuptools wheel
-        pip install -r requirements.txt -r requirements-dev.txt -r requirements-http-client.txt
-        pip install -e .
+        uv sync --locked --extra http-client --extra dev
 
     - name: Run non-server tests
-      run: pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
+      run: uv run pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
 
     - name: Install latest server dependencies
-      run: pip install -r requirements-server.txt
+      run: uv sync --locked --extra http-client --extra dev --extra server
 
     - name: Run server tests (using `mongomock`)
-      run: pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      run: uv run pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
     - name: Run server tests with no API validation (using `mongomock`)
       run:
-        pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+        uv run pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
         OPTIMADE_VALIDATE_API_RESPONSE: false
 
     - name: Run server tests (using a real MongoDB)
-      run: pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+      run: uv run pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
 
@@ -205,12 +192,12 @@ jobs:
       run: |
         .github/utils/wait_for_it.sh localhost:9200 -t 120
         .github/utils/wait_for_it.sh localhost:9300 -t 120
-        pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
+        uv run pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/server tests/filtertransformers
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
 
     - name: Install adapter conversion dependencies
-      run: pip install -r requirements-client.txt
+      run: uv sync --locked --extra http-client --extra dev --extra server --extra client
 
     - name: Setup environment for AiiDA
       env:
@@ -219,17 +206,17 @@ jobs:
         .github/aiida/setup_aiida.sh
 
     - name: Run previously skipped tests for adapter conversion
-      run: pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
+      run: uv run pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
 
     - name: Run tests for validator only to assess coverage (mongomock)
       if: matrix.python-version == '3.11'
-      run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
+      run: uv run pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongomock'
 
     - name: Run tests for validator only to assess coverage (Elasticsearch)
       if: matrix.python-version == '3.11'
-      run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
+      run: uv run pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
         OPTIMADE_INSERT_TEST_DATA: false  # Must be specified as previous steps will have already inserted the test data
@@ -237,7 +224,7 @@ jobs:
 
     - name: Run tests for validator only to assess coverage (MongoDB)
       if: matrix.python-version == '3.11'
-      run: pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
+      run: uv run pytest -rs --cov=./optimade/ --cov-report=xml:validator_cov.xml --cov-append tests/server/test_server_validation.py
       env:
         OPTIMADE_DATABASE_BACKEND: 'mongodb'
         OPTIMADE_INSERT_TEST_DATA: false  # Must be specified as previous steps will have already inserted the test data
@@ -246,14 +233,14 @@ jobs:
     - name: Run the OPTIMADE Client CLI
       if: matrix.python-version == '3.11'
       run: |
-        coverage run --append --source optimade optimade/client/cli.py \
+        uv run coverage run --append --source optimade optimade/client/cli.py \
            --filter 'nsites = 1' \
            --http-timeout 10.0 \
            --output-file test_get_async.json \
            https://optimade.fly.dev
         test test_get_async.json
 
-        coverage run --append --source optimade optimade/client/cli.py \
+        uv run coverage run --append --source optimade optimade/client/cli.py \
           --filter 'nsites = 1' \
            --http-timeout 10.0 \
           --count \
@@ -261,7 +248,7 @@ jobs:
           https://optimade.fly.dev
         test test_count.json
 
-        coverage run --append --source optimade optimade/client/cli.py \
+        uv run coverage run --append --source optimade optimade/client/cli.py \
           --no-async \
           --filter 'nsites = 1' \
            --http-timeout 10.0 \
@@ -272,7 +259,7 @@ jobs:
 
         diff test_count_no_async.json test_count.json
 
-        coverage xml
+        uv run coverage xml
 
     - name: Upload coverage to Codecov
       if: matrix.python-version == '3.11' && github.repository == 'Materials-Consortia/optimade-python-tools'
@@ -303,23 +290,22 @@ jobs:
     - uses: actions/setup-python@v6
       with:
         python-version: ${{ env.LINTING_PY_VERSION }}
-        cache: 'pip'
-        cache-dependency-path: |
-          requirements*.txt
+
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: "latest"
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -U setuptools wheel
-        pip install -r requirements.txt -r requirements-server.txt -r requirements-dev.txt -r requirements-http-client.txt -r requirements-docs.txt
-        pip install -e .
+        uv sync --locked --all-extras
 
     # NOTE: While we're now using `mike`, this is still useful
     # to test the integrity of the documentation build.
     - name: Build
       run: |
-        invoke create-api-reference-docs --pre-clean
-        mkdocs build --strict
+        uv run invoke create-api-reference-docs --pre-clean
+        uv run mkdocs build --strict
 
   test_build:
     runs-on: ubuntu-latest
@@ -332,19 +318,15 @@ jobs:
       uses: actions/setup-python@v6
       with:
         python-version: ${{ env.LINTING_PY_VERSION }}
-        cache: 'pip'
-        cache-dependency-path: |
-          requirements*.txt
 
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade setuptools requests
+    - name: Setup uv
+      uses: astral-sh/setup-uv@v6
+      with:
+        version: "latest"
 
-    - name: Install package
+    - name: Install dependencies
       run: |
-          pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
-          pip install -e .[all]
+        uv sync --locked --all-extras
 
     - name: Build source distribution
-      run: python -m build
+      run: uv run python -m build
