@@ -150,7 +150,7 @@ class GzipConfig(BaseModel):
     enabled: Annotated[
         bool,
         Field(description="Enable GZip compression for API responses."),
-    ] = True
+    ] = False
 
     minimum_size: Annotated[
         int,
