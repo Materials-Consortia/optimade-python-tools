@@ -94,8 +94,7 @@ jobs:
         sleep 15
 
     - name: Test server, including OPTIONAL base URLs
-      # Pin validator action until merge of Materials-Consortia/optimade-validator-action#175
-      uses: Materials-Consortia/optimade-validator-action@dc4a7b6a83da42e5341a1a401e36d83375550fb7
+      uses: Materials-Consortia/optimade-validator-action@v2
       with:
         port: 3213
         path: /
@@ -109,8 +108,7 @@ jobs:
         sleep 15
 
     - name: Test index server, including OPTIONAL base URLs
-      # Pin validator action until merge of Materials-Consortia/optimade-validator-action#175
-      uses: Materials-Consortia/optimade-validator-action@dc4a7b6a83da42e5341a1a401e36d83375550fb7
+      uses: Materials-Consortia/optimade-validator-action@v2
       with:
         port: 3214
         path: /
