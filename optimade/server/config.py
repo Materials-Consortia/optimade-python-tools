@@ -146,7 +146,7 @@ class ConfigFileSettingsSource(PydanticBaseSettingsSource):
         return self.parse_config_file()
 
 
-class GzipConfig(BaseModel):
+class GZipConfig(BaseModel):
     enabled: Annotated[
         bool,
         Field(description="Enable GZip compression for API responses."),
@@ -222,7 +222,7 @@ class ServerConfig(BaseSettings):
     gzip: Annotated[
         GzipConfig,
         Field(description="Configuration options for GZip compression."),
-    ] = GzipConfig()
+    ] = GZipConfig()
 
     use_real_mongo: Annotated[
         bool | None,
