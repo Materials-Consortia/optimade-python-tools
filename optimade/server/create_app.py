@@ -16,6 +16,7 @@ from optimade import __api_version__, __version__
 from optimade.server.entry_collections import EntryCollection, create_entry_collections
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
 from optimade.server.logger import LOGGER
+from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers import (
     index_info,
@@ -171,8 +172,6 @@ def insert_index_data(
         )
 
 
-
-
 def create_app(config: ServerConfig | None = None, index: bool = False) -> FastAPI:
     if config_warnings:
         LOGGER.warning(
@@ -217,6 +216,9 @@ def create_app(config: ServerConfig | None = None, index: bool = False) -> FastA
     # create entry collections and save in app state for access in endpoints
     entry_collections = create_entry_collections(config)
     app.state.entry_collections = entry_collections
+
+    # store also the BaseResourceMapper
+    app.state.base_resource_mapper = BaseResourceMapper()
 
     if not index:
         if config.insert_test_data or config.insert_from_jsonl:

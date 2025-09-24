@@ -23,10 +23,8 @@ router = APIRouter(redirect_slashes=True)
 def get_structures(
     request: Request, params: Annotated[EntryListingQueryParams, Depends()]
 ) -> dict[str, Any]:
-    config = request.app.state.config
     structures_coll = request.app.state.entry_collections.get("structures")
     return get_entries(
-        config=config,
         collection=structures_coll,
         request=request,
         params=params,
@@ -45,10 +43,8 @@ def get_single_structure(
     entry_id: str,
     params: Annotated[SingleEntryQueryParams, Depends()],
 ) -> dict[str, Any]:
-    config = request.app.state.config
     structures_coll = request.app.state.entry_collections.get("structures")
     return get_single_entry(
-        config=config,
         collection=structures_coll,
         entry_id=entry_id,
         request=request,

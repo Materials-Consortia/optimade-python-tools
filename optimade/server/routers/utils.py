@@ -249,16 +249,17 @@ def get_base_url(
 
 
 def get_entries(
-    config: ServerConfig,
     collection: EntryCollection,
     request: Request,
     params: EntryListingQueryParams,
 ) -> dict[str, Any]:
     """Generalized /{entry} endpoint getter"""
 
+    config = request.app.state.config
     entry_collections = request.app.state.entry_collections
+    base_resource_mapper = request.app.state.base_resource_mapper
 
-    params.check_params(request.query_params)
+    params.check_params(request.query_params, base_resource_mapper)
     (
         results,
         data_returned,
@@ -313,15 +314,16 @@ def get_entries(
 
 
 def get_single_entry(
-    config: ServerConfig,
     collection: EntryCollection,
     entry_id: str,
     request: Request,
     params: SingleEntryQueryParams,
 ) -> dict[str, Any]:
+    config = request.app.state.config
     entry_collections = request.app.state.entry_collections
+    base_resource_mapper = request.app.state.base_resource_mapper
 
-    params.check_params(request.query_params)
+    params.check_params(request.query_params, base_resource_mapper)
     params.filter = f'id="{entry_id}"'  # type: ignore[attr-defined]
     (
         results,

@@ -20,9 +20,6 @@ router = APIRouter(redirect_slashes=True)
 def get_links(
     request: Request, params: Annotated[EntryListingQueryParams, Depends()]
 ) -> dict[str, Any]:
-    config = request.app.state.config
     links_coll = request.app.state.entry_collections.get("links")
 
-    return get_entries(
-        config=config, collection=links_coll, request=request, params=params
-    )
+    return get_entries(collection=links_coll, request=request, params=params)
