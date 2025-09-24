@@ -4,6 +4,7 @@ from pydantic import model_validator
 
 from optimade.models.baseinfo import BaseInfoResource
 from optimade.models.entries import EntryInfoResource, EntryResource
+from optimade.models.files import FileResource
 from optimade.models.index_metadb import IndexInfoResource
 from optimade.models.jsonapi import Response
 from optimade.models.links import LinksResource
@@ -22,6 +23,8 @@ __all__ = (
     "EntryResponseMany",
     "StructureResponseOne",
     "StructureResponseMany",
+    "FileResponseOne",
+    "FileResponseMany",
     "ReferenceResponseOne",
     "ReferenceResponseMany",
 )
@@ -135,6 +138,20 @@ class StructureResponseMany(EntryResponseMany):
             union_mode="left_to_right",
         ),
     ]
+
+
+class FileResponseOne(EntryResponseOne):
+    data: Union[FileResource, dict[str, Any], None] = StrictField(
+        ..., description="A single files entry resource."
+    )
+
+
+class FileResponseMany(EntryResponseMany):
+    data: Union[list[FileResource], list[dict[str, Any]]] = StrictField(
+        ...,
+        description="List of unique OPTIMADE files entry resource objects.",
+        uniqueItems=True,
+    )
 
 
 class ReferenceResponseOne(EntryResponseOne):
