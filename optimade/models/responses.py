@@ -1,4 +1,4 @@
-from typing import Annotated, Any
+from typing import Annotated, Any, Union
 
 from pydantic import model_validator
 
@@ -10,6 +10,7 @@ from optimade.models.links import LinksResource
 from optimade.models.optimade_json import OptimadeError, ResponseMeta, Success
 from optimade.models.references import ReferenceResource
 from optimade.models.structures import StructureResource
+from optimade.models.trajectories import TrajectoryResource
 from optimade.models.utils import StrictField
 
 __all__ = (
@@ -22,6 +23,8 @@ __all__ = (
     "EntryResponseMany",
     "StructureResponseOne",
     "StructureResponseMany",
+    "TrajectoryResponseOne",
+    "TrajectoryResponseMany",
     "ReferenceResponseOne",
     "ReferenceResponseMany",
 )
@@ -136,6 +139,18 @@ class StructureResponseMany(EntryResponseMany):
         ),
     ]
 
+class TrajectoryResponseOne(EntryResponseOne):
+    data: Union[TrajectoryResource, dict[str, Any], None] = StrictField(
+        ..., description="A single trajectories entry resource."
+    )
+
+
+class TrajectoryResponseMany(EntryResponseMany):
+    data: Union[list[TrajectoryResource], list[dict[str, Any]]] = StrictField(
+        ...,
+        description="List of unique OPTIMADE trajectories entry resource objects.",
+        uniqueItems=True,
+    )
 
 class ReferenceResponseOne(EntryResponseOne):
     data: Annotated[

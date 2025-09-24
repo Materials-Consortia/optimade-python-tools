@@ -6,6 +6,7 @@
     "links_collection": "links",
     "references_collection": "references",
     "structures_collection": "structures",
+    "trajectories_collection": "trajectories",
     "page_limit": 20,
     "page_limit_max": 500,
     "default_db": "test_server",

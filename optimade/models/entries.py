@@ -47,6 +47,8 @@ class ReferenceRelationship(TypedRelationship):
 class StructureRelationship(TypedRelationship):
     _req_type: ClassVar[Literal["structures"]] = "structures"
 
+class TrajectoryRelationship(TypedRelationship):
+    _req_type: ClassVar[Literal["trajectories"]] = "trajectories"
 
 class EntryRelationships(Relationships):
     """This model wraps the JSON API Relationships to include type-specific top level keys."""
@@ -65,6 +67,12 @@ class EntryRelationships(Relationships):
         ),
     ] = None
 
+    trajectories: Annotated[
+        TrajectoryRelationship | None,
+        StrictField(
+            description="Object containing links to relationships with entries of the `trajectories` type.",
+        ),
+    ] = None
 
 class EntryResourceAttributes(Attributes):
     """Contains key-value pairs representing the entry's properties."""

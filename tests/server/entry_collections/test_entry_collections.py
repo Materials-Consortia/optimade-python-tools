@@ -7,6 +7,7 @@ def test_get_attribute_fields():
         LinksResourceAttributes,
         ReferenceResourceAttributes,
         StructureResourceAttributes,
+        TrajectoryResourceAttributes,
     )
     from optimade.server.routers import ENTRY_COLLECTIONS
 
@@ -14,6 +15,7 @@ def test_get_attribute_fields():
         "links": LinksResourceAttributes,
         "references": ReferenceResourceAttributes,
         "structures": StructureResourceAttributes,
+        "trajectories": TrajectoryResourceAttributes,
     }
 
     # Make sure we're hitting all collections

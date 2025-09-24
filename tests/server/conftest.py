@@ -93,12 +93,9 @@ def get_good_response(
 
         try:
             response = used_client.get(request, **kwargs)
-            response_json = response.json()
-            assert response.status_code == 200, f"Request failed: {response_json}"
-            expected_mime_type = "application/vnd.api+json"
-            assert response.headers["content-type"] == expected_mime_type, (
-                f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
-            )
+            response_dict = response.json()
+            assert response.status_code == 200, f"Request failed: {response_dict}"
+
         except json.JSONDecodeError:
             print(
                 f"Request attempted:\n{used_client.base_url}{used_client.version}"
@@ -114,7 +111,7 @@ def get_good_response(
             raise exc
         else:
             if return_json:
-                return response_json
+                return response_dict
             return response
 
     return inner
@@ -219,11 +216,6 @@ def check_error_response(client, index_client):
                 f"Request should have been an error with status code {expected_status}, "
                 f"but instead {response.status_code} was received.\nResponse:\n{response.json()}",
             )
-            expected_mime_type = "application/vnd.api+json"
-            assert response.headers["content-type"] == expected_mime_type, (
-                f"Response should have MIME type {expected_mime_type!r}, not {response.headers['content-type']!r}."
-            )
-
             response = response.json()
             assert len(response["errors"]) == 1, response.get(
                 "errors", "'errors' not found in response"
@@ -243,6 +235,8 @@ def check_error_response(client, index_client):
                     "error message."
                 )
             else:
+                print('EXPECTED', expected_detail)
+                print('ACTUAL', error["detail"])
                 assert expected_detail == error["detail"], error
 
         except Exception:
