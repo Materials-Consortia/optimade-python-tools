@@ -1,11 +1,10 @@
 import json
 import os
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-# from typing import TYPE_CHECKING
-
-# if TYPE_CHECKING:
-#     from .utils import OptimadeTestClient
+if TYPE_CHECKING:
+    from .utils import OptimadeTestClient
 
 
 def test_env_variable() -> None:
@@ -79,57 +78,58 @@ def test_default_config_path(top_dir: Path) -> None:
             os.environ["OPTIMADE_CONFIG_FILE"] = org_env_var
 
 
-# def test_debug_is_respected_when_off(both_clients: "OptimadeTestClient") -> None:
-#     """Make sure traceback is toggleable according to debug mode - here OFF
+def test_debug_is_respected_when_off(both_clients: "OptimadeTestClient") -> None:
+    """Make sure traceback is toggleable according to debug mode - here OFF
 
-#     TODO: This should be moved to a separate test file that tests the exception handlers.
-#     """
-#     from optimade.server.config import CONFIG
+    TODO: This should be moved to a separate test file that tests the exception handlers.
+    """
 
-#     org_value = CONFIG.debug
+    CONFIG = both_clients.app.state.config
 
-#     try:
-#         if CONFIG.debug:
-#             CONFIG.debug = False
+    org_value = CONFIG.debug
 
-#         response = both_clients.get("/non/existent/path")
-#         assert response.status_code == 404, (
-#             f"Request should have failed, but didn't: {response.json()}"
-#         )
+    try:
+        if CONFIG.debug:
+            CONFIG.debug = False
 
-#         response = response.json()
-#         assert "data" not in response
-#         assert "meta" in response
+        response = both_clients.get("/non/existent/path")
+        assert response.status_code == 404, (
+            f"Request should have failed, but didn't: {response.json()}"
+        )
 
-#         assert f"_{CONFIG.provider.prefix}_traceback" not in response["meta"]
-#     finally:
-#         CONFIG.debug = org_value
+        response = response.json()
+        assert "data" not in response
+        assert "meta" in response
+
+        assert f"_{CONFIG.provider.prefix}_traceback" not in response["meta"]
+    finally:
+        both_clients.app.state.config.debug = org_value
 
 
-# def test_debug_is_respected_when_on(both_clients: "OptimadeTestClient") -> None:
-#     """Make sure traceback is toggleable according to debug mode - here ON
+def test_debug_is_respected_when_on(both_clients: "OptimadeTestClient") -> None:
+    """Make sure traceback is toggleable according to debug mode - here ON
 
-#     TODO: This should be moved to a separate test file that tests the exception handlers.
-#     """
-#     from optimade.server.config import CONFIG
+    TODO: This should be moved to a separate test file that tests the exception handlers.
+    """
+    CONFIG = both_clients.app.state.config
 
-#     org_value = CONFIG.debug
+    org_value = CONFIG.debug
 
-#     try:
-#         CONFIG.debug = True
+    try:
+        CONFIG.debug = True
 
-#         response = both_clients.get("/non/existent/path")
-#         assert response.status_code == 404, (
-#             f"Request should have failed, but didn't: {response.json()}"
-#         )
+        response = both_clients.get("/non/existent/path")
+        assert response.status_code == 404, (
+            f"Request should have failed, but didn't: {response.json()}"
+        )
 
-#         response = response.json()
-#         assert "data" not in response
-#         assert "meta" in response
+        response = response.json()
+        assert "data" not in response
+        assert "meta" in response
 
-#         assert f"_{CONFIG.provider.prefix}_traceback" in response["meta"]
-#     finally:
-#         CONFIG.debug = org_value
+        assert f"_{CONFIG.provider.prefix}_traceback" in response["meta"]
+    finally:
+        both_clients.app.state.config.debug = org_value
 
 
 def test_yaml_config_file() -> None:
