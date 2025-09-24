@@ -1,9 +1,10 @@
 import json
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
-from elasticsearch import Elasticsearch
+if TYPE_CHECKING:
+    from elasticsearch import Elasticsearch
 
 from optimade.filtertransformers.elasticsearch import ElasticTransformer
 from optimade.models import EntryResource
@@ -14,6 +15,8 @@ from optimade.server.mappers import BaseResourceMapper
 
 
 def get_elastic_client(config: ServerConfig) -> Optional["Elasticsearch"]:
+    from elasticsearch import Elasticsearch
+
     if config.database_backend.value == "elastic":
         LOGGER.info("Using: Elasticsearch backend at %s", config.elastic_hosts)
         return Elasticsearch(hosts=config.elastic_hosts)

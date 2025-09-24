@@ -597,6 +597,3 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
             ConfigFileSettingsSource(settings_cls),
             file_secret_settings,
         )
-
-
-"""
