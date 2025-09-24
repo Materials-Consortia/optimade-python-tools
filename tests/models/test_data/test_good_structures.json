@@ -166,6 +166,13 @@
     "last_modified": {
       "$date": "2019-06-08T05:13:37.331Z"
     },
+    "meta": {
+      "property_metadata": {
+        "elements_ratios": {
+          "_exmpl_originates_from_project":"piezoelectic_perovskites"
+        }
+      }
+    },
     "band_gap": 1.23456,
     "chemsys": "C-H-Cl-N-Na-O-Os-P",
     "elements": ["C", "Cl", "H", "N", "Na", "O", "Os", "P"],
