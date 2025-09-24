@@ -120,16 +120,17 @@ def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> N
 
 
 def mongo_id_for_database(database_id: str, database_type: str) -> str:
-    """Produce a MongoDB ObjectId for a database"""
+    """Produce a deterministic MongoDB ObjectId for a database"""
+    import hashlib
+
     from bson.objectid import ObjectId
 
-    oid = f"{database_id}{database_type}"
-    if len(oid) > 12:
-        oid = oid[:12]
-    elif len(oid) < 12:
-        oid = f"{oid}{'0' * (12 - len(oid))}"
+    combined = f"{database_id}{database_type}"
 
-    return str(ObjectId(oid.encode("UTF-8")))
+    hash_obj = hashlib.md5(combined.encode("utf-8"))
+    hash_bytes = hash_obj.digest()[:12]  # ObjectId requires 12 bytes
+
+    return str(ObjectId(hash_bytes))
 
 
 def get_providers(add_mongo_id: bool = False) -> list:
