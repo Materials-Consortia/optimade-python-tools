@@ -171,11 +171,6 @@ def insert_index_data(
         )
 
 
-DESCRIPTION_TEMPLATE = """
-The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.
-{index_meta_text}
-This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v{version}) v{version}.
-"""
 
 
 def create_app(config: ServerConfig | None = None, index: bool = False) -> FastAPI:
