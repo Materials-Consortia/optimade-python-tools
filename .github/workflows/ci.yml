@@ -168,7 +168,7 @@ jobs:
     - name: Run non-server tests
       run: uv run pytest -rs -vvv --durations=10 --cov=./optimade/ --cov-report=xml tests/ --ignore tests/server
 
-    - name: Install latest server dependencies 
+    - name: Install latest server dependencies
       run: uv sync --locked --extra http-client --extra dev --extra server --extra elastic
 
     - name: Run server tests (using `mongomock`)
