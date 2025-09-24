@@ -599,8 +599,4 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         )
 
 
-# CONFIG: ServerConfig = ServerConfig()
-"""This singleton loads the config from a hierarchy of sources (see
-[`customise_sources`][optimade.server.config.ServerConfig.settings_customise_sources])
-and makes it importable in the server code.
 """
