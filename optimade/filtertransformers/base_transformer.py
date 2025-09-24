@@ -11,9 +11,31 @@ from typing import TYPE_CHECKING, Any, Optional
 
 from lark import Transformer, Tree, v_args
 
-from optimade.exceptions import BadRequest
-from optimade.server.mappers import BaseResourceMapper
-from optimade.warnings import UnknownProviderProperty
+if TYPE_CHECKING:
+    from optimade.server.mappers import BaseResourceMapper
+
+try:
+    from optimade.warnings import UnknownProviderProperty
+except ImportError:
+
+    class UnknownProviderProperty(UserWarning):  # type: ignore[no-redef]
+        """A property with a provider-specific prefix is not recognized by this implementation.
+        This shim class allows the filtertransformer to be used without the full optimade package.
+
+        """
+
+
+class FilterTransformerError(Exception):
+    """Base class for exceptions in this module."""
+
+    status_code: int
+    detail: str = "There was an error while processing the filter."
+
+    def __init__(self, status_code: int = 400, detail: str | None = None):
+        self.status_code = status_code
+        if detail is not None:
+            self.detail = detail
+
 
 if TYPE_CHECKING:  # pragma: no cover
     pass
@@ -82,7 +104,7 @@ class BaseTransformer(Transformer, abc.ABC):
 
     """
 
-    mapper: type[BaseResourceMapper] | None = None
+    mapper: type["BaseResourceMapper"] | None = None
     operator_map: dict[str, str | None] = {
         "<": None,
         "<=": None,
@@ -106,7 +128,7 @@ class BaseTransformer(Transformer, abc.ABC):
     _quantity_type: type[Quantity] = Quantity
     _quantities = None
 
-    def __init__(self, mapper: type[BaseResourceMapper] | None = None):
+    def __init__(self, mapper: type["BaseResourceMapper"] | None = None):
         """Initialise the transformer object, optionally loading in a
         resource mapper for use when post-processing.
 
@@ -264,7 +286,7 @@ class BaseTransformer(Transformer, abc.ABC):
 
                     return quantity_name
 
-            raise BadRequest(
+            raise FilterTransformerError(
                 detail=f"'{quantity_name}' is not a known or searchable quantity"
             )
 
