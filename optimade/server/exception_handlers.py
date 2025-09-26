@@ -9,7 +9,6 @@ from pydantic import ValidationError
 
 from optimade.exceptions import BadRequest, OptimadeHTTPException
 from optimade.models import ErrorResponse, ErrorSource, OptimadeError
-from optimade.server.config import CONFIG
 from optimade.server.logger import LOGGER
 from optimade.server.routers.utils import JSONAPIResponse, meta_values
 
@@ -34,12 +33,13 @@ def general_exception(
 
     """
     debug_info = {}
-    if CONFIG.debug:
+    config = request.app.state.config
+    if config.debug:
         tb = "".join(
             traceback.format_exception(type(exc), value=exc, tb=exc.__traceback__)
         )
         LOGGER.error("Traceback:\n%s", tb)
-        debug_info[f"_{CONFIG.provider.prefix}_traceback"] = tb
+        debug_info[f"_{config.provider.prefix}_traceback"] = tb
 
     try:
         http_response_code = int(exc.status_code)  # type: ignore[attr-defined]
@@ -61,11 +61,12 @@ def general_exception(
 
     response = ErrorResponse(
         meta=meta_values(
+            config,
             url=request.url,
             data_returned=0,
             data_available=0,
             more_data_available=False,
-            schema=CONFIG.schema_url,
+            schema=config.schema_url,
             **debug_info,
         ),
         errors=errors,

@@ -83,7 +83,8 @@ def test_debug_is_respected_when_off(both_clients: "OptimadeTestClient") -> None
 
     TODO: This should be moved to a separate test file that tests the exception handlers.
     """
-    from optimade.server.config import CONFIG
+
+    CONFIG = both_clients.app.state.config
 
     org_value = CONFIG.debug
 
@@ -102,7 +103,7 @@ def test_debug_is_respected_when_off(both_clients: "OptimadeTestClient") -> None
 
         assert f"_{CONFIG.provider.prefix}_traceback" not in response["meta"]
     finally:
-        CONFIG.debug = org_value
+        both_clients.app.state.config.debug = org_value
 
 
 def test_debug_is_respected_when_on(both_clients: "OptimadeTestClient") -> None:
@@ -110,7 +111,7 @@ def test_debug_is_respected_when_on(both_clients: "OptimadeTestClient") -> None:
 
     TODO: This should be moved to a separate test file that tests the exception handlers.
     """
-    from optimade.server.config import CONFIG
+    CONFIG = both_clients.app.state.config
 
     org_value = CONFIG.debug
 
@@ -128,7 +129,7 @@ def test_debug_is_respected_when_on(both_clients: "OptimadeTestClient") -> None:
 
         assert f"_{CONFIG.provider.prefix}_traceback" in response["meta"]
     finally:
-        CONFIG.debug = org_value
+        both_clients.app.state.config.debug = org_value
 
 
 def test_yaml_config_file() -> None:

@@ -3,24 +3,17 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Depends, Request
 
 from optimade.models import (
-    ReferenceResource,
     ReferenceResponseMany,
     ReferenceResponseOne,
 )
-from optimade.server.config import CONFIG
-from optimade.server.entry_collections import create_collection
-from optimade.server.mappers import ReferenceMapper
+from optimade.server.config import ServerConfig
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.routers.utils import get_entries, get_single_entry
 from optimade.server.schemas import ERROR_RESPONSES
 
 router = APIRouter(redirect_slashes=True)
 
-references_coll = create_collection(
-    name=CONFIG.references_collection,
-    resource_cls=ReferenceResource,
-    resource_mapper=ReferenceMapper,
-)
+CONFIG = ServerConfig()
 
 
 @router.get(
@@ -35,6 +28,7 @@ references_coll = create_collection(
 def get_references(
     request: Request, params: Annotated[EntryListingQueryParams, Depends()]
 ) -> dict[str, Any]:
+    references_coll = request.app.state.entry_collections.get("references")
     return get_entries(
         collection=references_coll,
         request=request,
@@ -56,6 +50,7 @@ def get_single_reference(
     entry_id: str,
     params: Annotated[SingleEntryQueryParams, Depends()],
 ) -> dict[str, Any]:
+    references_coll = request.app.state.entry_collections.get("references")
     return get_single_entry(
         collection=references_coll,
         entry_id=entry_id,

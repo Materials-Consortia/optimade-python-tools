@@ -7,7 +7,6 @@ from fastapi import Query
 from pydantic import EmailStr
 
 from optimade.exceptions import BadRequest
-from optimade.server.config import CONFIG
 from optimade.server.mappers import BaseResourceMapper
 from optimade.warnings import QueryParamNotUsed, UnknownProviderQueryParameter
 
@@ -24,7 +23,9 @@ class BaseQueryParams(ABC):
 
     unsupported_params: list[str] = []
 
-    def check_params(self, query_params: Iterable[str]) -> None:
+    def check_params(
+        self, query_params: Iterable[str], base_resource_mapper: BaseResourceMapper
+    ) -> None:
         """This method checks whether all the query parameters that are specified
         in the URL string are implemented in the relevant `*QueryParams` class.
 
@@ -48,8 +49,6 @@ class BaseQueryParams(ABC):
                 does not have a valid prefix.
 
         """
-        if not getattr(CONFIG, "validate_query_parameters", False):
-            return
         errors = []
         warnings = []
         unsupported_warnings = []
@@ -60,9 +59,9 @@ class BaseQueryParams(ABC):
                 split_param = param.split("_")
                 if param.startswith("_") and len(split_param) > 2:
                     prefix = split_param[1]
-                    if prefix in BaseResourceMapper.SUPPORTED_PREFIXES:
+                    if prefix in base_resource_mapper.SUPPORTED_PREFIXES:
                         errors.append(param)
-                    elif prefix not in BaseResourceMapper.KNOWN_PROVIDER_PREFIXES:
+                    elif prefix not in base_resource_mapper.KNOWN_PROVIDER_PREFIXES:
                         warnings.append(param)
                 else:
                     errors.append(param)
@@ -220,7 +219,7 @@ class EntryListingQueryParams(BaseQueryParams):
                 description="Sets a numerical limit on the number of entries returned.\nSee [JSON API 1.0](https://jsonapi.org/format/1.0/#fetching-pagination).\nThe API implementation MUST return no more than the number specified.\nIt MAY return fewer.\nThe database MAY have a maximum limit and not accept larger numbers (in which case an error code -- 403 Forbidden -- MUST be returned).\nThe default limit value is up to the API implementation to decide.\nExample: `http://example.com/optimade/v1/structures?page_limit=100`",
                 ge=0,
             ),
-        ] = CONFIG.page_limit,
+        ] = 20,
         page_offset: Annotated[
             int,
             Query(

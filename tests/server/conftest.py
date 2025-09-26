@@ -90,7 +90,6 @@ def get_good_response(
             used_client = server
         else:
             pytest.fail("'server' must be either a string or an OptimadeTestClient.")
-
         try:
             response = used_client.get(request, **kwargs)
             response_json = response.json()
@@ -136,14 +135,12 @@ def check_response(get_good_response):
 
     """
 
-    from optimade.server.config import CONFIG
-
     from .utils import OptimadeTestClient
 
     def inner(
         request: str,
         expected_ids: str | list[str],
-        page_limit: int = CONFIG.page_limit,
+        page_limit: int | None = None,
         expected_return: int | None = None,
         expected_as_is: bool = False,
         expected_warnings: list[dict[str, str]] | None = None,
