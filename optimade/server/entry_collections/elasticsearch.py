@@ -130,9 +130,14 @@ class ElasticCollection(EntryCollection):
 
     def __len__(self):
         """Returns the total number of entries in the collection."""
+        from elasticsearch.exceptions import NotFoundError
         from elasticsearch_dsl import Search
 
-        return Search(using=self.client, index=self.name).execute().hits.total.value
+        try:
+            return Search(using=self.client, index=self.name).execute().hits.total.value
+        except NotFoundError:
+            # If the collection does not exist, return 0, behaving similarly to MongoDB
+            return 0
 
     def insert(self, data: list[EntryResource | dict]) -> None:
         """Add the given entries to the underlying database.
