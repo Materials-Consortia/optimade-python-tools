@@ -62,6 +62,11 @@ def insert_main_data(
 ):
     from optimade.utils import insert_from_jsonl
 
+    for coll_type in ["links", "structures", "references"]:
+        if len(entry_collections[coll_type]) > 0:
+            LOGGER.info("Skipping data insert: data already present.")
+            return
+
     def _insert_test_data(endpoint: str | None = None):
         import bson.json_util
         from bson.objectid import ObjectId
@@ -133,7 +138,7 @@ def insert_index_data(
     links_coll = entry_collections["links"]
 
     if len(links_coll) > 0:
-        LOGGER.info("Skipping index links inserct: links collection already populated.")
+        LOGGER.info("Skipping index links insert: links collection already populated.")
         return
 
     LOGGER.debug("Loading index links...")
