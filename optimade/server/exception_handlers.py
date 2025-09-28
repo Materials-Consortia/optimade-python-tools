@@ -9,7 +9,7 @@ from pydantic import ValidationError
 
 from optimade.exceptions import BadRequest, OptimadeHTTPException
 from optimade.models import ErrorResponse, ErrorSource, OptimadeError
-from optimade.server.logger import LOGGER
+from optimade.server.logger import get_logger
 from optimade.server.routers.utils import JSONAPIResponse, meta_values
 
 
@@ -38,7 +38,7 @@ def general_exception(
         tb = "".join(
             traceback.format_exception(type(exc), value=exc, tb=exc.__traceback__)
         )
-        LOGGER.error("Traceback:\n%s", tb)
+        get_logger().error("Traceback:\n%s", tb)
         debug_info[f"_{config.provider.prefix}_traceback"] = tb
 
     try:

@@ -12,10 +12,12 @@ with warnings.catch_warnings(record=True) as w:
 
     config_warnings = w
 
+import logging
+
 from optimade import __api_version__, __version__
 from optimade.server.entry_collections import EntryCollection, create_entry_collections
 from optimade.server.exception_handlers import OPTIMADE_EXCEPTIONS
-from optimade.server.logger import LOGGER
+from optimade.server.logger import create_logger, set_logging_context
 from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers import (
@@ -58,13 +60,15 @@ def add_optional_versioned_base_urls(app: FastAPI, index: bool = False):
 
 
 def insert_main_data(
-    config: ServerConfig, entry_collections: dict[str, EntryCollection]
+    config: ServerConfig,
+    entry_collections: dict[str, EntryCollection],
+    logger: logging.Logger,
 ):
     from optimade.utils import insert_from_jsonl
 
     for coll_type in ["links", "structures", "references"]:
         if len(entry_collections[coll_type]) > 0:
-            LOGGER.info("Skipping data insert: data already present.")
+            logger.info("Skipping data insert: data already present.")
             return
 
     def _insert_test_data(endpoint: str | None = None):
@@ -75,14 +79,14 @@ def insert_main_data(
         from optimade.server.routers.utils import get_providers
 
         def load_entries(endpoint_name: str, endpoint_collection: EntryCollection):
-            LOGGER.debug("Loading test %s...", endpoint_name)
+            logger.debug("Loading test %s...", endpoint_name)
 
             endpoint_collection.insert(getattr(data, endpoint_name, []))
             if (
                 config.database_backend.value in ("mongomock", "mongodb")
                 and endpoint_name == "links"
             ):
-                LOGGER.debug(
+                logger.debug(
                     "Adding Materials-Consortia providers to links from optimade.org"
                 )
                 providers = get_providers(add_mongo_id=True)
@@ -92,7 +96,7 @@ def insert_main_data(
                         replacement=bson.json_util.loads(bson.json_util.dumps(doc)),
                         upsert=True,
                     )
-            LOGGER.debug("Done inserting test %s!", endpoint_name)
+            logger.debug("Done inserting test %s!", endpoint_name)
 
         if endpoint:
             load_entries(endpoint, entry_collections[endpoint])
@@ -102,7 +106,7 @@ def insert_main_data(
 
     if config.insert_from_jsonl:
         jsonl_path = Path(config.insert_from_jsonl)
-        LOGGER.debug("Inserting data from JSONL file: %s", jsonl_path)
+        logger.debug("Inserting data from JSONL file: %s", jsonl_path)
         if not jsonl_path.exists():
             raise RuntimeError(
                 f"Requested JSONL file does not exist: {jsonl_path}. Please specify an absolute group."
@@ -114,21 +118,23 @@ def insert_main_data(
             create_default_index=config.create_default_index,
         )
 
-        LOGGER.debug("Inserted data from JSONL file: %s", jsonl_path)
+        logger.debug("Inserted data from JSONL file: %s", jsonl_path)
         if config.insert_test_data:
             _insert_test_data("links")
     elif config.insert_test_data:
         _insert_test_data()
 
     if config.exit_after_insert:
-        LOGGER.info("Exiting after inserting test data.")
+        logger.info("Exiting after inserting test data.")
         import sys
 
         sys.exit(0)
 
 
 def insert_index_data(
-    config: ServerConfig, entry_collections: dict[str, EntryCollection]
+    config: ServerConfig,
+    entry_collections: dict[str, EntryCollection],
+    logger: logging.Logger,
 ):
     import bson.json_util
     from bson.objectid import ObjectId
@@ -138,10 +144,10 @@ def insert_index_data(
     links_coll = entry_collections["links"]
 
     if len(links_coll) > 0:
-        LOGGER.info("Skipping index links insert: links collection already populated.")
+        logger.info("Skipping index links insert: links collection already populated.")
         return
 
-    LOGGER.debug("Loading index links...")
+    logger.debug("Loading index links...")
     with open(config.index_links_path) as f:
         data = json.load(f)
 
@@ -150,14 +156,14 @@ def insert_index_data(
         db["_id"] = {"$oid": mongo_id_for_database(db["id"], db["type"])}
         processed.append(db)
 
-    LOGGER.debug(
+    logger.debug(
         "Inserting index links into collection from %s...", config.index_links_path
     )
 
     links_coll.insert(bson.json_util.loads(bson.json_util.dumps(processed)))
 
     if config.database_backend.value in ("mongodb", "mongomock"):
-        LOGGER.debug(
+        logger.debug(
             "Adding Materials-Consortia providers to links from optimade.org..."
         )
         providers = get_providers(add_mongo_id=True)
@@ -168,31 +174,38 @@ def insert_index_data(
                 upsert=True,
             )
 
-        LOGGER.debug("Done inserting index links!")
+        logger.debug("Done inserting index links!")
 
     else:
-        LOGGER.warning(
+        logger.warning(
             "Not inserting test data for index meta-database for backend %s",
             config.database_backend.value,
         )
 
 
-def create_app(config: ServerConfig | None = None, index: bool = False) -> FastAPI:
+def create_app(
+    config: ServerConfig | None = None,
+    index: bool = False,
+    logger_tag: str | None = None,
+) -> FastAPI:
+    # create app-specific logger
+    logger = create_logger(logger_tag, config)
+
     if config_warnings:
-        LOGGER.warning(
+        logger.warning(
             f"Invalid config file or no config file provided, running server with default settings. Errors: "
             f"{[warnings.formatwarning(w.message, w.category, w.filename, w.lineno, '') for w in config_warnings]}"
         )
     else:
-        LOGGER.info(
-            f"Loaded settings from {os.getenv('OPTIMADE_CONFIG_FILE', DEFAULT_CONFIG_FILE_PATH)}."
+        logger.info(
+            f"Loaded settings from {os.getenv('OPTIMADE_CONFIG_FILE', DEFAULT_CONFIG_FILE_PATH)}"
         )
 
     if config is None:
         config = ServerConfig()
 
     if config.debug:  # pragma: no cover
-        LOGGER.info("DEBUG MODE")
+        logger.info("DEBUG MODE")
 
     title = "OPTIMADE API" if not index else "OPTIMADE API - Index meta-database"
     description = """The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.\n"""
@@ -227,12 +240,19 @@ def create_app(config: ServerConfig | None = None, index: bool = False) -> FastA
 
     if not index:
         if config.insert_test_data or config.insert_from_jsonl:
-            insert_main_data(config, entry_collections)
+            insert_main_data(config, entry_collections, logger)
     else:
         if config.insert_test_data and config.index_links_path.exists():
-            insert_index_data(config, entry_collections)
+            insert_index_data(config, entry_collections, logger)
 
-    # Add CORS middleware first
+    # Add middleware to set logging context
+    @app.middleware("http")
+    async def set_context(request, call_next):
+        set_logging_context(logger_tag)
+        response = await call_next(request)
+        return response
+
+    # Add CORS middleware
     app.add_middleware(CORSMiddleware, allow_origins=["*"])
 
     # Then add required OPTIMADE middleware
