@@ -38,7 +38,9 @@ def insert_from_jsonl(
 
     import bson.json_util
 
-    from optimade.server.logger import LOGGER
+    from optimade.server.logger import get_logger
+
+    LOGGER = get_logger()
 
     batch = defaultdict(list)
     batch_size: int = 1000
@@ -78,8 +80,6 @@ def insert_from_jsonl(
                     bad_rows += 1
                     continue
             except json.JSONDecodeError:
-                from optimade.server.logger import LOGGER
-
                 LOGGER.warning("Could not read entry L%s JSON: '%s'", line_no, json_str)
                 bad_rows += 1
                 continue

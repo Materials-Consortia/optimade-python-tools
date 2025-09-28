@@ -1,80 +1,93 @@
-"""Logging to both file and terminal"""
+"""Logging factory to create instance-specific loggers for mounted subapps"""
 
 import logging
 import logging.handlers
 import os
 import sys
+from contextvars import ContextVar
 from pathlib import Path
 
 from optimade.server.config import ServerConfig
 
-# Instantiate LOGGER
-LOGGER = logging.getLogger("optimade")
-LOGGER.setLevel(logging.DEBUG)
-
-CONFIG = ServerConfig()
-
-# Handler
-CONSOLE_HANDLER = logging.StreamHandler(sys.stdout)
-try:
-    CONSOLE_HANDLER.setLevel(CONFIG.log_level.value.upper())
-
-    if CONFIG.debug:
-        CONSOLE_HANDLER.setLevel(logging.DEBUG)
-
-except ImportError:
-    CONSOLE_HANDLER.setLevel(os.getenv("OPTIMADE_LOG_LEVEL", "INFO").upper())
-
-CONSOLE_HANDLER.setLevel(os.getenv("OPTIMADE_LOG_LEVEL", "DEBUG").upper())
-
-# Formatter; try to use uvicorn default, otherwise just use built-in default
-try:
-    from uvicorn.logging import DefaultFormatter
-
-    CONSOLE_FORMATTER = DefaultFormatter("%(levelprefix)s [%(name)s] %(message)s")
-    CONSOLE_HANDLER.setFormatter(CONSOLE_FORMATTER)
-except ImportError:
-    pass
+# Context variable for keeping track of the app-specific tag for logging
+_current_log_tag: ContextVar[str | None] = ContextVar("current_log_tag", default=None)
 
 
-# Add handler to LOGGER
-LOGGER.addHandler(CONSOLE_HANDLER)
+def set_logging_context(tag: str | None):
+    """Set the current API tag for context-based logging"""
+    _current_log_tag.set(tag)
 
-# Save a file with all messages (DEBUG level)
-try:
-    LOGS_DIR = CONFIG.log_dir
-except ImportError:
-    LOGS_DIR = Path(os.getenv("OPTIMADE_LOG_DIR", "/var/log/optimade/")).resolve()
 
-try:
-    LOGS_DIR.mkdir(exist_ok=True)
-
-    # Handlers
-    FILE_HANDLER = logging.handlers.RotatingFileHandler(
-        LOGS_DIR.joinpath("optimade.log"), maxBytes=1000000, backupCount=5
-    )
-
-except OSError:
-    LOGGER.warning(
-        f"""Log files are not saved.
-
-    This is usually due to not being able to access a specified log folder or write to files
-    in the specified log location, i.e., a `PermissionError` has been raised.
-
-    To solve this, either set the OPTIMADE_LOG_DIR environment variable to a location
-    you have permission to write to or create the {LOGS_DIR} folder, which is
-    the default logging folder, with write permissions for the Unix user running the server.
+def get_logger() -> logging.Logger:
     """
-    )
-else:
-    FILE_HANDLER.setLevel(logging.DEBUG)
+    Get logger for current context.
+    """
+    tag = _current_log_tag.get()
+    logger_name = "optimade" + (f".{tag}" if tag else "")
+    return logging.getLogger(logger_name)
 
-    # Formatter
-    FILE_FORMATTER = logging.Formatter(
-        "[%(levelname)-8s %(asctime)s %(filename)s:%(lineno)d][%(name)s] %(message)s",
-        "%d-%m-%Y %H:%M:%S",
-    )
-    FILE_HANDLER.setFormatter(FILE_FORMATTER)
 
-    # Add handler to LOGGER
-    LOGGER.addHandler(FILE_HANDLER)
+def create_logger(
+    tag: str | None = None, config: ServerConfig | None = None
+) -> logging.Logger:
+    """
+    Create a logger instance for a specific app. The purpose of this function
+    is to have different loggers for different subapps (if needed).
+
+    Args:
+        tag: String added to the each logging line idenfiting this logger
+        config: ServerConfig instance, will create the default one if not provided
+
+    Returns:
+        Configured logger instance
+    """
+    config = config or ServerConfig()
+
+    logger_name = "optimade" + (f".{tag}" if tag else "")
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(logging.DEBUG)
+
+    if logger.handlers:
+        return logger
+
+    # Console handler only on parent (.tag will propagate to parent anyway)
+    if tag is None:
+        ch = logging.StreamHandler(sys.stdout)
+        ch.setLevel(logging.DEBUG if config.debug else config.log_level.value.upper())
+        try:
+            from uvicorn.logging import DefaultFormatter
+
+            ch.setFormatter(DefaultFormatter("%(levelprefix)s [%(name)s] %(message)s"))
+        except ImportError:
+            pass
+        logger.addHandler(ch)
+
+    logs_dir = config.log_dir
+    if logs_dir is None:
+        logs_dir = Path(os.getenv("OPTIMADE_LOG_DIR", "/var/log/optimade/")).resolve()
+    try:
+        logs_dir.mkdir(exist_ok=True, parents=True)
+        log_filename = f"optimade_{tag}.log" if tag else "optimade.log"
+        fh = logging.handlers.RotatingFileHandler(
+            logs_dir / log_filename, maxBytes=1_000_000, backupCount=5
+        )
+        fh.setLevel(logging.DEBUG)
+        fh.setFormatter(
+            logging.Formatter(
+                "[%(levelname)-8s %(asctime)s %(filename)s:%(lineno)d][%(name)s] %(message)s",
+                "%d-%m-%Y %H:%M:%S",
+            )
+        )
+        logger.addHandler(fh)
+    except OSError:
+        logger.warning(
+            "Log files are not saved (%s). Set OPTIMADE_LOG_DIR or fix permissions for %s.",
+            tag,
+            logs_dir,
+        )
+
+    return logger
+
+
+# Create the global logger without a tag.
+LOGGER = create_logger()

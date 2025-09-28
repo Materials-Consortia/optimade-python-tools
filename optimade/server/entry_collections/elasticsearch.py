@@ -10,7 +10,7 @@ from optimade.filtertransformers.elasticsearch import ElasticTransformer
 from optimade.models import EntryResource
 from optimade.server.config import ServerConfig
 from optimade.server.entry_collections import EntryCollection, PaginationMechanism
-from optimade.server.logger import LOGGER
+from optimade.server.logger import get_logger
 from optimade.server.mappers import BaseResourceMapper
 
 
@@ -18,7 +18,7 @@ def get_elastic_client(config: ServerConfig) -> Optional["Elasticsearch"]:
     from elasticsearch import Elasticsearch
 
     if config.database_backend.value == "elastic":
-        LOGGER.info("Using: Elasticsearch backend at %s", config.elastic_hosts)
+        get_logger().info("Using: Elasticsearch backend at %s", config.elastic_hosts)
         return Elasticsearch(hosts=config.elastic_hosts)
     return None
 
@@ -97,7 +97,9 @@ class ElasticCollection(EntryCollection):
         body["mappings"]["properties"] = properties
         self.client.indices.create(index=self.name, ignore=400, **body)
 
-        LOGGER.debug(f"Created Elastic index for {self.name!r} with parameters {body}")
+        get_logger().debug(
+            f"Created Elastic index for {self.name!r} with parameters {body}"
+        )
 
     @property
     def predefined_index(self) -> dict[str, Any]:

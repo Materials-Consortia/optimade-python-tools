@@ -7,7 +7,7 @@ from optimade.filtertransformers.mongo import MongoTransformer
 from optimade.models import EntryResource
 from optimade.server.config import ServerConfig, SupportedBackend
 from optimade.server.entry_collections import EntryCollection
-from optimade.server.logger import LOGGER
+from optimade.server.logger import get_logger
 from optimade.server.mappers import BaseResourceMapper
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 
@@ -19,10 +19,12 @@ def _close_all_clients(log: bool = True):
         try:
             client.close()
             if log:
-                LOGGER.debug(f"Closed MongoClient for {backend} {uri}")
+                get_logger().debug(f"Closed MongoClient for {backend} {uri}")
         except Exception as exc:
             if log:
-                LOGGER.warning(f"Failed closing MongoClient {backend} {uri}: {exc}")
+                get_logger().warning(
+                    f"Failed closing MongoClient {backend} {uri}: {exc}"
+                )
         finally:
             _CLIENTS.pop((backend, uri), None)
 
@@ -42,12 +44,12 @@ def get_mongo_client(config: ServerConfig):
     if backend == "mongodb":
         from pymongo import MongoClient
 
-        LOGGER.info(f"Using: Real MongoDB (pymongo) @ {uri}")
+        get_logger().info(f"Using: Real MongoDB (pymongo) @ {uri}")
         client = MongoClient(uri)
     elif backend == "mongomock":
         from mongomock import MongoClient
 
-        LOGGER.info(f"Using: Mock MongoDB (mongomock) @ {uri}")
+        get_logger().info(f"Using: Mock MongoDB (mongomock) @ {uri}")
         client = MongoClient(uri)
     else:
         raise ValueError(f"Unsupported backend {backend}")
