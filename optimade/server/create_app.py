@@ -188,6 +188,26 @@ def create_app(
     index: bool = False,
     logger_tag: str | None = None,
 ) -> FastAPI:
+    """
+    Create and configure a FastAPI app for the OPTIMADE API.
+
+    Sets up logging, middleware, exception handlers, routers, and optional
+    test/JSONL data insertion. Can be used for both a regular OPTIMADE API
+    or the index meta-database variant.
+
+    Note that the global ServerConfig instance is read from the "OPTIMADE_"
+    env variables or the config json file, but this function allows to
+    override config options for individual apps by passing a custom ServerConfig.
+
+    Args:
+        config: ServerConfig instance to override config options specific to this app.
+        index: If True, create an index meta-database instance.
+        logger_tag: Optional tag for the logger.
+
+    Returns:
+        Configured FastAPI application.
+    """
+
     # create app-specific logger
     logger = create_logger(logger_tag, config)
 
