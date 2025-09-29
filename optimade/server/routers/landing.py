@@ -15,12 +15,11 @@ _PAGE_CACHE: dict[tuple[int, str, float | None], HTMLResponse] = {}
 
 
 def _custom_file_mtime(config: ServerConfig) -> float | None:
-    custom = getattr(config, "custom_landing_page", None)
-    if not custom:
+    path = getattr(config, "custom_landing_page", None)
+    if not path:
         return None
-    p = Path(custom)
     try:
-        return p.resolve().stat().st_mtime
+        return Path(path).resolve().stat().st_mtime
     except FileNotFoundError:
         return None
 
@@ -30,9 +29,8 @@ def render_landing_page(
 ) -> HTMLResponse:
     """Render and cache the landing page with a manual, hashable key."""
     cache_key = (id(config), url, _custom_file_mtime(config))
-    cached = _PAGE_CACHE.get(cache_key)
-    if cached is not None:
-        return cached
+    if cache_key in _PAGE_CACHE:
+        return _PAGE_CACHE[cache_key]
 
     meta = meta_values(
         config, url, 1, 1, more_data_available=False, schema=config.schema_url
@@ -43,55 +41,44 @@ def render_landing_page(
     if config.custom_landing_page:
         html = Path(config.custom_landing_page).resolve().read_text()
     else:
-        template_dir = Path(__file__).parent.joinpath("static").resolve()
-        html = (template_dir / "landing_page.html").read_text()
+        html = (
+            (Path(__file__).parent / "static/landing_page.html").resolve().read_text()
+        )
 
-    # Build a dictionary that maps the old Jinja keys to the new simplified replacements
-    replacements = {
-        "api_version": __api_version__,
-    }
-
+    replacements = {"api_version": __api_version__}
     if meta.provider:
         replacements.update(
             {
                 "provider.name": meta.provider.name,
                 "provider.prefix": meta.provider.prefix,
                 "provider.description": meta.provider.description,
-                # avoid "None" string leaking into HTML
-                "provider.homepage": str(meta.provider.homepage)
-                if meta.provider.homepage
-                else "",
+                "provider.homepage": str(meta.provider.homepage or ""),
             }
         )
-
     if meta.implementation:
         replacements.update(
             {
                 "implementation.name": meta.implementation.name or "",
                 "implementation.version": meta.implementation.version or "",
-                "implementation.source_url": str(meta.implementation.source_url)
-                if meta.implementation.source_url
-                else "",
+                "implementation.source_url": str(meta.implementation.source_url or ""),
             }
         )
 
     for k, v in replacements.items():
         html = html.replace(f"{{{{ {k} }}}}", v)
 
-    # Build the list of endpoints. The template already opens and closes the <ul> tag.
-    endpoints_list = [
-        f'<li><a href="{versioned_url}{endp}">{versioned_url}{endp}</a></li>'
-        for endp in list(entry_collections.keys()) + ["info"]
-    ]
-    html = html.replace("{% ENDPOINTS %}", "\n".join(endpoints_list))
+    endpoints = "\n".join(
+        f'<li><a href="{versioned_url}{e}">{versioned_url}{e}</a></li>'
+        for e in [*entry_collections.keys(), "info"]
+    )
+    html = html.replace("{% ENDPOINTS %}", endpoints)
 
-    # If the index base URL has been configured, also list it
-    index_base_url_html = ""
-    if config.index_base_url:
-        index_base_url_html = f"""<h3>Index base URL:</h3>
-<p><a href="{config.index_base_url}">{config.index_base_url}</a></p>
-"""
-    html = html.replace("{% INDEX_BASE_URL %}", index_base_url_html)
+    index_html = (
+        f"""<h3>Index base URL:</h3>\n<p><a href="{config.index_base_url}">{config.index_base_url}</a></p>\n"""
+        if config.index_base_url
+        else ""
+    )
+    html = html.replace("{% INDEX_BASE_URL %}", index_html)
 
     resp = HTMLResponse(html)
     _PAGE_CACHE[cache_key] = resp
@@ -99,10 +86,10 @@ def render_landing_page(
 
 
 async def landing(request: Request):
-    """Show a human-readable landing page when the base URL is accessed."""
-    config: ServerConfig = request.app.state.config
-    entry_collections = request.app.state.entry_collections
-    return render_landing_page(config, entry_collections, str(request.url))
+    """Show landing page when the base URL is accessed."""
+    return render_landing_page(
+        request.app.state.config, request.app.state.entry_collections, str(request.url)
+    )
 
 
 router = Router(routes=[Route("/", endpoint=landing)])
