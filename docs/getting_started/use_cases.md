@@ -6,16 +6,12 @@ The [Materials Project](https://materialsproject.org) uses `optimade-python-tool
 
 `optimade-python-tools` handles filter parsing, database query generation and response validation by running the reference server implementation with minimal configuration.
 
-[*odbx*](https://odbx.science), a small database of results from crystal structure prediction calculations, follows a similar approach.
+[_odbx_](https://odbx.science), a small database of results from crystal structure prediction calculations, follows a similar approach.
 This implementation is open source, available on GitHub at [ml-evs/odbx.science](https://github.com/ml-evs/odbx.science).
 
 ## Serving multiple databases
 
-[Materials Cloud](https://materialscloud.org) uses `optimade-python-tools` as a library to provide an OPTIMADE API entry to archived computational materials studies, created with the [AiiDA](https://aiida.net) Python framework and published through their archive.
-In this case, each individual study and archive entry has its own database and separate API entry.
-The Python classes within the `optimade` package have been extended to make use of AiiDA and its underlying [PostgreSQL](https://postgresql.org) storage engine.
-
-Details of this implementation can be found on GitHub at [aiidateam/aiida-optimade](https://github.com/aiidateam/aiida-optimade).
+[Materials Cloud](https://materialscloud.org) uses `optimade-python-tools` as a library to provide an OPTIMADE API entries to 1) their main databases create with the [AiiDA](https://aiida.net) Python framework; and 2) to user-contributed data via the Archive platform. Separate OPTIMADE API apps are started for each database, mounted as separate endpoints to a parent FastAPI instance. For converting the underying data to the OPTIMADE format, the [optimade-maker](https://github.com/materialscloud-org/optimade-maker) toolkit is used.
 
 ## Extending an existing API
 

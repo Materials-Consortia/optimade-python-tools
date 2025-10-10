@@ -3,24 +3,17 @@ from typing import Annotated, Any
 from fastapi import APIRouter, Depends, Request
 
 from optimade.models import (
-    StructureResource,
     StructureResponseMany,
     StructureResponseOne,
 )
-from optimade.server.config import CONFIG
-from optimade.server.entry_collections import create_collection
-from optimade.server.mappers import StructureMapper
+from optimade.server.config import ServerConfig
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
 from optimade.server.routers.utils import get_entries, get_single_entry
 from optimade.server.schemas import ERROR_RESPONSES
 
 router = APIRouter(redirect_slashes=True)
 
-structures_coll = create_collection(
-    name=CONFIG.structures_collection,
-    resource_cls=StructureResource,
-    resource_mapper=StructureMapper,
-)
+CONFIG = ServerConfig()
 
 
 @router.get(
@@ -35,6 +28,7 @@ structures_coll = create_collection(
 def get_structures(
     request: Request, params: Annotated[EntryListingQueryParams, Depends()]
 ) -> dict[str, Any]:
+    structures_coll = request.app.state.entry_collections.get("structures")
     return get_entries(
         collection=structures_coll,
         request=request,
@@ -56,6 +50,7 @@ def get_single_structure(
     entry_id: str,
     params: Annotated[SingleEntryQueryParams, Depends()],
 ) -> dict[str, Any]:
+    structures_coll = request.app.state.entry_collections.get("structures")
     return get_single_entry(
         collection=structures_coll,
         entry_id=entry_id,

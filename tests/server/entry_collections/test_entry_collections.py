@@ -8,7 +8,12 @@ def test_get_attribute_fields():
         ReferenceResourceAttributes,
         StructureResourceAttributes,
     )
-    from optimade.server.routers import ENTRY_COLLECTIONS
+    from optimade.server.config import ServerConfig
+    from optimade.server.entry_collections import create_entry_collections
+
+    # get default config and entry collections
+    config = ServerConfig()
+    entry_collections = create_entry_collections(config)
 
     entry_name_attributes = {
         "links": LinksResourceAttributes,
@@ -17,10 +22,10 @@ def test_get_attribute_fields():
     }
 
     # Make sure we're hitting all collections
-    assert set(entry_name_attributes.keys()) == set(ENTRY_COLLECTIONS.keys())
+    assert set(entry_name_attributes.keys()) == set(entry_collections.keys())
 
     for entry_name, attributes_model in entry_name_attributes.items():
         assert (
             set(attributes_model.model_fields.keys())
-            == ENTRY_COLLECTIONS[entry_name].get_attribute_fields()
+            == entry_collections[entry_name].get_attribute_fields()
         )

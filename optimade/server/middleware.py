@@ -20,7 +20,7 @@ from starlette.responses import RedirectResponse, StreamingResponse
 
 from optimade.exceptions import BadRequest, VersionNotSupported
 from optimade.models import Warnings
-from optimade.server.config import CONFIG
+from optimade.server.config import ServerConfig
 from optimade.server.routers.utils import BASE_URL_PREFIXES, get_base_url
 from optimade.warnings import (
     FieldValueNotRecognized,
@@ -78,7 +78,7 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
     """If a non-supported versioned base URL is supplied return `553 Version Not Supported`."""
 
     @staticmethod
-    def check_url(url: StarletteURL):
+    def check_url(config: ServerConfig, url: StarletteURL):
         """Check URL path for versioned part.
 
         Parameters:
@@ -89,7 +89,7 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
                 and the version part is not supported by the implementation.
 
         """
-        base_url = get_base_url(url)
+        base_url = get_base_url(config, url)
         optimade_path = f"{url.scheme}://{url.netloc}{url.path}"[len(base_url) :]
         match = re.match(r"^(?P<version>/v[0-9]+(\.[0-9]+){0,2}).*", optimade_path)
         if match is not None:
@@ -103,8 +103,9 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
                 )
 
     async def dispatch(self, request: Request, call_next):
+        config = request.app.state.config
         if request.url.path:
-            self.check_url(request.url)
+            self.check_url(config, request.url)
         response = await call_next(request)
         return response
 
@@ -196,7 +197,7 @@ class HandleApiHint(BaseHTTPMiddleware):
         )
 
     @staticmethod
-    def is_versioned_base_url(url: str) -> bool:
+    def is_versioned_base_url(config: ServerConfig, url: str) -> bool:
         """Determine whether a request is for a versioned base URL.
 
         First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.
@@ -213,14 +214,15 @@ class HandleApiHint(BaseHTTPMiddleware):
         if not re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url):
             return False
 
-        base_url = get_base_url(url)
+        base_url = get_base_url(config, url)
         return bool(re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url[len(base_url) :]))
 
     async def dispatch(self, request: Request, call_next):
+        config = request.app.state.config
         parsed_query = urllib.parse.parse_qs(request.url.query, keep_blank_values=True)
 
         if "api_hint" in parsed_query:
-            if self.is_versioned_base_url(str(request.url)):
+            if self.is_versioned_base_url(config, str(request.url)):
                 warnings.warn(
                     QueryParamNotUsed(
                         detail=(
@@ -239,7 +241,7 @@ class HandleApiHint(BaseHTTPMiddleware):
                 version_path = self.handle_api_hint(parsed_query["api_hint"])
 
                 if version_path:
-                    base_url = get_base_url(request.url)
+                    base_url = get_base_url(config, request.url)
 
                     new_request = (
                         f"{base_url}{version_path}{str(request.url)[len(base_url) :]}"
@@ -312,6 +314,13 @@ class AddWarnings(BaseHTTPMiddleware):
 
     _warnings: list[Warnings]
 
+    def __init__(self, app, config: ServerConfig | None = None):
+        super().__init__(app)
+        self._warnings = []
+        if config is None:
+            config = ServerConfig()
+        self._config = config
+
     def showwarning(
         self,
         message: Warning | str,
@@ -378,7 +387,7 @@ class AddWarnings(BaseHTTPMiddleware):
         except AttributeError:
             detail = str(message)
 
-        if CONFIG.debug:
+        if self._config.debug:
             if line is None:
                 # All this is taken directly from the warnings library.
                 # See 'warnings._formatwarnmsg_impl()' for the original code.
@@ -397,7 +406,7 @@ class AddWarnings(BaseHTTPMiddleware):
             if line:
                 meta["line"] = line.strip()
 
-        if CONFIG.debug:
+        if self._config.debug:
             new_warning = Warnings(title=title, detail=detail, meta=meta)
         else:
             new_warning = Warnings(title=title, detail=detail)
@@ -428,6 +437,9 @@ class AddWarnings(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         self._warnings = []
+
+        # Stash config so self.showwarning() can reach it
+        self._config = request.app.state.config
 
         warnings.simplefilter(action="default", category=OptimadeWarning)
         warnings.showwarning = self.showwarning

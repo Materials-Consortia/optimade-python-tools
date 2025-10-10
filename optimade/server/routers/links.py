@@ -2,21 +2,15 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, Request
 
-from optimade.models import LinksResource, LinksResponse
-from optimade.server.config import CONFIG
-from optimade.server.entry_collections import create_collection
-from optimade.server.mappers import LinksMapper
+from optimade.models import LinksResponse
+from optimade.server.config import ServerConfig
 from optimade.server.query_params import EntryListingQueryParams
 from optimade.server.routers.utils import get_entries
 from optimade.server.schemas import ERROR_RESPONSES
 
 router = APIRouter(redirect_slashes=True)
 
-links_coll = create_collection(
-    name=CONFIG.links_collection,
-    resource_cls=LinksResource,
-    resource_mapper=LinksMapper,
-)
+CONFIG = ServerConfig()
 
 
 @router.get(
@@ -29,4 +23,6 @@ links_coll = create_collection(
 def get_links(
     request: Request, params: Annotated[EntryListingQueryParams, Depends()]
 ) -> dict[str, Any]:
+    links_coll = request.app.state.entry_collections.get("links")
+
     return get_entries(collection=links_coll, request=request, params=params)
