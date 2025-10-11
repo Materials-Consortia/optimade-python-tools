@@ -110,8 +110,9 @@ def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> N
 
         # Insert any remaining data
         for entry_type in batch:
-            ENTRY_COLLECTIONS[entry_type].insert(batch[entry_type])
-            batch[entry_type] = []
+            if batch[entry_type]:
+                ENTRY_COLLECTIONS[entry_type].insert(batch[entry_type])
+                batch[entry_type] = []
 
         if bad_rows:
             LOGGER.warning("Could not read %d rows from the JSONL file", bad_rows)
