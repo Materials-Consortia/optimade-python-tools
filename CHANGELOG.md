@@ -1,5 +1,36 @@
 # Changelog
 
+## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.3.1...HEAD)
+
+**Merged pull requests:**
+
+- Bump providers from `a479de9` to `c0a4a05` [\#2324](https://github.com/Materials-Consortia/optimade-python-tools/pull/2324) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v1.3.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.3.1) (2025-10-11)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.3.0...v1.3.1)
+
+**Implemented enhancements:**
+
+- Add a gzip compression middleware [\#2095](https://github.com/Materials-Consortia/optimade-python-tools/issues/2095)
+
+**Fixed bugs:**
+
+- `insert_from_jsonl` fails when number of entries is exactly divisible by `batch_size` [\#2320](https://github.com/Materials-Consortia/optimade-python-tools/issues/2320)
+
+**Merged pull requests:**
+
+- Fix issue when inserting from JSONL when batch size matches number of entries [\#2321](https://github.com/Materials-Consortia/optimade-python-tools/pull/2321) ([ml-evs](https://github.com/ml-evs))
+- Bump providers from `a479de9` to `c0a4a05` [\#2319](https://github.com/Materials-Consortia/optimade-python-tools/pull/2319) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Allow Mongo DBs that share 12 first ID characters [\#2317](https://github.com/Materials-Consortia/optimade-python-tools/pull/2317) ([eimrek](https://github.com/eimrek))
+- Fix docs builds with latest griffe [\#2309](https://github.com/Materials-Consortia/optimade-python-tools/pull/2309) ([ml-evs](https://github.com/ml-evs))
+- Add `GZipMiddleware` to compress JSON responses on-the-fly [\#2308](https://github.com/Materials-Consortia/optimade-python-tools/pull/2308) ([Bud-Macaulay](https://github.com/Bud-Macaulay))
+- Bump actions/setup-python from 5 to 6 in the github-actions group and pin griffe [\#2301](https://github.com/Materials-Consortia/optimade-python-tools/pull/2301) ([dependabot[bot]](https://github.com/apps/dependabot))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2300](https://github.com/Materials-Consortia/optimade-python-tools/pull/2300) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+- Bump actions/checkout from 4 to 5 in the github-actions group [\#2294](https://github.com/Materials-Consortia/optimade-python-tools/pull/2294) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v1.3.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.3.0) (2025-08-11)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.2.4...v1.3.0)
