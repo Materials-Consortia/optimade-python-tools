@@ -1,9 +1,9 @@
 from datetime import datetime
 from typing import Annotated, Any, ClassVar, Literal
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, model_validator
 
-from optimade.models.jsonapi import Attributes, Relationships, Resource
+from optimade.models.jsonapi import Attributes, Meta, Relationships, Resource
 from optimade.models.optimade_json import (
     BaseRelationshipResource,
     DataType,
@@ -117,6 +117,36 @@ class EntryResourceAttributes(Attributes):
         return value
 
 
+class EntryMetadata(Meta):
+    """Contains the metadata for the attributes of an entry"""
+
+    property_metadata: dict = StrictField(
+        None,
+        description="""An object containing per-entry and per-property metadata. The keys are the names of the fields in attributes for which metadata is available. The values belonging to these keys are dictionaries containing the relevant metadata fields. See also [Metadata properties](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#metadata-properties)""",
+    )
+
+    @field_validator("property_metadata", mode="before")
+    def check_property_metadata_subfields(cls, value: Any) -> dict:
+        """Loop through any per-property metadata field and check that
+        the subfields are prefixed correctly.
+
+        """
+        error_fields: list[str] = []
+
+        if value is not None and isinstance(value, dict):
+            for field in value:
+                if property_metadata := value.get(field):
+                    for subfield in property_metadata:
+                        if not subfield.startswith("_"):
+                            error_fields.append(subfield)
+
+        if error_fields:
+            raise ValueError(
+                f"The keys under the field `property_metadata` need to be prefixed. The field(s) {error_fields} are not prefixed."
+            )
+        return value
+
+
 class EntryResource(Resource):
     """The base model for an entry resource."""
 
@@ -171,6 +201,14 @@ Database-provider-specific properties need to include the database-provider-spec
         ),
     ]
 
+    meta: Annotated[
+        EntryMetadata | None,
+        StrictField(
+            None,
+            description="""A [JSON API meta object](https://jsonapi.org/format/1.1/#document-meta) that is used to communicate metadata.""",
+        ),
+    ] = None
+
     relationships: Annotated[
         EntryRelationships | None,
         StrictField(
@@ -178,6 +216,47 @@ Database-provider-specific properties need to include the database-provider-spec
 The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.""",
         ),
     ] = None
+
+    @model_validator(mode="before")
+    def check_meta(cls, data: Any) -> dict | None:
+        """Validator to check whether the per-entry `meta` field is valid,
+        including stripping out any per-property metadata for properties that
+        do not otherwise appear in the model.
+
+        """
+
+        meta = data.get("meta")
+        if not meta:
+            return data
+
+        if property_metadata := meta.pop("property_metadata", None):
+            # check that all the fields under property metadata are in attributes
+            attributes = data.get("attributes", {})
+            property_error_fields: list[str] = []
+            for subfield in property_metadata:
+                if subfield not in attributes:
+                    property_error_fields.append(subfield)
+
+            if property_error_fields:
+                raise ValueError(
+                    f"The keys under the field `property_metadata` need to match with the field names in attributes. The field(s) {property_error_fields} are however not present in attributes {attributes}"
+                )
+
+        meta["property_metadata"] = property_metadata
+
+        meta_error_fields: list[str] = []
+        for field in meta:
+            if field not in EntryMetadata.model_fields:
+                if not field.startswith("_"):
+                    meta_error_fields.append(field)
+
+        if meta_error_fields:
+            raise ValueError(
+                f"The keys under the field `meta` need to be prefixed if not otherwise defined. The field(s) {meta_error_fields} are not defined for per-entry `meta`."
+            )
+
+        data["meta"] = meta
+        return data
 
 
 class EntryInfoProperty(BaseModel):
