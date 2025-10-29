@@ -8,6 +8,7 @@ from lark.exceptions import VisitError
 from pydantic import ValidationError
 
 from optimade.exceptions import BadRequest, OptimadeHTTPException
+from optimade.filtertransformers.base_transformer import FilterTransformerError
 from optimade.models import ErrorResponse, ErrorSource, OptimadeError
 from optimade.server.config import CONFIG
 from optimade.server.logger import LOGGER
@@ -228,6 +229,7 @@ OPTIMADE_EXCEPTIONS: Iterable[
 ] = [
     (StarletteHTTPException, http_exception_handler),
     (OptimadeHTTPException, http_exception_handler),
+    (FilterTransformerError, http_exception_handler),
     (RequestValidationError, request_validation_exception_handler),
     (ValidationError, validation_exception_handler),
     (VisitError, grammar_not_implemented_handler),

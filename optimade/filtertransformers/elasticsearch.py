@@ -4,7 +4,9 @@ from elasticsearch_dsl import Field, Integer, Keyword, Q, Text
 from lark import v_args
 
 from optimade.filtertransformers import BaseTransformer, Quantity
-from optimade.server.mappers import BaseResourceMapper
+
+if TYPE_CHECKING:
+    from optimade.server.mappers import BaseResourceMapper
 
 __all__ = ("ElasticTransformer",)
 
@@ -101,7 +103,7 @@ class ElasticTransformer(BaseTransformer):
 
     def __init__(
         self,
-        mapper: type[BaseResourceMapper],
+        mapper: type["BaseResourceMapper"],
         quantities: dict[str, Quantity] | None = None,
     ):
         if quantities is not None:
