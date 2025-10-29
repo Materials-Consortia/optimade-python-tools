@@ -234,16 +234,19 @@ def get_base_url(
 
     Take the base URL from the config file, if it exists, otherwise use the request.
     """
+    if CONFIG.base_url:
+        return CONFIG.base_url.rstrip("/")
+
     parsed_url_request = (
         urllib.parse.urlparse(parsed_url_request)
         if isinstance(parsed_url_request, str)
         else parsed_url_request
     )
-    return (
-        CONFIG.base_url.rstrip("/")
-        if CONFIG.base_url
-        else f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
-    )
+    base_url = f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
+    if CONFIG.root_path:
+        base_url = base_url + CONFIG.root_path.rstrip("/")
+
+    return base_url
 
 
 def get_entries(

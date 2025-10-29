@@ -119,3 +119,38 @@ def test_get_providers_warning(caplog, top_dir):
             from optimade.server.data import providers
 
             assert providers == providers_cache
+
+
+def test_get_base_url():
+    """
+    This tests whether the base_url is correctly extracted from the request.
+    """
+    from optimade.server.config import CONFIG
+    from optimade.server.routers.utils import get_base_url
+
+    base_url_org = CONFIG.base_url
+    root_path_org = CONFIG.root_path
+    CONFIG.base_url = None
+    CONFIG.root_path = "/optimade"
+    request_urls = (
+        "http://www.example.com",
+        "http://www.example.com/",
+        "http://www.example.com/optimade/v1/links",
+        "http://www.structures.com/links",
+        "https://www.links.org/optimade/structures/123456",
+    )
+    base_urls = (
+        "http://www.example.com/optimade",
+        "http://www.example.com/optimade",
+        "http://www.example.com/optimade",
+        "http://www.structures.com/optimade",
+        "https://www.links.org/optimade",
+    )
+    results = []
+    for request_url in request_urls:
+        results.append(get_base_url(request_url))
+
+    CONFIG.base_url = base_url_org
+    CONFIG.root_path = root_path_org
+    for i in range(len(base_urls)):
+        assert results[i] == base_urls[i]
