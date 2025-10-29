@@ -245,7 +245,7 @@ class BaseTransformer(Transformer, abc.ABC):
         if self.mapper:
             if quantity_name in self.mapper.RELATIONSHIP_ENTRY_TYPES:
                 return quantity_name
-
+        
         if self.quantities and quantity_name not in self.quantities:
             # If the quantity is provider-specific, but does not match this provider,
             # then return the quantity name such that it can be treated as unknown.
