@@ -505,6 +505,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../deployment/multiple_apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Serve multiple OPTIMADE APIs within a single python process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../deployment/container/" class="md-nav__link">
         
   
@@ -1897,6 +1920,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../server/create_app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create_app
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../server/exception_handlers/" class="md-nav__link">
         
   
@@ -2112,10 +2158,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_11" id="__nav_10_9_11_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
             
   
   
@@ -2128,8 +2174,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_12">
             <span class="md-nav__icon md-icon"></span>
             entry_collections
           </label>
@@ -2227,10 +2273,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
             
   
   
@@ -2243,8 +2289,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_12">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_13">
             <span class="md-nav__icon md-icon"></span>
             mappers
           </label>
@@ -2365,10 +2411,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_14" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_14" id="__nav_10_9_14_label" tabindex="0">
             
   
   
@@ -2381,8 +2427,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_14">
             <span class="md-nav__icon md-icon"></span>
             routers
           </label>
@@ -3069,7 +3115,8 @@ used by the validator. The two main features being:</p>
 
 
 
-              <details class="quote">
+
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade/validator/utils.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
 <span class="normal">166</span>
@@ -3407,7 +3454,7 @@ request protocol (e.g. <code>'http://'</code>) and API version number if necessa
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">166</span>
 <span class="normal">167</span>
@@ -3592,7 +3639,7 @@ the <code>MAX_RETRIES</code> attempts.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
 <span class="normal">205</span>
@@ -3749,6 +3796,7 @@ the <code>MAX_RETRIES</code> attempts.</p>
               Bases: <code><span title="Exception">Exception</span></code></p>
 
 
+
         <p>This exception should be raised when validation throws an unexpected error.
 These should be counted separately from <code>ResponseError</code>'s and <code>ValidationError</code>'s.</p>
 
@@ -3759,7 +3807,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade/validator/utils.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">48</span>
 <span class="normal">49</span>
@@ -3793,6 +3841,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
               Bases: <code><span title="Exception">Exception</span></code></p>
 
 
+
         <p>This exception should be raised for a manual hardcoded test failure.</p>
 
 
@@ -3802,7 +3851,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade/validator/utils.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">44</span>
 <span class="normal">45</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ResponseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -3829,7 +3878,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
         <p>Print but sad.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">65</span>
 <span class="normal">66</span>
@@ -3856,7 +3905,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
         <p>Print but louder.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">60</span>
 <span class="normal">61</span>
@@ -3883,7 +3932,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
         <p>Print but happy.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">70</span>
 <span class="normal">71</span>
@@ -3910,7 +3959,7 @@ These should be counted separately from <code>ResponseError</code>'s and <code>V
         <p>Print but angry.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
 <span class="normal">56</span>
@@ -3978,7 +4027,7 @@ that the test was not appropriate and should be ignored.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/validator/utils.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
 <span class="normal">270</span>

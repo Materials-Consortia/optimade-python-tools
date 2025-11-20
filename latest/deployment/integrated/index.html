@@ -16,7 +16,7 @@
         <link rel="prev" href="../../getting_started/use_cases/">
       
       
-        <link rel="next" href="../container/">
+        <link rel="next" href="../multiple_apps/">
       
       
       <link rel="icon" href="../../images/favicon.png">
@@ -564,6 +564,29 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../multiple_apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Serve multiple OPTIMADE APIs within a single python process
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1966,6 +1989,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api_reference/server/create_app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create_app
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api_reference/server/exception_handlers/" class="md-nav__link">
         
   
@@ -2181,10 +2227,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_11" id="__nav_10_9_11_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
             
   
   
@@ -2197,8 +2243,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_12">
             <span class="md-nav__icon md-icon"></span>
             entry_collections
           </label>
@@ -2296,10 +2342,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
             
   
   
@@ -2312,8 +2358,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_12">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_13">
             <span class="md-nav__icon md-icon"></span>
             mappers
           </label>
@@ -2434,10 +2480,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_14" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_14" id="__nav_10_9_14_label" tabindex="0">
             
   
   
@@ -2450,8 +2496,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_14">
             <span class="md-nav__icon md-icon"></span>
             routers
           </label>
@@ -2859,8 +2905,8 @@ If you run <code>optimade</code> code inside another application, you might want
 Let's say you have a file <code>optimade_config.json</code> as part of the Python module that you use to create your OPTIMADE API.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>You can find more detailed information about configuring the <code>optimade</code> server in the <a href="../../configuration/">Configuration</a> section.</p>
 </div>
+<p>You can find more detailed information about configuring the <code>optimade</code> server in the <a href="../../configuration/">Configuration</a> section.</p>
 <p>Before importing any <code>optimade</code> modules, you can set the <code>OPTIMADE_CONFIG_FILE</code> environment variable to refer to your config file:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -2878,24 +2924,14 @@ The following code customizes the <a class="autorefs autorefs-internal" href="..
 <h2 id="mounting-the-optimade-python-tools-fastapi-app-into-an-existing-fastapi-app">Mounting the OPTIMADE Python tools <em>FastAPI</em> app into an existing <em>FastAPI</em> app<a class="headerlink" href="#mounting-the-optimade-python-tools-fastapi-app-into-an-existing-fastapi-app" title="Permanent link">&para;</a></h2>
 <p>Let's assume you have an existing <em>FastAPI</em> app <code>my_app</code>.
 It already implements a few routers under certain path prefixes, and now you want to add an OPTIMADE implementation under the path prefix <code>/optimade</code>.</p>
-<p>First, you have to set the <code>root_path</code> in the <code>optimade</code> configuration, so that the app expects all requests to be prefixed with <code>/optimade</code>.</p>
-<p>Second, you simply mount the <code>optimade</code> app into your existing app <code>my_app</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CONFIG</span>
+<p>The primary thing to modify is the <code>base_url</code> to match the new subpath. The easiest is to just update your configuration file or env parameters.</p>
+<p>Then one can just simply do the following:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">optimade</span>
 
-<span class="n">CONFIG</span><span class="o">.</span><span class="n">root_path</span> <span class="o">=</span> <span class="s2">&quot;/optimade&quot;</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">optimade</span>
-
-<span class="n">optimade</span><span class="o">.</span><span class="n">add_major_version_base_url</span><span class="p">(</span><span class="n">optimade</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
 <span class="n">my_app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/optimade&quot;</span><span class="p">,</span> <span class="n">optimade</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
 </code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>In the example above, we imported <code>CONFIG</code> before <code>main</code> so that our config was loaded before app creation.
-To avoid the need for this, the <code>root_path</code> can be set in your JSON config file, passed as an environment variable, or declared in a custom Python module (see <a href="../../configuration/">Configuration</a>).</p>
-</div>
 <p>See also the <em>FastAPI</em> documentation on <a href="https://fastapi.tiangolo.com/advanced/sub-applications/">sub-applications</a>.</p>
-<p>Now, if you run <code>my_app</code>, it will still serve all its routers as before and in addition it will also serve all OPTIMADE routes under <code>/optimade/</code> and the versioned URLs <code>/optimade/v1/</code>.</p>
+<p>Now, if you run <code>my_app</code>, it will still serve all its routers as before and in addition it will also serve all OPTIMADE routes under <code>/optimade/</code>.</p>
 
 
 

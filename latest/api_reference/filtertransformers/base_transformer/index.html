@@ -505,6 +505,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../deployment/multiple_apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Serve multiple OPTIMADE APIs within a single python process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../deployment/container/" class="md-nav__link">
         
   
@@ -2268,6 +2291,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../server/create_app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create_app
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../server/exception_handlers/" class="md-nav__link">
         
   
@@ -2483,10 +2529,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_11" id="__nav_10_9_11_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
             
   
   
@@ -2499,8 +2545,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_12">
             <span class="md-nav__icon md-icon"></span>
             entry_collections
           </label>
@@ -2598,10 +2644,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
             
   
   
@@ -2614,8 +2660,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_12">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_13">
             <span class="md-nav__icon md-icon"></span>
             mappers
           </label>
@@ -2736,10 +2782,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_14" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_14" id="__nav_10_9_14_label" tabindex="0">
             
   
   
@@ -2752,8 +2798,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_14">
             <span class="md-nav__icon md-icon"></span>
             routers
           </label>
@@ -3500,6 +3546,7 @@ for turning filters parsed by lark into backend-specific queries.</p>
               Bases: <code><span title="lark.Transformer">Transformer</span></code>, <code><span title="abc.ABC">ABC</span></code></p>
 
 
+
         <p>Generic filter transformer that handles various
 parts of the grammar in a backend non-specific way.</p>
 
@@ -3529,7 +3576,7 @@ to their backend-specific versions.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.filtertransformers.base_transformer.BaseTransformer.mapper">mapper</span></code></td>
             <td>
-                  <code><span title="type">type</span>[<a class="autorefs autorefs-internal" title="BaseResourceMapper (optimade.server.mappers.BaseResourceMapper)" href="../../server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a>] | None</code>
+                  <code><a class="autorefs autorefs-internal" title="BaseResourceMapper (optimade.server.mappers.BaseResourceMapper)" href="../../server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3549,7 +3596,7 @@ various field-related configuration.</p>
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 72</span>
 <span class="normal"> 73</span>
@@ -3855,7 +3902,7 @@ various field-related configuration.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">operator_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -3879,7 +3926,7 @@ various field-related configuration.</p>
     <span class="n">_quantity_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">Quantity</span>
     <span class="n">_quantities</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
 <span class="sd">        resource mapper for use when post-processing.</span>
 
@@ -4211,7 +4258,7 @@ various field-related configuration.</p>
         <p>The default rule to call when no definition is found for a particular construct.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">187</span>
 <span class="normal">188</span>
@@ -4243,14 +4290,14 @@ various field-related configuration.</p>
 resource mapper for use when post-processing.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
-<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
 <span class="sd">    resource mapper for use when post-processing.</span>
 
@@ -4276,7 +4323,7 @@ resource mapper for use when post-processing.</p>
         <p>comparison: constant_first_comparison | property_first_comparison</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">299</span>
 <span class="normal">300</span>
@@ -4307,7 +4354,7 @@ resource mapper for use when post-processing.</p>
         <p>constant: string | number</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">197</span>
 <span class="normal">198</span>
@@ -4338,7 +4385,7 @@ resource mapper for use when post-processing.</p>
         <p>constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">335</span>
 <span class="normal">336</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -4363,7 +4410,7 @@ resource mapper for use when post-processing.</p>
         <p>expression: expression_clause ( OR expression_clause )</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">315</span>
 <span class="normal">316</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -4388,7 +4435,7 @@ resource mapper for use when post-processing.</p>
         <p>expression_clause: expression_phrase ( AND expression_phrase )*</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">318</span>
 <span class="normal">319</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -4413,7 +4460,7 @@ resource mapper for use when post-processing.</p>
         <p>expression_phrase: [ NOT ] ( comparison | "(" expression ")" )</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">321</span>
 <span class="normal">322</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -4438,7 +4485,7 @@ resource mapper for use when post-processing.</p>
         <p>filter: expression*</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">193</span>
 <span class="normal">194</span>
@@ -4465,7 +4512,7 @@ resource mapper for use when post-processing.</p>
         <p>fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">345</span>
 <span class="normal">346</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -4490,7 +4537,7 @@ resource mapper for use when post-processing.</p>
         <p>known_op_rhs: IS ( KNOWN | UNKNOWN )</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">342</span>
 <span class="normal">343</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">known_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -4515,7 +4562,7 @@ resource mapper for use when post-processing.</p>
         <p>length_op_rhs: LENGTH [ OPERATOR ] value</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">351</span>
 <span class="normal">352</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -4540,7 +4587,7 @@ resource mapper for use when post-processing.</p>
         <p>non_string_value: number | property</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
 <span class="normal">210</span>
@@ -4595,7 +4642,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
 <span class="normal">216</span>
@@ -4636,7 +4683,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
         <p>number: SIGNED_INT | SIGNED_FLOAT</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">287</span>
 <span class="normal">288</span>
@@ -4680,7 +4727,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 the backend, returning the backend-specific query.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
 <span class="normal">174</span>
@@ -4742,7 +4789,7 @@ of the above rules.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">226</span>
 <span class="normal">227</span>
@@ -4869,7 +4916,7 @@ property ( value_op_rhs
          | length_op_rhs )</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">324</span>
 <span class="normal">325</span>
@@ -4910,7 +4957,7 @@ property ( value_op_rhs
         <p>property_zip_addon: ":" property (":" property)*</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">362</span>
 <span class="normal">363</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -4935,7 +4982,7 @@ property ( value_op_rhs
         <p>set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">348</span>
 <span class="normal">349</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -4963,7 +5010,7 @@ property ( value_op_rhs
 | ANY value_zip_list )</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">354</span>
 <span class="normal">355</span>
@@ -4998,7 +5045,7 @@ property ( value_op_rhs
         <p>signed_int : SIGNED_INT</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">282</span>
 <span class="normal">283</span>
@@ -5027,7 +5074,7 @@ property ( value_op_rhs
         <p>string: ESCAPED_STRING</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
 <span class="normal">278</span>
@@ -5057,7 +5104,7 @@ property ( value_op_rhs
 backend-specific post-processing methods.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
 <span class="normal">181</span>
@@ -5090,7 +5137,7 @@ backend-specific post-processing methods.</p>
         <p>value: string | number | property</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">203</span>
 <span class="normal">204</span>
@@ -5121,7 +5168,7 @@ backend-specific post-processing methods.</p>
         <p>value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">305</span>
 <span class="normal">306</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -5146,7 +5193,7 @@ backend-specific post-processing methods.</p>
         <p>value_op_rhs: OPERATOR value</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">338</span>
 <span class="normal">339</span>
@@ -5173,7 +5220,7 @@ backend-specific post-processing methods.</p>
         <p>value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">308</span>
 <span class="normal">309</span>
@@ -5200,7 +5247,7 @@ backend-specific post-processing methods.</p>
         <p>value_zip_list: value_zip ( "," value_zip )*</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
 <span class="normal">313</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
@@ -5231,6 +5278,7 @@ backend-specific post-processing methods.</p>
 
 
     <div class="doc doc-contents ">
+
 
 
         <p>Class to provide information about available quantities to the transformer.</p>
@@ -5297,7 +5345,7 @@ can then decide whether to use this for all "LENGTH" queries.</p>
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
@@ -5480,7 +5528,7 @@ can then decide whether to use this for all "LENGTH" queries.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">49</span>
 <span class="normal">50</span>

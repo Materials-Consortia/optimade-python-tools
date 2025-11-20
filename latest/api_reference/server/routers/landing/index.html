@@ -505,6 +505,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../../deployment/multiple_apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Serve multiple OPTIMADE APIs within a single python process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../../deployment/container/" class="md-nav__link">
         
   
@@ -1899,6 +1922,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../create_app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create_app
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../exception_handlers/" class="md-nav__link">
         
   
@@ -2114,10 +2160,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_11" id="__nav_10_9_11_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
             
   
   
@@ -2130,8 +2176,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_12">
             <span class="md-nav__icon md-icon"></span>
             entry_collections
           </label>
@@ -2229,10 +2275,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
             
   
   
@@ -2245,8 +2291,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_12">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_13">
             <span class="md-nav__icon md-icon"></span>
             mappers
           </label>
@@ -2369,10 +2415,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_14" checked>
         
           
-          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_14" id="__nav_10_9_14_label" tabindex="0">
             
   
   
@@ -2385,8 +2431,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_10_9_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_14_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_10_9_14">
             <span class="md-nav__icon md-icon"></span>
             routers
           </label>
@@ -2899,16 +2945,20 @@
 
     <div class="doc doc-contents ">
 
-        <p>Show a human-readable landing page when the base URL is accessed.</p>
+        <p>Show landing page when the base URL is accessed.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/server/routers/landing.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">84</span>
-<span class="normal">85</span>
-<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">landing</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show a human-readable landing page when the base URL is accessed.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">render_landing_page</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">landing</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show landing page when the base URL is accessed.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_landing_page</span><span class="p">(</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">entry_collections</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2919,42 +2969,19 @@
 
 
 <h2 id="optimade.server.routers.landing.render_landing_page" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">render_landing_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
-  </span>
+            <code class="highlight language-python"><span class="n">render_landing_page</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">entry_collections</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.landing.render_landing_page" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
 
-        <p>Render and cache the landing page.</p>
-<p>This function uses the template file <code>./static/landing_page.html</code>, adapted
-from the original Jinja template. Instead of Jinja, some basic string
-replacement is used to fill out the fields from the server configuration.</p>
-<div class="admonition warning">
-<p class="admonition-title">Careful</p>
-<p>The removal of Jinja means that the fields are no longer validated as
-web safe before inclusion in the template.</p>
-</div>
+        <p>Render and cache the landing page with a manual, hashable key.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/server/routers/landing.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -3008,44 +3035,41 @@ web safe before inclusion in the template.</p>
 <span class="normal">78</span>
 <span class="normal">79</span>
 <span class="normal">80</span>
-<span class="normal">81</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@lru_cache</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">render_landing_page</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HTMLResponse</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render and cache the landing page.</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render_landing_page</span><span class="p">(</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span><span class="p">,</span> <span class="n">entry_collections</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HTMLResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render and cache the landing page with a manual, hashable key.&quot;&quot;&quot;</span>
+    <span class="n">cache_key</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">config</span><span class="p">),</span> <span class="n">url</span><span class="p">,</span> <span class="n">_custom_file_mtime</span><span class="p">(</span><span class="n">config</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="n">_PAGE_CACHE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_PAGE_CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
 
-<span class="sd">    This function uses the template file `./static/landing_page.html`, adapted</span>
-<span class="sd">    from the original Jinja template. Instead of Jinja, some basic string</span>
-<span class="sd">    replacement is used to fill out the fields from the server configuration.</span>
-
-<span class="sd">    !!! warning &quot;Careful&quot;</span>
-<span class="sd">        The removal of Jinja means that the fields are no longer validated as</span>
-<span class="sd">        web safe before inclusion in the template.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">meta</span> <span class="o">=</span> <span class="n">meta_values</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">more_data_available</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">schema_url</span><span class="p">)</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="n">meta_values</span><span class="p">(</span>
+        <span class="n">config</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">more_data_available</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">schema_url</span>
+    <span class="p">)</span>
     <span class="n">major_version</span> <span class="o">=</span> <span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">versioned_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">get_base_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="si">}</span><span class="s2">/v</span><span class="si">{</span><span class="n">major_version</span><span class="si">}</span><span class="s2">/&quot;</span>
+    <span class="n">versioned_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">get_base_url</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">)</span><span class="si">}</span><span class="s2">/v</span><span class="si">{</span><span class="n">major_version</span><span class="si">}</span><span class="s2">/&quot;</span>
 
-    <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">custom_landing_page</span><span class="p">:</span>
-        <span class="n">html</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">custom_landing_page</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">custom_landing_page</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">custom_landing_page</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">template_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-        <span class="n">html</span> <span class="o">=</span> <span class="p">(</span><span class="n">template_dir</span> <span class="o">/</span> <span class="s2">&quot;landing_page.html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;static/landing_page.html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+        <span class="p">)</span>
 
-    <span class="c1"># Build a dictionary that maps the old Jinja keys to the new simplified replacements</span>
-    <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;api_version&quot;</span><span class="p">:</span> <span class="n">__api_version__</span><span class="p">,</span>
-    <span class="p">}</span>
-
+    <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;api_version&quot;</span><span class="p">:</span> <span class="n">__api_version__</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="p">:</span>
         <span class="n">replacements</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;provider.name&quot;</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                 <span class="s2">&quot;provider.prefix&quot;</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span>
                 <span class="s2">&quot;provider.description&quot;</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-                <span class="s2">&quot;provider.homepage&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">homepage</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;provider.homepage&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">homepage</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
             <span class="p">}</span>
         <span class="p">)</span>
-
     <span class="k">if</span> <span class="n">meta</span><span class="o">.</span><span class="n">implementation</span><span class="p">:</span>
         <span class="n">replacements</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
@@ -3055,25 +3079,25 @@ web safe before inclusion in the template.</p>
             <span class="p">}</span>
         <span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">replacement</span> <span class="ow">in</span> <span class="n">replacements</span><span class="p">:</span>
-        <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{{{</span><span class="s2"> </span><span class="si">{</span><span class="n">replacement</span><span class="si">}</span><span class="s2"> </span><span class="se">}}}}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">replacements</span><span class="p">[</span><span class="n">replacement</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">replacements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{{{</span><span class="s2"> </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> </span><span class="se">}}}}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
-    <span class="c1"># Build the list of endpoints. The template already opens and closes the `&lt;ul&gt;` tag.</span>
-    <span class="n">endpoints_list</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="sa">f</span><span class="s1">&#39;&lt;li&gt;&lt;a href=&quot;</span><span class="si">{</span><span class="n">versioned_url</span><span class="si">}{</span><span class="n">endp</span><span class="si">}</span><span class="s1">&quot;&gt;</span><span class="si">{</span><span class="n">versioned_url</span><span class="si">}{</span><span class="n">endp</span><span class="si">}</span><span class="s1">&lt;/a&gt;&lt;/li&gt;&#39;</span>
-        <span class="k">for</span> <span class="n">endp</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ENTRY_COLLECTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span>
-    <span class="p">]</span>
-    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{</span><span class="si">% E</span><span class="s2">NDPOINTS %}&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">endpoints_list</span><span class="p">))</span>
+    <span class="n">endpoints</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;&lt;li&gt;&lt;a href=&quot;</span><span class="si">{</span><span class="n">versioned_url</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="s1">&quot;&gt;</span><span class="si">{</span><span class="n">versioned_url</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="s1">&lt;/a&gt;&lt;/li&gt;&#39;</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">entry_collections</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;info&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{</span><span class="si">% E</span><span class="s2">NDPOINTS %}&quot;</span><span class="p">,</span> <span class="n">endpoints</span><span class="p">)</span>
 
-    <span class="c1"># If the index base URL has been configured, also list it</span>
-    <span class="n">index_base_url_html</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">index_base_url</span><span class="p">:</span>
-        <span class="n">index_base_url_html</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;h3&gt;Index base URL:&lt;/h3&gt;</span>
-<span class="s2">&lt;p&gt;&lt;a href=</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">index_base_url</span><span class="si">}</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">index_base_url</span><span class="si">}</span><span class="s2">&lt;/a&gt;&lt;/p&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{% INDEX_BASE_URL %}&quot;</span><span class="p">,</span> <span class="n">index_base_url_html</span><span class="p">)</span>
+    <span class="n">index_html</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;h3&gt;Index base URL:&lt;/h3&gt;</span><span class="se">\n</span><span class="s2">&lt;p&gt;&lt;a href=&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">index_base_url</span><span class="si">}</span><span class="s2">&quot;&gt;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">index_base_url</span><span class="si">}</span><span class="s2">&lt;/a&gt;&lt;/p&gt;</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">index_base_url</span>
+        <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{% INDEX_BASE_URL %}&quot;</span><span class="p">,</span> <span class="n">index_html</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">HTMLResponse</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">HTMLResponse</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+    <span class="n">_PAGE_CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">resp</span>
+    <span class="k">return</span> <span class="n">resp</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>

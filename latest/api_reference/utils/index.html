@@ -505,6 +505,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../deployment/multiple_apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Serve multiple OPTIMADE APIs within a single python process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../deployment/container/" class="md-nav__link">
         
   
@@ -1993,6 +2016,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../server/create_app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create_app
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../server/exception_handlers/" class="md-nav__link">
         
   
@@ -2208,10 +2254,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_11" id="__nav_10_9_11_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
             
   
   
@@ -2224,8 +2270,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_12">
             <span class="md-nav__icon md-icon"></span>
             entry_collections
           </label>
@@ -2323,10 +2369,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
             
   
   
@@ -2339,8 +2385,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_12">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_13">
             <span class="md-nav__icon md-icon"></span>
             mappers
           </label>
@@ -2461,10 +2507,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_14" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_14" id="__nav_10_9_14_label" tabindex="0">
             
   
   
@@ -2477,8 +2523,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_14">
             <span class="md-nav__icon md-icon"></span>
             routers
           </label>
@@ -3035,10 +3081,9 @@ with OPTIMADE providers that can be used in server or client code.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">276</span>
-<span class="normal">277</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
 <span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
@@ -3094,7 +3139,8 @@ with OPTIMADE providers that can be used in server or client code.</p>
 <span class="normal">330</span>
 <span class="normal">331</span>
 <span class="normal">332</span>
-<span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_all_databases</span><span class="p">(</span>
+<span class="normal">333</span>
+<span class="normal">334</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_all_databases</span><span class="p">(</span>
     <span class="n">include_providers</span><span class="p">:</span> <span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3293,10 +3339,9 @@ invalid, or the request otherwise fails.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">207</span>
-<span class="normal">208</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
 <span class="normal">209</span>
 <span class="normal">210</span>
 <span class="normal">211</span>
@@ -3361,7 +3406,8 @@ invalid, or the request otherwise fails.</p>
 <span class="normal">270</span>
 <span class="normal">271</span>
 <span class="normal">272</span>
-<span class="normal">273</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_child_database_links</span><span class="p">(</span>
+<span class="normal">273</span>
+<span class="normal">274</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_child_database_links</span><span class="p">(</span>
     <span class="n">provider</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span>
     <span class="n">obey_aggregate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3510,10 +3556,9 @@ ObjectID.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">137</span>
-<span class="normal">138</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
@@ -3579,7 +3624,8 @@ ObjectID.</p>
 <span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
-<span class="normal">204</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">204</span>
+<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</span>
 
 <span class="sd">    Fallback order if providers.optimade.org is not available:</span>
@@ -3657,7 +3703,7 @@ ObjectID.</p>
 
 
 <h2 id="optimade.utils.insert_from_jsonl" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">insert_from_jsonl</span><span class="p">(</span><span class="n">jsonl_path</span><span class="p">,</span> <span class="n">create_default_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">insert_from_jsonl</span><span class="p">(</span><span class="n">jsonl_path</span><span class="p">,</span> <span class="n">entry_collections</span><span class="p">,</span> <span class="n">create_default_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.insert_from_jsonl" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -3714,7 +3760,7 @@ ObjectID.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/utils.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 27</span>
 <span class="normal"> 28</span>
@@ -3809,7 +3855,10 @@ ObjectID.</p>
 <span class="normal">117</span>
 <span class="normal">118</span>
 <span class="normal">119</span>
-<span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">insert_from_jsonl</span><span class="p">(</span><span class="n">jsonl_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">create_default_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">120</span>
+<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">insert_from_jsonl</span><span class="p">(</span>
+    <span class="n">jsonl_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">entry_collections</span><span class="p">,</span> <span class="n">create_default_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Insert OPTIMADE JSON lines data into the database.</span>
 
 <span class="sd">    Arguments:</span>
@@ -3821,8 +3870,9 @@ ObjectID.</p>
 
     <span class="kn">import</span><span class="w"> </span><span class="nn">bson.json_util</span>
 
-    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.routers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ENTRY_COLLECTIONS</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+
+    <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
 
     <span class="n">batch</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
     <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>
@@ -3838,9 +3888,9 @@ ObjectID.</p>
 
     <span class="c1"># If the chosen database backend supports it, make the default indices</span>
     <span class="k">if</span> <span class="n">create_default_index</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="n">entry_collections</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">ENTRY_COLLECTIONS</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span><span class="o">.</span><span class="n">create_default_index</span><span class="p">()</span>
+                <span class="n">entry_collections</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span><span class="o">.</span><span class="n">create_default_index</span><span class="p">()</span>
             <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
                 <span class="k">pass</span>
 
@@ -3862,8 +3912,6 @@ ObjectID.</p>
                     <span class="n">bad_rows</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="k">continue</span>
             <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
-                <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
-
                 <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Could not read entry L</span><span class="si">%s</span><span class="s2"> JSON: &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">line_no</span><span class="p">,</span> <span class="n">json_str</span><span class="p">)</span>
                 <span class="n">bad_rows</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">continue</span>
@@ -3888,7 +3936,7 @@ ObjectID.</p>
                 <span class="k">continue</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="n">_type</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">batch_size</span><span class="p">:</span>
-                <span class="n">ENTRY_COLLECTIONS</span><span class="p">[</span><span class="n">_type</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="n">_type</span><span class="p">])</span>
+                <span class="n">entry_collections</span><span class="p">[</span><span class="n">_type</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="n">_type</span><span class="p">])</span>
                 <span class="n">batch</span><span class="p">[</span><span class="n">_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
             <span class="n">good_rows</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -3896,7 +3944,7 @@ ObjectID.</p>
         <span class="c1"># Insert any remaining data</span>
         <span class="k">for</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">batch</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]:</span>
-                <span class="n">ENTRY_COLLECTIONS</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="n">entry_type</span><span class="p">])</span>
+                <span class="n">entry_collections</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="n">entry_type</span><span class="p">])</span>
                 <span class="n">batch</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">if</span> <span class="n">bad_rows</span><span class="p">:</span>
@@ -3923,10 +3971,9 @@ ObjectID.</p>
         <p>Produce a deterministic MongoDB ObjectId for a database</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">123</span>
-<span class="normal">124</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">124</span>
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
@@ -3936,7 +3983,8 @@ ObjectID.</p>
 <span class="normal">131</span>
 <span class="normal">132</span>
 <span class="normal">133</span>
-<span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">134</span>
+<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a deterministic MongoDB ObjectId for a database&quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 

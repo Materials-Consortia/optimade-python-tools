@@ -609,6 +609,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../deployment/multiple_apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Serve multiple OPTIMADE APIs within a single python process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../deployment/container/" class="md-nav__link">
         
   
@@ -1999,6 +2022,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api_reference/server/create_app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create_app
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api_reference/server/exception_handlers/" class="md-nav__link">
         
   
@@ -2214,10 +2260,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_11" id="__nav_10_9_11_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
             
   
   
@@ -2230,8 +2276,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_12">
             <span class="md-nav__icon md-icon"></span>
             entry_collections
           </label>
@@ -2329,10 +2375,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
             
   
   
@@ -2345,8 +2391,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_12">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_13">
             <span class="md-nav__icon md-icon"></span>
             mappers
           </label>
@@ -2467,10 +2513,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_14" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_14" id="__nav_10_9_14_label" tabindex="0">
             
   
   
@@ -2483,8 +2529,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_14">
             <span class="md-nav__icon md-icon"></span>
             routers
           </label>
@@ -2990,10 +3036,9 @@ The prefix can be set in the <a href="../../configuration/">configuration</a> as
       class-attribute
       instance-attribute
   " href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider"><code>provider</code></a> option.</p>
-<p>Once the prefix has been set, custom fields can be listed by endpoint in the <a class="autorefs autorefs-internal" title="provider_fields = {}
+<p>Once the prefix has been set, custom fields can be listed by endpoint in the <a class="autorefs autorefs-internal" title="provider_fields
 
   
-      class-attribute
       instance-attribute
   " href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider_fields"><code>provider_fields</code></a> configuration option.
 Filters that use the prefixed form of these fields will then be passed through to the underlying database without the prefix, and then the prefix will be reinstated in the response.</p>
@@ -3007,10 +3052,9 @@ Filters that use the prefixed form of these fields will then be passed through t
 </code></pre></div>
 </div>
 <p>It is recommended that you provide a description, type and unit for each custom field that can be returned at the corresponding <code>/info/&lt;entry_type&gt;</code> endpoint.
-This can be achieved by providing a dictionary per field at <a class="autorefs autorefs-internal" title="provider_fields = {}
+This can be achieved by providing a dictionary per field at <a class="autorefs autorefs-internal" title="provider_fields
 
   
-      class-attribute
       instance-attribute
   " href="../../api_reference/server/config/#optimade.server.config.ServerConfig.provider_fields"><code>provider_fields</code></a>, rather than a simple list.</p>
 <div class="admonition example">

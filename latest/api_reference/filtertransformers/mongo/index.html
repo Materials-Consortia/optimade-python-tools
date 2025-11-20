@@ -505,6 +505,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../deployment/multiple_apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Serve multiple OPTIMADE APIs within a single python process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../deployment/container/" class="md-nav__link">
         
   
@@ -2109,6 +2132,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../server/create_app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create_app
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../server/exception_handlers/" class="md-nav__link">
         
   
@@ -2324,10 +2370,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_11" id="__nav_10_9_11_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
             
   
   
@@ -2340,8 +2386,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_12">
             <span class="md-nav__icon md-icon"></span>
             entry_collections
           </label>
@@ -2439,10 +2485,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
             
   
   
@@ -2455,8 +2501,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_12">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_13">
             <span class="md-nav__icon md-icon"></span>
             mappers
           </label>
@@ -2577,10 +2623,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_14" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_14" id="__nav_10_9_14_label" tabindex="0">
             
   
   
@@ -2593,8 +2639,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_14">
             <span class="md-nav__icon md-icon"></span>
             routers
           </label>
@@ -3181,6 +3227,7 @@ which takes the parsed filter and converts it to a valid pymongo/BSON query.</p>
               Bases: <code><a class="autorefs autorefs-internal" title="BaseTransformer (optimade.filtertransformers.base_transformer.BaseTransformer)" href="../base_transformer/#optimade.filtertransformers.base_transformer.BaseTransformer">BaseTransformer</a></code></p>
 
 
+
         <p>A filter transformer for the MongoDB backend.</p>
 <p>Parses a lark tree into a dictionary representation to be
 used by pymongo or mongomock. Uses post-processing functions
@@ -3222,7 +3269,7 @@ logical inverse.</p>
           <tr class="doc-section-item">
             <td><code><span title="optimade.filtertransformers.mongo.MongoTransformer.mapper">mapper</span></code></td>
             <td>
-                  <code><span title="type">type</span>[<a class="autorefs autorefs-internal" title="BaseResourceMapper (optimade.server.mappers.BaseResourceMapper)" href="../../server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a>] | None</code>
+                  <code><a class="autorefs autorefs-internal" title="BaseResourceMapper (optimade.server.mappers.BaseResourceMapper)" href="../../server/mappers/entries/#optimade.server.mappers.entries.BaseResourceMapper">BaseResourceMapper</a> | None</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3242,7 +3289,7 @@ various field-related configuration.</p>
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
 <span class="normal"> 22</span>
@@ -4416,7 +4463,7 @@ various field-related configuration.</p>
         <p>The default rule to call when no definition is found for a particular construct.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">187</span>
 <span class="normal">188</span>
@@ -4448,14 +4495,14 @@ various field-related configuration.</p>
 resource mapper for use when post-processing.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
-<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BaseResourceMapper</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
 <span class="sd">    resource mapper for use when post-processing.</span>
 
@@ -4481,7 +4528,7 @@ resource mapper for use when post-processing.</p>
         <p>comparison: constant_first_comparison | property_first_comparison</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">299</span>
 <span class="normal">300</span>
@@ -4512,7 +4559,7 @@ resource mapper for use when post-processing.</p>
         <p>constant: string | number</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">197</span>
 <span class="normal">198</span>
@@ -4543,7 +4590,7 @@ resource mapper for use when post-processing.</p>
         <p>filter: expression*</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">193</span>
 <span class="normal">194</span>
@@ -4570,7 +4617,7 @@ resource mapper for use when post-processing.</p>
         <p>non_string_value: number | property</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">209</span>
 <span class="normal">210</span>
@@ -4625,7 +4672,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
 <span class="normal">216</span>
@@ -4666,7 +4713,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
         <p>number: SIGNED_INT | SIGNED_FLOAT</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">287</span>
 <span class="normal">288</span>
@@ -4709,7 +4756,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
         <p>Used to post-process the nested dictionary of the parsed query.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
 <span class="normal">60</span>
@@ -4748,7 +4795,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
         <p>signed_int : SIGNED_INT</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">282</span>
 <span class="normal">283</span>
@@ -4777,7 +4824,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
         <p>string: ESCAPED_STRING</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">277</span>
 <span class="normal">278</span>
@@ -4807,7 +4854,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 backend-specific post-processing methods.</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">180</span>
 <span class="normal">181</span>
@@ -4840,7 +4887,7 @@ backend-specific post-processing methods.</p>
         <p>value: string | number | property</p>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">203</span>
 <span class="normal">204</span>
@@ -4968,7 +5015,7 @@ another, the following functions could be used:</p>
 </code></pre></div>
 </details>
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/filtertransformers/mongo.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">571</span>
 <span class="normal">572</span>

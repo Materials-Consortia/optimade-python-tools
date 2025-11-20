@@ -505,6 +505,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../../deployment/multiple_apps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Serve multiple OPTIMADE APIs within a single python process
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../../deployment/container/" class="md-nav__link">
         
   
@@ -1899,6 +1922,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../create_app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    create_app
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../exception_handlers/" class="md-nav__link">
         
   
@@ -2183,10 +2229,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_11" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_11" id="__nav_10_9_11_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
             
   
   
@@ -2199,8 +2245,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_11_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_11">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_12">
             <span class="md-nav__icon md-icon"></span>
             entry_collections
           </label>
@@ -2298,10 +2344,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_12" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_12" id="__nav_10_9_12_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
             
   
   
@@ -2314,8 +2360,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_12_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_12">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_13">
             <span class="md-nav__icon md-icon"></span>
             mappers
           </label>
@@ -2436,10 +2482,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_13" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_9_14" >
         
           
-          <label class="md-nav__link" for="__nav_10_9_13" id="__nav_10_9_13_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_10_9_14" id="__nav_10_9_14_label" tabindex="0">
             
   
   
@@ -2452,8 +2498,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_13_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_10_9_13">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_10_9_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10_9_14">
             <span class="md-nav__icon md-icon"></span>
             routers
           </label>
@@ -2906,7 +2952,7 @@
 
 
 <h2 id="optimade.server.schemas.retrieve_queryable_properties" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entry_type</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">queryable_properties</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entry_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.server.schemas.retrieve_queryable_properties" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -3024,10 +3070,9 @@ lookup schemas for any config-defined fields.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/server/schemas.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 53</span>
-<span class="normal"> 54</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 54</span>
 <span class="normal"> 55</span>
 <span class="normal"> 56</span>
 <span class="normal"> 57</span>
@@ -3126,6 +3171,7 @@ lookup schemas for any config-defined fields.</p>
     <span class="n">schema</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
     <span class="n">queryable_properties</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;QueryableProperties&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively loops through a pydantic model, returning a dictionary of all the</span>
 <span class="sd">    OPTIMADE-queryable properties of that model.</span>
@@ -3195,17 +3241,15 @@ lookup schemas for any config-defined fields.</p>
             <span class="p">)</span>
 
     <span class="c1"># If specified, check the config for any additional well-described provider fields</span>
-    <span class="k">if</span> <span class="n">entry_type</span><span class="p">:</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">CONFIG</span>
-
+    <span class="k">if</span> <span class="n">entry_type</span> <span class="ow">and</span> <span class="n">config</span><span class="p">:</span>
         <span class="n">described_provider_fields</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">field</span>
-            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry_type</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># type: ignore[call-overload]</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry_type</span><span class="p">,</span> <span class="p">{})</span>  <span class="c1"># type: ignore[call-overload]</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">described_provider_fields</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
                 <span class="k">else</span> <span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
             <span class="p">)</span>
