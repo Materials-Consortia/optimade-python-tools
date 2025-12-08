@@ -98,7 +98,7 @@ def insert_from_jsonl(jsonl_path: Path, create_default_index: bool = False) -> N
                 # Append the data to the batch
                 batch[_type].append(inp_data)
             except Exception as exc:
-                LOGGER.warning(f"Error with entry at L{line_no} -- {entry} -- {exc}")
+                LOGGER.warning(f"Error with entry at L{line_no} -- {entry.get('id', None)} -- {exc}")
                 bad_rows += 1
                 continue
 
