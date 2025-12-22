@@ -8,10 +8,6 @@ td code {
     word-break: normal !important;
 }
 
-code {
-    max-height: 20em;
-}
-
 .md-grid {
     max-width: 70rem;
 }
