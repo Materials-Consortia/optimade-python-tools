@@ -94,7 +94,7 @@ docs = [
     "mkdocs-autorefs~=1.2",
     "mkdocs-awesome-pages-plugin~=2.8",
     "mkdocs-material~=9.0",
-    "mkdocstrings[python]~=0.26",
+    "mkdocstrings[python]>=0.26,<2.0",
     "griffe~=1.13",
 ]
 
