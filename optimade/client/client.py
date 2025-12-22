@@ -184,8 +184,7 @@ class OptimadeClient:
             exclude_databases: A set or collection of child database URLs to exclude from queries.
             http_client: An override for the underlying HTTP client, primarily used for testing.
             callbacks: A list of functions to call after each successful response, see the
-                attribute [`OptimadeClient.callbacks`][optimade.client.OptimadeClient.callbacks]
-                docstring for more details.
+                attribute [`OptimadeClient.callbacks`][optimade.client.client.OptimadeClient.callbacks] docstring for more details.
             verbosity: The verbosity level of the client.
 
         """
