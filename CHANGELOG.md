@@ -1,14 +1,34 @@
 # Changelog
 
-## [Unreleased](https://github.com/Materials-Consortia/optimade-python-tools/tree/HEAD)
+## [v1.4.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.4.0) (2026-01-12)
 
-[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.3.1...HEAD)
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.4.0-rc.1...v1.4.0)
+
+**Closed issues:**
+
+- Serving multiple APIs from a single python process [\#2307](https://github.com/Materials-Consortia/optimade-python-tools/issues/2307)
 
 **Merged pull requests:**
 
-- Bump providers from `a479de9` to `c0a4a05` [\#2324](https://github.com/Materials-Consortia/optimade-python-tools/pull/2324) ([dependabot[bot]](https://github.com/apps/dependabot))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2332](https://github.com/Materials-Consortia/optimade-python-tools/pull/2332) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
 
-## [v1.3.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.3.1) (2025-10-11)
+## [v1.4.0-rc.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.4.0-rc.1) (2025-11-20)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.3.1...v1.4.0-rc.1)
+
+**Implemented enhancements:**
+
+- Global state to `app.state` to enable multiple APIs in a single process  [\#2313](https://github.com/Materials-Consortia/optimade-python-tools/pull/2313) ([eimrek](https://github.com/eimrek))
+
+**Closed issues:**
+
+- Release workflow failures for 1.3.0 and 1.3.1 [\#2325](https://github.com/Materials-Consortia/optimade-python-tools/issues/2325)
+
+**Merged pull requests:**
+
+- Bump starlette from 0.48.0 to 0.49.1 [\#2329](https://github.com/Materials-Consortia/optimade-python-tools/pull/2329) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v1.3.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.3.1) (2025-10-17)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.3.0...v1.3.1)
 
@@ -22,6 +42,7 @@
 
 **Merged pull requests:**
 
+- Bump providers from `a479de9` to `c0a4a05` [\#2324](https://github.com/Materials-Consortia/optimade-python-tools/pull/2324) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Fix issue when inserting from JSONL when batch size matches number of entries [\#2321](https://github.com/Materials-Consortia/optimade-python-tools/pull/2321) ([ml-evs](https://github.com/ml-evs))
 - Bump providers from `a479de9` to `c0a4a05` [\#2319](https://github.com/Materials-Consortia/optimade-python-tools/pull/2319) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Allow Mongo DBs that share 12 first ID characters [\#2317](https://github.com/Materials-Consortia/optimade-python-tools/pull/2317) ([eimrek](https://github.com/eimrek))
