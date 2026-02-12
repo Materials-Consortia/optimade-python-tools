@@ -370,7 +370,7 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
             Literal["links", "references", "structures"],
             list[
                 str
-                | dict[Literal["name", "type", "unit", "description", "sortable"], str]
+                | dict[Literal["name", "type", "unit", "description", "sortable"], str | bool]
             ],
         ],
         Field(
