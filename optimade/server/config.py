@@ -597,3 +597,20 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
             ConfigFileSettingsSource(settings_cls),
             file_secret_settings,
         )
+
+
+def __getattr__(name: str):
+    """Module-level __getattr__ to provide a deprecated CONFIG singleton.
+
+    This preserves backwards compatibility with code that imports
+    ``from optimade.server.config import CONFIG``.
+    """
+    if name == "CONFIG":
+        warnings.warn(
+            "Importing the CONFIG singleton from optimade.server.config is deprecated. "
+            "Use create_app() and access config via request.app.state.config instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return ServerConfig()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
