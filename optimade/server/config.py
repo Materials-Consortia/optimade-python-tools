@@ -599,6 +599,9 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         )
 
 
+_CONFIG: ServerConfig | None = None
+
+
 def __getattr__(name: str):
     """Module-level __getattr__ to provide a deprecated CONFIG singleton.
 
@@ -606,11 +609,14 @@ def __getattr__(name: str):
     ``from optimade.server.config import CONFIG``.
     """
     if name == "CONFIG":
+        global _CONFIG
         warnings.warn(
             "Importing the CONFIG singleton from optimade.server.config is deprecated. "
             "Use create_app() and access config via request.app.state.config instead.",
             DeprecationWarning,
             stacklevel=2,
         )
-        return ServerConfig()
+        if _CONFIG is None:
+            _CONFIG = ServerConfig()
+        return _CONFIG
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
