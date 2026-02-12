@@ -368,10 +368,7 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
     provider_fields: Annotated[
         dict[
             Literal["links", "references", "structures"],
-            list[
-                str
-                | dict[Literal["name", "type", "unit", "description", "sortable"], str | bool]
-            ],
+            list[str | dict],
         ],
         Field(
             default_factory=dict,
