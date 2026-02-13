@@ -10,14 +10,14 @@
   {
     "version": "1.4.1",
     "title": "1.4.1",
-    "aliases": []
+    "aliases": [
+      "stable"
+    ]
   },
   {
     "version": "1.4.0",
     "title": "1.4.0",
-    "aliases": [
-      "stable"
-    ]
+    "aliases": []
   },
   {
     "version": "1.3.1",
