@@ -3064,6 +3064,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#optimade.server.config.__getattr__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __getattr__
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4874,6 +4885,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#optimade.server.config.__getattr__" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        __getattr__
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -6346,7 +6368,7 @@ can be easily extended for new config file types.</p>
     <span class="n">provider_fields</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">dict</span><span class="p">[</span>
             <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span>
-            <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">]],</span>
+            <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">],</span>
         <span class="p">],</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span>
@@ -7932,6 +7954,65 @@ can be easily extended for new config file types.</p>
 
 </div>
 
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="optimade.server.config.__getattr__" class="doc doc-heading">
+            <code class="highlight language-python"><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+
+<a href="#optimade.server.config.__getattr__" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Module-level <strong>getattr</strong> to provide a deprecated CONFIG singleton.</p>
+<p>This preserves backwards compatibility with code that imports
+<code>from optimade.server.config import CONFIG</code>.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>optimade/server/config.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">605</span>
+<span class="normal">606</span>
+<span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Module-level __getattr__ to provide a deprecated CONFIG singleton.</span>
+
+<span class="sd">    This preserves backwards compatibility with code that imports</span>
+<span class="sd">    ``from optimade.server.config import CONFIG``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">_CONFIG</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Importing the CONFIG singleton from optimade.server.config is deprecated. &quot;</span>
+            <span class="s2">&quot;Use create_app() and access config via request.app.state.config instead.&quot;</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">_CONFIG</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_CONFIG</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">_CONFIG</span>
+    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 
 
