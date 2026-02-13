@@ -368,7 +368,7 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
     provider_fields: Annotated[
         dict[
             Literal["links", "references", "structures"],
-            list[str | dict[Literal["name", "type", "unit", "description"], str]],
+            list[str | dict],
         ],
         Field(
             default_factory=dict,
@@ -597,3 +597,26 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
             ConfigFileSettingsSource(settings_cls),
             file_secret_settings,
         )
+
+
+_CONFIG: ServerConfig | None = None
+
+
+def __getattr__(name: str):
+    """Module-level __getattr__ to provide a deprecated CONFIG singleton.
+
+    This preserves backwards compatibility with code that imports
+    ``from optimade.server.config import CONFIG``.
+    """
+    if name == "CONFIG":
+        global _CONFIG
+        warnings.warn(
+            "Importing the CONFIG singleton from optimade.server.config is deprecated. "
+            "Use create_app() and access config via request.app.state.config instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        if _CONFIG is None:
+            _CONFIG = ServerConfig()
+        return _CONFIG
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
