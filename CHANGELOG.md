@@ -1,6 +1,14 @@
 # Changelog
 
-## [v1.4.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.4.0) (2026-01-12)
+## [v1.4.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.4.1) (2026-02-13)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.4.0...v1.4.1)
+
+**Merged pull requests:**
+
+- Add backwards-compat alias for CONFIG singleton [\#2351](https://github.com/Materials-Consortia/optimade-python-tools/pull/2351) ([ml-evs](https://github.com/ml-evs))
+
+## [v1.4.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.4.0) (2026-02-09)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.4.0-rc.1...v1.4.0)
 
