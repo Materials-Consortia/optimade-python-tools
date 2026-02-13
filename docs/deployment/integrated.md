@@ -13,7 +13,7 @@ If you run `optimade` code inside another application, you might want to provide
 Let's say you have a file `optimade_config.json` as part of the Python module that you use to create your OPTIMADE API.
 
 !!! tip
-You can find more detailed information about configuring the `optimade` server in the [Configuration](../configuration.md) section.
+    You can find more detailed information about configuring the `optimade` server in the [Configuration](../configuration.md) section.
 
 Before importing any `optimade` modules, you can set the `OPTIMADE_CONFIG_FILE` environment variable to refer to your config file:
 
