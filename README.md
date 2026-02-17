@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD033 -->
 <!-- markdownlint-disable-next-line MD041 -->
 <div align="center" style="padding-bottom: 1em;">
-<img width="100px" align="center" src="https://matsci.org/uploads/default/original/2X/b/bd2f59b3bf14fb046b74538750699d7da4c19ac1.svg">
+<img width="150px" align="center" src="./images/optimade-python-tools-logo.svg">
 </div>
 
 # <div align="center">OPTIMADE Python tools</div>
