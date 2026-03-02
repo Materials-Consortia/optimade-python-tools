@@ -248,6 +248,10 @@ def get_child_database_links(
             ) from exc
     except (requests.ConnectionError, requests.Timeout) as exc:
         raise RuntimeError(f"Unable to connect to provider {provider['id']}") from exc
+    except requests.TooManyRedirects as exc:
+        raise RuntimeError(
+            f"Too many redirects from provider {provider['id']}"
+        ) from exc
 
     if links.status_code != 200:
         raise RuntimeError(
