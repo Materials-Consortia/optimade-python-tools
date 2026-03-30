@@ -68,7 +68,7 @@ mongo = ["pymongo~=4.0", "mongomock~=4.1"]
 server = [
     "uvicorn[standard]~=0.19",
     "fastapi>=0.103.1",
-    "starlette ~= 0.38, >= 0.38.3",
+    "starlette >= 0.38, < 2.0",
     "optimade[mongo]",
 ]
 
@@ -95,7 +95,7 @@ docs = [
     "mkdocs-awesome-pages-plugin~=2.8",
     "mkdocs-material~=9.0",
     "mkdocstrings[python]>=0.26,<2.0",
-    "griffe~=1.13",
+    "griffe>=1.13,<3.0",
 ]
 
 testing = [
