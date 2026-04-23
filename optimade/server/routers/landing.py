@@ -93,3 +93,10 @@ async def landing(request: Request):
 
 
 router = Router(routes=[Route("/", endpoint=landing)])
+
+## This "fix" is taken directly from FastAPI's APIRouter implementation.
+# Handle on_startup/on_shutdown locally since Starlette removed support
+# Ref: https://github.com/Kludex/starlette/pull/3117
+# TODO: deprecate this once the lifespan (or alternative) interface is improved
+router.on_startup = []
+router.on_shutdown = []
