@@ -5,7 +5,7 @@ from unittest import mock
 
 import pytest
 import requests
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, SSLError
 
 
 class _MockResponse:
@@ -135,6 +135,28 @@ def test_get_child_database_links_uses_provided_session():
 
     assert links == []
     assert session.get.called
+
+
+def test_get_child_database_links_skip_ssl_uses_session():
+    """On an SSL error with `skip_ssl=True`, the `verify=False` retry must also be
+    routed through the supplied session.
+
+    https://github.com/Materials-Consortia/optimade-python-tools/issues/2275
+    """
+    from optimade.utils import get_child_database_links
+
+    session = mock.MagicMock(spec=requests.Session)
+    session.get.side_effect = [SSLError("ssl boom"), _MockResponse({"data": []}, 200)]
+    provider = {"id": "dummy", "base_url": "https://example.org"}
+
+    with mock.patch(
+        "requests.get", side_effect=AssertionError("used requests.get, not the session")
+    ):
+        links = get_child_database_links(provider, session=session, skip_ssl=True)
+
+    assert links == []
+    assert session.get.call_count == 2
+    assert session.get.call_args.kwargs.get("verify") is False
 
 
 def test_get_all_databases_threads_session():
