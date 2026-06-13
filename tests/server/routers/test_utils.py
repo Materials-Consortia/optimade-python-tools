@@ -4,7 +4,21 @@ from collections.abc import Mapping
 from unittest import mock
 
 import pytest
+import requests
 from requests.exceptions import ConnectionError
+
+
+class _MockResponse:
+    def __init__(self, data: list | dict, status_code: int):
+        self.data = data
+        self.status_code = status_code
+
+    def json(self) -> list | dict:
+        return self.data
+
+    @property
+    def content(self) -> str:
+        return str(self.data)
 
 
 def mocked_providers_list_response(
@@ -80,6 +94,71 @@ def test_get_all_databases():
     from optimade.utils import get_all_databases
 
     assert list(get_all_databases())
+
+
+def test_get_providers_uses_provided_session():
+    """A caller-supplied `requests.Session` must be used for the provider-list
+    request, so custom HTTP config (e.g. proxies) is honoured.
+
+    https://github.com/Materials-Consortia/optimade-python-tools/issues/2275
+    """
+    from optimade.utils import get_providers
+
+    session = mock.MagicMock(spec=requests.Session)
+    session.get.return_value = mocked_providers_list_response()
+
+    # If the global `requests.get` is used instead of the session, this raises.
+    with mock.patch(
+        "requests.get", side_effect=AssertionError("used requests.get, not the session")
+    ):
+        providers_list = get_providers(session=session)
+
+    assert session.get.called
+    assert providers_list
+
+
+def test_get_child_database_links_uses_provided_session():
+    """`get_child_database_links` must route its request through a supplied session.
+
+    https://github.com/Materials-Consortia/optimade-python-tools/issues/2275
+    """
+    from optimade.utils import get_child_database_links
+
+    session = mock.MagicMock(spec=requests.Session)
+    session.get.return_value = _MockResponse({"data": []}, 200)
+    provider = {"id": "dummy", "base_url": "https://example.org"}
+
+    with mock.patch(
+        "requests.get", side_effect=AssertionError("used requests.get, not the session")
+    ):
+        links = get_child_database_links(provider, session=session)
+
+    assert links == []
+    assert session.get.called
+
+
+def test_get_all_databases_threads_session():
+    """`get_all_databases` must forward its session to the helper scrapers.
+
+    https://github.com/Materials-Consortia/optimade-python-tools/issues/2275
+    """
+    from optimade import utils
+
+    session = mock.MagicMock(spec=requests.Session)
+    provider = {"id": "dummy", "base_url": "https://example.org"}
+
+    with (
+        mock.patch.object(
+            utils, "get_providers", return_value=[provider]
+        ) as mock_get_providers,
+        mock.patch.object(
+            utils, "get_child_database_links", return_value=[]
+        ) as mock_get_links,
+    ):
+        list(utils.get_all_databases(session=session))
+
+    assert mock_get_providers.call_args.kwargs.get("session") is session
+    assert mock_get_links.call_args.kwargs.get("session") is session
 
 
 def test_get_providers_warning(caplog, top_dir):
