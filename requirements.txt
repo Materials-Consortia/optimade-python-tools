@@ -3,4 +3,4 @@ pydantic[email]==2.13.4
 pydantic_settings==2.14.1
 pyyaml==6.0.3
 requests==2.34.2
-uvicorn==0.48.0
+uvicorn==0.49.0
