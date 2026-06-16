@@ -75,11 +75,7 @@ server = [
 # Client minded
 aiida = ["aiida-core~=2.1"]
 
-http-client = [
-    "httpx~=0.23",
-    "rich>=13,<16",
-    "click~=8.1",
-]
+http-client = ["httpx~=0.23", "httpx2", "rich>=13,<16", "click~=8.1"]
 
 ase = ["ase~=3.22"]
 cif = ["numpy>=1.22,<3.0"]
