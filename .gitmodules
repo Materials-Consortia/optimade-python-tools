@@ -1,3 +1,0 @@
-[submodule "providers"]
-	path = providers
-	url = https://github.com/Materials-Consortia/providers.git

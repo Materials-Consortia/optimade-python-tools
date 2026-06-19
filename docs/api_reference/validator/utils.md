@@ -1,3 +1,0 @@
-# utils
-
-::: optimade.validator.utils

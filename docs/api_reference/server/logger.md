@@ -1,3 +1,0 @@
-# logger
-
-::: optimade.server.logger

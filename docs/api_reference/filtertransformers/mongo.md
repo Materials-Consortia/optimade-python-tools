@@ -1,3 +1,0 @@
-# mongo
-
-::: optimade.filtertransformers.mongo

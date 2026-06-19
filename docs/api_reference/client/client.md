@@ -1,3 +1,0 @@
-# client
-
-::: optimade.client.client

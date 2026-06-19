@@ -1,3 +1,0 @@
-# utils
-
-::: optimade.client.utils

@@ -1,3 +1,0 @@
-# validator
-
-::: optimade.validator.validator

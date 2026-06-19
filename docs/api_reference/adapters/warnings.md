@@ -1,3 +1,0 @@
-# warnings
-
-::: optimade.adapters.warnings

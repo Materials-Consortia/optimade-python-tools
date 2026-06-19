@@ -1,3 +1,0 @@
-# elasticsearch
-
-::: optimade.filtertransformers.elasticsearch

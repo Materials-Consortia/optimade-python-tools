@@ -1,3 +1,0 @@
-# config
-
-::: optimade.validator.config
