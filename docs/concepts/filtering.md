@@ -105,5 +105,5 @@ If you would like to contribute your new filter transformer back to the package,
 Adding a transformer requires the following:
 
 1. A new submodule (`.py` file) in the `optimade/filtertransformers` folder containing an implementation of the transformer object that extends `optimade.filtertransformers.base_transformer.BaseTransformer`.
-2. Any additional Python requirements must be optional and provided as a separate set of extras in `pyproject.toml`.
+2. Any additional Python requirements must be optional and provided as a separate "`extra_requires`" entry in `setup.py` and in the `requirements.txt` file.
 3. Tests in `optimade/filtertransformers/tests` that are skipped if the required packages fail to import.
