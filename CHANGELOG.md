@@ -1,5 +1,38 @@
 # Changelog
 
+## [v1.4.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.4.2) (2026-06-20)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.4.1...v1.4.2)
+
+**Implemented enhancements:**
+
+- Allow to use the server code as a library in the context of another application [\#657](https://github.com/Materials-Consortia/optimade-python-tools/issues/657)
+- Add usage of `default_factory` to models [\#335](https://github.com/Materials-Consortia/optimade-python-tools/issues/335)
+- API Transformer backend? [\#293](https://github.com/Materials-Consortia/optimade-python-tools/issues/293)
+
+**Closed issues:**
+
+- FastAPI 0.137.0 breaks optimade server because landing.router is a plain Starlette Router [\#2383](https://github.com/Materials-Consortia/optimade-python-tools/issues/2383)
+- Upcoming releases [\#2314](https://github.com/Materials-Consortia/optimade-python-tools/issues/2314)
+- `optimade-python-tools` logo? [\#1446](https://github.com/Materials-Consortia/optimade-python-tools/issues/1446)
+- Support for space group definitions [\#1415](https://github.com/Materials-Consortia/optimade-python-tools/issues/1415)
+- Update 1.2 development grammar once merged into specification [\#1018](https://github.com/Materials-Consortia/optimade-python-tools/issues/1018)
+- Bundling more auxiliary files in PyPI package [\#608](https://github.com/Materials-Consortia/optimade-python-tools/issues/608)
+- Make use of module docstrings in mkdocs to provide higher level overview of package [\#434](https://github.com/Materials-Consortia/optimade-python-tools/issues/434)
+- Add schema links in meta response [\#387](https://github.com/Materials-Consortia/optimade-python-tools/issues/387)
+- Need a way to update the spec OpenAPI source from this repo [\#313](https://github.com/Materials-Consortia/optimade-python-tools/issues/313)
+
+**Merged pull requests:**
+
+- fix starlette router for landing [\#2384](https://github.com/Materials-Consortia/optimade-python-tools/pull/2384) ([DanielYang59](https://github.com/DanielYang59))
+- Bump the github-actions group with 2 updates [\#2370](https://github.com/Materials-Consortia/optimade-python-tools/pull/2370) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Handle TooManyRedirects exception for provider connections [\#2357](https://github.com/Materials-Consortia/optimade-python-tools/pull/2357) ([miicck](https://github.com/miicck))
+- Bump providers from `c0a4a05` to `251f398` [\#2356](https://github.com/Materials-Consortia/optimade-python-tools/pull/2356) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Add an o-p-t logo [\#2354](https://github.com/Materials-Consortia/optimade-python-tools/pull/2354) ([ml-evs](https://github.com/ml-evs))
+- Fix docs formatting typo [\#2352](https://github.com/Materials-Consortia/optimade-python-tools/pull/2352) ([ml-evs](https://github.com/ml-evs))
+- \[pre-commit.ci\] pre-commit autoupdate [\#2345](https://github.com/Materials-Consortia/optimade-python-tools/pull/2345) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+- Use `uv` in CI workflows and add `uv.lock` [\#2315](https://github.com/Materials-Consortia/optimade-python-tools/pull/2315) ([ml-evs](https://github.com/ml-evs))
+
 ## [v1.4.1](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.4.1) (2026-02-13)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.4.0...v1.4.1)
