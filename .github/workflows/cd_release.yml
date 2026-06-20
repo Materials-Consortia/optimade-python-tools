@@ -78,8 +78,8 @@ jobs:
       with:
         token: ${{ secrets.RELEASE_PAT_BOT }}
         branch: ${{ steps.save_branch.outputs.publish_branch }}
-        unprotect_reviews: true
-        sleep: 15
+        unprotect_reviews: false
+        pre_sleep: 15
         force: true
         tags: true
 
