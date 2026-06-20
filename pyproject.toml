@@ -75,7 +75,7 @@ server = [
 aiida = ["aiida-core~=2.1, != 2.7.1"]
 
 http-client = [
-    "httpx~=0.23",
+    "httpx2 ~= 2.4",
     "rich>=13,<16",
     "click~=8.1",
 ]
@@ -168,10 +168,8 @@ filterwarnings = [
     "ignore:.*ast.Str is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
     "ignore:.*ast.* is deprecated and will be removed in Python 3.14*:DeprecationWarning", # Raised indirectly by aiida for Python 3.12
     "ignore:\\nPyarrow will become a required dependency of pandas.*:DeprecationWarning", # Raised indirectly by pymatgen for Python 3.12
-    "ignore:.*The 'app' shortcut is now deprecated.*:DeprecationWarning", # Raised by httpx for test client code; would rather not force upgrade of httpx to deal with it for now
     "ignore::pytest.PytestUnraisableExceptionWarning",  # Started raising with pytest 8.2.1, seemingly related to anyio warnings
     "ignore:.*Unclosed.*:ResourceWarning", # Also started raising with pytest 8.2.1, seemingly related to anyio warnings
     "ignore:.*Accessing the 'model_fields' attribute on the instance is deprecated.*:DeprecationWarning",  # Raised by pydantic 2.11, needs to be resolved for pydantic 3.0
-    "ignore:.*Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.*:"
 
 ]
