@@ -2985,7 +2985,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
 
 <h2 id="optimade.utils.get_all_databases" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">(</span><span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip_ssl</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_all_databases</span><span class="p">(</span><span class="n">include_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_providers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_databases</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip_ssl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_all_databases" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -3054,6 +3054,24 @@ with OPTIMADE providers that can be used in server or client code.</p>
                   <code>None</code>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>session</code>
+            </td>
+            <td>
+                  <code><span title="requests.Session">Session</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An optional <code>requests.Session</code> to use for the underlying requests,
+allowing custom HTTP configuration (e.g. proxies). Defaults to the
+module-level <code>requests</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -3083,15 +3101,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">289</span>
 <span class="normal">290</span>
 <span class="normal">291</span>
 <span class="normal">292</span>
@@ -3140,12 +3150,27 @@ with OPTIMADE providers that can be used in server or client code.</p>
 <span class="normal">335</span>
 <span class="normal">336</span>
 <span class="normal">337</span>
-<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_all_databases</span><span class="p">(</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_all_databases</span><span class="p">(</span>
     <span class="n">include_providers</span><span class="p">:</span> <span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_providers</span><span class="p">:</span> <span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exclude_databases</span><span class="p">:</span> <span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">progress</span><span class="p">:</span> <span class="s2">&quot;rich.progress.Progress | None&quot;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">skip_ssl</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">session</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate through all databases reported by registered OPTIMADE providers.</span>
 
@@ -3153,6 +3178,9 @@ with OPTIMADE providers that can be used in server or client code.</p>
 <span class="sd">        include_providers: A set/container of provider IDs to include child databases for.</span>
 <span class="sd">        exclude_providers: A set/container of provider IDs to exclude child databases for.</span>
 <span class="sd">        exclude_databases: A set/container of specific database URLs to exclude.</span>
+<span class="sd">        session: An optional `requests.Session` to use for the underlying requests,</span>
+<span class="sd">            allowing custom HTTP configuration (e.g. proxies). Defaults to the</span>
+<span class="sd">            module-level `requests`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A generator of child database links that obey the given parameters.</span>
@@ -3171,14 +3199,16 @@ with OPTIMADE providers that can be used in server or client code.</p>
         <span class="n">_task</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">with</span> <span class="n">_progress</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="n">get_providers</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="n">get_providers</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">and</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">exclude_providers</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">include_providers</span> <span class="ow">and</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">include_providers</span><span class="p">:</span>
                 <span class="k">continue</span>
 
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">links</span> <span class="o">=</span> <span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">skip_ssl</span><span class="o">=</span><span class="n">skip_ssl</span><span class="p">)</span>
+                <span class="n">links</span> <span class="o">=</span> <span class="n">get_child_database_links</span><span class="p">(</span>
+                    <span class="n">provider</span><span class="p">,</span> <span class="n">skip_ssl</span><span class="o">=</span><span class="n">skip_ssl</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span>
+                <span class="p">)</span>
                 <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">base_url</span><span class="p">:</span>
                         <span class="k">if</span> <span class="p">(</span>
@@ -3208,7 +3238,7 @@ with OPTIMADE providers that can be used in server or client code.</p>
 
 
 <h2 id="optimade.utils.get_child_database_links" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip_ssl</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_child_database_links</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">obey_aggregate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip_ssl</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_child_database_links" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -3278,6 +3308,23 @@ aggregation.</p>
                   <code>None</code>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>session</code>
+            </td>
+            <td>
+                  <code><span title="requests.Session">Session</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An optional <code>requests.Session</code> to use for the request, allowing custom
+HTTP configuration (e.g. proxies). Defaults to the module-level <code>requests</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -3341,12 +3388,7 @@ invalid, or the request otherwise fails.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">213</span>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
@@ -3411,11 +3453,20 @@ invalid, or the request otherwise fails.</p>
 <span class="normal">275</span>
 <span class="normal">276</span>
 <span class="normal">277</span>
-<span class="normal">278</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_child_database_links</span><span class="p">(</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_child_database_links</span><span class="p">(</span>
     <span class="n">provider</span><span class="p">:</span> <span class="n">LinksResource</span><span class="p">,</span>
     <span class="n">obey_aggregate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">skip_ssl</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">session</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;For a provider, return a list of available child databases.</span>
 
@@ -3424,6 +3475,8 @@ invalid, or the request otherwise fails.</p>
 <span class="sd">        obey_aggregate: Whether to only return links that allow</span>
 <span class="sd">            aggregation.</span>
 <span class="sd">        headers: Additional HTTP headers to pass to the provider.</span>
+<span class="sd">        session: An optional `requests.Session` to use for the request, allowing custom</span>
+<span class="sd">            HTTP configuration (e.g. proxies). Defaults to the module-level `requests`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A list of the valid links entries from this provider that</span>
@@ -3434,9 +3487,9 @@ invalid, or the request otherwise fails.</p>
 <span class="sd">            invalid, or the request otherwise fails.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-
     <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.models.links</span><span class="w"> </span><span class="kn">import</span> <span class="n">Aggregate</span><span class="p">,</span> <span class="n">LinkType</span>
+
+    <span class="n">_get</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span> <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span>
 
     <span class="n">base_url</span> <span class="o">=</span> <span class="n">provider</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;base_url&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">base_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -3444,10 +3497,10 @@ invalid, or the request otherwise fails.</p>
 
     <span class="n">links_endp</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s2">&quot;/v1/links&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">links</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">links_endp</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">links_endp</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">SSLError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">skip_ssl</span><span class="p">:</span>
-            <span class="n">links</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">links_endp</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">links</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">links_endp</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;SSL error when connecting to provider </span><span class="si">{</span><span class="n">provider</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">. Use `skip_ssl` to ignore.&quot;</span>
@@ -3492,7 +3545,7 @@ invalid, or the request otherwise fails.</p>
 
 
 <h2 id="optimade.utils.get_providers" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.utils.get_providers" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -3537,6 +3590,23 @@ ObjectID.</p>
                   <code>False</code>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>session</code>
+            </td>
+            <td>
+                  <code><span title="requests.Session">Session</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An optional <code>requests.Session</code> to use for the request, allowing custom
+HTTP configuration (e.g. proxies). Defaults to the module-level <code>requests</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -3566,8 +3636,7 @@ ObjectID.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
-<span class="normal">139</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
@@ -3633,7 +3702,14 @@ ObjectID.</p>
 <span class="normal">202</span>
 <span class="normal">203</span>
 <span class="normal">204</span>
-<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_providers</span><span class="p">(</span>
+    <span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</span>
 
 <span class="sd">    Fallback order if providers.optimade.org is not available:</span>
@@ -3646,6 +3722,8 @@ ObjectID.</p>
 <span class="sd">    Arguments:</span>
 <span class="sd">        add_mongo_id: Whether to populate the `_id` field of the provider with MongoDB</span>
 <span class="sd">            ObjectID.</span>
+<span class="sd">        session: An optional `requests.Session` to use for the request, allowing custom</span>
+<span class="sd">            HTTP configuration (e.g. proxies). Defaults to the module-level `requests`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of raw JSON-decoded providers including MongoDB object IDs.</span>
@@ -3653,11 +3731,11 @@ ObjectID.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-    <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+    <span class="n">_get</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span> <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span>
 
     <span class="k">for</span> <span class="n">provider_list_url</span> <span class="ow">in</span> <span class="n">PROVIDER_LIST_URLS</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">providers</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">provider_list_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="n">providers</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">provider_list_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">except</span> <span class="p">(</span>
             <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">,</span>
             <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectTimeout</span><span class="p">,</span>
@@ -3770,8 +3848,7 @@ ObjectID.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 27</span>
-<span class="normal"> 28</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 28</span>
 <span class="normal"> 29</span>
 <span class="normal"> 30</span>
 <span class="normal"> 31</span>
@@ -3864,7 +3941,8 @@ ObjectID.</p>
 <span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span>
-<span class="normal">121</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">insert_from_jsonl</span><span class="p">(</span>
+<span class="normal">121</span>
+<span class="normal">122</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">insert_from_jsonl</span><span class="p">(</span>
     <span class="n">jsonl_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">entry_collections</span><span class="p">,</span> <span class="n">create_default_index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Insert OPTIMADE JSON lines data into the database.</span>
@@ -3981,8 +4059,7 @@ ObjectID.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">124</span>
-<span class="normal">125</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span>
@@ -3992,7 +4069,8 @@ ObjectID.</p>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
-<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">135</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a deterministic MongoDB ObjectId for a database&quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 

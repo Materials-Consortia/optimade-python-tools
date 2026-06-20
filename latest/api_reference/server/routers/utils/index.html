@@ -3605,7 +3605,7 @@ of resource objects for that entry type.</p>
 
 
 <h2 id="optimade.server.routers.utils.get_providers" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 <a href="#optimade.server.routers.utils.get_providers" class="headerlink" title="Permanent link">&para;</a></h2>
 
@@ -3650,6 +3650,23 @@ ObjectID.</p>
                   <code>False</code>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>session</code>
+            </td>
+            <td>
+                  <code><span title="requests.Session">Session</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An optional <code>requests.Session</code> to use for the request, allowing custom
+HTTP configuration (e.g. proxies). Defaults to the module-level <code>requests</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -3679,8 +3696,7 @@ ObjectID.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
-<span class="normal">139</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span>
@@ -3746,7 +3762,14 @@ ObjectID.</p>
 <span class="normal">202</span>
 <span class="normal">203</span>
 <span class="normal">204</span>
-<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_providers</span><span class="p">(</span><span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_providers</span><span class="p">(</span>
+    <span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</span>
 
 <span class="sd">    Fallback order if providers.optimade.org is not available:</span>
@@ -3759,6 +3782,8 @@ ObjectID.</p>
 <span class="sd">    Arguments:</span>
 <span class="sd">        add_mongo_id: Whether to populate the `_id` field of the provider with MongoDB</span>
 <span class="sd">            ObjectID.</span>
+<span class="sd">        session: An optional `requests.Session` to use for the request, allowing custom</span>
+<span class="sd">            HTTP configuration (e.g. proxies). Defaults to the module-level `requests`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of raw JSON-decoded providers including MongoDB object IDs.</span>
@@ -3766,11 +3791,11 @@ ObjectID.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-    <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+    <span class="n">_get</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span> <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span>
 
     <span class="k">for</span> <span class="n">provider_list_url</span> <span class="ow">in</span> <span class="n">PROVIDER_LIST_URLS</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">providers</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">provider_list_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            <span class="n">providers</span> <span class="o">=</span> <span class="n">_get</span><span class="p">(</span><span class="n">provider_list_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">except</span> <span class="p">(</span>
             <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">,</span>
             <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectTimeout</span><span class="p">,</span>
@@ -4129,8 +4154,7 @@ set to null if missing in the entry.</p>
 
             <details class="quote">
               <summary>Source code in <code>optimade/utils.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">124</span>
-<span class="normal">125</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span>
@@ -4140,7 +4164,8 @@ set to null if missing in the entry.</p>
 <span class="normal">132</span>
 <span class="normal">133</span>
 <span class="normal">134</span>
-<span class="normal">135</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">135</span>
+<span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a deterministic MongoDB ObjectId for a database&quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 
