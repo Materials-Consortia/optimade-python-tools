@@ -1,4 +1,4 @@
-griffe==2.0.2
+griffe==2.1.0
 mike==2.2.0
 mkdocs==1.6.1
 mkdocs-autorefs==1.4.4
