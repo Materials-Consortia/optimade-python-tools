@@ -85,23 +85,6 @@ jobs:
         force: true
         tags: true
 
-    - name: Get previous version
-      id: get_previous_version
-      run: echo "previous_version=$(git tag -l --sort -version:refname | sed -n 2p)" >> $GITHUB_OUTPUT
-
-    - name: Create release-specific changelog
-      uses: docker://githubchangeloggenerator/github-changelog-generator:1.16.2
-      with:
-        args: --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token "${{ secrets.RELEASE_PAT_BOT }}" --release-branch "${{ steps.save_branch.outputs.publish_branch }}" --since-tag "${{ steps.get_previous_version.outputs.previous_version }}" --output "${{ steps.changelog_config.outputs.output_file }}" --usernames-as-github-logins --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
-
-    - name: Append changelog to release body
-      run: |
-        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} --jq '.body' > release_body.md
-        cat ${{ steps.changelog_config.outputs.output_file }} >> release_body.md
-        gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }} -X PATCH -F body='@release_body.md'
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_PAT_BOT }}
-
   publish-to-pypi:
     name: Publish to PyPI
     needs: release
