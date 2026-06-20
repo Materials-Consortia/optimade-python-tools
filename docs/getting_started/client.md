@@ -27,6 +27,8 @@ pip install optimade[http_client]
 ```
 or from a local copy of the repository with
 ```shell
+uv sync --extra http-client
+# or, without uv:
 pip install -e .[http_client]
 ```
 
