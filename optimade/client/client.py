@@ -24,8 +24,8 @@ try:
 except ImportError as exc:
     raise ImportError(
         "Could not find dependencies required for the `OptimadeClient`. "
-        "Please install them with `pip install .[http_client]` (if using a local repository) "
-        "or `pip install optimade[http_client]` (if using the PyPI package)."
+        "Please install them with `pip install .[http-client]` (if using a local repository) "
+        "or `pip install optimade[http-client]` (if using the PyPI package)."
     ) from exc
 
 

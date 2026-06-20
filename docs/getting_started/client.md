@@ -23,11 +23,13 @@ This list outlines the current and planned features for the client:
 The client requires some extra dependencies that can be installed with the PyPI package with
 
 ```shell
-pip install optimade[http_client]
+pip install optimade[http-client]
 ```
 or from a local copy of the repository with
 ```shell
-pip install -e .[http_client]
+uv sync --extra http-client
+# or, without uv:
+pip install -e .[http-client]
 ```
 
 ## Usage
