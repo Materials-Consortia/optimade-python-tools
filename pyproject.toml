@@ -119,6 +119,12 @@ dev = [
    "optimade[docs,testing,client,http-client]",
 ]
 
+[tool.uv]
+# Do not install the `dev` group by default, so that production commands such as
+# `uv sync --extra server` and `uv export --extra server` stay dev-free without
+# needing `--no-dev`. Development environments opt in explicitly with `--group dev`.
+default-groups = []
+
 [tool.ruff]
 extend-exclude = [
     "providers",

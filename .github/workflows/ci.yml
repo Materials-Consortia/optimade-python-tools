@@ -296,7 +296,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        uv sync --locked --all-extras
+        uv sync --locked --all-extras --group dev
 
     # NOTE: While we're now using `mike`, this is still useful
     # to test the integrity of the documentation build.

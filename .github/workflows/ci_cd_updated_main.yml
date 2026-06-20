@@ -57,7 +57,7 @@ jobs:
     - name: Install dependencies
       if: steps.release_check.outputs.release_run == 'false'
       run: |
-        uv sync --locked --all-extras
+        uv sync --locked --all-extras --group dev
 
     - name: Set up git user
       if: steps.release_check.outputs.release_run == 'false'
