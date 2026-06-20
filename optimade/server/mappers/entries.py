@@ -1,7 +1,7 @@
 import warnings
 from collections.abc import Iterable
 from functools import cached_property
-from typing import Any, Literal
+from typing import Any, Literal, cast
 
 from optimade.models.entries import EntryResource
 from optimade.server.config import ServerConfig
@@ -49,7 +49,7 @@ class BaseResourceMapper:
         endpoint = self.ENTRY_RESOURCE_CLASS.model_fields["type"].default
         if not endpoint or not isinstance(endpoint, str):
             raise ValueError("Type not set for this entry type!")
-        return endpoint
+        return cast(Literal["links", "references", "structures"], endpoint)
 
     @cached_property
     def SUPPORTED_PREFIXES(self) -> set[str]:
