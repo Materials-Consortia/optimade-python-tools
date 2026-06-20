@@ -244,7 +244,7 @@ def _minor_deformities() -> "Generator[dict[str, Any], None, None]":
     return ({f: None} for f in {f for _ in CORRELATED_STRUCTURE_FIELDS for f in _})
 
 
-@pytest.mark.parametrize("deformity", _minor_deformities())
+@pytest.mark.parametrize("deformity", list(_minor_deformities()))
 def test_structure_minor_deformities(
     good_structure: "dict[str, Any]", deformity: "Optional[dict[str, Any]]"
 ) -> None:
