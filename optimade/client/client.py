@@ -17,7 +17,7 @@ from urllib.parse import urlparse
 
 # External deps that are only used in the client code
 try:
-    import httpx
+    import httpx2 as httpx
     import requests
     from rich.panel import Panel
     from rich.progress import TaskID
