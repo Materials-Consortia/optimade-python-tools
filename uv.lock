@@ -2376,7 +2376,6 @@ requires-dist = [
     { name = "optimade", extras = ["aiida", "ase", "client", "dev", "elastic", "http-client", "jarvis", "pymatgen"], marker = "extra == 'all'" },
     { name = "optimade", extras = ["cif"], marker = "extra == 'client'" },
     { name = "optimade", extras = ["client", "docs", "http-client", "testing"], marker = "extra == 'dev'" },
-    { name = "optimade", extras = ["http-client"], marker = "extra == 'http-client'" },
     { name = "optimade", extras = ["mongo"], marker = "extra == 'server'" },
     { name = "optimade", extras = ["server"], marker = "extra == 'testing'" },
     { name = "pandas", marker = "extra == 'pymatgen'", specifier = "~=2.2" },
@@ -2396,7 +2395,7 @@ requires-dist = [
     { name = "types-requests", marker = "extra == 'dev'" },
     { name = "uvicorn", extras = ["standard"], marker = "extra == 'server'", specifier = "~=0.19" },
 ]
-provides-extras = ["elastic", "mongo", "server", "aiida", "http-client", "ase", "cif", "pymatgen", "jarvis", "client", "docs", "testing", "dev", "http-client", "all"]
+provides-extras = ["elastic", "mongo", "server", "aiida", "http-client", "ase", "cif", "pymatgen", "jarvis", "client", "docs", "testing", "dev", "all"]
 
 [[package]]
 name = "orjson"
