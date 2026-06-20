@@ -83,11 +83,17 @@ jobs:
         echo "project=$(echo $GITHUB_REPOSITORY | cut -d/ -f2- )" >> $GITHUB_OUTPUT
         echo "exclude_labels=duplicate,question,invalid,wontfix,dependency_updates,skip_changelog" >> $GITHUB_OUTPUT
 
+    - name: Set up Ruby
+      if: steps.release_check.outputs.release_run == 'false'
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3'
+
     - name: Update changelog with unreleased changes
       if: steps.release_check.outputs.release_run == 'false'
-      uses: docker://githubchangeloggenerator/github-changelog-generator:1.18.0
-      with:
-        args: --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token ${{ secrets.RELEASE_PAT_BOT }} --release-branch "${{ env.DEFAULT_REPO_BRANCH }}" --future-release "Unreleased changes" --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
+      run: |
+        gem install github_changelog_generator -v 1.18.0
+        github_changelog_generator --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token ${{ secrets.RELEASE_PAT_BOT }} --release-branch "${{ env.DEFAULT_REPO_BRANCH }}" --future-release "Unreleased changes" --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
 
     - name: Deploy documentation
       if: steps.release_check.outputs.release_run == 'false'
