@@ -172,7 +172,7 @@ jobs:
         uv run mike deploy --push --remote origin --branch gh-pages --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v}
 
     - name: Deploy stable/latest documentation
-      if: ${{ needs.release.outputs.publish_branch }} == ${{ env.DEFAULT_RELEASE_BRANCH }}
+      if: needs.release.outputs.publish_branch == env.DEFAULT_RELEASE_BRANCH
       run: |
         uv run mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
         uv run mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_RELEASE_BRANCH }}

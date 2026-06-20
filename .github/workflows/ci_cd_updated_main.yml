@@ -119,8 +119,11 @@ jobs:
       with:
         version: "latest"
 
-    - name: Combine requirements for builder
-      run: uv export --extra server >> requirements.txt
+    - name: Generate requirements.txt for the Fly buildpack
+      # `--no-emit-project` omits the editable `-e .` line: the buildpack installs
+      # these (hashed) dependencies and runs the app from source, as before. pip
+      # rejects editable requirements in hash-checking mode, so it must not be emitted.
+      run: uv export --extra server --no-emit-project > requirements.txt
 
     - name: Deploy to Fly
       run: flyctl deploy --remote-only -c ./.github/fly.toml
