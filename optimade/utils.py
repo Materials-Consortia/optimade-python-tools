@@ -9,6 +9,7 @@ from collections.abc import Container, Iterable
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+import requests
 from requests.exceptions import SSLError
 
 if TYPE_CHECKING:
@@ -135,7 +136,9 @@ def mongo_id_for_database(database_id: str, database_type: str) -> str:
     return str(ObjectId(hash_bytes))
 
 
-def get_providers(add_mongo_id: bool = False) -> list:
+def get_providers(
+    add_mongo_id: bool = False, session: requests.Session | None = None
+) -> list:
     """Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).
 
     Fallback order if providers.optimade.org is not available:
@@ -148,6 +151,8 @@ def get_providers(add_mongo_id: bool = False) -> list:
     Arguments:
         add_mongo_id: Whether to populate the `_id` field of the provider with MongoDB
             ObjectID.
+        session: An optional `requests.Session` to use for the request, allowing custom
+            HTTP configuration (e.g. proxies). Defaults to the module-level `requests`.
 
     Returns:
         List of raw JSON-decoded providers including MongoDB object IDs.
@@ -155,11 +160,11 @@ def get_providers(add_mongo_id: bool = False) -> list:
     """
     import json
 
-    import requests
+    _get = session.get if session is not None else requests.get
 
     for provider_list_url in PROVIDER_LIST_URLS:
         try:
-            providers = requests.get(provider_list_url, timeout=10).json()
+            providers = _get(provider_list_url, timeout=10).json()
         except (
             requests.exceptions.ConnectionError,
             requests.exceptions.ConnectTimeout,
@@ -210,6 +215,7 @@ def get_child_database_links(
     obey_aggregate: bool = True,
     headers: dict | None = None,
     skip_ssl: bool = False,
+    session: requests.Session | None = None,
 ) -> list[LinksResource]:
     """For a provider, return a list of available child databases.
 
@@ -218,6 +224,8 @@ def get_child_database_links(
         obey_aggregate: Whether to only return links that allow
             aggregation.
         headers: Additional HTTP headers to pass to the provider.
+        session: An optional `requests.Session` to use for the request, allowing custom
+            HTTP configuration (e.g. proxies). Defaults to the module-level `requests`.
 
     Returns:
         A list of the valid links entries from this provider that
@@ -228,9 +236,9 @@ def get_child_database_links(
             invalid, or the request otherwise fails.
 
     """
-    import requests
-
     from optimade.models.links import Aggregate, LinkType
+
+    _get = session.get if session is not None else requests.get
 
     base_url = provider.pop("base_url")
     if base_url is None:
@@ -238,10 +246,10 @@ def get_child_database_links(
 
     links_endp = base_url + "/v1/links"
     try:
-        links = requests.get(links_endp, timeout=10, headers=headers)
+        links = _get(links_endp, timeout=10, headers=headers)
     except SSLError as exc:
         if skip_ssl:
-            links = requests.get(links_endp, timeout=10, headers=headers, verify=False)
+            links = _get(links_endp, timeout=10, headers=headers, verify=False)
         else:
             raise RuntimeError(
                 f"SSL error when connecting to provider {provider['id']}. Use `skip_ssl` to ignore."
@@ -284,6 +292,7 @@ def get_all_databases(
     exclude_databases: Container[str] | None = None,
     progress: "rich.progress.Progress | None" = None,
     skip_ssl: bool = False,
+    session: requests.Session | None = None,
 ) -> Iterable[str]:
     """Iterate through all databases reported by registered OPTIMADE providers.
 
@@ -291,6 +300,9 @@ def get_all_databases(
         include_providers: A set/container of provider IDs to include child databases for.
         exclude_providers: A set/container of provider IDs to exclude child databases for.
         exclude_databases: A set/container of specific database URLs to exclude.
+        session: An optional `requests.Session` to use for the underlying requests,
+            allowing custom HTTP configuration (e.g. proxies). Defaults to the
+            module-level `requests`.
 
     Returns:
         A generator of child database links that obey the given parameters.
@@ -309,14 +321,16 @@ def get_all_databases(
         _task = None
 
     with _progress:
-        for provider in get_providers():
+        for provider in get_providers(session=session):
             if exclude_providers and provider["id"] in exclude_providers:
                 continue
             if include_providers and provider["id"] not in include_providers:
                 continue
 
             try:
-                links = get_child_database_links(provider, skip_ssl=skip_ssl)
+                links = get_child_database_links(
+                    provider, skip_ssl=skip_ssl, session=session
+                )
                 for link in links:
                     if link.attributes.base_url:
                         if (
