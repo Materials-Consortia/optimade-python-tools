@@ -4,7 +4,7 @@ import warnings
 from typing import TYPE_CHECKING
 from urllib.parse import urlparse
 
-import httpx
+import httpx2 as httpx
 import pytest
 import requests
 from fastapi.testclient import TestClient
