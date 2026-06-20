@@ -85,7 +85,7 @@ jobs:
 
     - name: Update changelog with unreleased changes
       if: steps.release_check.outputs.release_run == 'false'
-      uses: docker://githubchangeloggenerator/github-changelog-generator:1.16.2
+      uses: docker://githubchangeloggenerator/github-changelog-generator:1.18.0
       with:
         args: --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token ${{ secrets.RELEASE_PAT_BOT }} --release-branch "${{ env.DEFAULT_REPO_BRANCH }}" --future-release "Unreleased changes" --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
 

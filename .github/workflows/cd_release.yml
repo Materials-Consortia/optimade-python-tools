@@ -68,7 +68,7 @@ jobs:
         echo "output_file=release_changelog.md" >> $GITHUB_OUTPUT
 
     - name: Update changelog
-      uses: docker://githubchangeloggenerator/github-changelog-generator:1.16.2
+      uses: docker://githubchangeloggenerator/github-changelog-generator:1.18.0
       with:
         args: --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token "${{ secrets.RELEASE_PAT_BOT }}" --release-branch "${{ steps.save_branch.outputs.publish_branch }}" --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
 
