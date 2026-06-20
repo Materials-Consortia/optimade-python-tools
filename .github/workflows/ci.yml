@@ -195,13 +195,13 @@ jobs:
         OPTIMADE_DATABASE_BACKEND: 'elastic'
 
     - name: Install adapter conversion dependencies
-      run: uv sync --locked --extra http-client --group dev --extra server --extra client --extra elastic
+      run: uv sync --locked --all-extras --group dev
 
     - name: Setup environment for AiiDA
       env:
         AIIDA_TEST_BACKEND: core.psql_dos
       run: |
-        .github/aiida/setup_aiida.sh
+        uv run .github/aiida/setup_aiida.sh
 
     - name: Run previously skipped tests for adapter conversion
       run: uv run pytest -rs -vvv --cov=./optimade/ --cov-report=xml --cov-append tests/adapters/
