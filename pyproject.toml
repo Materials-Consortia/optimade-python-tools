@@ -72,7 +72,7 @@ server = [
 ]
 
 # Client minded
-aiida = ["aiida-core~=2.1"]
+aiida = ["aiida-core~=2.1, != 2.7.1"]
 
 http-client = [
     "httpx~=0.23",
