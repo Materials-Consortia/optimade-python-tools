@@ -2,9 +2,8 @@
 
 from pathlib import Path
 
-from fastapi import Request
+from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
-from starlette.routing import Route, Router
 
 from optimade import __api_version__
 from optimade.server.config import ServerConfig
@@ -92,11 +91,11 @@ async def landing(request: Request):
     )
 
 
-router = Router(routes=[Route("/", endpoint=landing)])
-
-## This "fix" is taken directly from FastAPI's APIRouter implementation.
-# Handle on_startup/on_shutdown locally since Starlette removed support
-# Ref: https://github.com/Kludex/starlette/pull/3117
-# TODO: deprecate this once the lifespan (or alternative) interface is improved
-router.on_startup = []
-router.on_shutdown = []
+router = APIRouter(redirect_slashes=True)
+router.add_api_route(
+    "/",
+    landing,
+    methods=["GET"],
+    response_class=HTMLResponse,
+    include_in_schema=False,
+)
