@@ -2233,36 +2233,18 @@ aiida = [
 all = [
     { name = "aiida-core" },
     { name = "ase" },
-    { name = "build" },
     { name = "click" },
     { name = "elasticsearch" },
     { name = "elasticsearch-dsl" },
     { name = "fastapi" },
-    { name = "griffe" },
     { name = "httpx" },
-    { name = "invoke" },
     { name = "jarvis-tools", marker = "python_full_version < '3.13'" },
-    { name = "jsondiff" },
-    { name = "mike" },
-    { name = "mkdocs" },
-    { name = "mkdocs-autorefs" },
-    { name = "mkdocs-awesome-pages-plugin" },
-    { name = "mkdocs-material" },
-    { name = "mkdocstrings", extra = ["python"] },
     { name = "mongomock" },
-    { name = "mypy" },
     { name = "numpy" },
     { name = "pandas" },
-    { name = "pre-commit" },
     { name = "pymatgen", marker = "python_full_version < '3.13'" },
     { name = "pymongo" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
     { name = "rich" },
-    { name = "ruff" },
-    { name = "types-pyyaml" },
-    { name = "types-requests" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 ase = [
@@ -2273,34 +2255,6 @@ cif = [
 ]
 client = [
     { name = "numpy" },
-]
-dev = [
-    { name = "build" },
-    { name = "click" },
-    { name = "fastapi" },
-    { name = "griffe" },
-    { name = "httpx" },
-    { name = "invoke" },
-    { name = "jsondiff" },
-    { name = "mike" },
-    { name = "mkdocs" },
-    { name = "mkdocs-autorefs" },
-    { name = "mkdocs-awesome-pages-plugin" },
-    { name = "mkdocs-material" },
-    { name = "mkdocstrings", extra = ["python"] },
-    { name = "mongomock" },
-    { name = "mypy" },
-    { name = "numpy" },
-    { name = "pre-commit" },
-    { name = "pymongo" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "rich" },
-    { name = "ruff" },
-    { name = "types-pyyaml" },
-    { name = "types-requests" },
-    { name = "uvicorn", extra = ["standard"] },
 ]
 docs = [
     { name = "griffe" },
@@ -2349,6 +2303,17 @@ testing = [
     { name = "uvicorn", extra = ["standard"] },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "invoke" },
+    { name = "mypy" },
+    { name = "optimade", extra = ["client", "docs", "http-client", "testing"] },
+    { name = "pre-commit" },
+    { name = "ruff" },
+    { name = "types-pyyaml" },
+    { name = "types-requests" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "aiida-core", marker = "extra == 'aiida'", specifier = "~=2.1,!=2.7.1" },
@@ -2360,7 +2325,6 @@ requires-dist = [
     { name = "fastapi", marker = "extra == 'server'", specifier = ">=0.135.0" },
     { name = "griffe", marker = "extra == 'docs'", specifier = ">=1.13,<3.0" },
     { name = "httpx", marker = "extra == 'http-client'", specifier = "~=0.23" },
-    { name = "invoke", marker = "extra == 'dev'", specifier = "~=3.0" },
     { name = "jarvis-tools", marker = "python_full_version < '3.13' and extra == 'jarvis'", specifier = ">=2023.1.8,!=2024.4.20,!=2024.4.30" },
     { name = "jsondiff", marker = "extra == 'testing'", specifier = "~=2.0" },
     { name = "lark", specifier = "~=1.1" },
@@ -2371,15 +2335,12 @@ requires-dist = [
     { name = "mkdocs-material", marker = "extra == 'docs'", specifier = "~=9.0" },
     { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = ">=0.26,<2.0" },
     { name = "mongomock", marker = "extra == 'mongo'", specifier = "~=4.1" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1,<3" },
     { name = "numpy", marker = "extra == 'cif'", specifier = ">=1.22,<3.0" },
-    { name = "optimade", extras = ["aiida", "ase", "client", "dev", "elastic", "http-client", "jarvis", "pymatgen"], marker = "extra == 'all'" },
+    { name = "optimade", extras = ["aiida", "ase", "client", "elastic", "http-client", "jarvis", "pymatgen", "server"], marker = "extra == 'all'" },
     { name = "optimade", extras = ["cif"], marker = "extra == 'client'" },
-    { name = "optimade", extras = ["client", "docs", "http-client", "testing"], marker = "extra == 'dev'" },
     { name = "optimade", extras = ["mongo"], marker = "extra == 'server'" },
     { name = "optimade", extras = ["server"], marker = "extra == 'testing'" },
     { name = "pandas", marker = "extra == 'pymatgen'", specifier = "~=2.2" },
-    { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=3,<5" },
     { name = "pydantic", extras = ["email"], specifier = "~=2.2" },
     { name = "pydantic-settings", specifier = "~=2.0" },
     { name = "pymatgen", marker = "python_full_version < '3.13' and extra == 'pymatgen'", specifier = ">=2022" },
@@ -2390,12 +2351,20 @@ requires-dist = [
     { name = "pyyaml", specifier = "~=6.0" },
     { name = "requests", specifier = "~=2.28" },
     { name = "rich", marker = "extra == 'http-client'", specifier = ">=13,<16" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = "~=0.1" },
-    { name = "types-pyyaml", marker = "extra == 'dev'" },
-    { name = "types-requests", marker = "extra == 'dev'" },
     { name = "uvicorn", extras = ["standard"], marker = "extra == 'server'", specifier = "~=0.19" },
 ]
-provides-extras = ["elastic", "mongo", "server", "aiida", "http-client", "ase", "cif", "pymatgen", "jarvis", "client", "docs", "testing", "dev", "all"]
+provides-extras = ["elastic", "mongo", "server", "aiida", "http-client", "ase", "cif", "pymatgen", "jarvis", "client", "docs", "testing", "all"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "invoke", specifier = "~=3.0" },
+    { name = "mypy", specifier = ">=1,<3" },
+    { name = "optimade", extras = ["docs", "testing", "client", "http-client"] },
+    { name = "pre-commit", specifier = ">=3,<5" },
+    { name = "ruff", specifier = "~=0.1" },
+    { name = "types-pyyaml" },
+    { name = "types-requests" },
+]
 
 [[package]]
 name = "orjson"

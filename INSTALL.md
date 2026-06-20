@@ -37,9 +37,9 @@ to get started.
 
 The dependencies of this package can be found in `pyproject.toml` with their latest supported versions.
 By default, a minimal set of requirements are installed to work with the filter language and the `pydantic` models.
-The optional dependency group `server` (i.e. `uv sync --extra server`) is sufficient to run a `uvicorn` server using the `mongomock` backend (or MongoDB with `pymongo`, if present).
-The suite of development and testing tools are installed via the optional groups `dev` and `testing`.
-There are additionally two backend-specific groups, `elastic` and `mongo`, as well as the `all` group, which installs all dependencies.
+The optional dependency `server` extra (i.e. `uv sync --extra server`) is sufficient to run a `uvicorn` server using the `mongomock` backend (or MongoDB with `pymongo`, if present).
+The suite of development tools lives in the [dependency group](https://packaging.python.org/en/latest/specifications/dependency-groups/) `dev` (i.e. `uv sync --group dev`), which also pulls in the `testing` and `docs` extras.
+There are additionally two backend-specific extras, `elastic` and `mongo`, as well as the `all` extra, which installs all runtime dependencies.
 All contributed Python code must pass the [`ruff`](https://docs.astral.sh/ruff/) formatter and linter that are run automatically on all PRs.
 
 ```sh
@@ -48,9 +48,9 @@ git clone --recursive git@github.com:Materials-Consortia/optimade-python-tools.g
 cd optimade-python-tools
 
 # Create a virtual environment and install the package and dependencies in editable
-# mode from the locked dependencies (including the "dev" and "server" extras).
+# mode from the locked dependencies (the "dev" dependency group and "server" extra).
 # uv will fetch and pin a suitable Python interpreter automatically.
-uv sync --locked --extra dev --extra server
+uv sync --locked --group dev --extra server
 
 # Optional: Retrieve the list of OPTIMADE providers. (Without this submodule, some of the tests will fail because "providers.json" cannot be found.)
 git submodule update --init
@@ -79,8 +79,9 @@ open http://localhost:5000/openapi.json
 ```
 
 If you prefer not to use `uv`, the package can still be installed into an existing
-environment with `pip`, e.g., `pip install -e ".[dev]"`, though the exact dependency
-versions will not be pinned to those in `uv.lock`.
+environment with `pip` (≥25.1 for dependency-group support), e.g.,
+`pip install -e . --group dev`, though the exact dependency versions will not be pinned
+to those in `uv.lock`.
 
 When developing, you can run both the server and an index meta-database server at the same time (from two separate terminals).
 Running the following:
