@@ -48,16 +48,13 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Setup uv
-      if: steps.release_check.outputs.release_run == 'false'
-      uses: astral-sh/setup-uv@v6
-      with:
-        version: "latest"
-
     - name: Install dependencies
       if: steps.release_check.outputs.release_run == 'false'
       run: |
-        uv sync --locked --all-extras --group dev
+        python -m pip install --upgrade pip
+        pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
+        pip install -e .[all]
 
     - name: Set up git user
       if: steps.release_check.outputs.release_run == 'false'
@@ -68,7 +65,7 @@ jobs:
     - name: Check API Reference and landing page
       if: steps.release_check.outputs.release_run == 'false'
       run: |
-        uv run invoke create-api-reference-docs --pre-clean
+        invoke create-api-reference-docs --pre-clean
 
         if [ -n "$(git status --porcelain docs/api_reference)" ]; then
           echo "The following files in the documentation have not been committed:"
@@ -91,7 +88,7 @@ jobs:
 
     - name: Deploy documentation
       if: steps.release_check.outputs.release_run == 'false'
-      run: uv run mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_REPO_BRANCH }}
+      run: mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_REPO_BRANCH }}
 
   deploy-fly:
     runs-on: ubuntu-latest
@@ -114,16 +111,8 @@ jobs:
     - name: Set up Fly
       uses: superfly/flyctl-actions/setup-flyctl@v1
 
-    - name: Setup uv
-      uses: astral-sh/setup-uv@v6
-      with:
-        version: "latest"
-
-    - name: Generate requirements.txt for the Fly buildpack
-      # `--no-emit-project` omits the editable `-e .` line: the buildpack installs
-      # these (hashed) dependencies and runs the app from source, as before. pip
-      # rejects editable requirements in hash-checking mode, so it must not be emitted.
-      run: uv export --extra server --no-emit-project > requirements.txt
+    - name: Combine requirements for builder
+      run: cat requirements-server.txt >> requirements.txt
 
     - name: Deploy to Fly
       run: flyctl deploy --remote-only -c ./.github/fly.toml

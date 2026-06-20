@@ -49,14 +49,12 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Setup uv
-      uses: astral-sh/setup-uv@v6
-      with:
-        version: "latest"
-
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
-        uv sync --locked --all-extras --group dev
+        python -m pip install -U pip
+        pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
+        pip install -e .[all]
 
     - name: Setup changelog configuration
       id: changelog_config
@@ -73,7 +71,7 @@ jobs:
         args: --user "${{ github.repository_owner }}" --project "${{ steps.changelog_config.outputs.project }}" --token "${{ secrets.RELEASE_PAT_BOT }}" --release-branch "${{ steps.save_branch.outputs.publish_branch }}" --exclude-labels "${{ steps.changelog_config.outputs.exclude_labels }}"
 
     - name: Update API Reference docs and version - Commit changes and update tag
-      run: uv run .github/utils/update_docs.sh
+      run: .github/utils/update_docs.sh
 
     - name: Update triggering branch
       uses: CasperWA/push-protected@v2
@@ -153,14 +151,12 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Setup uv
-      uses: astral-sh/setup-uv@v6
-      with:
-        version: "latest"
-
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
-        uv sync --locked --all-extras
+        python -m pip install -U pip
+        pip install -U setuptools wheel
+        pip install -r requirements.txt -r requirements-dev.txt -r requirements-client.txt -r requirements-http-client.txt -r requirements-docs.txt
+        pip install -e .[all]
 
     - name: Set git config
       run: |
@@ -169,13 +165,13 @@ jobs:
 
     - name: Deploy versioned documentation
       run: |
-        uv run mike deploy --push --remote origin --branch gh-pages --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v}
+        mike deploy --push --remote origin --branch gh-pages --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v}
 
     - name: Deploy stable/latest documentation
-      if: needs.release.outputs.publish_branch == env.DEFAULT_RELEASE_BRANCH
+      if: ${{ needs.release.outputs.publish_branch }} == ${{ env.DEFAULT_RELEASE_BRANCH }}
       run: |
-        uv run mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
-        uv run mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_RELEASE_BRANCH }}
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml ${GITHUB_REF#refs/tags/v} stable
+        mike deploy --push --remote origin --branch gh-pages --update-aliases --config-file mkdocs.yml latest ${{ env.DEFAULT_RELEASE_BRANCH }}
 
   publish_container_image:
     name: Publish container image

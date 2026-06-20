@@ -9,7 +9,7 @@ This package can be installed from PyPI, or by cloning the repository, depending
 ## The index meta-database
 
 This package may be used to setup and run an [OPTIMADE index meta-database](https://github.com/Materials-Consortia/OPTIMADE/blob/develop/optimade.rst#index-meta-database).
-Clone this repository and install the package locally with `uv sync --extra server` (or `pip install -e .[server]`).
+Clone this repository and install the package locally with `pip install -e .[server]`.
 
 !!! info
     To avoid installing anything locally and instead use the docker image, please see the section [Container image](#container-image) below.
@@ -29,40 +29,36 @@ export OPTIMADE_CONFIG_FILE=/home/optimade_server/config.json
 
 ## Full development installation
 
-For development we recommend using [`uv`](https://docs.astral.sh/uv/), which manages the
-virtual environment and resolves dependencies from the pinned `uv.lock` file to give a
-reproducible environment matching the one used in CI.
-See the [`uv` installation instructions](https://docs.astral.sh/uv/getting-started/installation/)
-to get started.
-
-The dependencies of this package can be found in `pyproject.toml` with their latest supported versions.
+The dependencies of this package can be found in `setup.py` with their latest supported versions.
 By default, a minimal set of requirements are installed to work with the filter language and the `pydantic` models.
-The optional dependency `server` extra (i.e. `uv sync --extra server`) is sufficient to run a `uvicorn` server using the `mongomock` backend (or MongoDB with `pymongo`, if present).
-The suite of development tools lives in the [dependency group](https://packaging.python.org/en/latest/specifications/dependency-groups/) `dev` (i.e. `uv sync --group dev`), which also pulls in the `testing` and `docs` extras.
-There are additionally two backend-specific extras, `elastic` and `mongo`, as well as the `all` extra, which installs all runtime dependencies.
-All contributed Python code must pass the [`ruff`](https://docs.astral.sh/ruff/) formatter and linter that are run automatically on all PRs.
+After cloning the repository, the install mode `server` (i.e. `pip install .[server]`) is sufficient to run a `uvicorn` server using the `mongomock` backend (or MongoDB with `pymongo`, if present).
+The suite of development and testing tools are installed with via the install modes `dev` and `testing`.
+There are additionally two backend-specific install modes, `elastic` and `mongo`, as well as the `all` mode, which installs all dependencies.
+All contributed Python code, must use the [black](https://github.com/ambv/black) code formatter, and must pass the [flake8](http://flake8.pycqa.org/en/latest/) linter that is run automatically on all PRs.
 
 ```sh
 # Clone this repository to your computer
 git clone --recursive git@github.com:Materials-Consortia/optimade-python-tools.git
 cd optimade-python-tools
 
-# Create a virtual environment and install the package and dependencies in editable
-# mode from the locked dependencies (the "dev" dependency group and "server" extra).
-# uv will fetch and pin a suitable Python interpreter automatically.
-uv sync --locked --group dev --extra server
+# Ensure a Python>=3.8 (virtual) environment (example below using Anaconda/Miniconda)
+conda create -n optimade python=3.10
+conda activate optimade
+
+# Install package and dependencies in editable mode (including "dev" requirements).
+pip install -e ".[dev]"
 
 # Optional: Retrieve the list of OPTIMADE providers. (Without this submodule, some of the tests will fail because "providers.json" cannot be found.)
 git submodule update --init
 
-# Run the tests with pytest (uv run executes commands inside the managed environment)
-uv run pytest
+# Run the tests with pytest
+py.test
 
 # Install pre-commit environment (e.g., auto-formats code on `git commit`)
-uv run pre-commit install
+pre-commit install
 
 # Optional: Install MongoDB (and set `database_backend = mongodb`)
-# Below method installs in a conda environment and
+# Below method installs in conda environment and
 # - starts server in background
 # - ensures and uses ~/dbdata directory to store data
 conda install -c anaconda mongodb
@@ -70,18 +66,13 @@ mkdir -p ~/dbdata && mongod --dbpath ~/dbdata --syslog --fork
 
 # Start a development server (auto-reload on file changes at http://localhost:5000
 # You can also execute ./run.sh
-uv run uvicorn optimade.server.main:app --reload --port 5000
+uvicorn optimade.server.main:app --reload --port 5000
 
 # View auto-generated docs
 open http://localhost:5000/docs
 # View Open API Schema
 open http://localhost:5000/openapi.json
 ```
-
-If you prefer not to use `uv`, the package can still be installed into an existing
-environment with `pip` (≥25.1 for dependency-group support), e.g.,
-`pip install -e . --group dev`, though the exact dependency versions will not be pinned
-to those in `uv.lock`.
 
 When developing, you can run both the server and an index meta-database server at the same time (from two separate terminals).
 Running the following:
@@ -112,7 +103,7 @@ The following command starts a local Elasticsearch v7 instance, runs the test su
 ```shell
 docker run -d --name elasticsearch_test -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" elasticsearch:7.17.7 \
 && sleep 20 \
-&& OPTIMADE_DATABASE_BACKEND="elastic" uv run pytest; \
+&& OPTIMADE_DATABASE_BACKEND="elastic" py.test; \
 docker container stop elasticsearch_test; docker container rm elasticsearch_test
 ```
 
@@ -120,7 +111,7 @@ The following command starts a local MongoDB instance, runs the test suite, then
 
 ```shell
 docker run -d --name mongo_test -p 27017:27017 -d mongo:4.4.6 \
-&& OPTIMADE_DATABASE_BACKEND="mongodb" uv run pytest; \
+&& OPTIMADE_DATABASE_BACKEND="mongodb" py.test; \
 docker container stop mongo_test; docker container rm mongo_test
 ```
 
