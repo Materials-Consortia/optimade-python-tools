@@ -1,5 +1,26 @@
 # Changelog
 
+## [v1.5.0](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.5.0) (2026-06-20)
+
+[Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.4.2...v1.5.0)
+
+**Fixed bugs:**
+
+- Client does not use configured HTTP session for scraping provider list [\#2275](https://github.com/Materials-Consortia/optimade-python-tools/issues/2275)
+
+**Closed issues:**
+
+- Migrate off httpx [\#2388](https://github.com/Materials-Consortia/optimade-python-tools/issues/2388)
+- Switch dependency management to `uv` [\#2311](https://github.com/Materials-Consortia/optimade-python-tools/issues/2311)
+
+**Merged pull requests:**
+
+- Update GitHub changelog generator docker [\#2408](https://github.com/Materials-Consortia/optimade-python-tools/pull/2408) ([ml-evs](https://github.com/ml-evs))
+- Do not create release-specific changelog [\#2407](https://github.com/Materials-Consortia/optimade-python-tools/pull/2407) ([ml-evs](https://github.com/ml-evs))
+- Bump the github-actions group across 1 directory with 3 updates [\#2401](https://github.com/Materials-Consortia/optimade-python-tools/pull/2401) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Revert "Revert "Use `uv` in CI workflows and add `uv.lock`"" [\#2397](https://github.com/Materials-Consortia/optimade-python-tools/pull/2397) ([ml-evs](https://github.com/ml-evs))
+- Allow a custom requests.Session for provider-list scraping [\#2380](https://github.com/Materials-Consortia/optimade-python-tools/pull/2380) ([vasa-develop](https://github.com/vasa-develop))
+
 ## [v1.4.2](https://github.com/Materials-Consortia/optimade-python-tools/tree/v1.4.2) (2026-06-20)
 
 [Full Changelog](https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.4.1...v1.4.2)
