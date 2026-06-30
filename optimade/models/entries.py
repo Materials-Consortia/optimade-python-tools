@@ -48,6 +48,10 @@ class StructureRelationship(TypedRelationship):
     _req_type: ClassVar[Literal["structures"]] = "structures"
 
 
+class FileRelationship(TypedRelationship):
+    _req_type: ClassVar[Literal["files"]] = "files"
+
+
 class EntryRelationships(Relationships):
     """This model wraps the JSON API Relationships to include type-specific top level keys."""
 
@@ -62,6 +66,13 @@ class EntryRelationships(Relationships):
         StructureRelationship | None,
         StrictField(
             description="Object containing links to relationships with entries of the `structures` type.",
+        ),
+    ] = None
+
+    files: Annotated[
+        FileRelationship | None,
+        StrictField(
+            description="Object containing links to relationships with entries of the `files` type.",
         ),
     ] = None
 

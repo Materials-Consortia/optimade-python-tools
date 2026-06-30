@@ -21,7 +21,7 @@ class BaseResourceMapper:
     LENGTH_ALIASES: tuple[tuple[str, str], ...] = ()
     PROVIDER_FIELDS: tuple[str, ...] = ()
     ENTRY_RESOURCE_CLASS: type["EntryResource"] = EntryResource
-    RELATIONSHIP_ENTRY_TYPES: set[str] = {"references", "structures"}
+    RELATIONSHIP_ENTRY_TYPES: set[str] = {"references", "structures", "files"}
     TOP_LEVEL_NON_ATTRIBUTES_FIELDS: set[str] = {"id", "type", "relationships", "links"}
 
     def __init__(self, config: ServerConfig | None = None):

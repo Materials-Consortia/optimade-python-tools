@@ -2303,6 +2303,17 @@
               }
             ],
             "description": "Object containing links to relationships with entries of the `structures` type."
+          },
+          "files": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FileRelationship"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Object containing links to relationships with entries of the `files` type."
           }
         },
         "type": "object",
@@ -2647,6 +2658,53 @@
         "type": "object",
         "title": "ErrorSource",
         "description": "an object containing references to the source of the error"
+      },
+      "FileRelationship": {
+        "properties": {
+          "links": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipLinks"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "a links object containing at least one of the following: self, related"
+          },
+          "data": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BaseRelationshipResource"
+              },
+              {
+                "items": {
+                  "$ref": "#/components/schemas/BaseRelationshipResource"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "uniqueItems": true,
+            "title": "Data",
+            "description": "Resource linkage"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Meta"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "a meta object that contains non-standard meta-information about the relationship."
+          }
+        },
+        "type": "object",
+        "title": "FileRelationship"
       },
       "FileResource": {
         "properties": {
