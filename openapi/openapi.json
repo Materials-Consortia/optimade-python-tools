@@ -2969,16 +2969,7 @@
         "required": [
           "last_modified",
           "url",
-          "url_stable_until",
-          "name",
-          "size",
-          "media_type",
-          "modification_timestamp",
-          "description",
-          "checksums",
-          "atime",
-          "ctime",
-          "mtime"
+          "name"
         ],
         "title": "FileResourceAttributes",
         "description": "This class contains the Field for the attributes used to represent a file, e.g. ."
