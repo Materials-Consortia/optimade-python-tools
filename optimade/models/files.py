@@ -10,9 +10,6 @@ __all__ = (
 )
 
 
-CORRELATED_FILE_FIELDS: tuple[set[str], ...]
-
-
 class FileResourceAttributes(EntryResourceAttributes):
     """This class contains the Field for the attributes used to represent a file, e.g. ."""
 
