@@ -263,7 +263,7 @@ class ServerConfig(BaseSettings):
             description="MongoDB database name to use; will be overwritten if also present in `mongo_uri`"
         ),
     ] = "optimade"
-<<<<<<< HEAD
+
     mongo_uri: Annotated[
         str,
         Field(
@@ -282,12 +282,11 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
         ),
     ] = None
 
-    mongo_uri: Annotated[str, Field(description="URI for the Mongo server")] = (
-        "localhost:27017"
-    )
-
     files_collection: Annotated[
-        str, Field(description="Mongo collection name for /files endpoint resources")
+        str,
+        Field(
+            description="Mongo collection name for /files endpoint resources",
+        ),
     ] = "files"
 
     links_collection: Annotated[
