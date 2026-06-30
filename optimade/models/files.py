@@ -1,6 +1,5 @@
 # pylint: disable=no-self-argument,line-too-long,no-name-in-module
 from datetime import datetime
-from typing import Optional
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
@@ -37,7 +36,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    url_stable_until: Optional[datetime] = OptimadeField(
+    url_stable_until: datetime | None = OptimadeField(
         ...,
         description="""Point in time until which the URL in `url` is guaranteed to stay stable.
 - **Type**: timestamp
@@ -68,7 +67,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    size: Optional[int] = OptimadeField(
+    size: int | None = OptimadeField(
         ...,
         description="""Size of a file in bytes.
 - **Type**: integer
@@ -83,7 +82,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    media_type: Optional[str] = OptimadeField(
+    media_type: str | None = OptimadeField(
         ...,
         description="""Media type identifier (also known as MIME type), for a file as per `RFC 6838 Media Type Specifications and Registration Procedures <https://datatracker.ietf.org/doc/html/rfc6838>`__.
 - **Type**: string
@@ -99,7 +98,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    version: Optional[str] = OptimadeField(
+    version: str | None = OptimadeField(
         None,
         description="""Version information of a file (e.g. commit, revision, timestamp).
 - **Type**: string
@@ -112,7 +111,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    modification_timestamp: Optional[datetime] = OptimadeField(
+    modification_timestamp: datetime | None = OptimadeField(
         ...,
         description="""Timestamp of the last modification of file contents.
   A modification is understood as an addition, change or deletion of one or more bytes, resulting in file contents different from the previous.
@@ -126,7 +125,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    description: Optional[str] = OptimadeField(
+    description: str | None = OptimadeField(
         ...,
         description="""Free-form description of a file.
 - **Type**: string
@@ -142,7 +141,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    checksums: Optional[dict[str, str]] = OptimadeField(
+    checksums: dict[str, str] | None = OptimadeField(
         ...,
         description="""Dictionary providing checksums of file contents.
 * **Type**: dictionary with keys identifying checksum functions and values (strings) giving the actual checksums
@@ -157,7 +156,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    atime: Optional[datetime] = OptimadeField(
+    atime: datetime | None = OptimadeField(
         ...,
         description="""Time of last access of a file as per POSIX standard.
 - **Type**: timestamp
@@ -169,7 +168,7 @@ class FileResourceAttributes(EntryResourceAttributes):
         queryable=SupportLevel.OPTIONAL,
     )
 
-    ctime: Optional[datetime] = OptimadeField(
+    ctime: datetime | None = OptimadeField(
         ...,
         description="""Time of last status change of a file as per POSIX standard.
 - **Type**: timestamp
@@ -177,12 +176,11 @@ class FileResourceAttributes(EntryResourceAttributes):
 
   - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.
   - **Query**: Support for queries on this property is OPTIONAL.""",
-        unit="Å",
         support=SupportLevel.OPTIONAL,
         queryable=SupportLevel.OPTIONAL,
     )
 
-    mtime: Optional[datetime] = OptimadeField(
+    mtime: datetime | None = OptimadeField(
         ...,
         description=""" Time of last modification of a file as per POSIX standard.
 - **Type**: timestamp
@@ -200,7 +198,7 @@ class FileResourceAttributes(EntryResourceAttributes):
 
 
 class FileResource(EntryResource):
-    """Representing a structure."""
+    """Representing a file."""
 
     type: str = StrictField(
         "files",

@@ -2710,7 +2710,7 @@
           "attributes"
         ],
         "title": "FileResource",
-        "description": "Representing a structure."
+        "description": "Representing a file."
       },
       "FileResourceAttributes": {
         "properties": {
@@ -2888,8 +2888,7 @@
             "title": "Ctime",
             "description": "Time of last status change of a file as per POSIX standard.\n- **Type**: timestamp\n- **Requirements/Conventions**:\n\n  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL.",
             "x-optimade-queryable": "optional",
-            "x-optimade-support": "optional",
-            "x-optimade-unit": "\u00c5"
+            "x-optimade-support": "optional"
           },
           "mtime": {
             "anyOf": [
