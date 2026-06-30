@@ -1,6 +1,7 @@
 """Make sure `include` is handled correctly
 
-NOTE: Currently _only_ structures have relationships (references).
+NOTE: Structures have `references` relationships, and one structure (mpf_1) also
+has a `files` relationship. Only `references` are included by default.
 """
 
 
@@ -12,10 +13,13 @@ def test_default_value(check_include_response):
     request = "/structures"
     expected_types = ["references"]
     expected_reference_ids = ["dijkstra1968", "maddox1988", "dummy/2019"]
+    # mpf_1 additionally has a `files` relationship, which is not included by default
+    expected_data_relationship_types = ["references", "files"]
     check_include_response(
         request,
         expected_included_types=expected_types,
         expected_included_resources=expected_reference_ids,
+        expected_relationship_types=expected_data_relationship_types,
     )
 
 
@@ -24,7 +28,7 @@ def test_empty_value(check_include_response):
     request = "/structures?include="
     expected_types = []
     expected_reference_ids = []
-    expected_data_relationship_types = ["references"]
+    expected_data_relationship_types = ["references", "files"]
     check_include_response(
         request,
         expected_included_types=expected_types,
@@ -38,10 +42,13 @@ def test_default_value_single_entry(check_include_response):
     request = "/structures/mpf_1"
     expected_types = ["references"]
     expected_reference_ids = ["dijkstra1968"]
+    # mpf_1 additionally has a `files` relationship, which is not included by default
+    expected_data_relationship_types = ["references", "files"]
     check_include_response(
         request,
         expected_included_types=expected_types,
         expected_included_resources=expected_reference_ids,
+        expected_relationship_types=expected_data_relationship_types,
     )
 
 
@@ -50,7 +57,7 @@ def test_empty_value_single_entry(check_include_response):
     request = "/structures/mpf_1?include="
     expected_types = []
     expected_reference_ids = []
-    expected_data_relationship_types = ["references"]
+    expected_data_relationship_types = ["references", "files"]
     check_include_response(
         request,
         expected_included_types=expected_types,

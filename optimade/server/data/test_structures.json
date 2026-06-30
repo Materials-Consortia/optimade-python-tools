@@ -72,6 +72,14 @@
             "id": "dijkstra1968"
           }
         ]
+      },
+      "files": {
+        "data": [
+          {
+            "type": "files",
+            "id": "file_2"
+          }
+        ]
       }
     },
     "_exmpl_this_provider_field": "test"
@@ -3757,7 +3765,9 @@
     ],
     "structure_features": [],
     "task_id": "mpf_3819",
-    "_exmpl_stability": {"gga_gga+u_r2scan": -0.2},
+    "_exmpl_stability": {
+      "gga_gga+u_r2scan": -0.2
+    },
     "relationships": {
       "references": {
         "data": [
