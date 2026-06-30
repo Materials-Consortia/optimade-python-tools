@@ -263,6 +263,7 @@ class ServerConfig(BaseSettings):
             description="MongoDB database name to use; will be overwritten if also present in `mongo_uri`"
         ),
     ] = "optimade"
+
     mongo_uri: Annotated[
         str,
         Field(
@@ -280,6 +281,13 @@ If provided an SPDX license identifier, the `license` field value will be constr
 Otherwise, the license will be given as the provided URL and no SPDX identifier will be added to the `available_licenses` field. If your desired licensing scenario is more complex, please open an issue.""",
         ),
     ] = None
+
+    files_collection: Annotated[
+        str,
+        Field(
+            description="Mongo collection name for /files endpoint resources",
+        ),
+    ] = "files"
 
     links_collection: Annotated[
         str, Field(description="Mongo collection name for /links endpoint resources")

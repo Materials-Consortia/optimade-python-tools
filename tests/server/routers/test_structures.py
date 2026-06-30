@@ -129,8 +129,11 @@ class TestSingleStructureWithRelationships(RegularEndpointTests):
         assert "attributes" in self.json_response["data"]
         assert "relationships" in self.json_response["data"]
         assert self.json_response["data"]["relationships"] == {
-            "references": {"data": [{"type": "references", "id": "dijkstra1968"}]}
+            "references": {"data": [{"type": "references", "id": "dijkstra1968"}]},
+            "files": {"data": [{"type": "files", "id": "file_2"}]},
         }
+        # Only `references` are included by default (not `files`), so `included`
+        # should match the `references` relationship only.
         assert "included" in self.json_response
         assert len(
             self.json_response["data"]["relationships"]["references"]["data"]
@@ -238,3 +241,22 @@ class TestStructuresWithUnknownResponseFields(RegularEndpointTests):
         assert all(
             len(doc["attributes"]) == len(keys) for doc in self.json_response["data"]
         )
+
+
+class TestSingleStructureWithFileRelationship(RegularEndpointTests):
+    """Tests for /structures/<entry_id>, where <entry_id> relates to a file."""
+
+    test_id = "mpf_1"
+    request_str = f"/structures/{test_id}?include=files"
+    response_cls = StructureResponseOne
+
+    def test_structure_file_relationship_data(self):
+        """Check the structure links to its file and that the file is included."""
+        data = self.json_response["data"]
+        assert data["id"] == self.test_id
+        assert data["relationships"]["files"]["data"] == [
+            {"type": "files", "id": "file_2"}
+        ]
+
+        included = {(e["type"], e["id"]) for e in self.json_response["included"]}
+        assert ("files", "file_2") in included

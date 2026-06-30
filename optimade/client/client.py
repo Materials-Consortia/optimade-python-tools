@@ -41,7 +41,7 @@ from optimade.exceptions import BadRequest
 from optimade.filterparser import LarkParser
 from optimade.utils import get_all_databases
 
-ENDPOINTS = ("structures", "references", "calculations", "info", "extensions")
+ENDPOINTS = ("structures", "references", "calculations", "info", "extensions", "files")
 
 __all__ = ("OptimadeClient",)
 

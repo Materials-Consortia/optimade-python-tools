@@ -537,9 +537,19 @@ class EntryCollection(ABC):
         return query
 
 
-from optimade.models import LinksResource, ReferenceResource, StructureResource
+from optimade.models import (
+    FileResource,
+    LinksResource,
+    ReferenceResource,
+    StructureResource,
+)
 from optimade.server.config import ServerConfig
-from optimade.server.mappers import LinksMapper, ReferenceMapper, StructureMapper
+from optimade.server.mappers import (
+    FileMapper,
+    LinksMapper,
+    ReferenceMapper,
+    StructureMapper,
+)
 
 
 def create_entry_collections(config: ServerConfig):
@@ -560,6 +570,12 @@ def create_entry_collections(config: ServerConfig):
             name=config.structures_collection,
             resource_cls=StructureResource,
             resource_mapper=StructureMapper(config),
+            config=config,
+        ),
+        "files": create_collection(
+            name=config.files_collection,
+            resource_cls=FileResource,
+            resource_mapper=FileMapper(config),
             config=config,
         ),
     }

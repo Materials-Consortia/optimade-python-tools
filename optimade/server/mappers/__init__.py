@@ -1,4 +1,5 @@
 from .entries import *  # noqa: F403
+from .files import *  # noqa: F403
 from .links import *  # noqa: F403
 from .references import *  # noqa: F403
 from .structures import *  # noqa: F403
@@ -8,4 +9,5 @@ __all__ = (
     + links.__all__  # type: ignore[name-defined]  # noqa: F405
     + references.__all__  # type: ignore[name-defined]  # noqa: F405
     + structures.__all__  # type: ignore[name-defined]  # noqa: F405
+    + files.__all__  # type: ignore[name-defined]  # noqa: F405
 )

@@ -4,6 +4,7 @@
     "mongo_database": "optimade",
     "mongo_uri": "localhost:27017",
     "links_collection": "links",
+    "files_collection": "files",
     "references_collection": "references",
     "structures_collection": "structures",
     "page_limit": 20,

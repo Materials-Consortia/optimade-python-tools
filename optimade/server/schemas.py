@@ -7,6 +7,7 @@ from optimade.models import (
     DataType,
     EntryResource,
     ErrorResponse,
+    FileResource,
     ReferenceResource,
     StructureResource,
 )
@@ -31,6 +32,7 @@ __all__ = ("ENTRY_INFO_SCHEMAS", "ERROR_RESPONSES", "retrieve_queryable_properti
 ENTRY_INFO_SCHEMAS: dict[str, type[EntryResource]] = {
     "structures": StructureResource,
     "references": ReferenceResource,
+    "files": FileResource,
 }
 """This dictionary is used to define the `/info/<entry_type>` endpoints."""
 

@@ -21,6 +21,7 @@ from optimade.server.logger import create_logger, set_logging_context
 from optimade.server.mappers.entries import BaseResourceMapper
 from optimade.server.middleware import OPTIMADE_MIDDLEWARE
 from optimade.server.routers import (
+    files,
     index_info,
     info,
     landing,
@@ -31,7 +32,7 @@ from optimade.server.routers import (
 )
 from optimade.server.routers.utils import BASE_URL_PREFIXES, JSONAPIResponse
 
-MAIN_ENDPOINTS = [info, links, references, structures, landing]
+MAIN_ENDPOINTS = [info, links, references, structures, files, landing]
 INDEX_ENDPOINTS = [index_info, links]
 
 
@@ -66,7 +67,7 @@ def insert_main_data(
 ):
     from optimade.utils import insert_from_jsonl
 
-    for coll_type in ["links", "structures", "references"]:
+    for coll_type in ["links", "structures", "references", "files"]:
         if len(entry_collections[coll_type]) > 0:
             logger.info("Skipping data insert: data already present.")
             return

@@ -138,6 +138,32 @@ Currently, the reference server is not flexible enough to use custom response cl
     By default, the reference server will validate the incoming query parameters against these classes.
     If you want to use custom query parameters without redefining the classes mentioned above, you can disable this behaviour by setting the configuration option [`validate_query_parameters`][optimade.server.config.ServerConfig.validate_query_parameters] to false, after which all query parameters will be passed on to the corresponding router method (e.g., database queries).
 
+## Serving the `files` endpoint
+
+The `files` entry type describes individual files (e.g., raw data, structure files, supplementary material) and is populated in exactly the same way as the other entry types: each entry is a document in the configured collection (the collection name defaults to `files`, configurable via [`files_collection`][optimade.server.config.ServerConfig.files_collection]).
+
+A minimal `files` entry needs an `id` plus the attributes defined by [`FileResourceAttributes`](../api_reference/models/files.md#optimade.models.files.FileResourceAttributes). The most important of these is `url`, which **must** point at the actual byte stream of the file:
+
+```json
+{
+  "id": "file_1",
+  "type": "files",
+  "attributes": {
+    "last_modified": "2023-01-15T08:30:00Z",
+    "url": "https://example.org/files/cifs/1000000.cif",
+    "name": "1000000.cif",
+    "media_type": "chemical/x-cif",
+    "size": 4096
+  }
+}
+```
+
+!!! warning "Serving the file contents is your responsibility"
+    The reference server only serves the **metadata** about each file; it does not (yet) serve the file contents themselves.
+    It is up to you, the implementer, to ensure that the `url` of each entry resolves to the actual contents of the file (a byte stream, not a preview or landing page), and that it stays accessible.
+    The `url` can point anywhere the file is hosted — object storage, a static file server, a CDN, a reverse proxy in front of this API etc., as long as a client can retrieve the bytes directly from it.
+
+
 ## Validating your implementation
 
 With the database collections, mappers, aliases and provider configured, you can try running the web server (with e.g., `uvicorn optimade.server.main:app`, if your app is in the same file as the reference server) and validating it as an OPTIMADE API, following the [validation guide](../concepts/validation.md).

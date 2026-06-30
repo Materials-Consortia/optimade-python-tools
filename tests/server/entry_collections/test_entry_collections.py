@@ -4,6 +4,7 @@
 def test_get_attribute_fields():
     """Test get_attribute_fields() method"""
     from optimade.models import (
+        FileResourceAttributes,
         LinksResourceAttributes,
         ReferenceResourceAttributes,
         StructureResourceAttributes,
@@ -19,6 +20,7 @@ def test_get_attribute_fields():
         "links": LinksResourceAttributes,
         "references": ReferenceResourceAttributes,
         "structures": StructureResourceAttributes,
+        "files": FileResourceAttributes,
     }
 
     # Make sure we're hitting all collections
