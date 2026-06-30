@@ -1940,6 +1940,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../models/files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../models/index_metadb/" class="md-nav__link">
         
   
@@ -2851,6 +2879,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../mappers/files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../mappers/links/" class="md-nav__link">
         
   
@@ -2982,6 +3038,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routers/files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -3477,7 +3561,7 @@
 
 
 <h2 id="optimade.server.schemas.ENTRY_INFO_SCHEMAS" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;structures&#39;</span><span class="p">:</span> <span class="n">StructureResource</span><span class="p">,</span> <span class="s1">&#39;references&#39;</span><span class="p">:</span> <span class="n">ReferenceResource</span><span class="p">}</span></code>
+            <code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;structures&#39;</span><span class="p">:</span> <span class="n">StructureResource</span><span class="p">,</span> <span class="s1">&#39;references&#39;</span><span class="p">:</span> <span class="n">ReferenceResource</span><span class="p">,</span> <span class="s1">&#39;files&#39;</span><span class="p">:</span> <span class="n">FileResource</span><span class="p">}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -3621,9 +3705,7 @@ lookup schemas for any config-defined fields.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>optimade/server/schemas.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 56</span>
 <span class="normal"> 57</span>
 <span class="normal"> 58</span>
 <span class="normal"> 59</span>
@@ -3716,7 +3798,9 @@ lookup schemas for any config-defined fields.</p>
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
-<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">retrieve_queryable_properties</span><span class="p">(</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">retrieve_queryable_properties</span><span class="p">(</span>
     <span class="n">schema</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
     <span class="n">queryable_properties</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

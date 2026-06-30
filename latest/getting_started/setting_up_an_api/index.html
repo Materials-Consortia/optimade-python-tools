@@ -534,6 +534,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#serving-the-files-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving the files endpoint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#validating-your-implementation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2059,6 +2070,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api_reference/models/files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api_reference/models/index_metadb/" class="md-nav__link">
         
   
@@ -2888,6 +2927,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api_reference/server/mappers/files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api_reference/server/mappers/links/" class="md-nav__link">
         
   
@@ -3019,6 +3086,34 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api_reference/server/routers/files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
             
               
                 
@@ -3483,6 +3578,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#serving-the-files-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving the files endpoint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#validating-your-implementation" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3644,7 +3750,7 @@ In this case, it may be easier to write a custom endpoint for your entry type, t
 <ol>
 <li>The data collection.</li>
 <li>The resource mapper class used by the collection.</li>
-<li>The <a class="autorefs autorefs-internal" title="ENTRY_INFO_SCHEMAS = {'structures': StructureResource, 'references': ReferenceResource}
+<li>The <a class="autorefs autorefs-internal" title="ENTRY_INFO_SCHEMAS = {'structures': StructureResource, 'references': ReferenceResource, 'files': FileResource}
 
   
       module-attribute
@@ -3695,6 +3801,32 @@ If you want to use custom query parameters without redefining the classes mentio
       class-attribute
       instance-attribute
   " href="../../api_reference/server/config/#optimade.server.config.ServerConfig.validate_query_parameters"><code>validate_query_parameters</code></a> to false, after which all query parameters will be passed on to the corresponding router method (e.g., database queries).</p>
+</div>
+<h2 id="serving-the-files-endpoint">Serving the <code>files</code> endpoint<a class="headerlink" href="#serving-the-files-endpoint" title="Permanent link">&para;</a></h2>
+<p>The <code>files</code> entry type describes individual files (e.g., raw data, structure files, supplementary material) and is populated in exactly the same way as the other entry types: each entry is a document in the configured collection (the collection name defaults to <code>files</code>, configurable via <a class="autorefs autorefs-internal" title="files_collection = 'files'
+
+  
+      class-attribute
+      instance-attribute
+  " href="../../api_reference/server/config/#optimade.server.config.ServerConfig.files_collection"><code>files_collection</code></a>).</p>
+<p>A minimal <code>files</code> entry needs an <code>id</code> plus the attributes defined by <a href="../../api_reference/models/files/#optimade.models.files.FileResourceAttributes"><code>FileResourceAttributes</code></a>. The most important of these is <code>url</code>, which <strong>must</strong> point at the actual byte stream of the file:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file_1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;files&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;last_modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-15T08:30:00Z&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.org/files/cifs/1000000.cif&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1000000.cif&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;media_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemical/x-cif&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Serving the file contents is your responsibility</p>
+<p>The reference server only serves the <strong>metadata</strong> about each file; it does not (yet) serve the file contents themselves.
+It is up to you, the implementer, to ensure that the <code>url</code> of each entry resolves to the actual contents of the file (a byte stream, not a preview or landing page), and that it stays accessible.
+The <code>url</code> can point anywhere the file is hosted — object storage, a static file server, a CDN, a reverse proxy in front of this API etc., as long as a client can retrieve the bytes directly from it.</p>
 </div>
 <h2 id="validating-your-implementation">Validating your implementation<a class="headerlink" href="#validating-your-implementation" title="Permanent link">&para;</a></h2>
 <p>With the database collections, mappers, aliases and provider configured, you can try running the web server (with e.g., <code>uvicorn optimade.server.main:app</code>, if your app is in the same file as the reference server) and validating it as an OPTIMADE API, following the <a href="../../concepts/validation/">validation guide</a>.</p>
