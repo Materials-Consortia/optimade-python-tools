@@ -1,11 +1,55 @@
 [
-    {
-        "url":  "www.example.com/file001.pdb",
-        "name": "file001.pdb",
-        "size": 12536,
-        "media_type": "chemical/x-pdb",
-        "modification_timestamp": {
-            "$date": "2022-08-26T13:09:37.945Z"
-        }
-    }
+  {
+    "_id": {"$oid": "5cfb441f053b174410701ce1"},
+    "id": "file_1",
+    "last_modified": {"$date": "2022-08-26T13:09:37.945Z"},
+    "url": "https://example.org/files/file001.pdb",
+    "url_stable_until": {"$date": "9999-12-31T00:00:00.000Z"},
+    "name": "file001.pdb",
+    "size": 12536,
+    "media_type": "chemical/x-pdb",
+    "version": "1",
+    "modification_timestamp": {"$date": "2022-08-26T13:09:37.945Z"},
+    "description": "An example PDB file",
+    "checksums": {"md5": "d3b07384d113edec49eaa6238ad5ff00"},
+    "atime": {"$date": "2022-08-26T13:09:37.945Z"},
+    "ctime": {"$date": "2022-08-26T13:09:37.945Z"},
+    "mtime": {"$date": "2022-08-26T13:09:37.945Z"}
+  },
+  {
+    "_id": {"$oid": "5cfb441f053b174410701ce2"},
+    "id": "file_2",
+    "last_modified": {"$date": "2023-01-15T08:30:00.000Z"},
+    "url": "https://example.org/files/cifs/1000000.cif",
+    "url_stable_until": null,
+    "name": "1000000.cif",
+    "size": 4096,
+    "media_type": "chemical/x-cif",
+    "version": null,
+    "modification_timestamp": {"$date": "2023-01-15T08:30:00.000Z"},
+    "description": "An example CIF file",
+    "checksums": {
+      "sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+    },
+    "atime": null,
+    "ctime": null,
+    "mtime": {"$date": "2023-01-15T08:30:00.000Z"}
+  },
+  {
+    "_id": {"$oid": "5cfb441f053b174410701ce3"},
+    "id": "file_3",
+    "last_modified": {"$date": "2023-06-01T00:00:00.000Z"},
+    "url": "https://example.org/files/poscar/POSCAR",
+    "url_stable_until": null,
+    "name": "POSCAR",
+    "size": null,
+    "media_type": null,
+    "version": null,
+    "modification_timestamp": null,
+    "description": null,
+    "checksums": null,
+    "atime": null,
+    "ctime": null,
+    "mtime": null
+  }
 ]
