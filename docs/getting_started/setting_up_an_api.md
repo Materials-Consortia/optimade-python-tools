@@ -142,7 +142,7 @@ Currently, the reference server is not flexible enough to use custom response cl
 
 The `files` entry type describes individual files (e.g., raw data, structure files, supplementary material) and is populated in exactly the same way as the other entry types: each entry is a document in the configured collection (the collection name defaults to `files`, configurable via [`files_collection`][optimade.server.config.ServerConfig.files_collection]).
 
-A minimal `files` entry needs an `id` plus the attributes defined by [`FileResourceAttributes`][optimade.models.files.FileResourceAttributes]. The most important of these is `url`, which **must** point at the actual byte stream of the file:
+A minimal `files` entry needs an `id` plus the attributes defined by [`FileResourceAttributes`](../api_reference/models/files.md#optimade.models.files.FileResourceAttributes). The most important of these is `url`, which **must** point at the actual byte stream of the file:
 
 ```json
 {
