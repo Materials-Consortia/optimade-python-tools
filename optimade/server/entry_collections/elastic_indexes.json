@@ -181,7 +181,7 @@
           "type": "integer"
         },
         "media_type": {
-          "type": "str"
+          "type": "keyword"
         },
         "version": {
           "type": "keyword"
@@ -196,7 +196,7 @@
           "type": "keyword"
         },
         "description": {
-          "type": "integer"
+          "type": "keyword"
         },
         "atime": {
           "type": "date"
