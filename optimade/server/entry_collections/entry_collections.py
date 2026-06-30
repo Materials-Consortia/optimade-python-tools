@@ -562,4 +562,10 @@ def create_entry_collections(config: ServerConfig):
             resource_mapper=StructureMapper(config),
             config=config,
         ),
+        "files": create_collection(
+            name=config.files_collection,
+            resource_cls=StructureResource,
+            resource_mapper=StructureMapper(config),
+            config=config,
+        ),
     }
