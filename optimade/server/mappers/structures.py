@@ -9,6 +9,7 @@ class StructureMapper(BaseResourceMapper):
         ("elements", "nelements"),
         ("elements_ratios", "nelements"),
         ("cartesian_site_positions", "nsites"),
+        ("fractional_site_positions", "nsites"),
         ("species_at_sites", "nsites"),
     )
     ENTRY_RESOURCE_CLASS = StructureResource
