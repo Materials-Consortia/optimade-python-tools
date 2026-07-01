@@ -288,6 +288,23 @@ def create_app(
             compresslevel=config.gzip.compresslevel,
         )
 
+        # Mount static files
+    if config.static_files.enabled and config.static_files.directory:
+        static_dir = config.static_files.directory
+        if (
+            static_dir.exists()
+            and static_dir.is_dir()
+            and os.access(static_dir, os.R_OK)
+        ):
+            # Import here to avoid circular imports if needed
+            from fastapi.staticfiles import StaticFiles
+
+            app.mount(
+                config.static_files.route,
+                StaticFiles(directory=str(static_dir)),
+                name="static",
+            )
+
     # Add exception handlers
     for exception, handler in OPTIMADE_EXCEPTIONS:
         app.add_exception_handler(exception, handler)

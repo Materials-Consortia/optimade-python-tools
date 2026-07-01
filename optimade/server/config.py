@@ -165,6 +165,45 @@ class GZipConfig(BaseModel):
     ] = 3
 
 
+class StaticFilesConfig(BaseModel):
+    """Configuration for serving static files."""
+
+    enabled: Annotated[
+        bool,
+        Field(description="Enable serving static files from a directory."),
+    ] = False
+
+    directory: Annotated[
+        Path | None,
+        Field(
+            description="Absolute path to the directory containing static files to serve.",
+            examples=["/path/to/static"],
+        ),
+    ] = None
+
+    route: Annotated[
+        str,
+        Field(
+            description="URL route prefix for serving static files (e.g., '/static').",
+            examples=["/static", "/assets"],
+        ),
+    ] = "/static"
+
+    @field_validator("directory")
+    @classmethod
+    def validate_directory(cls, value: Path | None) -> Path | None:
+        """Validate that the directory exists and is accessible."""
+        if value is not None:
+            path = Path(value)
+            if not path.exists():
+                raise ValueError(f"Static files directory does not exist: {path}")
+            if not path.is_dir():
+                raise ValueError(f"Static files path is not a directory: {path}")
+            if not os.access(path, os.R_OK):
+                raise ValueError(f"Static files directory is not readable: {path}")
+        return value
+
+
 class ServerConfig(BaseSettings):
     """This class stores server config parameters in a way that
     can be easily extended for new config file types.
@@ -224,6 +263,11 @@ class ServerConfig(BaseSettings):
         GZipConfig,
         Field(description="Configuration options for GZip compression."),
     ] = GZipConfig()
+
+    static_files: Annotated[
+        StaticFilesConfig,
+        Field(description="Configuration options for serving static files."),
+    ] = StaticFilesConfig()
 
     use_real_mongo: Annotated[
         bool | None,
