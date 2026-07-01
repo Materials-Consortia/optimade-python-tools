@@ -11,3 +11,26 @@ Simply add a comment under an issue if you are interested in tackling it!
 Recommendations for setting up a development environment for this package can be found in the [Installation instructions](https://www.optimade.org/optimade-python-tools/INSTALL/#full-development-installation).
 
 More broadly, if you would like to ask questions or contact the consortium about creating an OPTIMADE implementation for a new database, then please read the relevant "get involved" section on the [OPTIMADE website](https://www.optimade.org/#get-involved).
+
+## Setup a testing environment
+
+Make sure you have submodules checked out after cloning:
+```bash
+git submodule update --init --recursive
+```
+
+Setup the python environment:
+```bash
+uv sync -p 3.12 --all-groups --all-extra
+source .venv/bin/activate
+```
+
+Initialize aiida:
+```bash
+verdi presto
+```
+
+Run the test suite:
+```bash
+pytest
+```
