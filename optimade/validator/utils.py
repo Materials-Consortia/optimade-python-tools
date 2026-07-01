@@ -332,71 +332,70 @@ def test_case(test_fn: Callable[..., tuple[Any, str]]):
             result = exc
             traceback = tb.format_exc()
 
-        finally:
-            # This catches the case of the Client throwing a SystemExit if the server
-            # did not respond, the case of the validator "fail-fast"'ing and throwing
-            # a SystemExit below, and the case of the user interrupting the process manually
-            if isinstance(result, (SystemExit, KeyboardInterrupt)):
-                raise result
+        # This catches the case of the Client throwing a SystemExit if the server
+        # did not respond, the case of the validator "fail-fast"'ing and throwing
+        # a SystemExit below, and the case of the user interrupting the process manually
+        if isinstance(result, (SystemExit, KeyboardInterrupt)):
+            raise result
 
-            display_request = None
-            try:
-                display_request = validator.client.last_request
-            except AttributeError:
-                pass
-            if display_request is None:
-                display_request = validator.base_url
-                if request is not None:
-                    display_request += "/" + request
+        display_request = None
+        try:
+            display_request = validator.client.last_request
+        except AttributeError:
+            pass
+        if display_request is None:
+            display_request = validator.base_url
+            if request is not None:
+                display_request += "/" + request
 
-            request = display_request
+        request = display_request
 
-            # If the result was None, return it here and ignore statuses
-            if result is None:
-                return result, msg
-            display_request = requests.utils.requote_uri(request.replace("\n", ""))  # type: ignore[union-attr]
-
-            if not isinstance(result, Exception):
-                if not multistage:
-                    success_type = "optional" if optional else None
-                    validator.results.add_success(
-                        f"{display_request} - {msg}", success_type
-                    )
-            else:
-                message = msg.split("\n")
-                if validator.verbosity > 1:
-                    # ValidationErrors from pydantic already include very detailed errors
-                    # that get duplicated in the traceback
-                    if not isinstance(result, ValidationError):
-                        message += traceback.split("\n")
-
-                failure_type: str | None = None
-                if isinstance(result, InternalError):
-                    summary = f"{display_request} - {test_fn.__name__} - failed with internal error"
-                    failure_type = "internal"
-                else:
-                    summary = (
-                        f"{display_request} - {test_fn.__name__} - failed with error"
-                    )
-                    failure_type = "optional" if optional else None
-
-                validator.results.add_failure(
-                    summary, "\n".join(message), failure_type=failure_type
-                )
-
-                # set failure result to None as this is expected by other functions
-                result = None
-
-                if validator.fail_fast and not optional:
-                    validator.print_summary()
-                    raise SystemExit
-
-            # Reset the client request so that it can be properly
-            # displayed if the next request fails
-            if not multistage:
-                validator.client.last_request = None
-
+        # If the result was None, return it here and ignore statuses
+        if result is None:
             return result, msg
+        display_request = requests.utils.requote_uri(request.replace("\n", ""))  # type: ignore[union-attr]
+
+        if not isinstance(result, Exception):
+            if not multistage:
+                success_type = "optional" if optional else None
+                validator.results.add_success(
+                    f"{display_request} - {msg}", success_type
+                )
+        else:
+            message = msg.split("\n")
+            if validator.verbosity > 1:
+                # ValidationErrors from pydantic already include very detailed errors
+                # that get duplicated in the traceback
+                if not isinstance(result, ValidationError):
+                    message += traceback.split("\n")
+
+            failure_type: str | None = None
+            if isinstance(result, InternalError):
+                summary = f"{display_request} - {test_fn.__name__} - failed with internal error"
+                failure_type = "internal"
+            else:
+                summary = (
+                    f"{display_request} - {test_fn.__name__} - failed with error"
+                )
+                failure_type = "optional" if optional else None
+
+            validator.results.add_failure(
+                summary, "\n".join(message), failure_type=failure_type
+            )
+
+            # set failure result to None as this is expected by other functions
+            result = None
+
+            if validator.fail_fast and not optional:
+                validator.print_summary()
+                raise SystemExit
+
+        # Reset the client request so that it can be properly
+        # displayed if the next request fails
+        if not multistage:
+            validator.client.last_request = None
+
+        return result, msg
 
     return wrapper
 
