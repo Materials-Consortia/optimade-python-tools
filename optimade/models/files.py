@@ -34,7 +34,7 @@ class FileResourceAttributes(EntryResourceAttributes):
     )
 
     url_stable_until: datetime | None = OptimadeField(
-        ...,
+        None,
         description="""Point in time until which the URL in `url` is guaranteed to stay stable.
 - **Type**: timestamp
 - **Requirements/Conventions**:
@@ -65,7 +65,7 @@ class FileResourceAttributes(EntryResourceAttributes):
     )
 
     size: int | None = OptimadeField(
-        ...,
+        None,
         description="""Size of a file in bytes.
 - **Type**: integer
 - **Requirements/Conventions**:
@@ -80,7 +80,7 @@ class FileResourceAttributes(EntryResourceAttributes):
     )
 
     media_type: str | None = OptimadeField(
-        ...,
+        None,
         description="""Media type identifier (also known as MIME type), for a file as per `RFC 6838 Media Type Specifications and Registration Procedures <https://datatracker.ietf.org/doc/html/rfc6838>`__.
 - **Type**: string
 - **Requirements/Conventions**:
@@ -109,7 +109,7 @@ class FileResourceAttributes(EntryResourceAttributes):
     )
 
     modification_timestamp: datetime | None = OptimadeField(
-        ...,
+        None,
         description="""Timestamp of the last modification of file contents.
   A modification is understood as an addition, change or deletion of one or more bytes, resulting in file contents different from the previous.
 - **Type**: timestamp
@@ -123,7 +123,7 @@ class FileResourceAttributes(EntryResourceAttributes):
     )
 
     description: str | None = OptimadeField(
-        ...,
+        None,
         description="""Free-form description of a file.
 - **Type**: string
 - **Requirements/Conventions**:
@@ -139,7 +139,7 @@ class FileResourceAttributes(EntryResourceAttributes):
     )
 
     checksums: dict[str, str] | None = OptimadeField(
-        ...,
+        None,
         description="""Dictionary providing checksums of file contents.
 * **Type**: dictionary with keys identifying checksum functions and values (strings) giving the actual checksums
 * **Requirements/Conventions**:
@@ -154,7 +154,7 @@ class FileResourceAttributes(EntryResourceAttributes):
     )
 
     atime: datetime | None = OptimadeField(
-        ...,
+        None,
         description="""Time of last access of a file as per POSIX standard.
 - **Type**: timestamp
 - **Requirements/Conventions**:
@@ -166,7 +166,7 @@ class FileResourceAttributes(EntryResourceAttributes):
     )
 
     ctime: datetime | None = OptimadeField(
-        ...,
+        None,
         description="""Time of last status change of a file as per POSIX standard.
 - **Type**: timestamp
 - **Requirements/Conventions**:
@@ -178,7 +178,7 @@ class FileResourceAttributes(EntryResourceAttributes):
     )
 
     mtime: datetime | None = OptimadeField(
-        ...,
+        None,
         description=""" Time of last modification of a file as per POSIX standard.
 - **Type**: timestamp
 - **Requirements/Conventions**:
