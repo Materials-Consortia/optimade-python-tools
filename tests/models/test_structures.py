@@ -210,6 +210,20 @@ deformities = (
         {"space_group_symbol_hermann_mauguin": "P1"},
         "String should match pattern",
     ),
+    (
+        {"fractional_site_positions": [[0.0, 0.0, 0.0], [0.5, 0.5, 0.0]]},
+        "nsites (value: 3) MUST equal length of fractional_site_positions (value: 2)",
+    ),
+    (
+        {
+            "fractional_site_positions": [
+                [0.0, 0.0, 0.0, 0.0],
+                [0.5, 0.5, 0.0],
+                [0.0, 0.0, 0.5],
+            ]
+        },
+        "List should have at most 3 items",
+    ),
 )
 
 

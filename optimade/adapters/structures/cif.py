@@ -93,16 +93,14 @@ def get_cif(
 
         # Since some structure viewers are having issues with cartesian coordinates,
         # we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.
-        if not hasattr(attributes, "fractional_site_positions"):
+        if not getattr(attributes, "fractional_site_positions", None):
             attributes.fractional_site_positions = fractional_coordinates(
                 cell=attributes.lattice_vectors,  # type:ignore[arg-type]
                 cartesian_positions=attributes.cartesian_site_positions,  # type:ignore[arg-type]
             )
 
-    # NOTE: This is otherwise a bit ahead of its time, since this OPTIMADE property is part of an open PR.
-    # See https://github.com/Materials-Consortia/OPTIMADE/pull/206
     coord_type = (
-        "fract" if hasattr(attributes, "fractional_site_positions") else "Cartn"
+        "fract" if getattr(attributes, "fractional_site_positions", None) else "Cartn"
     )
 
     cif += (

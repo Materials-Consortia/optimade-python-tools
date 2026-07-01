@@ -124,6 +124,7 @@ def from_ase_atoms(atoms: Atoms) -> StructureResourceAttributes:
 
     attributes = {}
     attributes["cartesian_site_positions"] = atoms.positions.tolist()
+    attributes["fractional_site_positions"] = atoms.get_scaled_positions().tolist()
     attributes["lattice_vectors"] = atoms.cell.tolist()
     attributes["species_at_sites"] = atoms.get_chemical_symbols()
     attributes["elements_ratios"] = elements_ratios_from_species_at_sites(

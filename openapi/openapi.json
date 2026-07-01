@@ -5416,6 +5416,28 @@
             "x-optimade-support": "should",
             "x-optimade-unit": "\u00c5"
           },
+          "fractional_site_positions": {
+            "anyOf": [
+              {
+                "items": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array",
+                  "maxItems": 3,
+                  "minItems": 3
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fractional Site Positions",
+            "description": "Fractional coordinates (positions) of each site in the structure.\n  A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the :property:`species_at_sites` property, and the species themselves are described in the :property:`species` property.\n  Site coordinates MAY be given as `cartesian_site_positions`_, `fractional_site_positions`_, or both.\n  When symmetry operations given in `space_group_symmetry_operations_xyz`_ are applied, they MUST be applied to coordinates given in the `fractional_site_positions`_ array.\n\n- **Type**: list of list of floats\n\n- **Requirements/Conventions**:\n  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.\n  - **Query**: Support for queries on this property is OPTIONAL.\n    If supported, filters MAY support only a subset of comparison operators.\n  - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three fractional coordinates of a site expressed as float values in the fractions of the unit cell vectors given by the `lattice_vectors`_ property.\n  - An entry MAY have multiple sites at the same site position (for a relevant use of this, see e.g., the property `assemblies`_).\n  - **Note**: Since both `cartesian_site_positions`_ and the `fractional_site_positions`_ always describe the same sites, they MUST always have the same number of elements, equal to the number of elements in the `species_at_sites`_ array.\n\n- **Examples**:\n\n  - `[[0,0,0],[0,0,0.2]]` indicates a structure with two sites, one sitting at the origin and one along the third unit cell axis (*c*-axis), 1/5-th (0.2) of the vector *c* in the direction of the vector *c* from the origin.",
+            "x-optimade-queryable": "optional",
+            "x-optimade-support": "should"
+          },
           "nsites": {
             "anyOf": [
               {

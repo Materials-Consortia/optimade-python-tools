@@ -277,7 +277,9 @@ The possible reasons for the values not to sum to one are the same as already sp
 CORRELATED_STRUCTURE_FIELDS = (
     {"dimension_types", "nperiodic_dimensions"},
     {"cartesian_site_positions", "species_at_sites"},
+    {"fractional_site_positions", "species_at_sites"},
     {"nsites", "cartesian_site_positions"},
+    {"nsites", "fractional_site_positions"},
     {"species_at_sites", "species"},
 )
 
@@ -738,6 +740,32 @@ A site is usually used to describe positions of atoms; what atoms can be encount
         ),
     ] = None
 
+    fractional_site_positions: Annotated[
+        list[Vector3D] | None,
+        OptimadeField(
+            description="""Fractional coordinates (positions) of each site in the structure.
+  A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the :property:`species_at_sites` property, and the species themselves are described in the :property:`species` property.
+  Site coordinates MAY be given as `cartesian_site_positions`_, `fractional_site_positions`_, or both.
+  When symmetry operations given in `space_group_symmetry_operations_xyz`_ are applied, they MUST be applied to coordinates given in the `fractional_site_positions`_ array.
+
+- **Type**: list of list of floats
+
+- **Requirements/Conventions**:
+  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.
+  - **Query**: Support for queries on this property is OPTIONAL.
+    If supported, filters MAY support only a subset of comparison operators.
+  - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three fractional coordinates of a site expressed as float values in the fractions of the unit cell vectors given by the `lattice_vectors`_ property.
+  - An entry MAY have multiple sites at the same site position (for a relevant use of this, see e.g., the property `assemblies`_).
+  - **Note**: Since both `cartesian_site_positions`_ and the `fractional_site_positions`_ always describe the same sites, they MUST always have the same number of elements, equal to the number of elements in the `species_at_sites`_ array.
+
+- **Examples**:
+
+  - `[[0,0,0],[0,0,0.2]]` indicates a structure with two sites, one sitting at the origin and one along the third unit cell axis (*c*-axis), 1/5-th (0.2) of the vector *c* in the direction of the vector *c* from the origin.""",
+            support=SupportLevel.SHOULD,
+            queryable=SupportLevel.OPTIONAL,
+        ),
+    ] = None
+
     nsites: Annotated[
         int | None,
         OptimadeField(
@@ -1178,6 +1206,15 @@ The properties of the species are found in the property `species`.
                 f"nsites (value: {self.nsites}) MUST equal length of "
                 "cartesian_site_positions (value: "
                 f"{len(self.cartesian_site_positions)})"
+            )
+
+        if self.fractional_site_positions and self.nsites != len(
+            self.fractional_site_positions
+        ):
+            raise ValueError(
+                f"nsites (value: {self.nsites}) MUST equal length of "
+                "fractional_site_positions (value: "
+                f"{len(self.fractional_site_positions)})"
             )
         return self
 

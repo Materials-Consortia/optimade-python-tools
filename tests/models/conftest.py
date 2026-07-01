@@ -98,7 +98,12 @@ def good_structure() -> dict:
             "dimension_types": [1, 1, 1],
             "nperiodic_dimensions": 3,
             "lattice_vectors": [[4.0, 0.0, 0.0], [0.0, 4.0, 0.0], [0.0, 1.0, 4.0]],
-            "cartesian_site_positions": [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+            "cartesian_site_positions": [[0, 0, 0], [2.0, 2.0, 0.0], [0.0, 0.5, 2.0]],
+            "fractional_site_positions": [
+                [0.0, 0.0, 0.0],
+                [0.5, 0.5, 0.0],
+                [0.0, 0.0, 0.5],
+            ],
             "species": [
                 {"name": "Si", "chemical_symbols": ["Si"], "concentration": [1.0]},
                 {"name": "Ge", "chemical_symbols": ["Ge"], "concentration": [1.0]},
