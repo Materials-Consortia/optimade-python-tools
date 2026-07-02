@@ -296,7 +296,6 @@ def create_app(
             and static_dir.is_dir()
             and os.access(static_dir, os.R_OK)
         ):
-            # Import here to avoid circular imports if needed
             from fastapi.staticfiles import StaticFiles
 
             app.mount(
