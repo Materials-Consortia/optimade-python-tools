@@ -196,6 +196,7 @@ def compare_lossy_conversion(
         "space_group_symbol_hermann_mauguin",
         "space_group_symbol_hermann_mauguin_extended",
         "space_group_it_number",
+        "optimization_type",
     )
     array_keys = ("cartesian_site_positions", "lattice_vectors")
 
