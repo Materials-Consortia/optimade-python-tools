@@ -190,7 +190,8 @@ def compare_lossy_conversion(
         "attached",
         "immutable_id",
         "species",
-        "fractional_site_positions",
+        "site_coordinate_span",
+        "site_coordinate_span_description",
         "space_group_symmetry_operations_xyz",
         "space_group_symbol_hall",
         "space_group_symbol_hermann_mauguin",
@@ -198,10 +199,14 @@ def compare_lossy_conversion(
         "space_group_it_number",
         "optimization_type",
     )
-    array_keys = ("cartesian_site_positions", "lattice_vectors")
+    array_keys = (
+        "cartesian_site_positions",
+        "fractional_site_positions",
+        "lattice_vectors",
+    )
 
     for k in reconverted_structure_attributes:
-        if k not in lossy_keys:
+        if k not in lossy_keys and k in structure_attributes:
             if k in array_keys and np is not None:
                 np.testing.assert_almost_equal(
                     reconverted_structure_attributes[k], structure_attributes[k]

@@ -744,14 +744,14 @@ A site is usually used to describe positions of atoms; what atoms can be encount
         list[Vector3D] | None,
         OptimadeField(
             description="""Fractional coordinates (positions) of each site in the structure.
-  A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the :property:`species_at_sites` property, and the species themselves are described in the :property:`species` property.
+  A site is usually used to describe positions of atoms; what atoms can be encountered at a given site is conveyed by the `species_at_sites` property, and the species themselves are described in the `species` property.
   Site coordinates MAY be given as `cartesian_site_positions`_, `fractional_site_positions`_, or both.
   When symmetry operations given in `space_group_symmetry_operations_xyz`_ are applied, they MUST be applied to coordinates given in the `fractional_site_positions`_ array.
 
 - **Type**: list of list of floats
 
 - **Requirements/Conventions**:
-  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be :val:`null`.
+  - **Support**: SHOULD be supported by all implementations, i.e., SHOULD NOT be `null`.
   - **Query**: Support for queries on this property is OPTIONAL.
     If supported, filters MAY support only a subset of comparison operators.
   - It MUST be a list of length equal to the number of sites in the structure, where every element is a list of the three fractional coordinates of a site expressed as float values in the fractions of the unit cell vectors given by the `lattice_vectors`_ property.
@@ -761,6 +761,61 @@ A site is usually used to describe positions of atoms; what atoms can be encount
 - **Examples**:
 
   - `[[0,0,0],[0,0,0.2]]` indicates a structure with two sites, one sitting at the origin and one along the third unit cell axis (*c*-axis), 1/5-th (0.2) of the vector *c* in the direction of the vector *c* from the origin.""",
+            support=SupportLevel.SHOULD,
+            queryable=SupportLevel.OPTIONAL,
+        ),
+    ] = None
+
+    site_coordinate_span: Annotated[
+        str | None,
+        OptimadeField(
+            description="""Indicates the extent of the material (crystal) described in the response.
+  In particular, properties `cartesian_site_positions` and `fractional_site_positions` MUST contain all sites *belonging* to the described extent.
+- **Type**: string
+- **Requirements/conventions**:
+
+  - **Support**: MUST be supported by all implementations if coordinates in `fractional_site_positions` are returned.
+    It SHOULD be supported if coordinates in `cartesian_site_positions` are returned.
+  - **Query**: Support for queries on this property is OPTIONAL.
+
+  - The value of this property MUST be one of the following:
+
+    - `"fundamental_domain"`: means that sites described in the response span a fundamental domain (Vinberg, 1994; European Mathematical Society, 2020) of a periodic system.
+      When a server indicates this span in the response, it MUST provide those sites that enable reconstruction of the whole periodic system by applying symmetry operations from `space_group_symmetry_operations_xyz` property and then applying translations given by `lattice_vectors`.
+      The fundamental domain does not need to be a connected space region.
+    - `"asymmetric_unit"`: all sites are in a simply connected space region that is a fundamental domain, as per IUCr Online Dictionary of Crystallography definition (IUCr, 2017).
+    - `"molecular_fundamental_domain"`: a fundamental domain where all atoms connected by covalent or donor-acceptor coordination bonds are adjacent to each other, placed at a bond distance.
+    - `"molecular_asymmetric_unit"`: an asymmetric unit (a simply connected fundamental domain) where all atoms bound by covalent or donor-acceptor coordination bonds are adjacent to each other, placed at a bond distance.
+    - `"unit_cell"`: a full unit cell of a periodic system (crystal), i.e., any repeating unit chosen by the server defined by the property `lattice_vectors`.
+      For this span, the server MUST provide a set of sites in the response that can be used to reconstruct the whole periodic system (crystal) by simply applying translations from the `lattice_vectors` property to those sites.
+    - `"molecular_unit_cell"`: same as `"unit_cell"`, but in addition places atoms that are bound by covalent or coordination bonds at a bond distance from each other.
+    - `"molecular_entities"`: sets of atoms that are bound by covalent or coordination bonds, as per IUPAC definition of a 'molecular entity'.
+      This set of sites MAY be larger than a fundamental domain.
+    - `"other"`: any other collection of sites that does not fit the enumerated values above.
+    - `null`: if omitted or `null`, the default value of `site_coordinate_span` is `unit_cell`.
+      This is the assumed behavior of all main implementations before the `site_coordinate_span` definition was introduced.
+
+- **Note**: In all cases it is RECOMMENDED that only the minimal set of the sites that is needed to reconstruct the whole material is provided.
+  For example, for the 'unit_cell' span the server SHOULD NOT return sites that can be obtained from other returned sites through the translations given in `lattice_vectors`; only a non-redundant set of sites SHOULD be provided.
+
+- **Bibliographic References**:
+
+  E.B. Vinberg (originator). (1994) Encyclopedia of Mathematics. ISBN [1402006098](https://isbnsearch.org/isbn/1402006098), URL: https://encyclopediaofmath.org/index.php?title=Fundamental_domain&oldid=13590 [accessed 2025-04-30T08:55+03:00].
+
+  European Mathematical Society (2020). Fundamental domain. Encyclopedia of Mathematics. URL: http://encyclopediaofmath.org/index.php?title=Fundamental_domain&oldid=47023 [accessed 2025-04-30T08:53+03:00].
+
+  IUCr (2017). Asymmetric unit. Online Dictionary of Crystallography, URL: https://dictionary.iucr.org/Asymmetric_unit [accessed 2025-04-30T09:01+03:00].""",
+            support=SupportLevel.SHOULD,
+            queryable=SupportLevel.OPTIONAL,
+        ),
+    ] = None
+
+    site_coordinate_span_description: Annotated[
+        str | None,
+        OptimadeField(
+            description="""Human-readable semi-formal characterization of the coordinate span when the `site_coordinate_span` property has value `"other"`.
+- **Type**: string
+- **Example**: `"Two fullerene molecules with a VdW contact."`""",
             support=SupportLevel.SHOULD,
             queryable=SupportLevel.OPTIONAL,
         ),
