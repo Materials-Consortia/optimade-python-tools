@@ -62,6 +62,31 @@ class StructureFeatures(Enum):
     ASSEMBLIES = "assemblies"
 
 
+class SiteCoordinateSpan(Enum):
+    """Enumeration of site_coordinate_span values"""
+
+    FUNDAMENTAL_DOMAIN = "fundamental_domain"
+    ASYMMETRIC_UNIT = "asymmetric_unit"
+    MOLECULAR_FUNDAMENTAL_DOMAIN = "molecular_fundamental_domain"
+    MOLECULAR_ASYMMETRIC_UNIT = "molecular_asymmetric_unit"
+    UNIT_CELL = "unit_cell"
+    MOLECULAR_UNIT_CELL = "molecular_unit_cell"
+    MOLECULAR_ENTITIES = "molecular_entities"
+    OTHER = "other"
+
+
+class OptimizationType(Enum):
+    """Enumeration of optimization_type values"""
+
+    EXPERIMENTAL = "experimental"
+    HYBRID = "hybrid"
+    GLOBAL = "global"
+    LOCAL = "local"
+    NONE = "none"
+    INDETERMINATE = "indeterminate"
+    OTHER = "other"
+
+
 class Species(BaseModel):
     """A list describing the species of the sites of this structure.
 
@@ -767,7 +792,7 @@ A site is usually used to describe positions of atoms; what atoms can be encount
     ] = None
 
     site_coordinate_span: Annotated[
-        str | None,
+        SiteCoordinateSpan | None,
         OptimadeField(
             description="""Indicates the extent of the material (crystal) described in the response.
   In particular, properties `cartesian_site_positions` and `fractional_site_positions` MUST contain all sites *belonging* to the described extent.
@@ -1081,7 +1106,7 @@ The properties of the species are found in the property `species`.
     ]
 
     optimization_type: Annotated[
-        str | None,
+        OptimizationType | None,
         OptimadeField(
             title="Optimization Type",
             description="""A string that classifies the type of optimization that has resulted in the structural data.

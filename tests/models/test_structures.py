@@ -224,6 +224,10 @@ deformities = (
         },
         "List should have at most 3 items",
     ),
+    (
+        {"optimization_type": "not_sure"},
+        "Input should be 'experimental', 'hybrid', 'global', 'local', 'none', 'indeterminate' or 'other'",
+    ),
 )
 
 
