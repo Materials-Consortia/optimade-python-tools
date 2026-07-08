@@ -128,7 +128,7 @@ def get_cif(
     symbol_occurences: dict[str, int] = {}
     for site_number in range(attributes.nsites):  # type: ignore[arg-type]
         species_name = attributes.species_at_sites[site_number]  # type: ignore[index]
-        site = sites[site_number]
+        site = sites[site_number]  # type: ignore[index]
 
         current_species = species[species_name]
 
