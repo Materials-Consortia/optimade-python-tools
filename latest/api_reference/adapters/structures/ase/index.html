@@ -3687,7 +3687,8 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 <span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
-<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">from_ase_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">:</span> <span class="n">Atoms</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StructureResourceAttributes</span><span class="p">:</span>
+<span class="normal">158</span>
+<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">from_ase_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">:</span> <span class="n">Atoms</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StructureResourceAttributes</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an ASE `Atoms` object into an OPTIMADE `StructureResourceAttributes` model.</span>
 
 <span class="sd">    Parameters:</span>
@@ -3705,6 +3706,7 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 
     <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;cartesian_site_positions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;fractional_site_positions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_scaled_positions</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;lattice_vectors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;species_at_sites&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_chemical_symbols</span><span class="p">()</span>
     <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;elements_ratios&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elements_ratios_from_species_at_sites</span><span class="p">(</span>
