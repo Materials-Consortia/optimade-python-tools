@@ -5563,7 +5563,8 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "pattern": "^[a-z\u03b1]$"
                 },
                 "type": "array"
               },

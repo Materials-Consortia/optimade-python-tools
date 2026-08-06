@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Annotated, Literal, Optional
 from pydantic import BaseModel, BeforeValidator, Field, field_validator, model_validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
-from optimade.models.types import ChemicalSymbol, SymmetryOperation
+from optimade.models.types import ChemicalSymbol, SymmetryOperation, WyckoffSymbol
 from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
@@ -1076,7 +1076,7 @@ The properties of the species are found in the property `species`.
     ] = None
 
     wyckoff_positions: Annotated[
-        list[str] | None,
+        list[WyckoffSymbol] | None,
         OptimadeField(
             description="""A list of Wyckoff symbols of sites (where values for sites are specified with the same order of the property `cartesian_site_positions` and/or `fractional_site_positions`).
 
@@ -1400,13 +1400,6 @@ Structures produced by AI models and other techniques that have been reasonably 
                 f"Number of wyckoff_positions (value: {len(self.wyckoff_positions)}) "
                 f"MUST equal number of sites (value: {self.nsites})"
             )
-
-        for wyckoff_position in self.wyckoff_positions:
-            if not re.fullmatch(r"[a-zα]", wyckoff_position):
-                raise ValueError(
-                    "Each entry in wyckoff_positions MUST be a single letter "
-                    f"(a-z or α), but found {wyckoff_position!r}"
-                )
 
         return self
 
