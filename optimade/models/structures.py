@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Annotated, Literal, Optional
 from pydantic import BaseModel, BeforeValidator, Field, field_validator, model_validator
 
 from optimade.models.entries import EntryResource, EntryResourceAttributes
-from optimade.models.types import ChemicalSymbol, SymmetryOperation
+from optimade.models.types import ChemicalSymbol, SymmetryOperation, WyckoffSymbol
 from optimade.models.utils import (
     ANONYMOUS_ELEMENTS,
     CHEMICAL_FORMULA_REGEXP,
@@ -1075,6 +1075,27 @@ The properties of the species are found in the property `species`.
         ),
     ] = None
 
+    wyckoff_positions: Annotated[
+        list[WyckoffSymbol] | None,
+        OptimadeField(
+            description="""A list of Wyckoff symbols of sites (where values for sites are specified with the same order of the property `cartesian_site_positions` and/or `fractional_site_positions`).
+
+- **Type**: list of strings
+
+- **Requirements/Conventions**:
+    - **Support**: OPTIONAL support in implementations, i.e., MAY be `null`.
+    - **Query**: Support for queries on this property is OPTIONAL.
+      If supported, filters MAY support only a subset of comparison operators.
+    - MUST have length equal to the number of sites in the structure (first dimension of the list properties `cartesian_site_positions` and/or `fractional_site_positions`).
+    - If provided, MUST list a single letter (`a`-`z` or `α`) Wyckoff position for each site in the structure according to the International Tables for Crystallography vol. A (IUCr, 2016).
+
+- **Bibliographic References**:
+    IUCr (2016). International Tables for Crystallography vol. A. Space-group Symmetry, Ed. M. I. Aroyo, 6-th edition. Chichester, John Wiley & Sons.""",
+            support=SupportLevel.OPTIONAL,
+            queryable=SupportLevel.OPTIONAL,
+        ),
+    ] = None
+
     structure_features: Annotated[
         list[StructureFeatures],
         OptimadeField(
@@ -1366,6 +1387,19 @@ Structures produced by AI models and other techniques that have been reasonably 
                         f"but {species_at_site} was not found in the list of species "
                         f"names: {all_species_names}"
                     )
+
+        return self
+
+    @model_validator(mode="after")
+    def validate_wyckoff_positions(self) -> "StructureResourceAttributes":
+        if self.wyckoff_positions is None:
+            return self
+
+        if self.nsites and len(self.wyckoff_positions) != self.nsites:
+            raise ValueError(
+                f"Number of wyckoff_positions (value: {len(self.wyckoff_positions)}) "
+                f"MUST equal number of sites (value: {self.nsites})"
+            )
 
         return self
 

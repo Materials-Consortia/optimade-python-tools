@@ -29,7 +29,8 @@
         "group_probabilities": [0.3, 0.5, 0.2]
       }
     ],
-    "structure_features": ["assemblies"]
+    "structure_features": ["assemblies"],
+    "wyckoff_positions": ["a", "a", "b"]
   },
   {
     "task_id": "db/1234567",
@@ -61,7 +62,8 @@
         "group_probabilities": [0.3, 0.5, 0.2]
       }
     ],
-    "structure_features": ["assemblies"]
+    "structure_features": ["assemblies"],
+    "wyckoff_positions": ["a", "b", "b"]
   },
   {
     "task_id": "db/1234567",

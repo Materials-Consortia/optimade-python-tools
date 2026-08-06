@@ -228,6 +228,14 @@ deformities = (
         {"optimization_type": "not_sure"},
         "Input should be 'experimental', 'hybrid', 'global', 'local', 'none', 'indeterminate' or 'other'",
     ),
+    (
+        {"wyckoff_positions": ["1a", "2b", "3c"]},
+        "3 validation errors for StructureResource\nattributes.wyckoff_positions.0\n  String should match pattern '^[a-zα]$'",
+    ),
+    (
+        {"wyckoff_positions": ["a", "b", "C"]},
+        "1 validation error for StructureResource\nattributes.wyckoff_positions.2\n  String should match pattern '^[a-zα]$'",
+    ),
 )
 
 
