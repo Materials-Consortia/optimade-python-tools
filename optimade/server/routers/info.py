@@ -1,4 +1,5 @@
 import functools
+from typing import Any
 
 from fastapi import APIRouter, Request
 from fastapi.exceptions import StarletteHTTPException
@@ -10,6 +11,7 @@ from optimade.server.routers.utils import get_base_url, meta_values
 from optimade.server.schemas import (
     ENTRY_INFO_SCHEMAS,
     ERROR_RESPONSES,
+    retrieve_property_definitions,
     retrieve_queryable_properties,
 )
 
@@ -95,15 +97,20 @@ def get_entry_info(request: Request, entry: str) -> EntryInfoResponse:
             )
 
         schema = ENTRY_INFO_SCHEMAS[entry]
-        queryable_properties = {"id", "type", "attributes"}
-        properties = retrieve_queryable_properties(
-            schema, queryable_properties, entry_type=entry, config=config
-        )
+        properties: dict[str, Any]
+        if config.legacy_info_properties:
+            queryable_properties = {"id", "type", "attributes"}
+            properties = retrieve_queryable_properties(
+                schema, queryable_properties, entry_type=entry, config=config
+            )
+        else:
+            properties = retrieve_property_definitions(schema, entry, config=config)
 
         output_fields_by_format = {"json": list(properties)}
 
         return EntryInfoResource(
             id=entry,
+            type=EntryInfoResource.model_fields["type"].default,
             formats=list(output_fields_by_format),
             description=getattr(schema, "__doc__", "Entry Resources"),
             properties=properties,
