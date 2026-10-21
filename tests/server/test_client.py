@@ -9,6 +9,7 @@ import httpx2 as httpx
 import pytest
 
 from optimade.client.cli import _get
+from optimade.server.config import ServerConfig, SupportedBackend
 
 try:
     from optimade.client import OptimadeClient as OptimadeTestClient
@@ -28,6 +29,8 @@ TEST_URLS = [
     "https://optimade.fly.dev",
 ]
 TEST_URL = TEST_URLS[0]
+
+CONFIG = ServerConfig()
 
 
 @pytest.mark.parametrize(
@@ -203,22 +206,10 @@ def test_client_sort(async_http_client, http_client, use_async):
     assert len(results["structures"][""][TEST_URL]["data"]) > 0
 
 
-@pytest.mark.parametrize("use_async", [True, False])
-def test_client_url_encoding(async_http_client, http_client, use_async):
+def test_client_url_encoding():
     """Check that the query parameters are URL-encoded, so that characters with a
     meaning in URLs (`+`, `&`, `#`) reach the server unchanged."""
-    cli = OptimadeClient(
-        base_urls=[TEST_URL],
-        use_async=use_async,
-        http_client=async_http_client if use_async else http_client,
-    )
-    # `+` would be decoded as a space: "gga_gga u_r2scan"
-    filter = "_exmpl_stability.gga_gga+u_r2scan < 0"
-    results = cli.get(filter)
-    assert [d["id"] for d in results["structures"][filter][TEST_URL]["data"]] == [
-        "mpf_3819"
-    ]
-
+    cli = OptimadeClient(base_urls=[TEST_URL])
     url = cli._build_url(
         TEST_URL,
         filter='chemical_formula_descriptive = "A+B&C#D"',
@@ -228,6 +219,28 @@ def test_client_url_encoding(async_http_client, http_client, use_async):
         "filter": ['chemical_formula_descriptive = "A+B&C#D"'],
         "response_fields": ["id,_exmpl_stability.gga_gga+u_r2scan"],
     }
+
+
+@pytest.mark.xfail(
+    CONFIG.database_backend == SupportedBackend.ELASTIC,
+    reason="Elasticsearch implementation does not support nested provider fields.",
+)
+@pytest.mark.parametrize("use_async", [True, False])
+def test_client_awkward_nested_provider_field(
+    async_http_client, http_client, use_async
+):
+    """Check that the client can filter on a nested provider field with a `+`,
+    which would be decoded as a space if not URL-encoded."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
+    )
+    filter = "_exmpl_stability.gga_gga+u_r2scan < 0"
+    results = cli.get(filter)
+    assert [d["id"] for d in results["structures"][filter][TEST_URL]["data"]] == [
+        "mpf_3819"
+    ]
 
 
 @pytest.mark.parametrize("use_async", [True, False])
