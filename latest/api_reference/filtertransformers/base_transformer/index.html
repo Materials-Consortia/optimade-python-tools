@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4651,7 +4651,7 @@ various field-related configuration.</p>
 <span class="normal">361</span>
 <span class="normal">362</span>
 <span class="normal">363</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseTransformer</span><span class="p">(</span><span class="n">Transformer</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic filter transformer that handles various</span>
+<span class="w">    </span><span class="sd">"""Generic filter transformer that handles various</span>
 <span class="sd">    parts of the grammar in a backend non-specific way.</span>
 
 <span class="sd">    Attributes:</span>
@@ -4661,44 +4661,44 @@ various field-related configuration.</p>
 <span class="sd">            expected fields and acts as a container for</span>
 <span class="sd">            various field-related configuration.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">operator_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;!=&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;=&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"&lt;"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"&lt;="</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"&gt;"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"&gt;="</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"!="</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"="</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="c1"># map from operators to their syntactic (as opposed to logical) inverse to handle</span>
-    <span class="c1"># equivalence between cases like &quot;A &gt; 3&quot; and &quot;3 &lt; A&quot;.</span>
+    <span class="c1"># equivalence between cases like "A &gt; 3" and "3 &lt; A".</span>
     <span class="n">_reversed_operator_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;=&quot;</span><span class="p">:</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;!=&quot;</span><span class="p">:</span> <span class="s2">&quot;!=&quot;</span><span class="p">,</span>
+        <span class="s2">"&gt;"</span><span class="p">:</span> <span class="s2">"&lt;"</span><span class="p">,</span>
+        <span class="s2">"&gt;="</span><span class="p">:</span> <span class="s2">"&lt;="</span><span class="p">,</span>
+        <span class="s2">"&lt;"</span><span class="p">:</span> <span class="s2">"&gt;"</span><span class="p">,</span>
+        <span class="s2">"&lt;="</span><span class="p">:</span> <span class="s2">"&gt;="</span><span class="p">,</span>
+        <span class="s2">"="</span><span class="p">:</span> <span class="s2">"="</span><span class="p">,</span>
+        <span class="s2">"!="</span><span class="p">:</span> <span class="s2">"!="</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="n">_quantity_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">Quantity</span>
     <span class="n">_quantities</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
+<span class="w">        </span><span class="sd">"""Initialise the transformer object, optionally loading in a</span>
 <span class="sd">        resource mapper for use when post-processing.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="o">=</span> <span class="n">mapper</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">backend_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A mapping between backend field names (aliases) and the corresponding</span>
+<span class="w">        </span><span class="sd">"""A mapping between backend field names (aliases) and the corresponding</span>
 <span class="sd">        [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="n">quantity</span><span class="o">.</span><span class="n">backend_field</span><span class="p">:</span> <span class="n">quantity</span>  <span class="c1"># type: ignore[misc]</span>
             <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">quantity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantities</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
@@ -4706,9 +4706,9 @@ various field-related configuration.</p>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">quantities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A mapping from the OPTIMADE field name to the corresponding</span>
+<span class="w">        </span><span class="sd">"""A mapping from the OPTIMADE field name to the corresponding</span>
 <span class="sd">        [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantities</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_quantities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_quantities</span><span class="p">()</span>
 
@@ -4719,11 +4719,11 @@ various field-related configuration.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_quantities</span> <span class="o">=</span> <span class="n">quantities</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_quantities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a dictionary of field names mapped to</span>
+<span class="w">        </span><span class="sd">"""Creates a dictionary of field names mapped to</span>
 <span class="sd">        [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] objects from the</span>
 <span class="sd">        fields registered by the mapper.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">quantities</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -4752,60 +4752,60 @@ various field-related configuration.</p>
         <span class="k">return</span> <span class="n">quantities</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Post-process the query according to the rules defined for</span>
+<span class="w">        </span><span class="sd">"""Post-process the query according to the rules defined for</span>
 <span class="sd">        the backend, returning the backend-specific query.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">query</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the query using the Lark `Transformer` then run the</span>
+<span class="w">        </span><span class="sd">"""Transform the query using the Lark `Transformer` then run the</span>
 <span class="sd">        backend-specific post-processing methods.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">meta</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The default rule to call when no definition is found for a particular construct.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The default rule to call when no definition is found for a particular construct."""</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Calling __default__, i.e., unknown grammar concept. data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">, children: </span><span class="si">{</span><span class="n">children</span><span class="si">}</span><span class="s2">, meta: </span><span class="si">{</span><span class="n">meta</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Calling __default__, i.e., unknown grammar concept. data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">, children: </span><span class="si">{</span><span class="n">children</span><span class="si">}</span><span class="s2">, meta: </span><span class="si">{</span><span class="n">meta</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;filter: expression*&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""filter: expression*"""</span>
         <span class="k">return</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">arg</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;constant: string | number&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""constant: string | number"""</span>
         <span class="c1"># Note: Return as is.</span>
         <span class="k">return</span> <span class="n">value</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;value: string | number | property&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""value: string | number | property"""</span>
         <span class="c1"># Note: Return as is.</span>
         <span class="k">return</span> <span class="n">value</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">non_string_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;non_string_value: number | property&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""non_string_value: number | property"""</span>
         <span class="c1"># Note: Return as is.</span>
         <span class="k">return</span> <span class="n">value</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">not_implemented_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;not_implemented_string: value</span>
+<span class="w">        </span><span class="sd">"""not_implemented_string: value</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            NotImplementedError: For further information, see Materials-Consortia/OPTIMADE issue 157:</span>
 <span class="sd">                https://github.com/Materials-Consortia/OPTIMADE/issues/157</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Comparing strings is not yet implemented.&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Comparing strings is not yet implemented."</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;property: IDENTIFIER ( &quot;.&quot; IDENTIFIER )*</span>
+<span class="w">        </span><span class="sd">"""property: IDENTIFIER ( "." IDENTIFIER )*</span>
 
 <span class="sd">        If this transformer has an associated mapper, the property</span>
 <span class="sd">        will be compared to possible relationship entry types and</span>
@@ -4817,7 +4817,7 @@ various field-related configuration.</p>
 <span class="sd">            BadRequest: If the property does not match any</span>
 <span class="sd">                of the above rules.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">quantity_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
         <span class="c1"># If the quantity name matches an entry type (indicating a relationship filter)</span>
@@ -4833,20 +4833,20 @@ various field-related configuration.</p>
             <span class="c1"># If the prefix does not match another known provider, also emit a warning</span>
             <span class="c1"># If the prefix does match a known provider, do not return a warning.</span>
             <span class="c1"># Following [Handling unknown property names](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#handling-unknown-property-names)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="ow">and</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
-                <span class="n">prefix</span> <span class="o">=</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="ow">and</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">):</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span>
                         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                             <span class="n">UnknownProviderProperty</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;Field </span><span class="si">{</span><span class="n">quantity_name</span><span class="si">!r}</span><span class="s2"> has an unrecognised prefix: this property has been treated as UNKNOWN.&quot;</span>
+                                <span class="sa">f</span><span class="s2">"Field </span><span class="si">{</span><span class="n">quantity_name</span><span class="si">!r}</span><span class="s2"> has an unrecognised prefix: this property has been treated as UNKNOWN."</span>
                             <span class="p">)</span>
                         <span class="p">)</span>
 
                     <span class="k">return</span> <span class="n">quantity_name</span>
 
             <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
-                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">quantity_name</span><span class="si">}</span><span class="s2">&#39; is not a known or searchable quantity&quot;</span>
+                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">quantity_name</span><span class="si">}</span><span class="s2">' is not a known or searchable quantity"</span>
             <span class="p">)</span>
 
         <span class="n">quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantities</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">quantity_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -4857,53 +4857,53 @@ various field-related configuration.</p>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;string: ESCAPED_STRING&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""string: ESCAPED_STRING"""</span>
+        <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">'"'</span><span class="p">)</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">signed_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;signed_int : SIGNED_INT&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""signed_int : SIGNED_INT"""</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;number: SIGNED_INT | SIGNED_FLOAT&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""number: SIGNED_INT | SIGNED_FLOAT"""</span>
         <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
             <span class="n">type_</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_INT&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SIGNED_INT"</span><span class="p">:</span>
             <span class="n">type_</span> <span class="o">=</span> <span class="nb">int</span>
-        <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_FLOAT&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SIGNED_FLOAT"</span><span class="p">:</span>
             <span class="n">type_</span> <span class="o">=</span> <span class="nb">float</span>
         <span class="k">return</span> <span class="n">type_</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;comparison: constant_first_comparison | property_first_comparison&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""comparison: constant_first_comparison | property_first_comparison"""</span>
         <span class="c1"># Note: Return as is.</span>
         <span class="k">return</span> <span class="n">value</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;value_list: [ OPERATOR ] value ( &quot;,&quot; [ OPERATOR ] value )*&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;value_zip: [ OPERATOR ] value &quot;:&quot; [ OPERATOR ] value (&quot;:&quot; [ OPERATOR ] value)*&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*"""</span>
         <span class="k">pass</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;value_zip_list: value_zip ( &quot;,&quot; value_zip )*&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""value_zip_list: value_zip ( "," value_zip )*"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;expression: expression_clause ( OR expression_clause )&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""expression: expression_clause ( OR expression_clause )"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;expression_clause: expression_phrase ( AND expression_phrase )*&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""expression_clause: expression_phrase ( AND expression_phrase )*"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;expression_phrase: [ NOT ] ( comparison | &quot;(&quot; expression &quot;)&quot; )&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""expression_phrase: [ NOT ] ( comparison | "(" expression ")" )"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">property_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;property_first_comparison:</span>
+<span class="w">        </span><span class="sd">"""property_first_comparison:</span>
 <span class="sd">        property ( value_op_rhs</span>
 <span class="sd">                 | known_op_rhs</span>
 <span class="sd">                 | fuzzy_string_op_rhs</span>
@@ -4911,37 +4911,37 @@ various field-related configuration.</p>
 <span class="sd">                 | set_zip_op_rhs</span>
 <span class="sd">                 | length_op_rhs )</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )"""</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">value_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;value_op_rhs: OPERATOR value&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""value_op_rhs: OPERATOR value"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">known_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;known_op_rhs: IS ( KNOWN | UNKNOWN )&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""known_op_rhs: IS ( KNOWN | UNKNOWN )"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;length_op_rhs: LENGTH [ OPERATOR ] value&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""length_op_rhs: LENGTH [ OPERATOR ] value"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_zip_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;set_zip_op_rhs: property_zip_addon HAS ( value_zip</span>
+<span class="w">        </span><span class="sd">"""set_zip_op_rhs: property_zip_addon HAS ( value_zip</span>
 <span class="sd">        | ONLY value_zip_list</span>
 <span class="sd">        | ALL value_zip_list</span>
 <span class="sd">        | ANY value_zip_list )</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;property_zip_addon: &quot;:&quot; property (&quot;:&quot; property)*&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""property_zip_addon: ":" property (":" property)*"""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -5026,9 +5026,9 @@ various field-related configuration.</p>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">meta</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The default rule to call when no definition is found for a particular construct.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The default rule to call when no definition is found for a particular construct."""</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Calling __default__, i.e., unknown grammar concept. data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">, children: </span><span class="si">{</span><span class="n">children</span><span class="si">}</span><span class="s2">, meta: </span><span class="si">{</span><span class="n">meta</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">"Calling __default__, i.e., unknown grammar concept. data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">, children: </span><span class="si">{</span><span class="n">children</span><span class="si">}</span><span class="s2">, meta: </span><span class="si">{</span><span class="n">meta</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5059,10 +5059,10 @@ resource mapper for use when post-processing.</p>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
+<span class="w">    </span><span class="sd">"""Initialise the transformer object, optionally loading in a</span>
 <span class="sd">    resource mapper for use when post-processing.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="o">=</span> <span class="n">mapper</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5092,7 +5092,7 @@ resource mapper for use when post-processing.</p>
 <span class="normal">302</span>
 <span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;comparison: constant_first_comparison | property_first_comparison&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""comparison: constant_first_comparison | property_first_comparison"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -5123,7 +5123,7 @@ resource mapper for use when post-processing.</p>
 <span class="normal">200</span>
 <span class="normal">201</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;constant: string | number&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""constant: string | number"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -5150,7 +5150,7 @@ resource mapper for use when post-processing.</p>
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">335</span>
 <span class="normal">336</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""constant_first_comparison: constant OPERATOR ( non_string_value | not_implemented_string )"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5175,7 +5175,7 @@ resource mapper for use when post-processing.</p>
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">315</span>
 <span class="normal">316</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;expression: expression_clause ( OR expression_clause )&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""expression: expression_clause ( OR expression_clause )"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5200,7 +5200,7 @@ resource mapper for use when post-processing.</p>
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">318</span>
 <span class="normal">319</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;expression_clause: expression_phrase ( AND expression_phrase )*&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""expression_clause: expression_phrase ( AND expression_phrase )*"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5225,7 +5225,7 @@ resource mapper for use when post-processing.</p>
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">321</span>
 <span class="normal">322</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;expression_phrase: [ NOT ] ( comparison | &quot;(&quot; expression &quot;)&quot; )&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""expression_phrase: [ NOT ] ( comparison | "(" expression ")" )"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5251,7 +5251,7 @@ resource mapper for use when post-processing.</p>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">193</span>
 <span class="normal">194</span>
 <span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;filter: expression*&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""filter: expression*"""</span>
     <span class="k">return</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">arg</span> <span class="k">else</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5277,7 +5277,7 @@ resource mapper for use when post-processing.</p>
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">345</span>
 <span class="normal">346</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5302,7 +5302,7 @@ resource mapper for use when post-processing.</p>
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">342</span>
 <span class="normal">343</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">known_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;known_op_rhs: IS ( KNOWN | UNKNOWN )&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""known_op_rhs: IS ( KNOWN | UNKNOWN )"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5327,7 +5327,7 @@ resource mapper for use when post-processing.</p>
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">351</span>
 <span class="normal">352</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;length_op_rhs: LENGTH [ OPERATOR ] value&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""length_op_rhs: LENGTH [ OPERATOR ] value"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5356,7 +5356,7 @@ resource mapper for use when post-processing.</p>
 <span class="normal">212</span>
 <span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">non_string_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;non_string_value: number | property&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""non_string_value: number | property"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -5416,14 +5416,14 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="normal">223</span>
 <span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">not_implemented_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;not_implemented_string: value</span>
+<span class="w">    </span><span class="sd">"""not_implemented_string: value</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: For further information, see Materials-Consortia/OPTIMADE issue 157:</span>
 <span class="sd">            https://github.com/Materials-Consortia/OPTIMADE/issues/157</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Comparing strings is not yet implemented.&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Comparing strings is not yet implemented."</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5458,13 +5458,13 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="normal">296</span>
 <span class="normal">297</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;number: SIGNED_INT | SIGNED_FLOAT&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""number: SIGNED_INT | SIGNED_FLOAT"""</span>
     <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
         <span class="n">type_</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_INT&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SIGNED_INT"</span><span class="p">:</span>
         <span class="n">type_</span> <span class="o">=</span> <span class="nb">int</span>
-    <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_FLOAT&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SIGNED_FLOAT"</span><span class="p">:</span>
         <span class="n">type_</span> <span class="o">=</span> <span class="nb">float</span>
     <span class="k">return</span> <span class="n">type_</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5496,10 +5496,10 @@ the backend, returning the backend-specific query.</p>
 <span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Post-process the query according to the rules defined for</span>
+<span class="w">    </span><span class="sd">"""Post-process the query according to the rules defined for</span>
 <span class="sd">    the backend, returning the backend-specific query.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">query</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5602,7 +5602,7 @@ of the above rules.</p>
 <span class="normal">273</span>
 <span class="normal">274</span>
 <span class="normal">275</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;property: IDENTIFIER ( &quot;.&quot; IDENTIFIER )*</span>
+<span class="w">    </span><span class="sd">"""property: IDENTIFIER ( "." IDENTIFIER )*</span>
 
 <span class="sd">    If this transformer has an associated mapper, the property</span>
 <span class="sd">    will be compared to possible relationship entry types and</span>
@@ -5614,7 +5614,7 @@ of the above rules.</p>
 <span class="sd">        BadRequest: If the property does not match any</span>
 <span class="sd">            of the above rules.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">quantity_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="c1"># If the quantity name matches an entry type (indicating a relationship filter)</span>
@@ -5630,20 +5630,20 @@ of the above rules.</p>
         <span class="c1"># If the prefix does not match another known provider, also emit a warning</span>
         <span class="c1"># If the prefix does match a known provider, do not return a warning.</span>
         <span class="c1"># Following [Handling unknown property names](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#handling-unknown-property-names)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="ow">and</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
-            <span class="n">prefix</span> <span class="o">=</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="ow">and</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">):</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span>
                     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                         <span class="n">UnknownProviderProperty</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Field </span><span class="si">{</span><span class="n">quantity_name</span><span class="si">!r}</span><span class="s2"> has an unrecognised prefix: this property has been treated as UNKNOWN.&quot;</span>
+                            <span class="sa">f</span><span class="s2">"Field </span><span class="si">{</span><span class="n">quantity_name</span><span class="si">!r}</span><span class="s2"> has an unrecognised prefix: this property has been treated as UNKNOWN."</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">quantity_name</span>
 
         <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
-            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">quantity_name</span><span class="si">}</span><span class="s2">&#39; is not a known or searchable quantity&quot;</span>
+            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">quantity_name</span><span class="si">}</span><span class="s2">' is not a known or searchable quantity"</span>
         <span class="p">)</span>
 
     <span class="n">quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantities</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">quantity_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -5689,7 +5689,7 @@ property ( value_op_rhs
 <span class="normal">331</span>
 <span class="normal">332</span>
 <span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">property_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;property_first_comparison:</span>
+<span class="w">    </span><span class="sd">"""property_first_comparison:</span>
 <span class="sd">    property ( value_op_rhs</span>
 <span class="sd">             | known_op_rhs</span>
 <span class="sd">             | fuzzy_string_op_rhs</span>
@@ -5697,7 +5697,7 @@ property ( value_op_rhs
 <span class="sd">             | set_zip_op_rhs</span>
 <span class="sd">             | length_op_rhs )</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5722,7 +5722,7 @@ property ( value_op_rhs
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">362</span>
 <span class="normal">363</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;property_zip_addon: &quot;:&quot; property (&quot;:&quot; property)*&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""property_zip_addon: ":" property (":" property)*"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5747,7 +5747,7 @@ property ( value_op_rhs
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">348</span>
 <span class="normal">349</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5780,12 +5780,12 @@ property ( value_op_rhs
 <span class="normal">358</span>
 <span class="normal">359</span>
 <span class="normal">360</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_zip_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;set_zip_op_rhs: property_zip_addon HAS ( value_zip</span>
+<span class="w">    </span><span class="sd">"""set_zip_op_rhs: property_zip_addon HAS ( value_zip</span>
 <span class="sd">    | ONLY value_zip_list</span>
 <span class="sd">    | ALL value_zip_list</span>
 <span class="sd">    | ANY value_zip_list )</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5813,7 +5813,7 @@ property ( value_op_rhs
 <span class="normal">284</span>
 <span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">signed_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;signed_int : SIGNED_INT&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""signed_int : SIGNED_INT"""</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5842,8 +5842,8 @@ property ( value_op_rhs
 <span class="normal">279</span>
 <span class="normal">280</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;string: ESCAPED_STRING&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""string: ESCAPED_STRING"""</span>
+    <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">'"'</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5873,10 +5873,10 @@ backend-specific post-processing methods.</p>
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform the query using the Lark `Transformer` then run the</span>
+<span class="w">    </span><span class="sd">"""Transform the query using the Lark `Transformer` then run the</span>
 <span class="sd">    backend-specific post-processing methods.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5906,7 +5906,7 @@ backend-specific post-processing methods.</p>
 <span class="normal">206</span>
 <span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;value: string | number | property&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""value: string | number | property"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -5933,7 +5933,7 @@ backend-specific post-processing methods.</p>
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">305</span>
 <span class="normal">306</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;value_list: [ OPERATOR ] value ( &quot;,&quot; [ OPERATOR ] value )*&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5960,7 +5960,7 @@ backend-specific post-processing methods.</p>
 <span class="normal">339</span>
 <span class="normal">340</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">value_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;value_op_rhs: OPERATOR value&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""value_op_rhs: OPERATOR value"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5986,7 +5986,7 @@ backend-specific post-processing methods.</p>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">308</span>
 <span class="normal">309</span>
 <span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;value_zip: [ OPERATOR ] value &quot;:&quot; [ OPERATOR ] value (&quot;:&quot; [ OPERATOR ] value)*&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*"""</span>
     <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -6012,7 +6012,7 @@ backend-specific post-processing methods.</p>
               <summary>Source code in <code>optimade/filtertransformers/base_transformer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
 <span class="normal">313</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;value_zip_list: value_zip ( &quot;,&quot; value_zip )*&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""value_zip_list: value_zip ( "," value_zip )*"""</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -6151,9 +6151,9 @@ can then decide whether to use this for all "LENGTH" queries.</p>
 <span class="normal">67</span>
 <span class="normal">68</span>
 <span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Quantity</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to provide information about available quantities to the transformer.</span>
+<span class="w">    </span><span class="sd">"""Class to provide information about available quantities to the transformer.</span>
 
-<span class="sd">    The transformer can use [`Quantity`][optimade.filtertransformers.base_transformer.Quantity]&#39;s to</span>
+<span class="sd">    The transformer can use [`Quantity`][optimade.filtertransformers.base_transformer.Quantity]'s to</span>
 
 <span class="sd">    * do some semantic checks,</span>
 <span class="sd">    * map quantities to the underlying backend field name.</span>
@@ -6164,21 +6164,21 @@ can then decide whether to use this for all "LENGTH" queries.</p>
 <span class="sd">            `name` by default.</span>
 <span class="sd">        length_quantity: Another (typically integer) [`Quantity`][optimade.filtertransformers.base_transformer.Quantity]</span>
 <span class="sd">            that can be queried as the length of this quantity, e.g. `elements` and `nelements`. Backends</span>
-<span class="sd">            can then decide whether to use this for all &quot;LENGTH&quot; queries.</span>
+<span class="sd">            can then decide whether to use this for all "LENGTH" queries.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">]</span>
+    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"Quantity"</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"Quantity"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the `quantity` from it&#39;s name and aliases.</span>
+<span class="w">        </span><span class="sd">"""Initialise the `quantity` from it's name and aliases.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            name: The name of the quantity as used in the filter expressions.</span>
@@ -6186,9 +6186,9 @@ can then decide whether to use this for all "LENGTH" queries.</p>
 <span class="sd">                `name` by default.</span>
 <span class="sd">            length_quantity: Another (typically integer) [`Quantity`][optimade.filtertransformers.base_transformer.Quantity]</span>
 <span class="sd">                that can be queried as the length of this quantity, e.g. `elements` and `nelements`. Backends</span>
-<span class="sd">                can then decide whether to use this for all &quot;LENGTH&quot; queries.</span>
+<span class="sd">                can then decide whether to use this for all "LENGTH" queries.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend_field</span> <span class="o">=</span> <span class="n">backend_field</span> <span class="k">if</span> <span class="n">backend_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">name</span>
@@ -6315,9 +6315,9 @@ can then decide whether to use this for all "LENGTH" queries.</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"Quantity"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the `quantity` from it&#39;s name and aliases.</span>
+<span class="w">    </span><span class="sd">"""Initialise the `quantity` from it's name and aliases.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        name: The name of the quantity as used in the filter expressions.</span>
@@ -6325,9 +6325,9 @@ can then decide whether to use this for all "LENGTH" queries.</p>
 <span class="sd">            `name` by default.</span>
 <span class="sd">        length_quantity: Another (typically integer) [`Quantity`][optimade.filtertransformers.base_transformer.Quantity]</span>
 <span class="sd">            that can be queried as the length of this quantity, e.g. `elements` and `nelements`. Backends</span>
-<span class="sd">            can then decide whether to use this for all &quot;LENGTH&quot; queries.</span>
+<span class="sd">            can then decide whether to use this for all "LENGTH" queries.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">backend_field</span> <span class="o">=</span> <span class="n">backend_field</span> <span class="k">if</span> <span class="n">backend_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">name</span>
@@ -6423,10 +6423,10 @@ can then decide whether to use this for all "LENGTH" queries.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

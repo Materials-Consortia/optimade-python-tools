@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3777,26 +3777,26 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
 <span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseResourceMapper</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instance-based Resource Mapper.</span>
+<span class="w">    </span><span class="sd">"""Instance-based Resource Mapper.</span>
 
 <span class="sd">    Create one instance per CONFIG (and optionally per providers set).</span>
 <span class="sd">    Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># class-level knobs remain</span>
     <span class="n">ALIASES</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">LENGTH_ALIASES</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">PROVIDER_FIELDS</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
-    <span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;EntryResource&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryResource</span>
-    <span class="n">RELATIONSHIP_ENTRY_TYPES</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">,</span> <span class="s2">&quot;files&quot;</span><span class="p">}</span>
-    <span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="s2">&quot;links&quot;</span><span class="p">}</span>
+    <span class="n">ENTRY_RESOURCE_CLASS</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">"EntryResource"</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryResource</span>
+    <span class="n">RELATIONSHIP_ENTRY_TYPES</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"references"</span><span class="p">,</span> <span class="s2">"structures"</span><span class="p">,</span> <span class="s2">"files"</span><span class="p">}</span>
+    <span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"relationships"</span><span class="p">,</span> <span class="s2">"links"</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            config: Server CONFIG-like object (must expose:</span>
 <span class="sd">                .provider.prefix, .provider_fields, .aliases, .length_aliases)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
@@ -3807,16 +3807,16 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">providers</span> <span class="o">=</span> <span class="n">PROVIDERS</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">prov</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">prov</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">prov</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="k">for</span> <span class="n">prov</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="p">[])</span>
         <span class="p">}</span>
 
     <span class="c1"># ---- Computed, cached once per instance ----</span>
     <span class="nd">@cached_property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">ENDPOINT</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">]:</span>
-        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">default</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ENDPOINT</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"links"</span><span class="p">,</span> <span class="s2">"references"</span><span class="p">,</span> <span class="s2">"structures"</span><span class="p">]:</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE_CLASS</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span><span class="o">.</span><span class="n">default</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">endpoint</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Type not set for this entry type!&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="n">endpoint</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Type not set for this entry type!"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"links"</span><span class="p">,</span> <span class="s2">"references"</span><span class="p">,</span> <span class="s2">"structures"</span><span class="p">],</span> <span class="n">endpoint</span><span class="p">)</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">SUPPORTED_PREFIXES</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -3829,22 +3829,22 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
         <span class="n">provider_fields</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
 
         <span class="n">provider_field_aliases_str</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-            <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span>
             <span class="k">else</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">provider_fields</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">provider_field_aliases_dict</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-            <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">fd</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fd</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">fd</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
-            <span class="k">else</span> <span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">fd</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">fd</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">fd</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">fd</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span>
+            <span class="k">else</span> <span class="p">(</span><span class="n">fd</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span> <span class="n">fd</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">fd</span> <span class="ow">in</span> <span class="n">provider_fields</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">explicit_provider_fields</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-            <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+            <span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span>
             <span class="k">else</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">PROVIDER_FIELDS</span>
         <span class="p">)</span>
@@ -3881,7 +3881,7 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">pf</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">attrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">pf</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="p">)</span>
@@ -3893,10 +3893,10 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_backend_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimade_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">split</span> <span class="o">=</span> <span class="n">optimade_field</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">split</span> <span class="o">=</span> <span class="n">optimade_field</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
         <span class="n">alias</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_aliases</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">alias</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">alias</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">alias</span> <span class="o">+</span> <span class="p">(</span><span class="s2">"."</span> <span class="o">+</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">split</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">optimade_field</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_optimade_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -3906,14 +3906,14 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">alias_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;`.alias_for(...)` is deprecated; use `.get_backend_field(...)`.&quot;</span><span class="p">,</span>
+            <span class="s2">"`.alias_for(...)` is deprecated; use `.get_backend_field(...)`."</span><span class="p">,</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">alias_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;`.alias_of(...)` is deprecated; use `.get_optimade_field(...)`.&quot;</span><span class="p">,</span>
+            <span class="s2">"`.alias_of(...)` is deprecated; use `.get_optimade_field(...)`."</span><span class="p">,</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
@@ -3933,8 +3933,8 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
             <span class="k">if</span> <span class="n">real</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
                 <span class="n">newdoc</span><span class="p">[</span><span class="n">alias</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="n">real</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="s2">&quot;attributes&quot;</span> <span class="ow">in</span> <span class="n">newdoc</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Will overwrite doc field!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"attributes"</span> <span class="ow">in</span> <span class="n">newdoc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Will overwrite doc field!"</span><span class="p">)</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="n">newdoc</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">:</span>
@@ -3945,8 +3945,8 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
             <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">TOP_LEVEL_NON_ATTRIBUTES_FIELDS</span><span class="p">:</span>
                 <span class="k">del</span> <span class="n">newdoc</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
 
-        <span class="n">newdoc</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENDPOINT</span>
-        <span class="n">newdoc</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attributes</span>
+        <span class="n">newdoc</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENDPOINT</span>
+        <span class="n">newdoc</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">]</span> <span class="o">=</span> <span class="n">attributes</span>
         <span class="k">return</span> <span class="n">newdoc</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">dict</span><span class="p">]):</span>
@@ -4034,11 +4034,11 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Args:</span>
 <span class="sd">        config: Server CONFIG-like object (must expose:</span>
 <span class="sd">            .provider.prefix, .provider_fields, .aliases, .length_aliases)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
@@ -4049,7 +4049,7 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">providers</span> <span class="o">=</span> <span class="n">PROVIDERS</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">prov</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">prov</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">prov</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="k">for</span> <span class="n">prov</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="p">[])</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4142,10 +4142,10 @@ Subclasses still set class-level constants like ENTRY_RESOURCE_CLASS.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

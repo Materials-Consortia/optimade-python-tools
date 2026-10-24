@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4025,7 +4025,7 @@ types that can be ingested.</p>
 <span class="normal">252</span>
 <span class="normal">253</span>
 <span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EntryAdapter</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Base class for lazy resource entry adapters.</span>
 
 <span class="sd">    Attributes:</span>
@@ -4037,7 +4037,7 @@ types that can be ingested.</p>
 <span class="sd">        as_&lt;_type_converters&gt;: Convert entry to a type listed in `_type_converters`.</span>
 <span class="sd">        from_&lt;_type_converters&gt;: Convert an external type to the corresponding OPTIMADE model.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">ENTRY_RESOURCE</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryResource</span>
     <span class="n">_type_converters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -4045,10 +4045,10 @@ types that can be ingested.</p>
     <span class="n">_type_ingesters_by_type</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parameters:</span>
 <span class="sd">            entry (dict): A JSON OPTIMADE single resource entry.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">(</span><span class="o">**</span><span class="n">entry</span><span class="p">)</span>
@@ -4056,23 +4056,23 @@ types that can be ingested.</p>
         <span class="c1"># Note that these return also the default values for otherwise non-provided properties.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span> <span class="o">=</span> <span class="p">{</span>
             <span class="c1"># Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson</span>
-            <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">,</span>
+            <span class="s2">"json"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">,</span>
             <span class="c1"># Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict</span>
-            <span class="s2">&quot;dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">model_dump</span><span class="p">,</span>
+            <span class="s2">"dict"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">model_dump</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">entry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EntryResource</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get OPTIMADE entry.</span>
+<span class="w">        </span><span class="sd">"""Get OPTIMADE entry.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The entry resource.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert OPTIMADE entry to desired format.</span>
+<span class="w">        </span><span class="sd">"""Convert OPTIMADE entry to desired format.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            format (str): Type or format to which the entry should be converted.</span>
@@ -4083,14 +4083,14 @@ types that can be ingested.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            The converted entry according to the desired format or type.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span>
             <span class="ow">and</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Non-valid entry type to convert to: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">Valid entry types: &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Non-valid entry type to convert to: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">Valid entry types: "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -4103,7 +4103,7 @@ types that can be ingested.</p>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">ingest_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert desired format to OPTIMADE format.</span>
+<span class="w">        </span><span class="sd">"""Convert desired format to OPTIMADE format.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            data (Any): The data to convert.</span>
@@ -4115,7 +4115,7 @@ types that can be ingested.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            The ingested Structure.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">instance_type</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters_by_type</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -4125,27 +4125,27 @@ types that can be ingested.</p>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Non entry type to data of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> from.</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Non entry type to data of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> from.</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Non-valid entry type to ingest from: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Non-valid entry type to ingest from: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="p">{</span>
-                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">[</span><span class="nb">format</span><span class="p">](</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(),</span>
-                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+                <span class="s2">"attributes"</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">[</span><span class="nb">format</span><span class="p">](</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(),</span>
+                <span class="s2">"id"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+                <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"structures"</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert OPTIMADE URL into the target entry type.</span>
+<span class="w">        </span><span class="sd">"""Convert OPTIMADE URL into the target entry type.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            url (str): The OPTIMADE URL to convert.</span>
@@ -4153,13 +4153,13 @@ types that can be ingested.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            The converted URL.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Could not retrieve OPTIMADE entry from URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> returned </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Could not retrieve OPTIMADE entry from URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> returned </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -4167,12 +4167,12 @@ types that can be ingested.</p>
 
         <span class="k">except</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Could not retrieve OPTIMADE entry from URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: did not contain valid JSON response.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Could not retrieve OPTIMADE entry from URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: did not contain valid JSON response."</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
-        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">json_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">json_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;returned a list of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> entries.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"returned a list of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> entries."</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
@@ -4180,11 +4180,11 @@ types that can be ingested.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_model_attributes</span><span class="p">(</span>
         <span class="n">starting_instances</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper method for retrieving the OPTIMADE model&#39;s attribute, supporting &quot;.&quot;-nested attributes&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Helper method for retrieving the OPTIMADE model's attribute, supporting "."-nested attributes"""</span>
         <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">starting_instances</span><span class="p">:</span>
-            <span class="n">nested_attributes</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="n">nested_attributes</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">nested_attribute</span> <span class="ow">in</span> <span class="n">nested_attributes</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">nested_attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s2">&quot;model_fields&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+                <span class="k">if</span> <span class="n">nested_attribute</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s2">"model_fields"</span><span class="p">,</span> <span class="p">{}):</span>
                     <span class="n">res</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">nested_attribute</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">res</span> <span class="o">=</span> <span class="kc">None</span>
@@ -4194,14 +4194,14 @@ types that can be ingested.</p>
         <span class="k">raise</span> <span class="ne">AttributeError</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get converted entry or attribute from OPTIMADE entry.</span>
+<span class="w">        </span><span class="sd">"""Get converted entry or attribute from OPTIMADE entry.</span>
 
-<span class="sd">        Support any level of &quot;.&quot;-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,</span>
+<span class="sd">        Support any level of "."-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,</span>
 <span class="sd">        `attributes.species` for [`StuctureResource`][optimade.models.structures.StructureResource].</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            All nested attributes must individually be subclasses of `pydantic.BaseModel`,</span>
-<span class="sd">            i.e., one can not access nested attributes in lists by passing a &quot;.&quot;-nested `name` to this method,</span>
+<span class="sd">            i.e., one can not access nested attributes in lists by passing a "."-nested `name` to this method,</span>
 <span class="sd">            e.g., `attributes.species.name` or `attributes.species[0].name` will not work for variable `name`.</span>
 
 <span class="sd">        Order:</span>
@@ -4218,10 +4218,10 @@ types that can be ingested.</p>
 <span class="sd">            AttributeError: If the requested attribute is not recognized.</span>
 <span class="sd">                See above for the description of the order in which an attribute is tested for validity.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># as_&lt;entry_type&gt;</span>
-        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;as_&quot;</span><span class="p">):</span>
-            <span class="n">entry_type</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"as_"</span><span class="p">):</span>
+            <span class="n">entry_type</span> <span class="o">=</span> <span class="s2">"_"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">entry_type</span><span class="p">)</span>
 
         <span class="c1"># Try returning ENTRY_RESOURCE attribute</span>
@@ -4234,18 +4234,18 @@ types that can be ingested.</p>
 
         <span class="c1"># Non-valid attribute</span>
         <span class="n">_entry_resource_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
-            <span class="sa">r</span><span class="s2">&quot;(&lt;class &#39;)([a-zA-Z_]+\.)*([a-zA-Z_]+)(&#39;&gt;)&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">)</span>
+            <span class="sa">r</span><span class="s2">"(&lt;class ')([a-zA-Z_]+\.)*([a-zA-Z_]+)('&gt;)"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">entry_resource_name</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">_entry_resource_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">_entry_resource_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="s2">&quot;UNKNOWN RESOURCE&quot;</span>
+            <span class="k">else</span> <span class="s2">"UNKNOWN RESOURCE"</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unknown attribute: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;If you want to get a converted entry as &lt;entry_type&gt; use `as_&lt;entry_type&gt;`, &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;where `&lt;entry_type&gt;` is one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Otherwise, you can try to retrieve an OPTIMADE </span><span class="si">{</span><span class="n">entry_resource_name</span><span class="si">}</span><span class="s2"> attribute or property.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Unknown attribute: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">"If you want to get a converted entry as &lt;entry_type&gt; use `as_&lt;entry_type&gt;`, "</span>
+            <span class="sa">f</span><span class="s2">"where `&lt;entry_type&gt;` is one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"Otherwise, you can try to retrieve an OPTIMADE </span><span class="si">{</span><span class="n">entry_resource_name</span><span class="si">}</span><span class="s2"> attribute or property."</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -4449,14 +4449,14 @@ See above for the description of the order in which an attribute is tested for v
 <span class="normal">252</span>
 <span class="normal">253</span>
 <span class="normal">254</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get converted entry or attribute from OPTIMADE entry.</span>
+<span class="w">    </span><span class="sd">"""Get converted entry or attribute from OPTIMADE entry.</span>
 
-<span class="sd">    Support any level of &quot;.&quot;-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,</span>
+<span class="sd">    Support any level of "."-nested OPTIMADE `ENTRY_RESOURCE` attributes, e.g.,</span>
 <span class="sd">    `attributes.species` for [`StuctureResource`][optimade.models.structures.StructureResource].</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        All nested attributes must individually be subclasses of `pydantic.BaseModel`,</span>
-<span class="sd">        i.e., one can not access nested attributes in lists by passing a &quot;.&quot;-nested `name` to this method,</span>
+<span class="sd">        i.e., one can not access nested attributes in lists by passing a "."-nested `name` to this method,</span>
 <span class="sd">        e.g., `attributes.species.name` or `attributes.species[0].name` will not work for variable `name`.</span>
 
 <span class="sd">    Order:</span>
@@ -4473,10 +4473,10 @@ See above for the description of the order in which an attribute is tested for v
 <span class="sd">        AttributeError: If the requested attribute is not recognized.</span>
 <span class="sd">            See above for the description of the order in which an attribute is tested for validity.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># as_&lt;entry_type&gt;</span>
-    <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;as_&quot;</span><span class="p">):</span>
-        <span class="n">entry_type</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"as_"</span><span class="p">):</span>
+        <span class="n">entry_type</span> <span class="o">=</span> <span class="s2">"_"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">entry_type</span><span class="p">)</span>
 
     <span class="c1"># Try returning ENTRY_RESOURCE attribute</span>
@@ -4489,18 +4489,18 @@ See above for the description of the order in which an attribute is tested for v
 
     <span class="c1"># Non-valid attribute</span>
     <span class="n">_entry_resource_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;(&lt;class &#39;)([a-zA-Z_]+\.)*([a-zA-Z_]+)(&#39;&gt;)&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">)</span>
+        <span class="sa">r</span><span class="s2">"(&lt;class ')([a-zA-Z_]+\.)*([a-zA-Z_]+)('&gt;)"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">entry_resource_name</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">_entry_resource_name</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">_entry_resource_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="k">else</span> <span class="s2">&quot;UNKNOWN RESOURCE&quot;</span>
+        <span class="k">else</span> <span class="s2">"UNKNOWN RESOURCE"</span>
     <span class="p">)</span>
     <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Unknown attribute: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="s2">&quot;If you want to get a converted entry as &lt;entry_type&gt; use `as_&lt;entry_type&gt;`, &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;where `&lt;entry_type&gt;` is one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;Otherwise, you can try to retrieve an OPTIMADE </span><span class="si">{</span><span class="n">entry_resource_name</span><span class="si">}</span><span class="s2"> attribute or property.&quot;</span>
+        <span class="sa">f</span><span class="s2">"Unknown attribute: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="s2">"If you want to get a converted entry as &lt;entry_type&gt; use `as_&lt;entry_type&gt;`, "</span>
+        <span class="sa">f</span><span class="s2">"where `&lt;entry_type&gt;` is one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"Otherwise, you can try to retrieve an OPTIMADE </span><span class="si">{</span><span class="n">entry_resource_name</span><span class="si">}</span><span class="s2"> attribute or property."</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4570,10 +4570,10 @@ See above for the description of the order in which an attribute is tested for v
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Parameters:</span>
 <span class="sd">        entry (dict): A JSON OPTIMADE single resource entry.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ENTRY_RESOURCE</span><span class="p">(</span><span class="o">**</span><span class="n">entry</span><span class="p">)</span>
@@ -4581,9 +4581,9 @@ See above for the description of the order in which an attribute is tested for v
     <span class="c1"># Note that these return also the default values for otherwise non-provided properties.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span> <span class="o">=</span> <span class="p">{</span>
         <span class="c1"># Return JSON serialized string, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeljson</span>
-        <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">,</span>
+        <span class="s2">"json"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">,</span>
         <span class="c1"># Return Python dict, see https://pydantic-docs.helpmanual.io/usage/exporting_models/#modeldict</span>
-        <span class="s2">&quot;dict&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">model_dump</span><span class="p">,</span>
+        <span class="s2">"dict"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry</span><span class="o">.</span><span class="n">model_dump</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4713,7 +4713,7 @@ See above for the description of the order in which an attribute is tested for v
 <span class="normal">105</span>
 <span class="normal">106</span>
 <span class="normal">107</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert OPTIMADE entry to desired format.</span>
+<span class="w">    </span><span class="sd">"""Convert OPTIMADE entry to desired format.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        format (str): Type or format to which the entry should be converted.</span>
@@ -4724,14 +4724,14 @@ See above for the description of the order in which an attribute is tested for v
 <span class="sd">    Returns:</span>
 <span class="sd">        The converted entry according to the desired format or type.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span>
         <span class="ow">and</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span>
     <span class="p">):</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Non-valid entry type to convert to: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">Valid entry types: &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Non-valid entry type to convert to: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">Valid entry types: "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_common_converters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_converted</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -4854,7 +4854,7 @@ See above for the description of the order in which an attribute is tested for v
 <span class="normal">181</span>
 <span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">from_url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert OPTIMADE URL into the target entry type.</span>
+<span class="w">    </span><span class="sd">"""Convert OPTIMADE URL into the target entry type.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        url (str): The OPTIMADE URL to convert.</span>
@@ -4862,13 +4862,13 @@ See above for the description of the order in which an attribute is tested for v
 <span class="sd">    Returns:</span>
 <span class="sd">        The converted URL.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Could not retrieve OPTIMADE entry from URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> returned </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Could not retrieve OPTIMADE entry from URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> returned </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -4876,12 +4876,12 @@ See above for the description of the order in which an attribute is tested for v
 
     <span class="k">except</span> <span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Could not retrieve OPTIMADE entry from URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: did not contain valid JSON response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Could not retrieve OPTIMADE entry from URL </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">: did not contain valid JSON response."</span>
         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
-    <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">json_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">json_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="p">{})</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;returned a list of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> entries.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"returned a list of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> entries."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5045,7 +5045,7 @@ See above for the description of the order in which an attribute is tested for v
 <span class="normal">148</span>
 <span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">ingest_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert desired format to OPTIMADE format.</span>
+<span class="w">    </span><span class="sd">"""Convert desired format to OPTIMADE format.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        data (Any): The data to convert.</span>
@@ -5057,7 +5057,7 @@ See above for the description of the order in which an attribute is tested for v
 <span class="sd">    Returns:</span>
 <span class="sd">        The ingested Structure.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="nb">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">instance_type</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters_by_type</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -5067,21 +5067,21 @@ See above for the description of the order in which an attribute is tested for v
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Non entry type to data of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> from.</span><span class="se">\n</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Non entry type to data of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> from.</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">format</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Non-valid entry type to ingest from: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Non-valid entry type to ingest from: </span><span class="si">{</span><span class="nb">format</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"Valid entry types: </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">[</span><span class="nb">format</span><span class="p">](</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(),</span>
-            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+            <span class="s2">"attributes"</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_type_ingesters</span><span class="p">[</span><span class="nb">format</span><span class="p">](</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(),</span>
+            <span class="s2">"id"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"structures"</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5175,10 +5175,10 @@ See above for the description of the order in which an attribute is tested for v
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

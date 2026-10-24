@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4162,11 +4162,11 @@
 <span class="normal">218</span>
 <span class="normal">219</span>
 <span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representing a file.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Representing a file."""</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span>
-        <span class="s2">&quot;files&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+        <span class="s2">"files"</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""The name of the type of an entry.</span>
 
 <span class="s2">- **Type**: string.</span>
 
@@ -4178,8 +4178,8 @@
 <span class="s2">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
 
 <span class="s2">- **Examples**:</span>
-<span class="s2">    - `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
-        <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;^files$&quot;</span><span class="p">,</span>
+<span class="s2">    - `"structures"`"""</span><span class="p">,</span>
+        <span class="n">pattern</span><span class="o">=</span><span class="s2">"^files$"</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
     <span class="p">)</span>
@@ -4327,7 +4327,7 @@
 
 
 <h3 id="optimade.models.files.FileResource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The name of the type of an entry.</span><span class="se">\n\n</span><span class="s1">- **Type**: string.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n</span><span class="s1">    - **Response**: REQUIRED in the response.</span><span class="se">\n</span><span class="s1">    - MUST be an existing entry type.</span><span class="se">\n</span><span class="s1">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n</span><span class="s1">    - `&quot;structures&quot;`&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">&#39;^files$&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="n">StrictField</span><span class="p">(</span><span class="s1">'files'</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'The name of the type of an entry.</span><span class="se">\n\n</span><span class="s1">- **Type**: string.</span><span class="se">\n\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n</span><span class="s1">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span><span class="se">\n</span><span class="s1">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span><span class="se">\n</span><span class="s1">    - **Response**: REQUIRED in the response.</span><span class="se">\n</span><span class="s1">    - MUST be an existing entry type.</span><span class="se">\n</span><span class="s1">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n</span><span class="s1">    - `"structures"`'</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s1">'^files$'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4564,11 +4564,11 @@
 <span class="normal">192</span>
 <span class="normal">193</span>
 <span class="normal">194</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class contains the Field for the attributes used to represent a file, e.g. .&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""This class contains the Field for the attributes used to represent a file, e.g. ."""</span>
 
     <span class="n">url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The URL to get the contents of a file.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""The URL to get the contents of a file.</span>
 <span class="s2">- **Type**: string</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
@@ -4580,29 +4580,29 @@
 
 <span class="s2">- **Examples**:</span>
 
-<span class="s2">  - :val:`&quot;https://example.org/files/cifs/1000000.cif&quot;`</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">  - :val:`"https://example.org/files/cifs/1000000.cif"`</span>
+<span class="s2">"""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">url_stable_until</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Point in time until which the URL in `url` is guaranteed to stay stable.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Point in time until which the URL in `url` is guaranteed to stay stable.</span>
 <span class="s2">- **Type**: timestamp</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
 <span class="s2">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span>
 <span class="s2">  - **Query**: Support for queries on this property is OPTIONAL.</span>
 <span class="s2">  - :val:`null` means that there is no stability guarantee for the URL in `url`.</span>
-<span class="s2">    Indefinite support could be communicated by providing a date sufficiently far in the future, for example, :val:`9999-12-31`.&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">    Indefinite support could be communicated by providing a date sufficiently far in the future, for example, :val:`9999-12-31`."""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="o">...</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Base name of a file.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Base name of a file.</span>
 <span class="s2">- **Type**: string</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
@@ -4612,14 +4612,14 @@
 
 <span class="s2">- **Examples**:</span>
 
-<span class="s2">  - :val:`&quot;1000000.cif&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">  - :val:`"1000000.cif"`"""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Size of a file in bytes.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Size of a file in bytes.</span>
 <span class="s2">- **Type**: integer</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
@@ -4627,14 +4627,14 @@
 <span class="s2">  - **Query**: Support for queries on this property is OPTIONAL.</span>
 <span class="s2">  - If provided, it MUST be guaranteed that either exact size of a file is given or its upper bound.</span>
 <span class="s2">    This way if a client reserves a static buffer or truncates the download stream after this many bytes the whole file would be received.</span>
-<span class="s2">    Such provision is included to allow the providers to serve on-the-fly compressed files.&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">    Such provision is included to allow the providers to serve on-the-fly compressed files."""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">media_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Media type identifier (also known as MIME type), for a file as per `RFC 6838 Media Type Specifications and Registration Procedures &lt;https://datatracker.ietf.org/doc/html/rfc6838&gt;`__.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Media type identifier (also known as MIME type), for a file as per `RFC 6838 Media Type Specifications and Registration Procedures &lt;https://datatracker.ietf.org/doc/html/rfc6838&gt;`__.</span>
 <span class="s2">- **Type**: string</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
@@ -4643,41 +4643,41 @@
 
 <span class="s2">- **Examples**:</span>
 
-<span class="s2">  - :val:`&quot;chemical/x-cif&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">  - :val:`"chemical/x-cif"`"""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Version information of a file (e.g. commit, revision, timestamp).</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Version information of a file (e.g. commit, revision, timestamp).</span>
 <span class="s2">- **Type**: string</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
 <span class="s2">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span>
 <span class="s2">  - **Query**: Support for queries on this property is OPTIONAL.</span>
-<span class="s2">  - If provided, it MUST be guaranteed that file contents pertaining to the same combination of :field:`id` and :field:`version` are the same&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">  - If provided, it MUST be guaranteed that file contents pertaining to the same combination of :field:`id` and :field:`version` are the same"""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">modification_timestamp</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Timestamp of the last modification of file contents.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Timestamp of the last modification of file contents.</span>
 <span class="s2">  A modification is understood as an addition, change or deletion of one or more bytes, resulting in file contents different from the previous.</span>
 <span class="s2">- **Type**: timestamp</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
 <span class="s2">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span>
 <span class="s2">  - **Query**: Support for queries on this property is OPTIONAL.</span>
-<span class="s2">  - Timestamps of subsequent file modifications SHOULD be increasing (not earlier than previous timestamps).&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">  - Timestamps of subsequent file modifications SHOULD be increasing (not earlier than previous timestamps)."""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Free-form description of a file.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Free-form description of a file.</span>
 <span class="s2">- **Type**: string</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
@@ -4686,14 +4686,14 @@
 
 <span class="s2">- **Examples**:</span>
 
-<span class="s2">  - :val:`&quot;POSCAR format file&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">  - :val:`"POSCAR format file"`"""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">checksums</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Dictionary providing checksums of file contents.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Dictionary providing checksums of file contents.</span>
 <span class="s2">* **Type**: dictionary with keys identifying checksum functions and values (strings) giving the actual checksums</span>
 <span class="s2">* **Requirements/Conventions**:</span>
 
@@ -4701,38 +4701,38 @@
 <span class="s2">  - **Query**: Support for queries on this property is OPTIONAL.</span>
 <span class="s2">  - Supported dictionary keys: :property:`md5`, :property:`sha1`, :property:`sha224`, :property:`sha256`, :property:`sha384`, :property:`sha512`.</span>
 <span class="s2">    Checksums outside this list MAY be used, but their names MUST be prefixed by database-provider-specific namespace prefix (see appendix `Database-Provider-Specific Namespace Prefixes`_).</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">"""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">atime</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Time of last access of a file as per POSIX standard.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Time of last access of a file as per POSIX standard.</span>
 <span class="s2">- **Type**: timestamp</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
 <span class="s2">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span>
-<span class="s2">  - **Query**: Support for queries on this property is OPTIONAL.&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">  - **Query**: Support for queries on this property is OPTIONAL."""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">ctime</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Time of last status change of a file as per POSIX standard.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"""Time of last status change of a file as per POSIX standard.</span>
 <span class="s2">- **Type**: timestamp</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
 <span class="s2">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span>
-<span class="s2">  - **Query**: Support for queries on this property is OPTIONAL.&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">  - **Query**: Support for queries on this property is OPTIONAL."""</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">mtime</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
         <span class="kc">None</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot; Time of last modification of a file as per POSIX standard.</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">""" Time of last modification of a file as per POSIX standard.</span>
 <span class="s2">- **Type**: timestamp</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 
@@ -4741,7 +4741,7 @@
 <span class="s2">  - It should be noted that the values of :field:`last_modified`, :field:`modification_timestamp` and :field:`mtime` do not necessary match.</span>
 <span class="s2">    :field:`last_modified` pertains to the modification of the OPTIMADE metadata, :field:`modification_timestamp` pertains to file contents and :field:`mtime` pertains to the modification of the file (not necessary changing its contents).</span>
 <span class="s2">    For example, appending an empty string to a file would result in the change of :field:`mtime` in some operating systems, but this would not be deemed as a modification of its contents.</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">"""</span><span class="p">,</span>
         <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
     <span class="p">)</span>
@@ -4763,7 +4763,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.atime" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">atime</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Time of last access of a file as per POSIX standard.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">atime</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Time of last access of a file as per POSIX standard.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4784,7 +4784,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.checksums" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">checksums</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Dictionary providing checksums of file contents.</span><span class="se">\n</span><span class="s1">* **Type**: dictionary with keys identifying checksum functions and values (strings) giving the actual checksums</span><span class="se">\n</span><span class="s1">* **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - Supported dictionary keys: :property:`md5`, :property:`sha1`, :property:`sha224`, :property:`sha256`, :property:`sha384`, :property:`sha512`.</span><span class="se">\n</span><span class="s1">    Checksums outside this list MAY be used, but their names MUST be prefixed by database-provider-specific namespace prefix (see appendix `Database-Provider-Specific Namespace Prefixes`_).</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">checksums</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Dictionary providing checksums of file contents.</span><span class="se">\n</span><span class="s1">* **Type**: dictionary with keys identifying checksum functions and values (strings) giving the actual checksums</span><span class="se">\n</span><span class="s1">* **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - Supported dictionary keys: :property:`md5`, :property:`sha1`, :property:`sha224`, :property:`sha256`, :property:`sha384`, :property:`sha512`.</span><span class="se">\n</span><span class="s1">    Checksums outside this list MAY be used, but their names MUST be prefixed by database-provider-specific namespace prefix (see appendix `Database-Provider-Specific Namespace Prefixes`_).</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4805,7 +4805,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.ctime" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ctime</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Time of last status change of a file as per POSIX standard.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">ctime</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Time of last status change of a file as per POSIX standard.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4826,7 +4826,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.description" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">description</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Free-form description of a file.</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n\n</span><span class="s1">  - :val:`&quot;POSCAR format file&quot;`&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">description</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Free-form description of a file.</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n\n</span><span class="s1">  - :val:`"POSCAR format file"`'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4888,7 +4888,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.media_type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">media_type</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Media type identifier (also known as MIME type), for a file as per `RFC 6838 Media Type Specifications and Registration Procedures &lt;https://datatracker.ietf.org/doc/html/rfc6838&gt;`__.</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n\n</span><span class="s1">  - :val:`&quot;chemical/x-cif&quot;`&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">media_type</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Media type identifier (also known as MIME type), for a file as per `RFC 6838 Media Type Specifications and Registration Procedures &lt;https://datatracker.ietf.org/doc/html/rfc6838&gt;`__.</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n\n</span><span class="s1">  - :val:`"chemical/x-cif"`'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4909,7 +4909,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s1">&#39;allow&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s1">'allow'</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4930,7 +4930,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.modification_timestamp" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">modification_timestamp</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Timestamp of the last modification of file contents.</span><span class="se">\n</span><span class="s1">  A modification is understood as an addition, change or deletion of one or more bytes, resulting in file contents different from the previous.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - Timestamps of subsequent file modifications SHOULD be increasing (not earlier than previous timestamps).&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">modification_timestamp</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Timestamp of the last modification of file contents.</span><span class="se">\n</span><span class="s1">  A modification is understood as an addition, change or deletion of one or more bytes, resulting in file contents different from the previous.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - Timestamps of subsequent file modifications SHOULD be increasing (not earlier than previous timestamps).'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4951,7 +4951,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.mtime" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">mtime</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39; Time of last modification of a file as per POSIX standard.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - It should be noted that the values of :field:`last_modified`, :field:`modification_timestamp` and :field:`mtime` do not necessary match.</span><span class="se">\n</span><span class="s1">    :field:`last_modified` pertains to the modification of the OPTIMADE metadata, :field:`modification_timestamp` pertains to file contents and :field:`mtime` pertains to the modification of the file (not necessary changing its contents).</span><span class="se">\n</span><span class="s1">    For example, appending an empty string to a file would result in the change of :field:`mtime` in some operating systems, but this would not be deemed as a modification of its contents.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">mtime</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">' Time of last modification of a file as per POSIX standard.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - It should be noted that the values of :field:`last_modified`, :field:`modification_timestamp` and :field:`mtime` do not necessary match.</span><span class="se">\n</span><span class="s1">    :field:`last_modified` pertains to the modification of the OPTIMADE metadata, :field:`modification_timestamp` pertains to file contents and :field:`mtime` pertains to the modification of the file (not necessary changing its contents).</span><span class="se">\n</span><span class="s1">    For example, appending an empty string to a file would result in the change of :field:`mtime` in some operating systems, but this would not be deemed as a modification of its contents.</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4972,7 +4972,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.name" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">name</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Base name of a file.</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - File name extension is an integral part of a file name and, if available, MUST be included.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n\n</span><span class="s1">  - :val:`&quot;1000000.cif&quot;`&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">name</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Base name of a file.</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - File name extension is an integral part of a file name and, if available, MUST be included.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n\n</span><span class="s1">  - :val:`"1000000.cif"`'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4993,7 +4993,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.size" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">size</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Size of a file in bytes.</span><span class="se">\n</span><span class="s1">- **Type**: integer</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - If provided, it MUST be guaranteed that either exact size of a file is given or its upper bound.</span><span class="se">\n</span><span class="s1">    This way if a client reserves a static buffer or truncates the download stream after this many bytes the whole file would be received.</span><span class="se">\n</span><span class="s1">    Such provision is included to allow the providers to serve on-the-fly compressed files.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">size</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Size of a file in bytes.</span><span class="se">\n</span><span class="s1">- **Type**: integer</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - If provided, it MUST be guaranteed that either exact size of a file is given or its upper bound.</span><span class="se">\n</span><span class="s1">    This way if a client reserves a static buffer or truncates the download stream after this many bytes the whole file would be received.</span><span class="se">\n</span><span class="s1">    Such provision is included to allow the providers to serve on-the-fly compressed files.'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5014,7 +5014,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">url</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The URL to get the contents of a file.</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - **Response**: REQUIRED in the response.</span><span class="se">\n</span><span class="s1">  - The URL MUST point to the actual contents of a file (i.e. byte stream), not an intermediate (preview) representation.</span><span class="se">\n</span><span class="s1">    For example, if referring to a file on GitHub, a link should point to raw contents.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n\n</span><span class="s1">  - :val:`&quot;https://example.org/files/cifs/1000000.cif&quot;`</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">url</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'The URL to get the contents of a file.</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: MUST be supported by all implementations, MUST NOT be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - **Response**: REQUIRED in the response.</span><span class="se">\n</span><span class="s1">  - The URL MUST point to the actual contents of a file (i.e. byte stream), not an intermediate (preview) representation.</span><span class="se">\n</span><span class="s1">    For example, if referring to a file on GitHub, a link should point to raw contents.</span><span class="se">\n\n</span><span class="s1">- **Examples**:</span><span class="se">\n\n</span><span class="s1">  - :val:`"https://example.org/files/cifs/1000000.cif"`</span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5035,7 +5035,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.url_stable_until" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">url_stable_until</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Point in time until which the URL in `url` is guaranteed to stay stable.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - :val:`null` means that there is no stability guarantee for the URL in `url`.</span><span class="se">\n</span><span class="s1">    Indefinite support could be communicated by providing a date sufficiently far in the future, for example, :val:`9999-12-31`.&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">url_stable_until</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Point in time until which the URL in `url` is guaranteed to stay stable.</span><span class="se">\n</span><span class="s1">- **Type**: timestamp</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - :val:`null` means that there is no stability guarantee for the URL in `url`.</span><span class="se">\n</span><span class="s1">    Indefinite support could be communicated by providing a date sufficiently far in the future, for example, :val:`9999-12-31`.'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5056,7 +5056,7 @@
 
 
 <h3 id="optimade.models.files.FileResourceAttributes.version" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">version</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Version information of a file (e.g. commit, revision, timestamp).</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - If provided, it MUST be guaranteed that file contents pertaining to the same combination of :field:`id` and :field:`version` are the same&#39;</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">),</span> <span class="n">queryable</span><span class="o">=</span><span class="p">(</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">version</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Version information of a file (e.g. commit, revision, timestamp).</span><span class="se">\n</span><span class="s1">- **Type**: string</span><span class="se">\n</span><span class="s1">- **Requirements/Conventions**:</span><span class="se">\n\n</span><span class="s1">  - **Support**: OPTIONAL support in implementations, i.e., MAY be :val:`null`.</span><span class="se">\n</span><span class="s1">  - **Query**: Support for queries on this property is OPTIONAL.</span><span class="se">\n</span><span class="s1">  - If provided, it MUST be guaranteed that file contents pertaining to the same combination of :field:`id` and :field:`version` are the same'</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span> <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5102,10 +5102,10 @@
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"immutable_id"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convenience validator for casting `immutable_id` to a string."""</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -5138,13 +5138,13 @@
 <span class="normal">335</span>
 <span class="normal">336</span>
 <span class="normal">337</span>
-<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">check_illegal_attributes_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Attributes&quot;</span><span class="p">:</span>
-    <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
+<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_illegal_attributes_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Attributes"</span><span class="p">:</span>
+    <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"relationships"</span><span class="p">,</span> <span class="s2">"links"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">illegal_fields</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Attributes&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Attributes"</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -5238,10 +5238,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

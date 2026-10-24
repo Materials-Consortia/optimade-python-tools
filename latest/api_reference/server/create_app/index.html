@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3603,10 +3603,10 @@
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_major_version_base_url</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add mandatory vMajor endpoints, i.e. all except /versions.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Add mandatory vMajor endpoints, i.e. all except /versions."""</span>
     <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="n">INDEX_ENDPOINTS</span> <span class="k">if</span> <span class="n">index</span> <span class="k">else</span> <span class="n">MAIN_ENDPOINTS</span><span class="p">:</span>
         <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
-            <span class="n">endpoint</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">],</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="kc">False</span>
+            <span class="n">endpoint</span><span class="o">.</span><span class="n">router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">"major"</span><span class="p">],</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3647,13 +3647,13 @@
 <span class="normal">58</span>
 <span class="normal">59</span>
 <span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add_optional_versioned_base_urls</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the following OPTIONAL prefixes/base URLs to server:</span>
+<span class="w">    </span><span class="sd">"""Add the following OPTIONAL prefixes/base URLs to server:</span>
 <span class="sd">    ```</span>
 <span class="sd">        /vMajor.Minor</span>
 <span class="sd">        /vMajor.Minor.Patch</span>
 <span class="sd">    ```</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;minor&quot;</span><span class="p">,</span> <span class="s2">&quot;patch&quot;</span><span class="p">):</span>
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">version</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"minor"</span><span class="p">,</span> <span class="s2">"patch"</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="n">INDEX_ENDPOINTS</span> <span class="k">if</span> <span class="n">index</span> <span class="k">else</span> <span class="n">MAIN_ENDPOINTS</span><span class="p">:</span>
             <span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
                 <span class="n">endpoint</span><span class="o">.</span><span class="n">router</span><span class="p">,</span>
@@ -3897,14 +3897,14 @@ override config options for individual apps by passing a custom ServerConfig.</p
     <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">logger_tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FastAPI</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Create and configure a FastAPI app for the OPTIMADE API.</span>
 
 <span class="sd">    Sets up logging, middleware, exception handlers, routers, and optional</span>
 <span class="sd">    test/JSONL data insertion. Can be used for both a regular OPTIMADE API</span>
 <span class="sd">    or the index meta-database variant.</span>
 
-<span class="sd">    Note that the global ServerConfig instance is read from the &quot;OPTIMADE_&quot;</span>
+<span class="sd">    Note that the global ServerConfig instance is read from the "OPTIMADE_"</span>
 <span class="sd">    env variables or the config json file, but this function allows to</span>
 <span class="sd">    override config options for individual apps by passing a custom ServerConfig.</span>
 
@@ -3915,32 +3915,32 @@ override config options for individual apps by passing a custom ServerConfig.</p
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Configured FastAPI application.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># create app-specific logger</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">create_logger</span><span class="p">(</span><span class="n">logger_tag</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">config_warnings</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Invalid config file or no config file provided, running server with default settings. Errors: &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="n">warnings</span><span class="o">.</span><span class="n">formatwarning</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">.</span><span class="n">category</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">config_warnings</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Invalid config file or no config file provided, running server with default settings. Errors: "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="p">[</span><span class="n">warnings</span><span class="o">.</span><span class="n">formatwarning</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">message</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">.</span><span class="n">category</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">w</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">w</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">config_warnings</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Loaded settings from </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;OPTIMADE_CONFIG_FILE&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">DEFAULT_CONFIG_FILE_PATH</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Loaded settings from </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'OPTIMADE_CONFIG_FILE'</span><span class="p">,</span><span class="w"> </span><span class="n">DEFAULT_CONFIG_FILE_PATH</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;DEBUG MODE&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"DEBUG MODE"</span><span class="p">)</span>
 
-    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;OPTIMADE API&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span> <span class="k">else</span> <span class="s2">&quot;OPTIMADE API - Index meta-database&quot;</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">"OPTIMADE API"</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">index</span> <span class="k">else</span> <span class="s2">"OPTIMADE API - Index meta-database"</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">"""The [Open Databases Integration for Materials Design (OPTIMADE) consortium](https://www.optimade.org/) aims to make materials databases interoperational by developing a common REST API.</span><span class="se">\n</span><span class="s2">"""</span>
     <span class="k">if</span> <span class="n">index</span><span class="p">:</span>
-        <span class="n">description</span> <span class="o">+=</span> <span class="s1">&#39;This is the &quot;special&quot; index meta-database.</span><span class="se">\n</span><span class="s1">&#39;</span>
-    <span class="n">description</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">) v</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="n">description</span> <span class="o">+=</span> <span class="s1">'This is the "special" index meta-database.</span><span class="se">\n</span><span class="s1">'</span>
+    <span class="n">description</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">This specification is generated using [`optimade-python-tools`](https://github.com/Materials-Consortia/optimade-python-tools/tree/v</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">) v</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">."</span>
 
     <span class="k">if</span> <span class="n">index</span><span class="p">:</span>
         <span class="n">config</span><span class="o">.</span><span class="n">is_index</span> <span class="o">=</span> <span class="kc">True</span>
@@ -3950,9 +3950,9 @@ override config options for individual apps by passing a custom ServerConfig.</p
         <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
         <span class="n">version</span><span class="o">=</span><span class="n">__api_version__</span><span class="p">,</span>
-        <span class="n">docs_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s1">&#39;major&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/extensions/docs&quot;</span><span class="p">,</span>
-        <span class="n">redoc_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s1">&#39;major&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/extensions/redoc&quot;</span><span class="p">,</span>
-        <span class="n">openapi_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s1">&#39;major&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/extensions/openapi.json&quot;</span><span class="p">,</span>
+        <span class="n">docs_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s1">'major'</span><span class="p">]</span><span class="si">}</span><span class="s2">/extensions/docs"</span><span class="p">,</span>
+        <span class="n">redoc_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s1">'major'</span><span class="p">]</span><span class="si">}</span><span class="s2">/extensions/redoc"</span><span class="p">,</span>
+        <span class="n">openapi_url</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s1">'major'</span><span class="p">]</span><span class="si">}</span><span class="s2">/extensions/openapi.json"</span><span class="p">,</span>
         <span class="n">default_response_class</span><span class="o">=</span><span class="n">JSONAPIResponse</span><span class="p">,</span>
         <span class="n">separate_input_output_schemas</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
@@ -3975,14 +3975,14 @@ override config options for individual apps by passing a custom ServerConfig.</p
             <span class="n">insert_index_data</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">entry_collections</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
 
     <span class="c1"># Add middleware to set logging context</span>
-    <span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+    <span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="s2">"http"</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">set_context</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
         <span class="n">set_logging_context</span><span class="p">(</span><span class="n">logger_tag</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span>
 
     <span class="c1"># Add CORS middleware</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">CORSMiddleware</span><span class="p">,</span> <span class="n">allow_origins</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">])</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span><span class="n">CORSMiddleware</span><span class="p">,</span> <span class="n">allow_origins</span><span class="o">=</span><span class="p">[</span><span class="s2">"*"</span><span class="p">])</span>
 
     <span class="c1"># Then add required OPTIMADE middleware</span>
     <span class="k">for</span> <span class="n">middleware</span> <span class="ow">in</span> <span class="n">OPTIMADE_MIDDLEWARE</span><span class="p">:</span>
@@ -4093,10 +4093,10 @@ override config options for individual apps by passing a custom ServerConfig.</p
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4103,7 +4103,7 @@
 
 
 <h2 id="optimade.models.baseinfo.VERSIONED_BASE_URL_PATTERN" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">VERSIONED_BASE_URL_PATTERN</span> <span class="o">=</span> <span class="s1">&#39;^.+/v[0-1](</span><span class="se">\\</span><span class="s1">.[0-9]+)*/?$&#39;</span></code>
+            <code class="highlight language-python"><span class="n">VERSIONED_BASE_URL_PATTERN</span> <span class="o">=</span> <span class="s1">'^.+/v[0-1](</span><span class="se">\\</span><span class="s1">.[0-9]+)*/?$'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -4201,14 +4201,14 @@
 <span class="normal">66</span>
 <span class="normal">67</span>
 <span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AvailableApiVersion</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A JSON object containing information about an available API version&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A JSON object containing information about an available API version"""</span>
 
     <span class="n">url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">AnyHttpUrl</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A string specifying a versioned base URL that MUST adhere to the rules in section Base URL&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"A string specifying a versioned base URL that MUST adhere to the rules in section Base URL"</span><span class="p">,</span>
             <span class="n">json_schema_extra</span><span class="o">=</span><span class="p">{</span>
-                <span class="s2">&quot;pattern&quot;</span><span class="p">:</span> <span class="n">VERSIONED_BASE_URL_PATTERN</span><span class="p">,</span>
+                <span class="s2">"pattern"</span><span class="p">:</span> <span class="n">VERSIONED_BASE_URL_PATTERN</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">),</span>
     <span class="p">]</span>
@@ -4216,41 +4216,41 @@
     <span class="n">version</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">SemanticVersion</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A string containing the full version number of the API served at that versioned base URL.</span>
-<span class="s2">The version number string MUST NOT be prefixed by, e.g., &#39;v&#39;.</span>
-<span class="s2">Examples: `1.0.0`, `1.0.0-rc.2`.&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""A string containing the full version number of the API served at that versioned base URL.</span>
+<span class="s2">The version number string MUST NOT be prefixed by, e.g., 'v'.</span>
+<span class="s2">Examples: `1.0.0`, `1.0.0-rc.2`."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"url"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">url_must_be_versioned_base_Url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">AnyHttpUrl</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AnyHttpUrl</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The URL must be a versioned base URL&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The URL must be a versioned base URL"""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">VERSIONED_BASE_URL_PATTERN</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;URL </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> must be a versioned base URL (i.e., must match the &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;pattern &#39;</span><span class="si">{</span><span class="n">VERSIONED_BASE_URL_PATTERN</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
+                <span class="sa">f</span><span class="s2">"URL </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> must be a versioned base URL (i.e., must match the "</span>
+                <span class="sa">f</span><span class="s2">"pattern '</span><span class="si">{</span><span class="n">VERSIONED_BASE_URL_PATTERN</span><span class="si">}</span><span class="s2">')"</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">value</span>
 
-    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">crosscheck_url_and_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;AvailableApiVersion&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">crosscheck_url_and_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"AvailableApiVersion"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Check that URL version and API version are compatible."""</span>
         <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
             <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"v"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># as with version urls, we need to split any release tags or build metadata out of these URLs</span>
         <span class="n">url_version</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-            <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"+"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">api_version</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-            <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"+"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span> <span class="o">!=</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">url_version</span><span class="p">,</span> <span class="n">api_version</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;API version </span><span class="si">{</span><span class="n">api_version</span><span class="si">}</span><span class="s2"> is not compatible with url version </span><span class="si">{</span><span class="n">url_version</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">"API version </span><span class="si">{</span><span class="n">api_version</span><span class="si">}</span><span class="s2"> is not compatible with url version </span><span class="si">{</span><span class="n">url_version</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -4344,24 +4344,24 @@
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">crosscheck_url_and_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;AvailableApiVersion&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that URL version and API version are compatible.&quot;&quot;&quot;</span>
+<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">crosscheck_url_and_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"AvailableApiVersion"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Check that URL version and API version are compatible."""</span>
     <span class="n">url</span> <span class="o">=</span> <span class="p">(</span>
         <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"v"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="c1"># as with version urls, we need to split any release tags or build metadata out of these URLs</span>
     <span class="n">url_version</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"+"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">api_version</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-        <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"+"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span> <span class="o">!=</span> <span class="n">b</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">url_version</span><span class="p">,</span> <span class="n">api_version</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;API version </span><span class="si">{</span><span class="n">api_version</span><span class="si">}</span><span class="s2"> is not compatible with url version </span><span class="si">{</span><span class="n">url_version</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="sa">f</span><span class="s2">"API version </span><span class="si">{</span><span class="n">api_version</span><span class="si">}</span><span class="s2"> is not compatible with url version </span><span class="si">{</span><span class="n">url_version</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -4399,14 +4399,14 @@
 <span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
-<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">47</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"url"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">url_must_be_versioned_base_Url</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">AnyHttpUrl</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AnyHttpUrl</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The URL must be a versioned base URL&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The URL must be a versioned base URL"""</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">VERSIONED_BASE_URL_PATTERN</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;URL </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> must be a versioned base URL (i.e., must match the &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;pattern &#39;</span><span class="si">{</span><span class="n">VERSIONED_BASE_URL_PATTERN</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
+            <span class="sa">f</span><span class="s2">"URL </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> must be a versioned base URL (i.e., must match the "</span>
+            <span class="sa">f</span><span class="s2">"pattern '</span><span class="si">{</span><span class="n">VERSIONED_BASE_URL_PATTERN</span><span class="si">}</span><span class="s2">')"</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -4536,65 +4536,65 @@
 <span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseInfoAttributes</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attributes for Base URL Info endpoint&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Attributes for Base URL Info endpoint"""</span>
 
     <span class="n">api_version</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">SemanticVersion</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Presently used full version of the OPTIMADE API.</span>
-<span class="s2">The version number string MUST NOT be prefixed by, e.g., &quot;v&quot;.</span>
-<span class="s2">Examples: `1.0.0`, `1.0.0-rc.2`.&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""Presently used full version of the OPTIMADE API.</span>
+<span class="s2">The version number string MUST NOT be prefixed by, e.g., "v".</span>
+<span class="s2">Examples: `1.0.0`, `1.0.0-rc.2`."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
     <span class="n">available_api_versions</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">AvailableApiVersion</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of dictionaries of available API versions at other base URLs&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"A list of dictionaries of available API versions at other base URLs"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
     <span class="n">formats</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of available output formats.&quot;</span><span class="p">)</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;json&quot;</span><span class="p">]</span>
+        <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"List of available output formats."</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"json"</span><span class="p">]</span>
     <span class="n">available_endpoints</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of available endpoints (i.e., the string to be appended to the versioned base URL).&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"List of available endpoints (i.e., the string to be appended to the versioned base URL)."</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
     <span class="n">entry_types_by_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Available entry endpoints as a function of output formats.&quot;</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Available entry endpoints as a function of output formats."</span>
         <span class="p">),</span>
     <span class="p">]</span>
     <span class="n">is_index</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;If true, this is an index meta-database base URL (see section Index Meta-Database). &quot;</span>
-            <span class="s2">&quot;If this member is not provided, the client MUST assume this is not an index meta-database base URL &quot;</span>
-            <span class="s2">&quot;(i.e., the default is for `is_index` to be `false`).&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"If true, this is an index meta-database base URL (see section Index Meta-Database). "</span>
+            <span class="s2">"If this member is not provided, the client MUST assume this is not an index meta-database base URL "</span>
+            <span class="s2">"(i.e., the default is for `is_index` to be `false`)."</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">license</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">Link</span> <span class="o">|</span> <span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
             <span class="o">...</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) giving a URL to a web page containing a human-readable text describing the license (or licensing options if there are multiple) covering all the data and metadata provided by this database.</span>
-<span class="s2">Clients are advised not to try automated parsing of this link or its content, but rather rely on the field `available_licenses` instead.&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""A [JSON API links object](http://jsonapi.org/format/1.0/#document-links) giving a URL to a web page containing a human-readable text describing the license (or licensing options if there are multiple) covering all the data and metadata provided by this database.</span>
+<span class="s2">Clients are advised not to try automated parsing of this link or its content, but rather rely on the field `available_licenses` instead."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">available_licenses</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
             <span class="o">...</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of alternative licenses available to the client for licensing the complete database, i.e., all the entries, metadata, and the content and structure of the database itself.</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of alternative licenses available to the client for licensing the complete database, i.e., all the entries, metadata, and the content and structure of the database itself.</span>
 
 <span class="s2">If more than one license is available to the client, the identifier of each one SHOULD be included in the list.</span>
 <span class="s2">Inclusion of a license identifier in the list is a commitment of the database that the rights are in place to grant clients access to all the individual entries, all metadata, and the content and structure of the database itself according to the terms of any of these licenses (at the choice of the client).</span>
 <span class="s2">If the licensing information provided via the field license omits licensing options specified in `available_licenses`, or if it otherwise contradicts them, a client MUST still be allowed to interpret the inclusion of a license in `available_licenses` as a full commitment from the database without exceptions, under the respective licenses.</span>
 <span class="s2">If the database cannot make that commitment, e.g., if only part of the database is available under a license, the corresponding license identifier MUST NOT appear in `available_licenses` (but, rather, the field license is to be used to clarify the licensing situation.)</span>
 <span class="s2">An empty list indicates that none of the SPDX licenses apply and that the licensing situation is clarified in human readable form in the field `license`.</span>
-<span class="s2">An unknown value means that the database makes no commitment.&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">An unknown value means that the database makes no commitment."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -4602,22 +4602,22 @@
         <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
             <span class="o">...</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of additional alternative licenses available to the client for licensing individual, and non-substantial sets of, database entries, metadata, and extracts from the database that do not constitute substantial parts of the database.</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""List of [SPDX license identifiers](https://spdx.org/licenses/) specifying a set of additional alternative licenses available to the client for licensing individual, and non-substantial sets of, database entries, metadata, and extracts from the database that do not constitute substantial parts of the database.</span>
 
 <span class="s2">Note that the definition of the field `available_licenses` implies that licenses specified in that field are available also for the licensing specified by this field, even if they are not explicitly included in the field `available_licenses_for_entries` or if it is `null` (however, the opposite relationship does not hold).</span>
-<span class="s2">If `available_licenses` is unknown, only the licenses in `available_licenses_for_entries` apply.&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">If `available_licenses` is unknown, only the licenses in `available_licenses_for_entries` apply."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">formats_and_endpoints_must_be_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseInfoAttributes&quot;</span><span class="p">:</span>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">formats_and_endpoints_must_be_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"BaseInfoAttributes"</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">format_</span><span class="p">,</span> <span class="n">endpoints</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry_types_by_format</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">format_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">format_</span><span class="si">}</span><span class="s2">&#39; must be listed in formats to be valid&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">format_</span><span class="si">}</span><span class="s2">' must be listed in formats to be valid"</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="n">endpoints</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_endpoints</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&#39; must be listed in available_endpoints to be valid&quot;</span>
+                        <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">' must be listed in available_endpoints to be valid"</span>
                     <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -4760,7 +4760,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoAttributes.formats" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;json&#39;</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">formats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'json'</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4845,15 +4845,15 @@
 <span class="normal">152</span>
 <span class="normal">153</span>
 <span class="normal">154</span>
-<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">formats_and_endpoints_must_be_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseInfoAttributes&quot;</span><span class="p">:</span>
+<span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">formats_and_endpoints_must_be_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"BaseInfoAttributes"</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">format_</span><span class="p">,</span> <span class="n">endpoints</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry_types_by_format</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">format_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">formats</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">format_</span><span class="si">}</span><span class="s2">&#39; must be listed in formats to be valid&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">format_</span><span class="si">}</span><span class="s2">' must be listed in formats to be valid"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="n">endpoints</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_endpoints</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&#39; must be listed in available_endpoints to be valid&quot;</span>
+                    <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">' must be listed in available_endpoints to be valid"</span>
                 <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -4900,8 +4900,8 @@
 <span class="normal">159</span>
 <span class="normal">160</span>
 <span class="normal">161</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BaseInfoResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
-    <span class="nb">id</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;/&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
-    <span class="nb">type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"/"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"/"</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"info"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"info"</span>
     <span class="n">attributes</span><span class="p">:</span> <span class="n">BaseInfoAttributes</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -4941,7 +4941,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoResource.id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span></code>
+            <code class="highlight language-python"><span class="nb">id</span> <span class="o">=</span> <span class="s1">'/'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5046,7 +5046,7 @@
 
 
 <h3 id="optimade.models.baseinfo.BaseInfoResource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span></code>
+            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="s1">'info'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5150,10 +5150,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3755,7 +3755,7 @@ If you do so, please note the name of the database, the collection, and consider
 <span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_page_limit_max</span><span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_base_url</span><span class="o">=</span>http://localhost:8081<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_index_base_url</span><span class="o">=</span>http://localhost:8080<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_provider</span><span class="o">=</span><span class="s2">&quot;{\&quot;prefix\&quot;:\&quot;myorg\&quot;,\&quot;name\&quot;:\&quot;My Organization\&quot;,\&quot;description\&quot;:\&quot;Short description for My Organization\&quot;,\&quot;homepage\&quot;:\&quot;https://example.org\&quot;}&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_provider</span><span class="o">=</span><span class="s2">"{\"prefix\":\"myorg\",\"name\":\"My Organization\",\"description\":\"Short description for My Organization\",\"homepage\":\"https://example.org\"}"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>ghcr.io/materials-consortia/optimade:latest
 </code></pre></div>
 <p>Note, the <code>optimade_base_url</code> and <code>optimade_index_base_url</code> values should be different if the server is run through a reverse-proxy service like NGINX, Apache or other.
@@ -3766,13 +3766,13 @@ For this example, we are only concerned with exposing the OPTIMADE APIs from the
 For this, we will first create a JSON file to reference and load as data for the <code>/links</code> endpoint:</p>
 <div class="highlight"><pre><span></span><code><span class="p">[</span>
 <span class="w">  </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-optimade-db&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;links&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My OPTIMADE API&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An OPTIMADE API for my database of essential material structures.&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;base_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8081&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;homepage&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.org&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;link_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;child&quot;</span>
+<span class="w">    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"my-optimade-db"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"links"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"My OPTIMADE API"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"An OPTIMADE API for my database of essential material structures."</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"base_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost:8081"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"homepage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example.org"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"link_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"child"</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">]</span>
 </code></pre></div>
@@ -3796,7 +3796,7 @@ docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</spa
 <span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_page_limit_max</span><span class="o">=</span><span class="m">100</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_base_url</span><span class="o">=</span>http://localhost:8080<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_index_base_url</span><span class="o">=</span>http://localhost:8080<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_provider</span><span class="o">=</span><span class="s2">&quot;{\&quot;prefix\&quot;:\&quot;myorg\&quot;,\&quot;name\&quot;:\&quot;My Organization\&quot;,\&quot;description\&quot;:\&quot;Short description for My Organization\&quot;,\&quot;homepage\&quot;:\&quot;https://example.org\&quot;}&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_provider</span><span class="o">=</span><span class="s2">"{\"prefix\":\"myorg\",\"name\":\"My Organization\",\"description\":\"Short description for My Organization\",\"homepage\":\"https://example.org\"}"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_default_db</span><span class="o">=</span>my-optimade-db<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--env<span class="w"> </span><span class="nv">optimade_index_links_path</span><span class="o">=</span>/external/index_data/index_links.json<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--volume<span class="w"> </span>/home/user/optimade/index_data:/external/index_data<span class="w"> </span><span class="se">\</span>
@@ -3891,10 +3891,10 @@ If you stop the server and want to restart it, you should then set the variable 
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

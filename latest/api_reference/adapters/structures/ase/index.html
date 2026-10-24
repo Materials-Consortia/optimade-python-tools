@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3689,7 +3689,7 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 <span class="normal">157</span>
 <span class="normal">158</span>
 <span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">from_ase_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">:</span> <span class="n">Atoms</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StructureResourceAttributes</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an ASE `Atoms` object into an OPTIMADE `StructureResourceAttributes` model.</span>
+<span class="w">    </span><span class="sd">"""Convert an ASE `Atoms` object into an OPTIMADE `StructureResourceAttributes` model.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        atoms: The ASE `Atoms` object to convert.</span>
@@ -3698,44 +3698,44 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 <span class="sd">        An OPTIMADE `StructureResourceAttributes` model, which can be converted to a raw Python</span>
 <span class="sd">            dictionary with `.model_dump()` or to JSON with `.model_dump_json()`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">Atoms</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Cannot convert type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span><span class="si">}</span><span class="s2"> into an OPTIMADE `StructureResourceAttributes` model.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Cannot convert type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span><span class="si">}</span><span class="s2"> into an OPTIMADE `StructureResourceAttributes` model."</span>
         <span class="p">)</span>
 
     <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;cartesian_site_positions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;fractional_site_positions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_scaled_positions</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;lattice_vectors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;species_at_sites&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_chemical_symbols</span><span class="p">()</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;elements_ratios&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elements_ratios_from_species_at_sites</span><span class="p">(</span>
-        <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;species_at_sites&quot;</span><span class="p">]</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"cartesian_site_positions"</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"fractional_site_positions"</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_scaled_positions</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"lattice_vectors"</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"species_at_sites"</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_chemical_symbols</span><span class="p">()</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"elements_ratios"</span><span class="p">]</span> <span class="o">=</span> <span class="n">elements_ratios_from_species_at_sites</span><span class="p">(</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s2">"species_at_sites"</span><span class="p">]</span>
     <span class="p">)</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_from_species_at_sites</span><span class="p">(</span>
-        <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;species_at_sites&quot;</span><span class="p">]</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"species"</span><span class="p">]</span> <span class="o">=</span> <span class="n">species_from_species_at_sites</span><span class="p">(</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s2">"species_at_sites"</span><span class="p">]</span>
     <span class="p">)</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;dimension_types&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">pbc</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;nperiodic_dimensions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;dimension_types&quot;</span><span class="p">])</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;nelements&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">])</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;elements&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">_</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">]])</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;nsites&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;species_at_sites&quot;</span><span class="p">])</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"dimension_types"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">pbc</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"nperiodic_dimensions"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"dimension_types"</span><span class="p">])</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"nelements"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"species"</span><span class="p">])</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"elements"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">_</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">[</span><span class="s2">"species"</span><span class="p">]])</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"nsites"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">attributes</span><span class="p">[</span><span class="s2">"species_at_sites"</span><span class="p">])</span>
 
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;chemical_formula_descriptive&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_chemical_formula</span><span class="p">()</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;chemical_formula_reduced&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduce_formula</span><span class="p">(</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"chemical_formula_descriptive"</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">get_chemical_formula</span><span class="p">()</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"chemical_formula_reduced"</span><span class="p">]</span> <span class="o">=</span> <span class="n">reduce_formula</span><span class="p">(</span>
         <span class="n">atoms</span><span class="o">.</span><span class="n">get_chemical_formula</span><span class="p">()</span>
     <span class="p">)</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;chemical_formula_anonymous&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">anonymize_formula</span><span class="p">(</span>
-        <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;chemical_formula_reduced&quot;</span><span class="p">],</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"chemical_formula_anonymous"</span><span class="p">]</span> <span class="o">=</span> <span class="n">anonymize_formula</span><span class="p">(</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s2">"chemical_formula_reduced"</span><span class="p">],</span>
     <span class="p">)</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;last_modified&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">attributes</span><span class="p">[</span><span class="s2">&quot;structure_features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"last_modified"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"immutable_id"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">attributes</span><span class="p">[</span><span class="s2">"structure_features"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">atoms</span><span class="o">.</span><span class="n">info</span><span class="p">:</span>
         <span class="n">optimade_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">EXTRA_FIELD_PREFIX</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
-            <span class="n">optimade_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">EXTRA_FIELD_PREFIX</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">optimade_key</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">EXTRA_FIELD_PREFIX</span><span class="si">}</span><span class="s2">"</span><span class="p">):</span>
+            <span class="n">optimade_key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">EXTRA_FIELD_PREFIX</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">optimade_key</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">attributes</span><span class="p">[</span><span class="n">optimade_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">StructureResourceAttributes</span><span class="p">(</span><span class="o">**</span><span class="n">attributes</span><span class="p">)</span>
@@ -3889,7 +3889,7 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 <span class="normal">104</span>
 <span class="normal">105</span>
 <span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_ase_atoms</span><span class="p">(</span><span class="n">optimade_structure</span><span class="p">:</span> <span class="n">OptimadeStructure</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Atoms</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get ASE `Atoms` from OPTIMADE structure.</span>
+<span class="w">    </span><span class="sd">"""Get ASE `Atoms` from OPTIMADE structure.</span>
 
 <span class="sd">    Caution:</span>
 <span class="sd">        Cannot handle partial occupancies (this includes vacancies).</span>
@@ -3900,8 +3900,8 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 <span class="sd">    Returns:</span>
 <span class="sd">        ASE `Atoms` object.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s2">&quot;optimade.adapters&quot;</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Atoms&quot;</span><span class="p">)):</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="s2">"optimade.adapters"</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Atoms"</span><span class="p">)):</span>
         <span class="n">warn</span><span class="p">(</span><span class="n">ASE_NOT_FOUND</span><span class="p">,</span> <span class="n">AdapterPackageNotFound</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
@@ -3910,7 +3910,7 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
     <span class="c1"># Cannot handle partial occupancies</span>
     <span class="k">if</span> <span class="n">StructureFeatures</span><span class="o">.</span><span class="n">DISORDER</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">structure_features</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ConversionError</span><span class="p">(</span>
-            <span class="s2">&quot;ASE cannot handle structures with partial occupancies, sorry.&quot;</span>
+            <span class="s2">"ASE cannot handle structures with partial occupancies, sorry."</span>
         <span class="p">)</span>
 
     <span class="n">species</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">species</span>
@@ -3920,11 +3920,11 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 
     <span class="n">optimade_species</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">species</span><span class="p">}</span>
 
-    <span class="c1"># Since we&#39;ve made sure there are no species with more than 1 chemical symbol,</span>
+    <span class="c1"># Since we've made sure there are no species with more than 1 chemical symbol,</span>
     <span class="c1"># asking for index 0 will always work.</span>
-    <span class="k">if</span> <span class="s2">&quot;X&quot;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">specie</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">specie</span> <span class="ow">in</span> <span class="n">optimade_species</span><span class="o">.</span><span class="n">values</span><span class="p">()]:</span>
+    <span class="k">if</span> <span class="s2">"X"</span> <span class="ow">in</span> <span class="p">[</span><span class="n">specie</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">specie</span> <span class="ow">in</span> <span class="n">optimade_species</span><span class="o">.</span><span class="n">values</span><span class="p">()]:</span>
         <span class="k">raise</span> <span class="n">ConversionError</span><span class="p">(</span>
-            <span class="s2">&quot;ASE cannot handle structures with unknown (&#39;X&#39;) chemical symbols, sorry.&quot;</span>
+            <span class="s2">"ASE cannot handle structures with unknown ('X') chemical symbols, sorry."</span>
         <span class="p">)</span>
 
     <span class="n">atoms</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3945,10 +3945,10 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
 
     <span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">):</span>
             <span class="n">ase_key</span> <span class="o">=</span> <span class="n">key</span>
-            <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">EXTRA_FIELD_PREFIX</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">):</span>
-                <span class="n">ase_key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">EXTRA_FIELD_PREFIX</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">EXTRA_FIELD_PREFIX</span><span class="si">}</span><span class="s2">_"</span><span class="p">):</span>
+                <span class="n">ase_key</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">EXTRA_FIELD_PREFIX</span><span class="si">}</span><span class="s2">_"</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
             <span class="n">info</span><span class="p">[</span><span class="n">ase_key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Atoms</span><span class="p">(</span>
@@ -4039,10 +4039,10 @@ dictionary with <code>.model_dump()</code> or to JSON with <code>.model_dump_jso
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3536,10 +3536,10 @@ This guide will briefly outline how to parse OPTIMADE filter strings into databa
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.filterparser</span><span class="w"> </span><span class="kn">import</span> <span class="n">LarkParser</span>
 
 <span class="n">p</span> <span class="o">=</span> <span class="n">LarkParser</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">tree</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;nelements&lt;3&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"nelements&lt;3"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>Tree<span class="o">(</span><span class="s1">&#39;filter&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;expression&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;expression_clause&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;expression_phrase&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;comparison&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;property_first_comparison&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;property&#39;</span>,<span class="w"> </span><span class="o">[</span>Token<span class="o">(</span><span class="s1">&#39;IDENTIFIER&#39;</span>,<span class="w"> </span><span class="s1">&#39;nelements&#39;</span><span class="o">)])</span>,<span class="w"> </span>Tree<span class="o">(</span><span class="s1">&#39;value_op_rhs&#39;</span>,<span class="w"> </span><span class="o">[</span>Token<span class="o">(</span><span class="s1">&#39;OPERATOR&#39;</span>,<span class="w"> </span><span class="s1">&#39;&lt;&#39;</span><span class="o">)</span>,<span class="w"> </span>Tree<span class="o">(</span><span class="s1">&#39;value&#39;</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">&#39;number&#39;</span>,<span class="w"> </span><span class="o">[</span>Token<span class="o">(</span><span class="s1">&#39;SIGNED_INT&#39;</span>,<span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="o">)])])])])])])])])])</span>
+<div class="highlight"><pre><span></span><code>Tree<span class="o">(</span><span class="s1">'filter'</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">'expression'</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">'expression_clause'</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">'expression_phrase'</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">'comparison'</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">'property_first_comparison'</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">'property'</span>,<span class="w"> </span><span class="o">[</span>Token<span class="o">(</span><span class="s1">'IDENTIFIER'</span>,<span class="w"> </span><span class="s1">'nelements'</span><span class="o">)])</span>,<span class="w"> </span>Tree<span class="o">(</span><span class="s1">'value_op_rhs'</span>,<span class="w"> </span><span class="o">[</span>Token<span class="o">(</span><span class="s1">'OPERATOR'</span>,<span class="w"> </span><span class="s1">'&lt;'</span><span class="o">)</span>,<span class="w"> </span>Tree<span class="o">(</span><span class="s1">'value'</span>,<span class="w"> </span><span class="o">[</span>Tree<span class="o">(</span><span class="s1">'number'</span>,<span class="w"> </span><span class="o">[</span>Token<span class="o">(</span><span class="s1">'SIGNED_INT'</span>,<span class="w"> </span><span class="s1">'3'</span><span class="o">)])])])])])])])])])</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
 </code></pre></div>
@@ -3555,7 +3555,7 @@ This guide will briefly outline how to parse OPTIMADE filter strings into databa
 <span class="w">              </span>value
 <span class="w">                </span>number<span class="w"> </span><span class="m">3</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">tree</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;_mp_bandgap &gt; 5.0 AND _cod_molecular_weight &lt; 350&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">tree</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"_mp_bandgap &gt; 5.0 AND _cod_molecular_weight &lt; 350"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>filter
@@ -3586,14 +3586,14 @@ For example, <a class="autorefs autorefs-internal" href="../../api_reference/fil
 
 <span class="n">transformer</span> <span class="o">=</span> <span class="n">MongoTransformer</span><span class="p">()</span>
 
-<span class="n">tree</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;_mp_bandgap &gt; 5.0 AND _cod_molecular_weight &lt; 350&#39;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"_mp_bandgap &gt; 5.0 AND _cod_molecular_weight &lt; 350"</span><span class="p">)</span>
 <span class="n">query</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;$and&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span><span class="nt">&quot;_mp_bandgap&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;$gt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span><span class="p">}},</span>
-<span class="w">    </span><span class="p">{</span><span class="nt">&quot;_cod_molecular_weight&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;$lt&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">350.0</span><span class="p">}}</span>
+<span class="w">  </span><span class="nt">"$and"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">"_mp_bandgap"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"$gt"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span><span class="p">}},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">"_cod_molecular_weight"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">"$lt"</span><span class="p">:</span><span class="w"> </span><span class="mf">350.0</span><span class="p">}}</span>
 <span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -3680,10 +3680,10 @@ Adding a transformer requires the following:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

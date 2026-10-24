@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4239,18 +4239,18 @@ trees into Elasticsearch queries.</p>
 <span class="normal">467</span>
 <span class="normal">468</span>
 <span class="normal">469</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ElasticTransformer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transformer that transforms ``v0.10.1``/`v1.0` grammar parse</span>
+<span class="w">    </span><span class="sd">"""Transformer that transforms ``v0.10.1``/`v1.0` grammar parse</span>
 <span class="sd">    trees into Elasticsearch queries.</span>
 
 <span class="sd">    Uses elasticsearch_dsl and will produce an `elasticsearch_dsl.Q` instance.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">operator_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span> <span class="s2">&quot;lte&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;gt&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span> <span class="s2">&quot;gte&quot;</span><span class="p">,</span>
+        <span class="s2">"&lt;"</span><span class="p">:</span> <span class="s2">"lt"</span><span class="p">,</span>
+        <span class="s2">"&lt;="</span><span class="p">:</span> <span class="s2">"lte"</span><span class="p">,</span>
+        <span class="s2">"&gt;"</span><span class="p">:</span> <span class="s2">"gt"</span><span class="p">,</span>
+        <span class="s2">"&gt;="</span><span class="p">:</span> <span class="s2">"gte"</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="n">_quantity_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">ElasticsearchQuantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">ElasticsearchQuantity</span>
@@ -4266,7 +4266,7 @@ trees into Elasticsearch queries.</p>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">mapper</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">nested</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to unwrap from `property` to the string backend field name.</span>
+<span class="w">        </span><span class="sd">"""Used to unwrap from `property` to the string backend field name.</span>
 
 <span class="sd">        If passed a `Quantity` (or a derived `ElasticsearchQuantity`), this method</span>
 <span class="sd">        returns the backend field name, modulo some handling of nested fields.</span>
@@ -4282,22 +4282,22 @@ trees into Elasticsearch queries.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            The field name to use for database queries.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">quantity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">RELATIONSHIP_ENTRY_TYPES</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr]</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Unable to filter on relationships with type </span><span class="si">{</span><span class="n">quantity</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Unable to filter on relationships with type </span><span class="si">{</span><span class="n">quantity</span><span class="si">!r}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
             <span class="c1"># In this case, the property rule has already filtered out fields</span>
-            <span class="c1"># that do not match this provider, so this indicates an &quot;other provider&quot;</span>
+            <span class="c1"># that do not match this provider, so this indicates an "other provider"</span>
             <span class="c1"># field that should be passed over</span>
-            <span class="k">if</span> <span class="n">quantity</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">quantity</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">quantity</span>
 
         <span class="k">if</span> <span class="n">nested</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">nested</span><span class="o">.</span><span class="n">backend_field</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">quantity</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">nested</span><span class="o">.</span><span class="n">backend_field</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">quantity</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>  <span class="c1"># type: ignore[union-attr]</span>
 
         <span class="k">return</span> <span class="n">quantity</span><span class="o">.</span><span class="n">backend_field</span>  <span class="c1"># type: ignore[union-attr, return-value]</span>
 
@@ -4308,7 +4308,7 @@ trees into Elasticsearch queries.</p>
         <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">nested</span><span class="p">:</span> <span class="n">ElasticsearchQuantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Q</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a range, match, or term query for the given quantity, comparison</span>
+<span class="w">        </span><span class="sd">"""Return a range, match, or term query for the given quantity, comparison</span>
 <span class="sd">        operator, and value.</span>
 
 <span class="sd">        Returns:</span>
@@ -4316,12 +4316,12 @@ trees into Elasticsearch queries.</p>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            BadRequest: If the query is not well-defined or is not supported.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">nested</span><span class="o">=</span><span class="n">nested</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;range&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">[</span><span class="n">op</span><span class="p">]:</span> <span class="n">value</span><span class="p">}})</span>
+            <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">"range"</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">[</span><span class="n">op</span><span class="p">]:</span> <span class="n">value</span><span class="p">}})</span>
 
-        <span class="c1"># If quantity is an &quot;other provider&quot; field then use Keyword as the default</span>
+        <span class="c1"># If quantity is an "other provider" field then use Keyword as the default</span>
         <span class="c1"># mapping type. These queries should not match on anything as the field</span>
         <span class="c1"># is not present in the index.</span>
         <span class="n">elastic_mapping_type</span> <span class="o">=</span> <span class="n">Keyword</span>
@@ -4329,96 +4329,96 @@ trees into Elasticsearch queries.</p>
             <span class="n">elastic_mapping_type</span> <span class="o">=</span> <span class="n">quantity</span><span class="o">.</span><span class="n">elastic_mapping_type</span>
 
         <span class="k">if</span> <span class="n">elastic_mapping_type</span> <span class="o">==</span> <span class="n">Text</span><span class="p">:</span>
-            <span class="n">query_type</span> <span class="o">=</span> <span class="s2">&quot;match&quot;</span>
+            <span class="n">query_type</span> <span class="o">=</span> <span class="s2">"match"</span>
         <span class="k">elif</span> <span class="n">elastic_mapping_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Keyword</span><span class="p">,</span> <span class="n">Integer</span><span class="p">]:</span>
-            <span class="n">query_type</span> <span class="o">=</span> <span class="s2">&quot;term&quot;</span>
+            <span class="n">query_type</span> <span class="o">=</span> <span class="s2">"term"</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Quantity has unsupported ES field type&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Quantity has unsupported ES field type"</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"="</span><span class="p">,</span> <span class="s2">""</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="n">query_type</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
 
-        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;!=&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"!="</span><span class="p">:</span>
             <span class="c1"># != queries must also include an existence check</span>
             <span class="c1"># Note that for MongoDB, `$exists` will include null-valued fields,</span>
             <span class="c1"># where as in ES `exists` excludes them.</span>
 
-            <span class="k">return</span> <span class="o">~</span><span class="n">Q</span><span class="p">(</span><span class="n">query_type</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;exists&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">)</span>
+            <span class="k">return</span> <span class="o">~</span><span class="n">Q</span><span class="p">(</span><span class="n">query_type</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="s2">"exists"</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_has_query_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">predicate_zip_list</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a bool query that combines the operator calls `_query_op`</span>
+<span class="w">        </span><span class="sd">"""Returns a bool query that combines the operator calls `_query_op`</span>
 <span class="sd">        for each predicate and zipped quantity predicate combination.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;HAS&quot;</span><span class="p">:</span>
-            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;must&quot;</span>  <span class="c1"># in case of HAS we do a must over the &quot;list&quot; of the one given element</span>
-        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;HAS ALL&quot;</span><span class="p">:</span>
-            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;must&quot;</span>
-        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;HAS ANY&quot;</span><span class="p">:</span>
-            <span class="n">kind</span> <span class="o">=</span> <span class="s2">&quot;should&quot;</span>
-        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;HAS ONLY&quot;</span><span class="p">:</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"HAS"</span><span class="p">:</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s2">"must"</span>  <span class="c1"># in case of HAS we do a must over the "list" of the one given element</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"HAS ALL"</span><span class="p">:</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s2">"must"</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"HAS ANY"</span><span class="p">:</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s2">"should"</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"HAS ONLY"</span><span class="p">:</span>
             <span class="c1"># HAS ONLY comes with heavy limitations, because there is no such thing</span>
             <span class="c1"># in elastic search. Only supported for elements, where we can construct</span>
-            <span class="c1"># an anonymous &quot;formula&quot; based on elements sorted by order number and</span>
+            <span class="c1"># an anonymous "formula" based on elements sorted by order number and</span>
             <span class="c1"># can do a = comparision to check if all elements are contained</span>
 
             <span class="c1"># @ml-evs: Disabling this HAS ONLY workaround as tests are not passing</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s2">&quot;HAS ONLY queries are not currently supported by the Elasticsearch backend.&quot;</span>
+                <span class="s2">"HAS ONLY queries are not currently supported by the Elasticsearch backend."</span>
             <span class="p">)</span>
 
             <span class="c1"># from optimade.models import CHEMICAL_SYMBOLS, ATOMIC_NUMBERS</span>
 
             <span class="c1"># if len(quantities) &gt; 1:</span>
-            <span class="c1">#     raise NotImplementedError(&quot;HAS ONLY is not supported with zip&quot;)</span>
+            <span class="c1">#     raise NotImplementedError("HAS ONLY is not supported with zip")</span>
             <span class="c1"># quantity = quantities[0]</span>
 
             <span class="c1"># if quantity.has_only_quantity is None:</span>
             <span class="c1">#     raise NotImplementedError(</span>
-            <span class="c1">#         &quot;HAS ONLY is not supported by %s&quot; % quantity.name</span>
+            <span class="c1">#         "HAS ONLY is not supported by %s" % quantity.name</span>
             <span class="c1">#     )</span>
 
             <span class="c1"># def values():</span>
             <span class="c1">#     for predicates in predicate_zip_list:</span>
             <span class="c1">#         if len(predicates) != 1:</span>
-            <span class="c1">#             raise NotImplementedError(&quot;Tuples not supported in HAS ONLY&quot;)</span>
+            <span class="c1">#             raise NotImplementedError("Tuples not supported in HAS ONLY")</span>
             <span class="c1">#         op, value = predicates[0]</span>
-            <span class="c1">#         if op != &quot;=&quot;:</span>
+            <span class="c1">#         if op != "=":</span>
             <span class="c1">#             raise NotImplementedError(</span>
-            <span class="c1">#                 &quot;Predicated not supported in HAS ONLY&quot;</span>
+            <span class="c1">#                 "Predicated not supported in HAS ONLY"</span>
             <span class="c1">#             )</span>
             <span class="c1">#         if not isinstance(value, str):</span>
-            <span class="c1">#             raise NotImplementedError(&quot;Only strings supported in HAS ONLY&quot;)</span>
+            <span class="c1">#             raise NotImplementedError("Only strings supported in HAS ONLY")</span>
             <span class="c1">#         yield value</span>
 
             <span class="c1"># try:</span>
             <span class="c1">#     order_numbers = list([ATOMIC_NUMBERS[element] for element in values()])</span>
             <span class="c1">#     order_numbers.sort()</span>
-            <span class="c1">#     value = &quot;&quot;.join(</span>
+            <span class="c1">#     value = "".join(</span>
             <span class="c1">#         [CHEMICAL_SYMBOLS[number - 1] for number in order_numbers]</span>
             <span class="c1">#     )</span>
             <span class="c1"># except KeyError:</span>
             <span class="c1">#     raise NotImplementedError(</span>
-            <span class="c1">#         &quot;HAS ONLY is only supported for chemical symbols&quot;</span>
+            <span class="c1">#         "HAS ONLY is only supported for chemical symbols"</span>
             <span class="c1">#     )</span>
 
-            <span class="c1"># return Q(&quot;term&quot;, **{quantity.has_only_quantity.name: value})</span>
+            <span class="c1"># return Q("term", **{quantity.has_only_quantity.name: value})</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unrecognised operation </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unrecognised operation </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
         <span class="n">queries</span> <span class="o">=</span> <span class="p">[</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_has_query</span><span class="p">(</span><span class="n">quantities</span><span class="p">,</span> <span class="n">predicates</span><span class="p">)</span> <span class="k">for</span> <span class="n">predicates</span> <span class="ow">in</span> <span class="n">predicate_zip_list</span>
         <span class="p">]</span>
-        <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">kind</span><span class="p">:</span> <span class="n">queries</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">"bool"</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">kind</span><span class="p">:</span> <span class="n">queries</span><span class="p">})</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_has_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantities</span><span class="p">,</span> <span class="n">predicates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns a bool query that combines the operator queries ():func:`_query_op`)</span>
 <span class="sd">        for quantity pericate combination.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">quantities</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">predicates</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Tuple length does not match: </span><span class="si">%s</span><span class="s2"> &lt;o&gt; </span><span class="si">%s</span><span class="s2"> &quot;</span>
-                <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quantities</span><span class="p">),</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">predicates</span><span class="p">))</span>
+                <span class="s2">"Tuple length does not match: </span><span class="si">%s</span><span class="s2"> &lt;o&gt; </span><span class="si">%s</span><span class="s2"> "</span>
+                <span class="o">%</span> <span class="p">(</span><span class="s2">":"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quantities</span><span class="p">),</span> <span class="s2">":"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">predicates</span><span class="p">))</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">quantities</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -4431,8 +4431,8 @@ trees into Elasticsearch queries.</p>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">nested_quantity</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">same_nested_quantity</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s2">&quot;Expression with tuples are only supported for </span><span class="si">%s</span><span class="s2">&quot;</span>
-                <span class="o">%</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quantities</span><span class="p">)</span>
+                <span class="s2">"Expression with tuples are only supported for </span><span class="si">%s</span><span class="s2">"</span>
+                <span class="o">%</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">quantities</span><span class="p">)</span>
             <span class="p">)</span>
 
         <span class="n">queries</span> <span class="o">=</span> <span class="p">[</span>
@@ -4441,20 +4441,20 @@ trees into Elasticsearch queries.</p>
         <span class="p">]</span>
 
         <span class="k">return</span> <span class="n">Q</span><span class="p">(</span>
-            <span class="s2">&quot;nested&quot;</span><span class="p">,</span>
+            <span class="s2">"nested"</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">nested_quantity</span><span class="p">),</span>
             <span class="n">query</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="nb">bool</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">must</span><span class="o">=</span><span class="n">queries</span><span class="p">)),</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Default behavior for rules that only replace one symbol with another"""</span>
         <span class="k">return</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="c1"># filter: expression*</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;bool&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s2">&quot;must&quot;</span><span class="p">:</span> <span class="n">args</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">Q</span><span class="p">(</span><span class="s2">"bool"</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s2">"must"</span><span class="p">:</span> <span class="n">args</span><span class="p">})</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="c1"># expression_clause: expression_phrase ( _AND expression_phrase )*</span>
@@ -4471,8 +4471,8 @@ trees into Elasticsearch queries.</p>
         <span class="k">return</span> <span class="n">result</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="c1"># expression_phrase: [ NOT ] ( operator | &quot;(&quot; expression &quot;)&quot; )</span>
-        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;NOT&quot;</span><span class="p">:</span>
+        <span class="c1"># expression_phrase: [ NOT ] ( operator | "(" expression ")" )</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"NOT"</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">~</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -4485,7 +4485,7 @@ trees into Elasticsearch queries.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">constant_first_comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">quantity</span><span class="p">):</span>
         <span class="c1"># constant_first_comparison: constant OPERATOR ( non_string_value | ...not_implemented_string )</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">ElasticsearchQuantity</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Only quantities can be compared to constant values.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Only quantities can be compared to constant values."</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reversed_operator_map</span><span class="p">[</span><span class="n">op</span><span class="p">],</span> <span class="n">value</span><span class="p">)</span>
 
@@ -4500,17 +4500,17 @@ trees into Elasticsearch queries.</p>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">op</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">"="</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">query</span><span class="p">(</span><span class="n">quantity</span><span class="p">):</span>
-            <span class="c1"># This is only the case if quantity is an &quot;other&quot; provider&#39;s field,</span>
+            <span class="c1"># This is only the case if quantity is an "other" provider's field,</span>
             <span class="c1"># in which case, we should treat it as unknown and try to do a null query</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">quantity</span><span class="o">.</span><span class="n">length_quantity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;LENGTH is not supported for </span><span class="si">{</span><span class="n">quantity</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"LENGTH is not supported for </span><span class="si">{</span><span class="n">quantity</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">"</span>
                 <span class="p">)</span>
             <span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span><span class="o">.</span><span class="n">length_quantity</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_op</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
@@ -4522,10 +4522,10 @@ trees into Elasticsearch queries.</p>
         <span class="c1"># known_op_rhs: IS ( KNOWN | UNKNOWN )</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">query</span><span class="p">(</span><span class="n">quantity</span><span class="p">):</span>
-            <span class="n">query</span> <span class="o">=</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;exists&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">quantity</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;KNOWN&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">Q</span><span class="p">(</span><span class="s2">"exists"</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">quantity</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">"KNOWN"</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">query</span>
-            <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;UNKNOWN&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">"UNKNOWN"</span><span class="p">:</span>
                 <span class="k">return</span> <span class="o">~</span><span class="n">query</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
@@ -4538,13 +4538,13 @@ trees into Elasticsearch queries.</p>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="n">op</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="s2">"="</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[(</span><span class="n">op</span><span class="p">,</span> <span class="n">values</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS &quot;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">"HAS "</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS&quot;</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">"HAS"</span>
 
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_query_op</span><span class="p">(</span>
             <span class="p">[</span><span class="n">quantity</span><span class="p">],</span> <span class="n">op</span><span class="p">,</span> <span class="p">[[</span><span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
@@ -4555,30 +4555,30 @@ trees into Elasticsearch queries.</p>
         <span class="n">add_on</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS &quot;</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">"HAS "</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;HAS&quot;</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="s2">"HAS"</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_query_op</span><span class="p">([</span><span class="n">quantity</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_on</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Correlated list queries are not supported."</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">args</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Correlated list queries are not supported."</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Correlated list queries are not supported."</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">args</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="s2">"="</span>
         <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">,</span> <span class="s2">&quot;!=&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"&lt;"</span><span class="p">,</span> <span class="s2">"&lt;="</span><span class="p">,</span> <span class="s2">"&gt;"</span><span class="p">,</span> <span class="s2">"&gt;="</span><span class="p">,</span> <span class="s2">"!="</span><span class="p">,</span> <span class="s2">"="</span><span class="p">]:</span>
                 <span class="n">op</span> <span class="o">=</span> <span class="n">arg</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -4587,25 +4587,25 @@ trees into Elasticsearch queries.</p>
                         <span class="n">arg</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+                <span class="n">op</span> <span class="o">=</span> <span class="s2">"="</span>
         <span class="k">return</span> <span class="n">result</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="n">op</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;CONTAINS&quot;</span><span class="p">:</span>
-            <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">&quot;*</span><span class="si">%s</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="n">value</span>
-        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;STARTS&quot;</span><span class="p">:</span>
-            <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">*&quot;</span> <span class="o">%</span> <span class="n">value</span>
-        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;ENDS&quot;</span><span class="p">:</span>
-            <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">&quot;*</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"CONTAINS"</span><span class="p">:</span>
+            <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">"*</span><span class="si">%s</span><span class="s2">*"</span> <span class="o">%</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"STARTS"</span><span class="p">:</span>
+            <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">*"</span> <span class="o">%</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"ENDS"</span><span class="p">:</span>
+            <span class="n">wildcard</span> <span class="o">=</span> <span class="s2">"*</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">value</span>
 
-        <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="n">Q</span><span class="p">(</span><span class="s2">&quot;wildcard&quot;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">quantity</span><span class="p">):</span> <span class="n">wildcard</span><span class="p">})</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">quantity</span><span class="p">:</span> <span class="n">Q</span><span class="p">(</span><span class="s2">"wildcard"</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_field</span><span class="p">(</span><span class="n">quantity</span><span class="p">):</span> <span class="n">wildcard</span><span class="p">})</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
         <span class="c1"># string: ESCAPED_STRING</span>
-        <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">'"'</span><span class="p">)</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">signed_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
@@ -4618,9 +4618,9 @@ trees into Elasticsearch queries.</p>
         <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
             <span class="n">type_</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_INT&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SIGNED_INT"</span><span class="p">:</span>
             <span class="n">type_</span> <span class="o">=</span> <span class="nb">int</span>
-        <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_FLOAT&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SIGNED_FLOAT"</span><span class="p">:</span>
             <span class="n">type_</span> <span class="o">=</span> <span class="nb">float</span>
         <span class="k">return</span> <span class="n">type_</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -4681,7 +4681,7 @@ trees into Elasticsearch queries.</p>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">293</span>
 <span class="normal">294</span>
 <span class="normal">295</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Default behavior for rules that only replace one symbol with another&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Default behavior for rules that only replace one symbol with another"""</span>
     <span class="k">return</span> <span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4711,7 +4711,7 @@ trees into Elasticsearch queries.</p>
 <span class="normal">302</span>
 <span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;comparison: constant_first_comparison | property_first_comparison&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""comparison: constant_first_comparison | property_first_comparison"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -4742,7 +4742,7 @@ trees into Elasticsearch queries.</p>
 <span class="normal">200</span>
 <span class="normal">201</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;constant: string | number&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""constant: string | number"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -4773,7 +4773,7 @@ trees into Elasticsearch queries.</p>
 <span class="normal">212</span>
 <span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">non_string_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;non_string_value: number | property&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""non_string_value: number | property"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -4833,14 +4833,14 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="normal">223</span>
 <span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">not_implemented_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;not_implemented_string: value</span>
+<span class="w">    </span><span class="sd">"""not_implemented_string: value</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: For further information, see Materials-Consortia/OPTIMADE issue 157:</span>
 <span class="sd">            https://github.com/Materials-Consortia/OPTIMADE/issues/157</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Comparing strings is not yet implemented.&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Comparing strings is not yet implemented."</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4870,10 +4870,10 @@ the backend, returning the backend-specific query.</p>
 <span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Post-process the query according to the rules defined for</span>
+<span class="w">    </span><span class="sd">"""Post-process the query according to the rules defined for</span>
 <span class="sd">    the backend, returning the backend-specific query.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">query</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4976,7 +4976,7 @@ of the above rules.</p>
 <span class="normal">273</span>
 <span class="normal">274</span>
 <span class="normal">275</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;property: IDENTIFIER ( &quot;.&quot; IDENTIFIER )*</span>
+<span class="w">    </span><span class="sd">"""property: IDENTIFIER ( "." IDENTIFIER )*</span>
 
 <span class="sd">    If this transformer has an associated mapper, the property</span>
 <span class="sd">    will be compared to possible relationship entry types and</span>
@@ -4988,7 +4988,7 @@ of the above rules.</p>
 <span class="sd">        BadRequest: If the property does not match any</span>
 <span class="sd">            of the above rules.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">quantity_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="c1"># If the quantity name matches an entry type (indicating a relationship filter)</span>
@@ -5004,20 +5004,20 @@ of the above rules.</p>
         <span class="c1"># If the prefix does not match another known provider, also emit a warning</span>
         <span class="c1"># If the prefix does match a known provider, do not return a warning.</span>
         <span class="c1"># Following [Handling unknown property names](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#handling-unknown-property-names)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="ow">and</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
-            <span class="n">prefix</span> <span class="o">=</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="ow">and</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">):</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">quantity_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">SUPPORTED_PREFIXES</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">prefix</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span>
                     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                         <span class="n">UnknownProviderProperty</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Field </span><span class="si">{</span><span class="n">quantity_name</span><span class="si">!r}</span><span class="s2"> has an unrecognised prefix: this property has been treated as UNKNOWN.&quot;</span>
+                            <span class="sa">f</span><span class="s2">"Field </span><span class="si">{</span><span class="n">quantity_name</span><span class="si">!r}</span><span class="s2"> has an unrecognised prefix: this property has been treated as UNKNOWN."</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">quantity_name</span>
 
         <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
-            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">quantity_name</span><span class="si">}</span><span class="s2">&#39; is not a known or searchable quantity&quot;</span>
+            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">quantity_name</span><span class="si">}</span><span class="s2">' is not a known or searchable quantity"</span>
         <span class="p">)</span>
 
     <span class="n">quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantities</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">quantity_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -5054,10 +5054,10 @@ backend-specific post-processing methods.</p>
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform the query using the Lark `Transformer` then run the</span>
+<span class="w">    </span><span class="sd">"""Transform the query using the Lark `Transformer` then run the</span>
 <span class="sd">    backend-specific post-processing methods.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5087,7 +5087,7 @@ backend-specific post-processing methods.</p>
 <span class="normal">206</span>
 <span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;value: string | number | property&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""value: string | number | property"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -5296,7 +5296,7 @@ work for quantities that share the same nested object quantity.</p>
 <span class="normal">80</span>
 <span class="normal">81</span>
 <span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ElasticsearchQuantity</span><span class="p">(</span><span class="n">Quantity</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Elasticsearch-specific extension of the underlying</span>
+<span class="w">    </span><span class="sd">"""Elasticsearch-specific extension of the underlying</span>
 <span class="sd">    [`Quantity`][optimade.filtertransformers.base_transformer.Quantity] class.</span>
 
 <span class="sd">    Attributes:</span>
@@ -5313,30 +5313,30 @@ work for quantities that share the same nested object quantity.</p>
 <span class="sd">            and use a keyword field with all elements to perform this search. This only</span>
 <span class="sd">            works for elements (i.e. labels in ``CHEMICAL_SYMBOLS``) and quantities</span>
 <span class="sd">            with this attribute.</span>
-<span class="sd">        nested_quantity: To support optimade&#39;s &#39;zipped tuple&#39; feature (e.g.</span>
-<span class="sd">            &#39;elements:elements_ratios HAS &quot;H&quot;:&gt;0.33), we use elasticsearch nested objects</span>
+<span class="sd">        nested_quantity: To support optimade's 'zipped tuple' feature (e.g.</span>
+<span class="sd">            'elements:elements_ratios HAS "H":&gt;0.33), we use elasticsearch nested objects</span>
 <span class="sd">            and nested queries. This quantity will provide the field for the nested</span>
 <span class="sd">            object that contains the quantity (and others). The zipped tuples will only</span>
 <span class="sd">            work for quantities that share the same nested object quantity.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span>
+    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ElasticsearchQuantity"</span><span class="p">]</span>
     <span class="n">elastic_mapping_type</span><span class="p">:</span> <span class="n">Field</span> <span class="o">|</span> <span class="kc">None</span>
-    <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span>
-    <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span>
+    <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ElasticsearchQuantity"</span><span class="p">]</span>
+    <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ElasticsearchQuantity"</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ElasticsearchQuantity"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">elastic_mapping_type</span><span class="p">:</span> <span class="n">Field</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ElasticsearchQuantity"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ElasticsearchQuantity"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the quantity from its name, aliases and mapping type.</span>
+<span class="w">        </span><span class="sd">"""Initialise the quantity from its name, aliases and mapping type.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            name: The name of the quantity as used in the filter expressions.</span>
@@ -5352,12 +5352,12 @@ work for quantities that share the same nested object quantity.</p>
 <span class="sd">                and use a keyword field with all elements to perform this search. This only</span>
 <span class="sd">                works for elements (i.e. labels in ``CHEMICAL_SYMBOLS``) and quantities</span>
 <span class="sd">                with this attribute.</span>
-<span class="sd">            nested_quantity: To support optimade&#39;s &#39;zipped tuple&#39; feature (e.g.</span>
-<span class="sd">                &#39;elements:elements_ratios HAS &quot;H&quot;:&gt;0.33), we use elasticsearch nested objects</span>
+<span class="sd">            nested_quantity: To support optimade's 'zipped tuple' feature (e.g.</span>
+<span class="sd">                'elements:elements_ratios HAS "H":&gt;0.33), we use elasticsearch nested objects</span>
 <span class="sd">                and nested queries. This quantity will provide the field for the nested</span>
 <span class="sd">                object that contains the quantity (and others). The zipped tuples will only</span>
 <span class="sd">                work for quantities that share the same nested object quantity.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">,</span> <span class="n">length_quantity</span><span class="p">)</span>
 
@@ -5563,12 +5563,12 @@ work for quantities that share the same nested object quantity.</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">backend_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">length_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ElasticsearchQuantity"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">elastic_mapping_type</span><span class="p">:</span> <span class="n">Field</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;ElasticsearchQuantity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">has_only_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ElasticsearchQuantity"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nested_quantity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"ElasticsearchQuantity"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the quantity from its name, aliases and mapping type.</span>
+<span class="w">    </span><span class="sd">"""Initialise the quantity from its name, aliases and mapping type.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        name: The name of the quantity as used in the filter expressions.</span>
@@ -5584,12 +5584,12 @@ work for quantities that share the same nested object quantity.</p>
 <span class="sd">            and use a keyword field with all elements to perform this search. This only</span>
 <span class="sd">            works for elements (i.e. labels in ``CHEMICAL_SYMBOLS``) and quantities</span>
 <span class="sd">            with this attribute.</span>
-<span class="sd">        nested_quantity: To support optimade&#39;s &#39;zipped tuple&#39; feature (e.g.</span>
-<span class="sd">            &#39;elements:elements_ratios HAS &quot;H&quot;:&gt;0.33), we use elasticsearch nested objects</span>
+<span class="sd">        nested_quantity: To support optimade's 'zipped tuple' feature (e.g.</span>
+<span class="sd">            'elements:elements_ratios HAS "H":&gt;0.33), we use elasticsearch nested objects</span>
 <span class="sd">            and nested queries. This quantity will provide the field for the nested</span>
 <span class="sd">            object that contains the quantity (and others). The zipped tuples will only</span>
 <span class="sd">            work for quantities that share the same nested object quantity.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">backend_field</span><span class="p">,</span> <span class="n">length_quantity</span><span class="p">)</span>
 
@@ -5689,10 +5689,10 @@ work for quantities that share the same nested object quantity.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

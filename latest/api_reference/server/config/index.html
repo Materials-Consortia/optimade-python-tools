@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -5051,7 +5051,7 @@
 
 
 <h2 id="optimade.server.config.DEFAULT_CONFIG_FILE_PATH" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">DEFAULT_CONFIG_FILE_PATH</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;.optimade.json&#39;</span><span class="p">))</span></code>
+            <code class="highlight language-python"><span class="n">DEFAULT_CONFIG_FILE_PATH</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">'.optimade.json'</span><span class="p">))</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -5177,31 +5177,31 @@ this class defines loading ServerConfig settings from a configuration file.</p>
 <span class="normal">144</span>
 <span class="normal">145</span>
 <span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ConfigFileSettingsSource</span><span class="p">(</span><span class="n">PydanticBaseSettingsSource</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration file settings source.</span>
+<span class="w">    </span><span class="sd">"""Configuration file settings source.</span>
 
 <span class="sd">    Based on the example in the</span>
 <span class="sd">    [pydantic documentation](https://docs.pydantic.dev/latest/concepts/pydantic_settings/#customise-settings-sources),</span>
 <span class="sd">    this class defines loading ServerConfig settings from a configuration file.</span>
 
 <span class="sd">    The file must be of either type JSON or YML/YAML.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_field_value</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="n">FieldInfo</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Must be defined according to parent abstract class.</span>
+<span class="w">        </span><span class="sd">"""Must be defined according to parent abstract class.</span>
 
-<span class="sd">        It does not make sense to use it for this class, since &#39;extra&#39; is set to</span>
-<span class="sd">        &#39;allow&#39;. We will instead just parse and take every key/field specified in the</span>
+<span class="sd">        It does not make sense to use it for this class, since 'extra' is set to</span>
+<span class="sd">        'allow'. We will instead just parse and take every key/field specified in the</span>
 <span class="sd">        config file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">parse_config_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the config file and return a dictionary of its content.&quot;&quot;&quot;</span>
-        <span class="n">encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;env_file_encoding&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Parse the config file and return a dictionary of its content."""</span>
+        <span class="n">encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"env_file_encoding"</span><span class="p">)</span>
 
-        <span class="n">config_file_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPTIMADE_CONFIG_FILE&quot;</span><span class="p">)</span>
+        <span class="n">config_file_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"OPTIMADE_CONFIG_FILE"</span><span class="p">)</span>
         <span class="n">config_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_file_env</span> <span class="ow">or</span> <span class="n">DEFAULT_CONFIG_FILE_PATH</span><span class="p">)</span>
 
         <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="p">{}</span>
@@ -5217,26 +5217,26 @@ this class defines loading ServerConfig settings from a configuration file.</p>
                     <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">config_file_content</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">yaml_exc</span><span class="p">:</span>
                     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Unable to parse config file </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2"> as JSON or &quot;</span>
-                        <span class="s2">&quot;YAML, using the default settings instead..</span><span class="se">\n</span><span class="s2">&quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;Errors:</span><span class="se">\n</span><span class="s2">  JSON:</span><span class="se">\n</span><span class="si">{</span><span class="n">json_exc</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2">  YAML:</span><span class="se">\n</span><span class="si">{</span><span class="n">yaml_exc</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Unable to parse config file </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2"> as JSON or "</span>
+                        <span class="s2">"YAML, using the default settings instead..</span><span class="se">\n</span><span class="s2">"</span>
+                        <span class="sa">f</span><span class="s2">"Errors:</span><span class="se">\n</span><span class="s2">  JSON:</span><span class="se">\n</span><span class="si">{</span><span class="n">json_exc</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2">  YAML:</span><span class="se">\n</span><span class="si">{</span><span class="n">yaml_exc</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
         <span class="k">elif</span> <span class="n">config_file_env</span><span class="p">:</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to find requested config file at </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unable to find requested config file at </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">parsed_config_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># This can happen if the yaml loading doesn&#39;t succeed properly, e.g., if</span>
+            <span class="c1"># This can happen if the yaml loading doesn't succeed properly, e.g., if</span>
             <span class="c1"># the file is empty.</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unable to load any settings from </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">, using the default &quot;</span>
-                <span class="s2">&quot;settings instead.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Unable to load any settings from </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">, using the default "</span>
+                <span class="s2">"settings instead."</span>
             <span class="p">)</span>
             <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parsed_config_file</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unable to parse config file </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2"> as a dictionary, using &quot;</span>
-                <span class="s2">&quot;the default settings instead.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Unable to parse config file </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2"> as a dictionary, using "</span>
+                <span class="s2">"the default settings instead."</span>
             <span class="p">)</span>
             <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -5314,12 +5314,12 @@ config file.</p>
 <span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_field_value</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="n">FieldInfo</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Must be defined according to parent abstract class.</span>
+<span class="w">    </span><span class="sd">"""Must be defined according to parent abstract class.</span>
 
-<span class="sd">    It does not make sense to use it for this class, since &#39;extra&#39; is set to</span>
-<span class="sd">    &#39;allow&#39;. We will instead just parse and take every key/field specified in the</span>
+<span class="sd">    It does not make sense to use it for this class, since 'extra' is set to</span>
+<span class="sd">    'allow'. We will instead just parse and take every key/field specified in the</span>
 <span class="sd">    config file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5387,10 +5387,10 @@ config file.</p>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parse_config_file</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the config file and return a dictionary of its content.&quot;&quot;&quot;</span>
-    <span class="n">encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;env_file_encoding&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Parse the config file and return a dictionary of its content."""</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"env_file_encoding"</span><span class="p">)</span>
 
-    <span class="n">config_file_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPTIMADE_CONFIG_FILE&quot;</span><span class="p">)</span>
+    <span class="n">config_file_env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"OPTIMADE_CONFIG_FILE"</span><span class="p">)</span>
     <span class="n">config_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config_file_env</span> <span class="ow">or</span> <span class="n">DEFAULT_CONFIG_FILE_PATH</span><span class="p">)</span>
 
     <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="p">{}</span>
@@ -5406,26 +5406,26 @@ config file.</p>
                 <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">config_file_content</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">yaml_exc</span><span class="p">:</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Unable to parse config file </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2"> as JSON or &quot;</span>
-                    <span class="s2">&quot;YAML, using the default settings instead..</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;Errors:</span><span class="se">\n</span><span class="s2">  JSON:</span><span class="se">\n</span><span class="si">{</span><span class="n">json_exc</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2">  YAML:</span><span class="se">\n</span><span class="si">{</span><span class="n">yaml_exc</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Unable to parse config file </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2"> as JSON or "</span>
+                    <span class="s2">"YAML, using the default settings instead..</span><span class="se">\n</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"Errors:</span><span class="se">\n</span><span class="s2">  JSON:</span><span class="se">\n</span><span class="si">{</span><span class="n">json_exc</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2">  YAML:</span><span class="se">\n</span><span class="si">{</span><span class="n">yaml_exc</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
     <span class="k">elif</span> <span class="n">config_file_env</span><span class="p">:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to find requested config file at </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unable to find requested config file at </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">parsed_config_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># This can happen if the yaml loading doesn&#39;t succeed properly, e.g., if</span>
+        <span class="c1"># This can happen if the yaml loading doesn't succeed properly, e.g., if</span>
         <span class="c1"># the file is empty.</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unable to load any settings from </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">, using the default &quot;</span>
-            <span class="s2">&quot;settings instead.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Unable to load any settings from </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2">, using the default "</span>
+            <span class="s2">"settings instead."</span>
         <span class="p">)</span>
         <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parsed_config_file</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unable to parse config file </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2"> as a dictionary, using &quot;</span>
-            <span class="s2">&quot;the default settings instead.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Unable to parse config file </span><span class="si">{</span><span class="n">config_file</span><span class="si">}</span><span class="s2"> as a dictionary, using "</span>
+            <span class="s2">"the default settings instead."</span>
         <span class="p">)</span>
         <span class="n">parsed_config_file</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -5489,19 +5489,19 @@ config file.</p>
 <span class="normal">165</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GZipConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">enabled</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Enable GZip compression for API responses.&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Enable GZip compression for API responses."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="n">minimum_size</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">int</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Minimum response size (in bytes) before compression is applied.&quot;</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Minimum response size (in bytes) before compression is applied."</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="mi">5000</span>
 
     <span class="n">compresslevel</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">int</span><span class="p">,</span>
-        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Compression level (1=fastest, 9=best compression).&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Compression level (1=fastest, 9=best compression)."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -5644,7 +5644,7 @@ config file.</p>
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">LogLevel</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replication of logging LogLevels</span>
+<span class="w">    </span><span class="sd">"""Replication of logging LogLevels</span>
 
 <span class="sd">    - `notset`</span>
 <span class="sd">    - `debug`</span>
@@ -5653,14 +5653,14 @@ config file.</p>
 <span class="sd">    - `error`</span>
 <span class="sd">    - `critical`</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">NOTSET</span> <span class="o">=</span> <span class="s2">&quot;notset&quot;</span>
-    <span class="n">DEBUG</span> <span class="o">=</span> <span class="s2">&quot;debug&quot;</span>
-    <span class="n">INFO</span> <span class="o">=</span> <span class="s2">&quot;info&quot;</span>
-    <span class="n">WARNING</span> <span class="o">=</span> <span class="s2">&quot;warning&quot;</span>
-    <span class="n">ERROR</span> <span class="o">=</span> <span class="s2">&quot;error&quot;</span>
-    <span class="n">CRITICAL</span> <span class="o">=</span> <span class="s2">&quot;critical&quot;</span>
+    <span class="n">NOTSET</span> <span class="o">=</span> <span class="s2">"notset"</span>
+    <span class="n">DEBUG</span> <span class="o">=</span> <span class="s2">"debug"</span>
+    <span class="n">INFO</span> <span class="o">=</span> <span class="s2">"info"</span>
+    <span class="n">WARNING</span> <span class="o">=</span> <span class="s2">"warning"</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="s2">"error"</span>
+    <span class="n">CRITICAL</span> <span class="o">=</span> <span class="s2">"critical"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -5679,7 +5679,7 @@ config file.</p>
 
 
 <h3 id="optimade.server.config.LogLevel.CRITICAL" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">CRITICAL</span> <span class="o">=</span> <span class="s1">&#39;critical&#39;</span></code>
+            <code class="highlight language-python"><span class="n">CRITICAL</span> <span class="o">=</span> <span class="s1">'critical'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5700,7 +5700,7 @@ config file.</p>
 
 
 <h3 id="optimade.server.config.LogLevel.DEBUG" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">DEBUG</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span></code>
+            <code class="highlight language-python"><span class="n">DEBUG</span> <span class="o">=</span> <span class="s1">'debug'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5721,7 +5721,7 @@ config file.</p>
 
 
 <h3 id="optimade.server.config.LogLevel.ERROR" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ERROR</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span></code>
+            <code class="highlight language-python"><span class="n">ERROR</span> <span class="o">=</span> <span class="s1">'error'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5742,7 +5742,7 @@ config file.</p>
 
 
 <h3 id="optimade.server.config.LogLevel.INFO" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">INFO</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span></code>
+            <code class="highlight language-python"><span class="n">INFO</span> <span class="o">=</span> <span class="s1">'info'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5763,7 +5763,7 @@ config file.</p>
 
 
 <h3 id="optimade.server.config.LogLevel.NOTSET" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">NOTSET</span> <span class="o">=</span> <span class="s1">&#39;notset&#39;</span></code>
+            <code class="highlight language-python"><span class="n">NOTSET</span> <span class="o">=</span> <span class="s1">'notset'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5784,7 +5784,7 @@ config file.</p>
 
 
 <h3 id="optimade.server.config.LogLevel.WARNING" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">WARNING</span> <span class="o">=</span> <span class="s1">&#39;warning&#39;</span></code>
+            <code class="highlight language-python"><span class="n">WARNING</span> <span class="o">=</span> <span class="s1">'warning'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6280,14 +6280,14 @@ can be easily extended for new config file types.</p>
 <span class="normal">605</span>
 <span class="normal">606</span>
 <span class="normal">607</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ServerConfig</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class stores server config parameters in a way that</span>
+<span class="w">    </span><span class="sd">"""This class stores server config parameters in a way that</span>
 <span class="sd">    can be easily extended for new config file types.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span>
-        <span class="n">env_prefix</span><span class="o">=</span><span class="s2">&quot;optimade_&quot;</span><span class="p">,</span>
-        <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">,</span>
-        <span class="n">env_file_encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+        <span class="n">env_prefix</span><span class="o">=</span><span class="s2">"optimade_"</span><span class="p">,</span>
+        <span class="n">extra</span><span class="o">=</span><span class="s2">"allow"</span><span class="p">,</span>
+        <span class="n">env_file_encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
         <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
@@ -6295,7 +6295,7 @@ can be easily extended for new config file types.</p>
     <span class="n">debug</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Turns on Debug Mode for the OPTIMADE Server implementation&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Turns on Debug Mode for the OPTIMADE Server implementation"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -6303,9 +6303,9 @@ can be easily extended for new config file types.</p>
         <span class="nb">bool</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;Insert test data into each collection on server initialisation. If true, &quot;</span>
-                <span class="s2">&quot;the configured backend will be populated with test data on server start. &quot;</span>
-                <span class="s2">&quot;Should be disabled for production usage.&quot;</span>
+                <span class="s2">"Insert test data into each collection on server initialisation. If true, "</span>
+                <span class="s2">"the configured backend will be populated with test data on server start. "</span>
+                <span class="s2">"Should be disabled for production usage."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
@@ -6314,47 +6314,47 @@ can be easily extended for new config file types.</p>
         <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;The absolute path to an OPTIMADE JSONL file to use to initialize the database. &quot;</span>
-                <span class="s2">&quot;A unique index will be created over the ID to avoid duplication over multiple runs.&quot;</span>
+                <span class="s2">"The absolute path to an OPTIMADE JSONL file to use to initialize the database. "</span>
+                <span class="s2">"A unique index will be created over the ID to avoid duplication over multiple runs."</span>
             <span class="p">)</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">exit_after_insert</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">bool</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Exit the API after inserting data&quot;</span><span class="p">)</span>
+        <span class="nb">bool</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Exit the API after inserting data"</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="n">create_default_index</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;Whether to create a set of default indices &quot;</span>
-                <span class="s2">&quot;for supporting databases after inserting JSONL data.&quot;</span>
+                <span class="s2">"Whether to create a set of default indices "</span>
+                <span class="s2">"for supporting databases after inserting JSONL data."</span>
             <span class="p">)</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="n">gzip</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">GZipConfig</span><span class="p">,</span>
-        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Configuration options for GZip compression.&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Configuration options for GZip compression."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">GZipConfig</span><span class="p">()</span>
 
     <span class="n">use_real_mongo</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;DEPRECATED: force usage of MongoDB over any other backend.&quot;</span><span class="p">),</span>
+        <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"DEPRECATED: force usage of MongoDB over any other backend."</span><span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">database_backend</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">SupportedBackend</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Which database backend to use out of the supported backends.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Which database backend to use out of the supported backends."</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGOMOCK</span>
 
     <span class="n">elastic_hosts</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Host settings to pass through to the `Elasticsearch` class.&quot;</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Host settings to pass through to the `Elasticsearch` class."</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -6362,11 +6362,11 @@ can be easily extended for new config file types.</p>
         <span class="nb">float</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;Number of seconds to allow MongoDB to perform a full database count &quot;</span>
-                <span class="s2">&quot;before falling back to `null`. This operation can require a full COLLSCAN&quot;</span>
-                <span class="s2">&quot; for empty queries which can be prohibitively slow if the database does &quot;</span>
-                <span class="s2">&quot;not fit into the active set, hence a timeout can drastically speed-up &quot;</span>
-                <span class="s2">&quot;response times.&quot;</span>
+                <span class="s2">"Number of seconds to allow MongoDB to perform a full database count "</span>
+                <span class="s2">"before falling back to `null`. This operation can require a full COLLSCAN"</span>
+                <span class="s2">" for empty queries which can be prohibitively slow if the database does "</span>
+                <span class="s2">"not fit into the active set, hence a timeout can drastically speed-up "</span>
+                <span class="s2">"response times."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
@@ -6374,101 +6374,101 @@ can be easily extended for new config file types.</p>
     <span class="n">mongo_database</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;MongoDB database name to use; will be overwritten if also present in `mongo_uri`&quot;</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"MongoDB database name to use; will be overwritten if also present in `mongo_uri`"</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;optimade&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"optimade"</span>
 
     <span class="n">mongo_uri</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;URI for the MongoDB instance&quot;</span><span class="p">,</span>
-            <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mongodb://localhost:27017/optimade&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost:1000&quot;</span><span class="p">],</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"URI for the MongoDB instance"</span><span class="p">,</span>
+            <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">"mongodb://localhost:27017/optimade"</span><span class="p">,</span> <span class="s2">"localhost:1000"</span><span class="p">],</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;localhost:27017&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"localhost:27017"</span>
 
     <span class="n">license</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Either an SPDX license identifier or a URL to a human-readable license, used to populate the `license` field in the info response.</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""Either an SPDX license identifier or a URL to a human-readable license, used to populate the `license` field in the info response.</span>
 
 <span class="s2">If provided an SPDX license identifier, the `license` field value will be constructed from this identifier preprended with `https://spdx.org/licenses/CC-BY-4.0`, and the identifier will also be added to the `available_licenses` field directly.</span>
-<span class="s2">Otherwise, the license will be given as the provided URL and no SPDX identifier will be added to the `available_licenses` field. If your desired licensing scenario is more complex, please open an issue.&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">Otherwise, the license will be given as the provided URL and no SPDX identifier will be added to the `available_licenses` field. If your desired licensing scenario is more complex, please open an issue."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">files_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for /files endpoint resources&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Mongo collection name for /files endpoint resources"</span><span class="p">,</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;files&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"files"</span>
 
     <span class="n">links_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for /links endpoint resources&quot;</span><span class="p">)</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;links&quot;</span>
+        <span class="nb">str</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Mongo collection name for /links endpoint resources"</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"links"</span>
     <span class="n">references_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for /references endpoint resources&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Mongo collection name for /references endpoint resources"</span><span class="p">,</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;references&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"references"</span>
     <span class="n">structures_collection</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Mongo collection name for /structures endpoint resources&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Mongo collection name for /structures endpoint resources"</span><span class="p">,</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;structures&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"structures"</span>
     <span class="n">page_limit</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Default number of resources per page&quot;</span><span class="p">)</span>
+        <span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Default number of resources per page"</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
     <span class="n">page_limit_max</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Max allowed number of resources per page&quot;</span><span class="p">)</span>
+        <span class="nb">int</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Max allowed number of resources per page"</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="mi">500</span>
     <span class="n">default_db</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;ID of /links endpoint resource for the chosen default OPTIMADE &quot;</span>
-                <span class="s2">&quot;implementation (only relevant for the index meta-database)&quot;</span>
+                <span class="s2">"ID of /links endpoint resource for the chosen default OPTIMADE "</span>
+                <span class="s2">"implementation (only relevant for the index meta-database)"</span>
             <span class="p">),</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;test_server&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"test_server"</span>
     <span class="n">root_path</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;Sets the FastAPI app `root_path` parameter. This can be used to serve the&quot;</span>
-                <span class="s2">&quot; API under a path prefix behind a proxy or as a sub-application of &quot;</span>
-                <span class="s2">&quot;another FastAPI app. See &quot;</span>
-                <span class="s2">&quot;https://fastapi.tiangolo.com/advanced/sub-applications/#technical-details-root_path&quot;</span>
-                <span class="s2">&quot; for details.&quot;</span>
+                <span class="s2">"Sets the FastAPI app `root_path` parameter. This can be used to serve the"</span>
+                <span class="s2">" API under a path prefix behind a proxy or as a sub-application of "</span>
+                <span class="s2">"another FastAPI app. See "</span>
+                <span class="s2">"https://fastapi.tiangolo.com/advanced/sub-applications/#technical-details-root_path"</span>
+                <span class="s2">" for details."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">base_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Base URL for this implementation&quot;</span><span class="p">)</span>
+        <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Base URL for this implementation"</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">implementation</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">Implementation</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Introspective information about this OPTIMADE implementation&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Introspective information about this OPTIMADE implementation"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">Implementation</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;OPTIMADE Python Tools&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"OPTIMADE Python Tools"</span><span class="p">,</span>
         <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
-        <span class="n">source_url</span><span class="o">=</span><span class="s2">&quot;https://github.com/Materials-Consortia/optimade-python-tools&quot;</span><span class="p">,</span>
-        <span class="n">maintainer</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;dev@optimade.org&quot;</span><span class="p">},</span>
+        <span class="n">source_url</span><span class="o">=</span><span class="s2">"https://github.com/Materials-Consortia/optimade-python-tools"</span><span class="p">,</span>
+        <span class="n">maintainer</span><span class="o">=</span><span class="p">{</span><span class="s2">"email"</span><span class="p">:</span> <span class="s2">"dev@optimade.org"</span><span class="p">},</span>
         <span class="n">issue_tracker</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;https://github.com/Materials-Consortia/optimade-python-tools/issues&quot;</span>
+            <span class="s2">"https://github.com/Materials-Consortia/optimade-python-tools/issues"</span>
         <span class="p">),</span>
-        <span class="n">homepage</span><span class="o">=</span><span class="s2">&quot;https://optimade.org/optimade-python-tools&quot;</span><span class="p">,</span>
+        <span class="n">homepage</span><span class="o">=</span><span class="s2">"https://optimade.org/optimade-python-tools"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">index_base_url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;An optional link to the base URL for the index meta-database of the &quot;</span>
-                <span class="s2">&quot;provider.&quot;</span>
+                <span class="s2">"An optional link to the base URL for the index meta-database of the "</span>
+                <span class="s2">"provider."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -6476,47 +6476,47 @@ can be easily extended for new config file types.</p>
         <span class="n">Provider</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;General information about the provider of this OPTIMADE implementation&quot;</span>
+                <span class="s2">"General information about the provider of this OPTIMADE implementation"</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">Provider</span><span class="p">(</span>
-        <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;exmpl&quot;</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Example provider&quot;</span><span class="p">,</span>
+        <span class="n">prefix</span><span class="o">=</span><span class="s2">"exmpl"</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"Example provider"</span><span class="p">,</span>
         <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-            <span class="s2">&quot;Provider used for examples, not to be assigned to a real database&quot;</span>
+            <span class="s2">"Provider used for examples, not to be assigned to a real database"</span>
         <span class="p">),</span>
-        <span class="n">homepage</span><span class="o">=</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">,</span>
+        <span class="n">homepage</span><span class="o">=</span><span class="s2">"https://example.com"</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">provider_fields</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">dict</span><span class="p">[</span>
-            <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span>
+            <span class="n">Literal</span><span class="p">[</span><span class="s2">"links"</span><span class="p">,</span> <span class="s2">"references"</span><span class="p">,</span> <span class="s2">"structures"</span><span class="p">],</span>
             <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">],</span>
         <span class="p">],</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;A list of additional fields to be served with the provider&#39;s prefix &quot;</span>
-                <span class="s2">&quot;attached, broken down by endpoint.&quot;</span>
+                <span class="s2">"A list of additional fields to be served with the provider's prefix "</span>
+                <span class="s2">"attached, broken down by endpoint."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span>
     <span class="n">aliases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"links"</span><span class="p">,</span> <span class="s2">"references"</span><span class="p">,</span> <span class="s2">"structures"</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;A mapping between field names in the database with their corresponding &quot;</span>
-                <span class="s2">&quot;OPTIMADE field names, broken down by endpoint.&quot;</span>
+                <span class="s2">"A mapping between field names in the database with their corresponding "</span>
+                <span class="s2">"OPTIMADE field names, broken down by endpoint."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">length_aliases</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;references&quot;</span><span class="p">,</span> <span class="s2">&quot;structures&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+        <span class="nb">dict</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"links"</span><span class="p">,</span> <span class="s2">"references"</span><span class="p">,</span> <span class="s2">"structures"</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;A mapping between a list property (or otherwise) and an integer property &quot;</span>
-                <span class="s2">&quot;that defines the length of that list, for example elements -&gt; nelements. &quot;</span>
-                <span class="s2">&quot;The standard aliases are applied first, so this dictionary must refer to &quot;</span>
-                <span class="s2">&quot;the API fields, not the database fields.&quot;</span>
+                <span class="s2">"A mapping between a list property (or otherwise) and an integer property "</span>
+                <span class="s2">"that defines the length of that list, for example elements -&gt; nelements. "</span>
+                <span class="s2">"The standard aliases are applied first, so this dictionary must refer to "</span>
+                <span class="s2">"the API fields, not the database fields."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -6524,22 +6524,22 @@ can be easily extended for new config file types.</p>
         <span class="n">Path</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;Absolute path to a JSON file containing the MongoDB collecton of links &quot;</span>
-                <span class="s2">&quot;entries (documents) to serve under the /links endpoint of the index &quot;</span>
-                <span class="s2">&quot;meta-database. NB! As suggested in the previous sentence, these will &quot;</span>
-                <span class="s2">&quot;only be served when using a MongoDB-based backend.&quot;</span>
+                <span class="s2">"Absolute path to a JSON file containing the MongoDB collecton of links "</span>
+                <span class="s2">"entries (documents) to serve under the /links endpoint of the index "</span>
+                <span class="s2">"meta-database. NB! As suggested in the previous sentence, these will "</span>
+                <span class="s2">"only be served when using a MongoDB-based backend."</span>
             <span class="p">),</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;index_links.json&quot;</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">"index_links.json"</span><span class="p">)</span>
 
     <span class="n">is_index</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;A runtime setting to dynamically switch between index meta-database and &quot;</span>
-                <span class="s2">&quot;normal OPTIMADE servers. Used for switching behaviour of e.g., &quot;</span>
-                <span class="s2">&quot;`meta-&gt;optimade_schema` values in the response. Any provided value may &quot;</span>
-                <span class="s2">&quot;be overridden when used with the reference server implementation.&quot;</span>
+                <span class="s2">"A runtime setting to dynamically switch between index meta-database and "</span>
+                <span class="s2">"normal OPTIMADE servers. Used for switching behaviour of e.g., "</span>
+                <span class="s2">"`meta-&gt;optimade_schema` values in the response. Any provided value may "</span>
+                <span class="s2">"be overridden when used with the reference server implementation."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
@@ -6548,16 +6548,16 @@ can be easily extended for new config file types.</p>
         <span class="nb">str</span> <span class="o">|</span> <span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;A URL that will be provided in the `meta-&gt;schema` field for every response&quot;</span>
+                <span class="s2">"A URL that will be provided in the `meta-&gt;schema` field for every response"</span>
             <span class="p">),</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s2">/optimade.json&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s2">/optimade.json"</span>
 
     <span class="n">custom_landing_page</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;The location of a custom landing page (Jinja template) to use for the API.&quot;</span>
+                <span class="s2">"The location of a custom landing page (Jinja template) to use for the API."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -6566,34 +6566,34 @@ can be easily extended for new config file types.</p>
         <span class="nb">str</span> <span class="o">|</span> <span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;A URL that will be provided in the `meta-&gt;schema` field for every &quot;</span>
-                <span class="s2">&quot;response from the index meta-database.&quot;</span>
+                <span class="s2">"A URL that will be provided in the `meta-&gt;schema` field for every "</span>
+                <span class="s2">"response from the index meta-database."</span>
             <span class="p">),</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s2">/optimade_index.json&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s2">/optimade_index.json"</span>
 
     <span class="n">log_level</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">LogLevel</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Logging level for the OPTIMADE server.&quot;</span><span class="p">)</span>
+        <span class="n">LogLevel</span><span class="p">,</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Logging level for the OPTIMADE server."</span><span class="p">)</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">LogLevel</span><span class="o">.</span><span class="n">INFO</span>
     <span class="n">log_dir</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">Path</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Folder in which log files will be saved.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Folder in which log files will be saved."</span><span class="p">,</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/var/log/optimade/&quot;</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"/var/log/optimade/"</span><span class="p">)</span>
     <span class="n">validate_query_parameters</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;If True, the server will check whether the query parameters given in the &quot;</span>
-                <span class="s2">&quot;request are correct.&quot;</span>
+                <span class="s2">"If True, the server will check whether the query parameters given in the "</span>
+                <span class="s2">"request are correct."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">request_delay</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">NonNegativeFloat</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The value to use for the `meta-&gt;request_delay` field, which indicates to clients how long they should leave between success queries.&quot;</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"The value to use for the `meta-&gt;request_delay` field, which indicates to clients how long they should leave between success queries."</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -6601,50 +6601,50 @@ can be easily extended for new config file types.</p>
         <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">Field</span><span class="p">(</span>
             <span class="n">description</span><span class="o">=</span><span class="p">(</span>
-                <span class="s2">&quot;If False, data from the database will not undergo validation before being&quot;</span>
-                <span class="s2">&quot; emitted by the API, and only the mapping of aliases will occur.&quot;</span>
+                <span class="s2">"If False, data from the database will not undergo validation before being"</span>
+                <span class="s2">" emitted by the API, and only the mapping of aliases will occur."</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;insert_from_jsonl&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"insert_from_jsonl"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_jsonl_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the path to the JSONL file is valid.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Check that the path to the JSONL file is valid."""</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"null"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"None"</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">return</span> <span class="n">value</span>
 
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;request_delay&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"request_delay"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_request_delay</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Make sure the request delay is not adversarially large.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Make sure the request delay is not adversarially large."""</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Request delay must be less than 5 seconds.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Request delay must be less than 5 seconds."</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">value</span>
 
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"implementation"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_implementation_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set defaults and modify bypassed value(s)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set defaults and modify bypassed value(s)"""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Implementation</span><span class="p">):</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Expected a dict or Implementation instance, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Expected a dict or Implementation instance, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
-        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">}</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"version"</span><span class="p">:</span> <span class="n">__version__</span><span class="p">}</span>
         <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">res</span>
 
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"license"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_license_info</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that the license is either an spdx identifier or an accessible URL.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Check that the license is either an spdx identifier or an accessible URL."""</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
@@ -6653,37 +6653,37 @@ can be easily extended for new config file types.</p>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">AnyHttpUrl</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://spdx.org/licenses/</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"https://spdx.org/licenses/</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="c1"># Check if license URL is accessible</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
             <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;License URL &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39; is not accessible: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"License URL '</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">' is not accessible: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
         <span class="k">return</span> <span class="n">value</span>
 
-    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">align_mongo_uri_and_mongo_database</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ServerConfig&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prefer the value of database name if set from `mongo_uri` rather than</span>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">align_mongo_uri_and_mongo_database</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ServerConfig"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Prefer the value of database name if set from `mongo_uri` rather than</span>
 <span class="sd">        `mongo_database`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_backend</span> <span class="o">==</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGODB</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">:</span>
                 <span class="kn">import</span><span class="w"> </span><span class="nn">pymongo.uri_parser</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb://&quot;</span><span class="p">)</span>
-                    <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb+srv://&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"mongodb://"</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"mongodb+srv://"</span><span class="p">)</span>
                 <span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">"</span>
                 <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"database"</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">"database"</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -6696,12 +6696,12 @@ can be easily extended for new config file types.</p>
         <span class="n">dotenv_settings</span><span class="p">:</span> <span class="n">PydanticBaseSettingsSource</span><span class="p">,</span>
         <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">PydanticBaseSettingsSource</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">PydanticBaseSettingsSource</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        **Priority of config settings sources**:</span>
 
 <span class="sd">        1. Passed arguments upon initialization of</span>
 <span class="sd">            [`ServerConfig`][optimade.server.config.ServerConfig].</span>
-<span class="sd">        2. Environment variables, matching the syntax: `&quot;OPTIMADE_&quot;` or `&quot;optimade_&quot;` +</span>
+<span class="sd">        2. Environment variables, matching the syntax: `"OPTIMADE_"` or `"optimade_"` +</span>
 <span class="sd">            `&lt;config_name&gt;`, e.g., `OPTIMADE_LOG_LEVEL=debug` or</span>
 <span class="sd">            `optimade_log_dir=~/logs_dir/optimade/`.</span>
 <span class="sd">        3. Configuration file (JSON/YAML) taken from:</span>
@@ -6712,7 +6712,7 @@ can be easily extended for new config file types.</p>
 <span class="sd">            [pydantic documentation](https://pydantic-docs.helpmanual.io/usage/settings/#secret-support)</span>
 <span class="sd">            for more information).</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="n">init_settings</span><span class="p">,</span>
             <span class="n">env_settings</span><span class="p">,</span>
@@ -6863,7 +6863,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.default_db" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">default_db</span> <span class="o">=</span> <span class="s1">&#39;test_server&#39;</span></code>
+            <code class="highlight language-python"><span class="n">default_db</span> <span class="o">=</span> <span class="s1">'test_server'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6926,7 +6926,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.files_collection" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">files_collection</span> <span class="o">=</span> <span class="s1">&#39;files&#39;</span></code>
+            <code class="highlight language-python"><span class="n">files_collection</span> <span class="o">=</span> <span class="s1">'files'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6968,7 +6968,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.implementation" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">implementation</span> <span class="o">=</span> <span class="n">Implementation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;OPTIMADE Python Tools&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span> <span class="n">source_url</span><span class="o">=</span><span class="s1">&#39;https://github.com/Materials-Consortia/optimade-python-tools&#39;</span><span class="p">,</span> <span class="n">maintainer</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="s1">&#39;dev@optimade.org&#39;</span><span class="p">},</span> <span class="n">issue_tracker</span><span class="o">=</span><span class="s1">&#39;https://github.com/Materials-Consortia/optimade-python-tools/issues&#39;</span><span class="p">,</span> <span class="n">homepage</span><span class="o">=</span><span class="s1">&#39;https://optimade.org/optimade-python-tools&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">implementation</span> <span class="o">=</span> <span class="n">Implementation</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'OPTIMADE Python Tools'</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span> <span class="n">source_url</span><span class="o">=</span><span class="s1">'https://github.com/Materials-Consortia/optimade-python-tools'</span><span class="p">,</span> <span class="n">maintainer</span><span class="o">=</span><span class="p">{</span><span class="s1">'email'</span><span class="p">:</span> <span class="s1">'dev@optimade.org'</span><span class="p">},</span> <span class="n">issue_tracker</span><span class="o">=</span><span class="s1">'https://github.com/Materials-Consortia/optimade-python-tools/issues'</span><span class="p">,</span> <span class="n">homepage</span><span class="o">=</span><span class="s1">'https://optimade.org/optimade-python-tools'</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7010,7 +7010,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.index_links_path" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">index_links_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;index_links.json&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">index_links_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">'index_links.json'</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7031,7 +7031,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.index_schema_url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">index_schema_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s1">/optimade_index.json&#39;</span></code>
+            <code class="highlight language-python"><span class="n">index_schema_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s1">/optimade_index.json'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7157,7 +7157,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.links_collection" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">links_collection</span> <span class="o">=</span> <span class="s1">&#39;links&#39;</span></code>
+            <code class="highlight language-python"><span class="n">links_collection</span> <span class="o">=</span> <span class="s1">'links'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7178,7 +7178,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.log_dir" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">log_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/var/log/optimade/&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">log_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">'/var/log/optimade/'</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7220,7 +7220,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span><span class="n">env_prefix</span><span class="o">=</span><span class="s1">&#39;optimade_&#39;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">&#39;allow&#39;</span><span class="p">,</span> <span class="n">env_file_encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span><span class="n">env_prefix</span><span class="o">=</span><span class="s1">'optimade_'</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">'allow'</span><span class="p">,</span> <span class="n">env_file_encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7262,7 +7262,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.mongo_database" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">mongo_database</span> <span class="o">=</span> <span class="s1">&#39;optimade&#39;</span></code>
+            <code class="highlight language-python"><span class="n">mongo_database</span> <span class="o">=</span> <span class="s1">'optimade'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7283,7 +7283,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.mongo_uri" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">mongo_uri</span> <span class="o">=</span> <span class="s1">&#39;localhost:27017&#39;</span></code>
+            <code class="highlight language-python"><span class="n">mongo_uri</span> <span class="o">=</span> <span class="s1">'localhost:27017'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7346,7 +7346,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.provider" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">provider</span> <span class="o">=</span> <span class="n">Provider</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;exmpl&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Example provider&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Provider used for examples, not to be assigned to a real database&#39;</span><span class="p">,</span> <span class="n">homepage</span><span class="o">=</span><span class="s1">&#39;https://example.com&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">provider</span> <span class="o">=</span> <span class="n">Provider</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">'exmpl'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'Example provider'</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">'Provider used for examples, not to be assigned to a real database'</span><span class="p">,</span> <span class="n">homepage</span><span class="o">=</span><span class="s1">'https://example.com'</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7387,7 +7387,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.references_collection" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">references_collection</span> <span class="o">=</span> <span class="s1">&#39;references&#39;</span></code>
+            <code class="highlight language-python"><span class="n">references_collection</span> <span class="o">=</span> <span class="s1">'references'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7450,7 +7450,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.schema_url" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">schema_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s1">/optimade.json&#39;</span></code>
+            <code class="highlight language-python"><span class="n">schema_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'https://schemas.optimade.org/openapi/v</span><span class="si">{</span><span class="n">__api_version__</span><span class="si">}</span><span class="s1">/optimade.json'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7471,7 +7471,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.ServerConfig.structures_collection" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">structures_collection</span> <span class="o">=</span> <span class="s1">&#39;structures&#39;</span></code>
+            <code class="highlight language-python"><span class="n">structures_collection</span> <span class="o">=</span> <span class="s1">'structures'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7591,26 +7591,26 @@ can be easily extended for new config file types.</p>
 <span class="normal">571</span>
 <span class="normal">572</span>
 <span class="normal">573</span>
-<span class="normal">574</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">align_mongo_uri_and_mongo_database</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ServerConfig&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Prefer the value of database name if set from `mongo_uri` rather than</span>
+<span class="normal">574</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">align_mongo_uri_and_mongo_database</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ServerConfig"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Prefer the value of database name if set from `mongo_uri` rather than</span>
 <span class="sd">    `mongo_database`.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">database_backend</span> <span class="o">==</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGODB</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">:</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">pymongo.uri_parser</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb://&quot;</span><span class="p">)</span>
-                <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;mongodb+srv://&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"mongodb://"</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"mongodb+srv://"</span><span class="p">)</span>
             <span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"mongodb://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">uri</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">uri_parser</span><span class="o">.</span><span class="n">parse_uri</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mongo_uri</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">&quot;database&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"database"</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mongo_database</span> <span class="o">=</span> <span class="n">uri</span><span class="p">[</span><span class="s2">"database"</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -7646,11 +7646,11 @@ can be easily extended for new config file types.</p>
 <span class="normal">500</span>
 <span class="normal">501</span>
 <span class="normal">502</span>
-<span class="normal">503</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;insert_from_jsonl&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">503</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"insert_from_jsonl"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_jsonl_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the path to the JSONL file is valid.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;None&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Check that the path to the JSONL file is valid."""</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"null"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"None"</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">value</span>
@@ -7701,10 +7701,10 @@ can be easily extended for new config file types.</p>
 <span class="normal">548</span>
 <span class="normal">549</span>
 <span class="normal">550</span>
-<span class="normal">551</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">551</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"license"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_license_info</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AnyHttpUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the license is either an spdx identifier or an accessible URL.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Check that the license is either an spdx identifier or an accessible URL."""</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
@@ -7713,14 +7713,14 @@ can be easily extended for new config file types.</p>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">AnyHttpUrl</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://spdx.org/licenses/</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"https://spdx.org/licenses/</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="c1"># Check if license URL is accessible</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
         <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
     <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;License URL &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39; is not accessible: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"License URL '</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">' is not accessible: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -7756,12 +7756,12 @@ can be easily extended for new config file types.</p>
 <span class="normal">509</span>
 <span class="normal">510</span>
 <span class="normal">511</span>
-<span class="normal">512</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;request_delay&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">512</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"request_delay"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_request_delay</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make sure the request delay is not adversarially large.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Make sure the request delay is not adversarially large."""</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Request delay must be less than 5 seconds.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Request delay must be less than 5 seconds."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -7804,19 +7804,19 @@ can be easily extended for new config file types.</p>
 <span class="normal">525</span>
 <span class="normal">526</span>
 <span class="normal">527</span>
-<span class="normal">528</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;implementation&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">528</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"implementation"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">set_implementation_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set defaults and modify bypassed value(s)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Set defaults and modify bypassed value(s)"""</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Implementation</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Expected a dict or Implementation instance, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Expected a dict or Implementation instance, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
-    <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"version"</span><span class="p">:</span> <span class="n">__version__</span><span class="p">}</span>
     <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">res</span>
 </code></pre></div></td></tr></table></div>
@@ -7905,12 +7905,12 @@ can be easily extended for new config file types.</p>
     <span class="n">dotenv_settings</span><span class="p">:</span> <span class="n">PydanticBaseSettingsSource</span><span class="p">,</span>
     <span class="n">file_secret_settings</span><span class="p">:</span> <span class="n">PydanticBaseSettingsSource</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">PydanticBaseSettingsSource</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    **Priority of config settings sources**:</span>
 
 <span class="sd">    1. Passed arguments upon initialization of</span>
 <span class="sd">        [`ServerConfig`][optimade.server.config.ServerConfig].</span>
-<span class="sd">    2. Environment variables, matching the syntax: `&quot;OPTIMADE_&quot;` or `&quot;optimade_&quot;` +</span>
+<span class="sd">    2. Environment variables, matching the syntax: `"OPTIMADE_"` or `"optimade_"` +</span>
 <span class="sd">        `&lt;config_name&gt;`, e.g., `OPTIMADE_LOG_LEVEL=debug` or</span>
 <span class="sd">        `optimade_log_dir=~/logs_dir/optimade/`.</span>
 <span class="sd">    3. Configuration file (JSON/YAML) taken from:</span>
@@ -7921,7 +7921,7 @@ can be easily extended for new config file types.</p>
 <span class="sd">        [pydantic documentation](https://pydantic-docs.helpmanual.io/usage/settings/#secret-support)</span>
 <span class="sd">        for more information).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">init_settings</span><span class="p">,</span>
         <span class="n">env_settings</span><span class="p">,</span>
@@ -7995,7 +7995,7 @@ can be easily extended for new config file types.</p>
 <span class="normal">74</span>
 <span class="normal">75</span>
 <span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SupportedBackend</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration of supported database backends</span>
+<span class="w">    </span><span class="sd">"""Enumeration of supported database backends</span>
 
 <span class="sd">    - `elastic`: [Elasticsearch](https://www.elastic.co/).</span>
 <span class="sd">    - `mongodb`: [MongoDB](https://www.mongodb.com/).</span>
@@ -8005,11 +8005,11 @@ can be easily extended for new config file types.</p>
 <span class="sd">        [`mongomock`](https://github.com/mongomock/mongomock) driver, creating an</span>
 <span class="sd">        in-memory database, which is mainly used for testing.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">ELASTIC</span> <span class="o">=</span> <span class="s2">&quot;elastic&quot;</span>
-    <span class="n">MONGODB</span> <span class="o">=</span> <span class="s2">&quot;mongodb&quot;</span>
-    <span class="n">MONGOMOCK</span> <span class="o">=</span> <span class="s2">&quot;mongomock&quot;</span>
+    <span class="n">ELASTIC</span> <span class="o">=</span> <span class="s2">"elastic"</span>
+    <span class="n">MONGODB</span> <span class="o">=</span> <span class="s2">"mongodb"</span>
+    <span class="n">MONGOMOCK</span> <span class="o">=</span> <span class="s2">"mongomock"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -8028,7 +8028,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.SupportedBackend.ELASTIC" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ELASTIC</span> <span class="o">=</span> <span class="s1">&#39;elastic&#39;</span></code>
+            <code class="highlight language-python"><span class="n">ELASTIC</span> <span class="o">=</span> <span class="s1">'elastic'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -8049,7 +8049,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.SupportedBackend.MONGODB" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">MONGODB</span> <span class="o">=</span> <span class="s1">&#39;mongodb&#39;</span></code>
+            <code class="highlight language-python"><span class="n">MONGODB</span> <span class="o">=</span> <span class="s1">'mongodb'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -8070,7 +8070,7 @@ can be easily extended for new config file types.</p>
 
 
 <h3 id="optimade.server.config.SupportedBackend.MONGOMOCK" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">MONGOMOCK</span> <span class="o">=</span> <span class="s1">&#39;mongomock&#39;</span></code>
+            <code class="highlight language-python"><span class="n">MONGOMOCK</span> <span class="o">=</span> <span class="s1">'mongomock'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -8134,23 +8134,23 @@ can be easily extended for new config file types.</p>
 <span class="normal">628</span>
 <span class="normal">629</span>
 <span class="normal">630</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Module-level __getattr__ to provide a deprecated CONFIG singleton.</span>
+<span class="w">    </span><span class="sd">"""Module-level __getattr__ to provide a deprecated CONFIG singleton.</span>
 
 <span class="sd">    This preserves backwards compatibility with code that imports</span>
 <span class="sd">    ``from optimade.server.config import CONFIG``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">:</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"CONFIG"</span><span class="p">:</span>
         <span class="k">global</span> <span class="n">_CONFIG</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;Importing the CONFIG singleton from optimade.server.config is deprecated. &quot;</span>
-            <span class="s2">&quot;Use create_app() and access config via request.app.state.config instead.&quot;</span><span class="p">,</span>
+            <span class="s2">"Importing the CONFIG singleton from optimade.server.config is deprecated. "</span>
+            <span class="s2">"Use create_app() and access config via request.app.state.config instead."</span><span class="p">,</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">_CONFIG</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">_CONFIG</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">_CONFIG</span>
-    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -8233,10 +8233,10 @@ can be easily extended for new config file types.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

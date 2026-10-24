@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3588,7 +3588,7 @@
 <span class="normal">89</span>
 <span class="normal">90</span>
 <span class="normal">91</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">landing</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show landing page when the base URL is accessed.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Show landing page when the base URL is accessed."""</span>
     <span class="k">return</span> <span class="n">render_landing_page</span><span class="p">(</span>
         <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">entry_collections</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
     <span class="p">)</span>
@@ -3675,7 +3675,7 @@
 <span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">render_landing_page</span><span class="p">(</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span><span class="p">,</span> <span class="n">entry_collections</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HTMLResponse</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render and cache the landing page with a manual, hashable key.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Render and cache the landing page with a manual, hashable key."""</span>
     <span class="n">cache_key</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">config</span><span class="p">),</span> <span class="n">url</span><span class="p">,</span> <span class="n">_custom_file_mtime</span><span class="p">(</span><span class="n">config</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="n">_PAGE_CACHE</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_PAGE_CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
@@ -3683,50 +3683,50 @@
     <span class="n">meta</span> <span class="o">=</span> <span class="n">meta_values</span><span class="p">(</span>
         <span class="n">config</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">more_data_available</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">schema_url</span>
     <span class="p">)</span>
-    <span class="n">major_version</span> <span class="o">=</span> <span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">versioned_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">get_base_url</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">)</span><span class="si">}</span><span class="s2">/v</span><span class="si">{</span><span class="n">major_version</span><span class="si">}</span><span class="s2">/&quot;</span>
+    <span class="n">major_version</span> <span class="o">=</span> <span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">versioned_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">get_base_url</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">)</span><span class="si">}</span><span class="s2">/v</span><span class="si">{</span><span class="n">major_version</span><span class="si">}</span><span class="s2">/"</span>
 
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">custom_landing_page</span><span class="p">:</span>
         <span class="n">html</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">custom_landing_page</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">html</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;static/landing_page.html&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+            <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">"static/landing_page.html"</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
         <span class="p">)</span>
 
-    <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;api_version&quot;</span><span class="p">:</span> <span class="n">__api_version__</span><span class="p">}</span>
+    <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"api_version"</span><span class="p">:</span> <span class="n">__api_version__</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="p">:</span>
         <span class="n">replacements</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
-                <span class="s2">&quot;provider.name&quot;</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="s2">&quot;provider.prefix&quot;</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span>
-                <span class="s2">&quot;provider.description&quot;</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-                <span class="s2">&quot;provider.homepage&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">homepage</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                <span class="s2">"provider.name"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">"provider.prefix"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span>
+                <span class="s2">"provider.description"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                <span class="s2">"provider.homepage"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">homepage</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
             <span class="p">}</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">meta</span><span class="o">.</span><span class="n">implementation</span><span class="p">:</span>
         <span class="n">replacements</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="p">{</span>
-                <span class="s2">&quot;implementation.name&quot;</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;implementation.version&quot;</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">version</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;implementation.source_url&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">source_url</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                <span class="s2">"implementation.name"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+                <span class="s2">"implementation.version"</span><span class="p">:</span> <span class="n">meta</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">version</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">,</span>
+                <span class="s2">"implementation.source_url"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">meta</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">source_url</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">),</span>
             <span class="p">}</span>
         <span class="p">)</span>
 
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">replacements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{{{</span><span class="s2"> </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> </span><span class="se">}}}}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">{{{{</span><span class="s2"> </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> </span><span class="se">}}}}</span><span class="s2">"</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
-    <span class="n">endpoints</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s1">&#39;&lt;li&gt;&lt;a href=&quot;</span><span class="si">{</span><span class="n">versioned_url</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="s1">&quot;&gt;</span><span class="si">{</span><span class="n">versioned_url</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="s1">&lt;/a&gt;&lt;/li&gt;&#39;</span>
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">entry_collections</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">&quot;info&quot;</span><span class="p">]</span>
+    <span class="n">endpoints</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">'&lt;li&gt;&lt;a href="</span><span class="si">{</span><span class="n">versioned_url</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="s1">"&gt;</span><span class="si">{</span><span class="n">versioned_url</span><span class="si">}{</span><span class="n">e</span><span class="si">}</span><span class="s1">&lt;/a&gt;&lt;/li&gt;'</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="p">[</span><span class="o">*</span><span class="n">entry_collections</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="s2">"info"</span><span class="p">]</span>
     <span class="p">)</span>
-    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{</span><span class="si">% E</span><span class="s2">NDPOINTS %}&quot;</span><span class="p">,</span> <span class="n">endpoints</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"{</span><span class="si">% E</span><span class="s2">NDPOINTS %}"</span><span class="p">,</span> <span class="n">endpoints</span><span class="p">)</span>
 
     <span class="n">index_html</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;&quot;&quot;&lt;h3&gt;Index base URL:&lt;/h3&gt;</span><span class="se">\n</span><span class="s2">&lt;p&gt;&lt;a href=&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">index_base_url</span><span class="si">}</span><span class="s2">&quot;&gt;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">index_base_url</span><span class="si">}</span><span class="s2">&lt;/a&gt;&lt;/p&gt;</span><span class="se">\n</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="sa">f</span><span class="s2">"""&lt;h3&gt;Index base URL:&lt;/h3&gt;</span><span class="se">\n</span><span class="s2">&lt;p&gt;&lt;a href="</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">index_base_url</span><span class="si">}</span><span class="s2">"&gt;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">index_base_url</span><span class="si">}</span><span class="s2">&lt;/a&gt;&lt;/p&gt;</span><span class="se">\n</span><span class="s2">"""</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">index_base_url</span>
-        <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">else</span> <span class="s2">""</span>
     <span class="p">)</span>
-    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;{% INDEX_BASE_URL %}&quot;</span><span class="p">,</span> <span class="n">index_html</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"{% INDEX_BASE_URL %}"</span><span class="p">,</span> <span class="n">index_html</span><span class="p">)</span>
 
     <span class="n">resp</span> <span class="o">=</span> <span class="n">HTMLResponse</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
     <span class="n">_PAGE_CACHE</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">resp</span>
@@ -3813,10 +3813,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3639,17 +3639,17 @@
     <span class="n">ENTRY_RESOURCE_CLASS</span> <span class="o">=</span> <span class="n">LinksResource</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">map_back</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Map properties from MongoDB to OPTIMADE</span>
+<span class="w">        </span><span class="sd">"""Map properties from MongoDB to OPTIMADE</span>
 
 <span class="sd">        :param doc: A resource object in MongoDB format</span>
 <span class="sd">        :type doc: dict</span>
 
 <span class="sd">        :return: A resource object in OPTIMADE format</span>
 <span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">type_</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+<span class="sd">        """</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span>
         <span class="n">newdoc</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-        <span class="n">newdoc</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_</span>
+        <span class="n">newdoc</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_</span>
         <span class="k">return</span> <span class="n">newdoc</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -3732,11 +3732,11 @@
 <span class="normal">42</span>
 <span class="normal">43</span>
 <span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Args:</span>
 <span class="sd">        config: Server CONFIG-like object (must expose:</span>
 <span class="sd">            .provider.prefix, .provider_fields, .aliases, .length_aliases)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
@@ -3747,7 +3747,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">providers</span> <span class="o">=</span> <span class="n">PROVIDERS</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">KNOWN_PROVIDER_PREFIXES</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">prov</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">prov</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">prov</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="k">for</span> <span class="n">prov</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="p">[])</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3788,17 +3788,17 @@
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">map_back</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map properties from MongoDB to OPTIMADE</span>
+<span class="w">    </span><span class="sd">"""Map properties from MongoDB to OPTIMADE</span>
 
 <span class="sd">    :param doc: A resource object in MongoDB format</span>
 <span class="sd">    :type doc: dict</span>
 
 <span class="sd">    :return: A resource object in OPTIMADE format</span>
 <span class="sd">    :rtype: dict</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">type_</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+<span class="sd">    """</span>
+    <span class="n">type_</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span>
     <span class="n">newdoc</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">map_back</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="n">newdoc</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_</span>
+    <span class="n">newdoc</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_</span>
     <span class="k">return</span> <span class="n">newdoc</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3891,10 +3891,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

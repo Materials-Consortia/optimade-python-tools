@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4894,35 +4894,35 @@
 <span class="normal">227</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EntryInfoProperty</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
-        <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A human-readable description of the entry property&quot;</span><span class="p">),</span>
+        <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"A human-readable description of the entry property"</span><span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">unit</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The physical unit of the entry property.</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""The physical unit of the entry property.</span>
 <span class="s2">This MUST be a valid representation of units according to version 2.1 of [The Unified Code for Units of Measure](https://unitsofmeasure.org/ucum.html).</span>
-<span class="s2">It is RECOMMENDED that non-standard (non-SI) units are described in the description for the property.&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">It is RECOMMENDED that non-standard (non-SI) units are described in the description for the property."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">sortable</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Defines whether the entry property can be used for sorting with the &quot;sort&quot; parameter.</span>
-<span class="s2">If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`.&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""Defines whether the entry property can be used for sorting with the "sort" parameter.</span>
+<span class="s2">If the entry listing endpoint supports sorting, this key MUST be present for sortable properties with value `true`."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">DataType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Type&quot;</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The type of the property&#39;s value.</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">"Type"</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""The type of the property's value.</span>
 <span class="s2">This MUST be any of the types defined in the Data types section.</span>
 <span class="s2">For the purpose of compatibility with future versions of this specification, a client MUST accept values that are not `string` values specifying any of the OPTIMADE Data types, but MUST then also disregard the `type` field.</span>
 <span class="s2">Note, if the value is a nested type, only the outermost type should be reported.</span>
-<span class="s2">E.g., for the entry resource `structures`, the `species` property is defined as a list of dictionaries, hence its `type` value would be `list`.&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">E.g., for the entry resource `structures`, the `species` property is defined as a list of dictionaries, hence its `type` value would be `list`."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
@@ -5101,40 +5101,40 @@
     <span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">optimade_version</span><span class="o">=</span><span class="s2">&quot;&gt;= 1.2&quot;</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Must precisely match the entry type name for the given info endpoint.&quot;</span><span class="p">,</span>
+            <span class="n">optimade_version</span><span class="o">=</span><span class="s2">"&gt;= 1.2"</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Must precisely match the entry type name for the given info endpoint."</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">optimade_version</span><span class="o">=</span><span class="s2">&quot;&gt;= 1.2&quot;</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The type of this response.&quot;</span><span class="p">,</span>
-            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">,</span>
+            <span class="n">optimade_version</span><span class="o">=</span><span class="s2">"&gt;= 1.2"</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"The type of this response."</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">"info"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">formats</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of output formats available for this type of entry.&quot;</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"List of output formats available for this type of entry."</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
-    <span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Description of the entry.&quot;</span><span class="p">)]</span>
+    <span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Description of the entry."</span><span class="p">)]</span>
 
     <span class="n">properties</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">dict</span><span class="p">[</span><span class="n">ValidIdentifier</span><span class="p">,</span> <span class="n">EntryInfoProperty</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A dictionary describing queryable properties for this entry type, where each key is a property name.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"A dictionary describing queryable properties for this entry type, where each key is a property name."</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">output_fields_by_format</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">ValidIdentifier</span><span class="p">]],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Dictionary of available output fields for this entry type, where the keys are the values of the `formats` list and the values are the keys of the `properties` dictionary."</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -5332,26 +5332,26 @@
 <span class="normal">75</span>
 <span class="normal">76</span>
 <span class="normal">77</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EntryRelationships</span><span class="p">(</span><span class="n">Relationships</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This model wraps the JSON API Relationships to include type-specific top level keys.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""This model wraps the JSON API Relationships to include type-specific top level keys."""</span>
 
     <span class="n">references</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">ReferenceRelationship</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Object containing links to relationships with entries of the `references` type.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Object containing links to relationships with entries of the `references` type."</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">structures</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">StructureRelationship</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Object containing links to relationships with entries of the `structures` type.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Object containing links to relationships with entries of the `structures` type."</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">files</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">FileRelationship</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Object containing links to relationships with entries of the `files` type.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Object containing links to relationships with entries of the `files` type."</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
@@ -5455,13 +5455,13 @@
 <span class="normal">301</span>
 <span class="normal">302</span>
 <span class="normal">303</span>
-<span class="normal">304</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">check_illegal_relationships_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Relationships&quot;</span><span class="p">:</span>
-    <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
+<span class="normal">304</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_illegal_relationships_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Relationships"</span><span class="p">:</span>
+    <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">illegal_fields</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Relationships&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Relationships"</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -5567,12 +5567,12 @@
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EntryResource</span><span class="p">(</span><span class="n">Resource</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base model for an entry resource.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The base model for an entry resource."""</span>
 
     <span class="nb">id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;An entry&#39;s ID as defined in section Definition of Terms.</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""An entry's ID as defined in section Definition of Terms.</span>
 
 <span class="s2">- **Type**: string.</span>
 
@@ -5582,11 +5582,11 @@
 <span class="s2">    - **Response**: REQUIRED in the response.</span>
 
 <span class="s2">- **Examples**:</span>
-<span class="s2">    - `&quot;db/1234567&quot;`</span>
-<span class="s2">    - `&quot;cod/2000000&quot;`</span>
-<span class="s2">    - `&quot;cod/2000000@1234567&quot;`</span>
-<span class="s2">    - `&quot;nomad/L1234567890&quot;`</span>
-<span class="s2">    - `&quot;42&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">    - `"db/1234567"`</span>
+<span class="s2">    - `"cod/2000000"`</span>
+<span class="s2">    - `"cod/2000000@1234567"`</span>
+<span class="s2">    - `"nomad/L1234567890"`</span>
+<span class="s2">    - `"42"`"""</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5595,7 +5595,7 @@
     <span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""The name of the type of an entry.</span>
 
 <span class="s2">- **Type**: string.</span>
 
@@ -5606,7 +5606,7 @@
 <span class="s2">    - MUST be an existing entry type.</span>
 <span class="s2">    - The entry of type `&lt;type&gt;` and ID `&lt;id&gt;` MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
 
-<span class="s2">- **Example**: `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">- **Example**: `"structures"`"""</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5615,16 +5615,16 @@
     <span class="n">attributes</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">EntryResourceAttributes</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A dictionary, containing key-value pairs representing the entry&#39;s properties, except for `type` and `id`.</span>
-<span class="s2">Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes).&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""A dictionary, containing key-value pairs representing the entry's properties, except for `type` and `id`.</span>
+<span class="s2">Database-provider-specific properties need to include the database-provider-specific prefix (see section on Database-Provider-Specific Namespace Prefixes)."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">relationships</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">EntryRelationships</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).</span>
-<span class="s2">The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).</span>
+<span class="s2">The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."""</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
@@ -5872,12 +5872,12 @@
 <span class="normal">126</span>
 <span class="normal">127</span>
 <span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EntryResourceAttributes</span><span class="p">(</span><span class="n">Attributes</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Contains key-value pairs representing the entry&#39;s properties.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Contains key-value pairs representing the entry's properties."""</span>
 
     <span class="n">immutable_id</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The entry&#39;s immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to &quot;the latest version&quot; of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""The entry's immutable ID (e.g., an UUID). This is important for databases having preferred IDs that point to "the latest version" of a record, but still offer access to older variants. This ID maps to the version-specific record, in case it changes in the future.</span>
 
 <span class="s2">- **Type**: string.</span>
 
@@ -5886,8 +5886,8 @@
 <span class="s2">    - **Query**: MUST be a queryable property with support for all mandatory filter features.</span>
 
 <span class="s2">- **Examples**:</span>
-<span class="s2">    - `&quot;8bd3e750-b477-41a0-9b11-3a799f21b44f&quot;`</span>
-<span class="s2">    - `&quot;fjeiwoj,54;@=%&lt;&gt;#32&quot;` (Strings that are not URL-safe are allowed.)&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">    - `"8bd3e750-b477-41a0-9b11-3a799f21b44f"`</span>
+<span class="s2">    - `"fjeiwoj,54;@=%&lt;&gt;#32"` (Strings that are not URL-safe are allowed.)"""</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5896,7 +5896,7 @@
     <span class="n">last_modified</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">datetime</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Date and time representing when the entry was last modified.</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""Date and time representing when the entry was last modified.</span>
 
 <span class="s2">- **Type**: timestamp.</span>
 
@@ -5906,16 +5906,16 @@
 <span class="s2">    - **Response**: REQUIRED in the response unless the query parameter `response_fields` is present and does not include this property.</span>
 
 <span class="s2">- **Example**:</span>
-<span class="s2">    - As part of JSON response format: `&quot;2007-04-05T14:30:20Z&quot;` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s2">    - As part of JSON response format: `"2007-04-05T14:30:20Z"` (i.e., encoded as an [RFC 3339 Internet Date/Time Format](https://tools.ietf.org/html/rfc3339#section-5.6) string.)"""</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">SHOULD</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"immutable_id"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convenience validator for casting `immutable_id` to a string."""</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -5979,7 +5979,7 @@
 
 
 <h3 id="optimade.models.entries.EntryResourceAttributes.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s1">&#39;allow&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s1">'allow'</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6025,10 +6025,10 @@
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"immutable_id"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convenience validator for casting `immutable_id` to a string."""</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -6061,13 +6061,13 @@
 <span class="normal">335</span>
 <span class="normal">336</span>
 <span class="normal">337</span>
-<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">check_illegal_attributes_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Attributes&quot;</span><span class="p">:</span>
-    <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
+<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_illegal_attributes_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Attributes"</span><span class="p">:</span>
+    <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"relationships"</span><span class="p">,</span> <span class="s2">"links"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">illegal_fields</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Attributes&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Attributes"</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -6112,7 +6112,7 @@
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">51</span>
 <span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileRelationship</span><span class="p">(</span><span class="n">TypedRelationship</span><span class="p">):</span>
-    <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;files&quot;</span>
+    <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"files"</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"files"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -6212,11 +6212,11 @@
 <span class="normal">282</span>
 <span class="normal">283</span>
 <span class="normal">284</span>
-<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Relationship&quot;</span><span class="p">:</span>
+<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Relationship"</span><span class="p">:</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Either &#39;links&#39;, &#39;data&#39;, or &#39;meta&#39; MUST be specified for Relationship&quot;</span>
+            <span class="s2">"Either 'links', 'data', or 'meta' MUST be specified for Relationship"</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -6256,7 +6256,7 @@
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
-<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_rel_type</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">BaseRelationshipResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]</span>
@@ -6264,10 +6264,10 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="c1"># All relationships at this point are empty-to-many relationships in JSON:API:</span>
         <span class="c1"># https://jsonapi.org/format/1.0/#document-resource-object-linkage</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`data` key in a relationship must always store a list.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`data` key in a relationship must always store a list."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_req_type</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Object stored in relationship data has wrong type&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Object stored in relationship data has wrong type"</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">data</span>
 </code></pre></div></td></tr></table></div>
@@ -6312,7 +6312,7 @@
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
 <span class="normal">44</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceRelationship</span><span class="p">(</span><span class="n">TypedRelationship</span><span class="p">):</span>
-    <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;references&quot;</span>
+    <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"references"</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"references"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -6412,11 +6412,11 @@
 <span class="normal">282</span>
 <span class="normal">283</span>
 <span class="normal">284</span>
-<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Relationship&quot;</span><span class="p">:</span>
+<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Relationship"</span><span class="p">:</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Either &#39;links&#39;, &#39;data&#39;, or &#39;meta&#39; MUST be specified for Relationship&quot;</span>
+            <span class="s2">"Either 'links', 'data', or 'meta' MUST be specified for Relationship"</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -6456,7 +6456,7 @@
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
-<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_rel_type</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">BaseRelationshipResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]</span>
@@ -6464,10 +6464,10 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="c1"># All relationships at this point are empty-to-many relationships in JSON:API:</span>
         <span class="c1"># https://jsonapi.org/format/1.0/#document-resource-object-linkage</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`data` key in a relationship must always store a list.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`data` key in a relationship must always store a list."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_req_type</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Object stored in relationship data has wrong type&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Object stored in relationship data has wrong type"</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">data</span>
 </code></pre></div></td></tr></table></div>
@@ -6512,7 +6512,7 @@
                 <summary>Source code in <code>optimade/models/entries.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">47</span>
 <span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">StructureRelationship</span><span class="p">(</span><span class="n">TypedRelationship</span><span class="p">):</span>
-    <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;structures&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;structures&quot;</span>
+    <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"structures"</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"structures"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -6612,11 +6612,11 @@
 <span class="normal">282</span>
 <span class="normal">283</span>
 <span class="normal">284</span>
-<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Relationship&quot;</span><span class="p">:</span>
+<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Relationship"</span><span class="p">:</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Either &#39;links&#39;, &#39;data&#39;, or &#39;meta&#39; MUST be specified for Relationship&quot;</span>
+            <span class="s2">"Either 'links', 'data', or 'meta' MUST be specified for Relationship"</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -6656,7 +6656,7 @@
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
-<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_rel_type</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">BaseRelationshipResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]</span>
@@ -6664,10 +6664,10 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="c1"># All relationships at this point are empty-to-many relationships in JSON:API:</span>
         <span class="c1"># https://jsonapi.org/format/1.0/#document-resource-object-linkage</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`data` key in a relationship must always store a list.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`data` key in a relationship must always store a list."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_req_type</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Object stored in relationship data has wrong type&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Object stored in relationship data has wrong type"</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">data</span>
 </code></pre></div></td></tr></table></div>
@@ -6729,7 +6729,7 @@
 <span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TypedRelationship</span><span class="p">(</span><span class="n">Relationship</span><span class="p">):</span>
     <span class="n">_req_type</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_rel_type</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">BaseRelationshipResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]</span>
@@ -6737,10 +6737,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="c1"># All relationships at this point are empty-to-many relationships in JSON:API:</span>
             <span class="c1"># https://jsonapi.org/format/1.0/#document-resource-object-linkage</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`data` key in a relationship must always store a list.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`data` key in a relationship must always store a list."</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_req_type</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Object stored in relationship data has wrong type&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Object stored in relationship data has wrong type"</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">data</span>
 </code></pre></div></td></tr></table></div>
@@ -6842,11 +6842,11 @@
 <span class="normal">282</span>
 <span class="normal">283</span>
 <span class="normal">284</span>
-<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Relationship&quot;</span><span class="p">:</span>
+<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">at_least_one_relationship_key_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Relationship"</span><span class="p">:</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Either &#39;links&#39;, &#39;data&#39;, or &#39;meta&#39; MUST be specified for Relationship&quot;</span>
+            <span class="s2">"Either 'links', 'data', or 'meta' MUST be specified for Relationship"</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -6886,7 +6886,7 @@
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
-<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_rel_type</span><span class="p">(</span>
     <span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">BaseRelationshipResource</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseRelationshipResource</span><span class="p">]</span>
@@ -6894,10 +6894,10 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="c1"># All relationships at this point are empty-to-many relationships in JSON:API:</span>
         <span class="c1"># https://jsonapi.org/format/1.0/#document-resource-object-linkage</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`data` key in a relationship must always store a list.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`data` key in a relationship must always store a list."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_req_type</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Object stored in relationship data has wrong type&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Object stored in relationship data has wrong type"</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">data</span>
 </code></pre></div></td></tr></table></div>
@@ -6991,10 +6991,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

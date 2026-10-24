@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -820,10 +820,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-changes-2026-08-06" class="md-nav__link">
+  <a href="#unreleased-changes-2026-10-24" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unreleased changes (2026-08-06)
+        Unreleased changes (2026-10-24)
       
     </span>
   </a>
@@ -4774,10 +4774,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unreleased-changes-2026-08-06" class="md-nav__link">
+  <a href="#unreleased-changes-2026-10-24" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unreleased changes (2026-08-06)
+        Unreleased changes (2026-10-24)
       
     </span>
   </a>
@@ -6122,8 +6122,13 @@
 
 
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h2 id="unreleased-changes-2026-08-06"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased changes">Unreleased changes</a> (2026-08-06)<a class="headerlink" href="#unreleased-changes-2026-08-06" title="Permanent link">&para;</a></h2>
+<h2 id="unreleased-changes-2026-10-24"><a href="https://github.com/Materials-Consortia/optimade-python-tools/tree/Unreleased changes">Unreleased changes</a> (2026-10-24)<a class="headerlink" href="#unreleased-changes-2026-10-24" title="Permanent link">&para;</a></h2>
 <p><a href="https://github.com/Materials-Consortia/optimade-python-tools/compare/v1.5.0...Unreleased changes">Full Changelog</a></p>
+<p><strong>Closed issues:</strong></p>
+<ul>
+<li>BUG: Alexandria pbe with (nelements=1) failing <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/2433">#2433</a></li>
+<li>Alexandria database (alexandria-pbe/alexandria-pbesol) returning HTTP 400 on previously working queries <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/2432">#2432</a></li>
+</ul>
 <p><strong>Merged pull requests:</strong></p>
 <ul>
 <li>Add models for <code>wyckoff_positions</code> <a href="https://github.com/Materials-Consortia/optimade-python-tools/pull/2427">#2427</a> (<a href="https://github.com/ml-evs">ml-evs</a>)</li>
@@ -6704,7 +6709,7 @@
 <span class="n">DATABASE</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">()</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">collection</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">save_callback</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">structure</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">structure</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]:</span>
         <span class="n">DATABASE</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">save_callback</span><span class="p">])</span>
@@ -6716,7 +6721,7 @@
   <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.adapters</span><span class="w"> </span><span class="kn">import</span> <span class="n">Structure</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ase</span><span class="w"> </span><span class="kn">import</span> <span class="n">Atoms</span>
 
-<span class="n">co</span> <span class="o">=</span> <span class="n">Atoms</span><span class="p">(</span><span class="s1">&#39;CO&#39;</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)])</span>
+<span class="n">co</span> <span class="o">=</span> <span class="n">Atoms</span><span class="p">(</span><span class="s1">'CO'</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)])</span>
 
 <span class="n">structure</span> <span class="o">=</span> <span class="n">Structure</span><span class="o">.</span><span class="n">from_ase_atoms</span><span class="p">(</span><span class="n">co</span><span class="p">)</span>
 </code></pre></div></p>
@@ -8204,10 +8209,10 @@ Previously, APIs that did not support filtering, pagination or limiting response
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

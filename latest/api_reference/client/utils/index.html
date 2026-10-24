@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3707,16 +3707,16 @@
 <span class="normal">118</span>
 <span class="normal">119</span>
 <span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimadeClientProgress</span><span class="p">(</span><span class="n">Progress</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A wrapper around `Rich.Progress` that defines the OPTIMADE client progressbars.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A wrapper around `Rich.Progress` that defines the OPTIMADE client progressbars."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">SpinnerColumn</span><span class="p">(</span><span class="n">finished_text</span><span class="o">=</span><span class="s2">&quot;[green]✓&quot;</span><span class="p">),</span>
-            <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="n">SpinnerColumn</span><span class="p">(</span><span class="n">finished_text</span><span class="o">=</span><span class="s2">"[green]✓"</span><span class="p">),</span>
+            <span class="n">TextColumn</span><span class="p">(</span><span class="s2">"[progress.description]</span><span class="si">{task.description}</span><span class="s2">"</span><span class="p">),</span>
             <span class="n">BarColumn</span><span class="p">(),</span>
             <span class="n">TaskProgressColumn</span><span class="p">(</span>
-                <span class="n">text_format</span><span class="o">=</span><span class="s2">&quot;[progress.completed]</span><span class="si">{task.completed}</span><span class="s2">/[progress.total]</span><span class="si">{task.total}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">text_format_no_percentage</span><span class="o">=</span><span class="s2">&quot;[progress.completed]</span><span class="si">{task.completed}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">text_format</span><span class="o">=</span><span class="s2">"[progress.completed]</span><span class="si">{task.completed}</span><span class="s2">/[progress.total]</span><span class="si">{task.total}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="n">text_format_no_percentage</span><span class="o">=</span><span class="s2">"[progress.completed]</span><span class="si">{task.completed}</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">TimeElapsedColumn</span><span class="p">(),</span>
             <span class="n">console</span><span class="o">=</span><span class="n">Console</span><span class="p">(</span><span class="n">stderr</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
@@ -3848,7 +3848,7 @@
 <span class="normal">96</span>
 <span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">QueryResults</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A container dataclass for the results from a given query.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A container dataclass for the results from a given query."""</span>
 
     <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment]</span>
     <span class="n">errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -3858,7 +3858,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">included_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_included_index&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_included_index"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_included_index</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_included_index</span>
 
@@ -3866,35 +3866,35 @@
         <span class="k">return</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Combine the results from one page with the existing results for a given query.</span>
+<span class="w">        </span><span class="sd">"""Combine the results from one page with the existing results for a given query.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            page_results: The results for the current page.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
-        <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"data"</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
             <span class="c1"># If the `data` field is a list, add it to our existing results.</span>
             <span class="c1"># Otherwise, as is the case for `info` endpoints, `data` is a dictionary (or null)</span>
             <span class="c1"># and should be added as the only `data` field for these results.</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>  <span class="c1"># type: ignore[union-attr]</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s2">&quot;Not overwriting old `data` field in `QueryResults`.&quot;</span>
+                    <span class="s2">"Not overwriting old `data` field in `QueryResults`."</span>
                 <span class="p">)</span>
 
-        <span class="k">if</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;errors&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">"errors"</span><span class="p">])</span>
 
         <span class="c1"># Combine meta/links fields across all pages in a sensible way, i.e.,</span>
         <span class="c1"># if we really reached the last page of results, then make sure `links-&gt;next`</span>
         <span class="c1"># is null in the final response, and make sure `meta-&gt;more_data_available` is None or False.</span>
         <span class="n">keys_to_filter</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;links&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="s2">&quot;prev&quot;</span><span class="p">),</span>
-            <span class="s2">&quot;meta&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;more_data_available&quot;</span><span class="p">),</span>
+            <span class="s2">"links"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"next"</span><span class="p">,</span> <span class="s2">"prev"</span><span class="p">),</span>
+            <span class="s2">"meta"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"query"</span><span class="p">,</span> <span class="s2">"more_data_available"</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="k">for</span> <span class="n">top_level_key</span> <span class="ow">in</span> <span class="n">keys_to_filter</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">top_level_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
@@ -3907,8 +3907,8 @@
             <span class="p">)</span>
 
         <span class="c1"># Only add new unique entries to the included list</span>
-        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">page_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="n">typed_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">page_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"included"</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">typed_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">'type'</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">if</span> <span class="n">typed_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">included_index</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">included_index</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">typed_id</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">included</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
@@ -4022,35 +4022,35 @@
 <span class="normal">95</span>
 <span class="normal">96</span>
 <span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine the results from one page with the existing results for a given query.</span>
+<span class="w">    </span><span class="sd">"""Combine the results from one page with the existing results for a given query.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        page_results: The results for the current page.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">if</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">"data"</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
         <span class="c1"># If the `data` field is a list, add it to our existing results.</span>
         <span class="c1"># Otherwise, as is the case for `info` endpoints, `data` is a dictionary (or null)</span>
         <span class="c1"># and should be added as the only `data` field for these results.</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>  <span class="c1"># type: ignore[union-attr]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>  <span class="c1"># type: ignore[union-attr]</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;Not overwriting old `data` field in `QueryResults`.&quot;</span>
+                <span class="s2">"Not overwriting old `data` field in `QueryResults`."</span>
             <span class="p">)</span>
 
-    <span class="k">if</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;errors&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">"errors"</span><span class="p">])</span>
 
     <span class="c1"># Combine meta/links fields across all pages in a sensible way, i.e.,</span>
     <span class="c1"># if we really reached the last page of results, then make sure `links-&gt;next`</span>
     <span class="c1"># is null in the final response, and make sure `meta-&gt;more_data_available` is None or False.</span>
     <span class="n">keys_to_filter</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;links&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="s2">&quot;prev&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;meta&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;more_data_available&quot;</span><span class="p">),</span>
+        <span class="s2">"links"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"next"</span><span class="p">,</span> <span class="s2">"prev"</span><span class="p">),</span>
+        <span class="s2">"meta"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"query"</span><span class="p">,</span> <span class="s2">"more_data_available"</span><span class="p">),</span>
     <span class="p">}</span>
     <span class="k">for</span> <span class="n">top_level_key</span> <span class="ow">in</span> <span class="n">keys_to_filter</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">top_level_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">page_results</span><span class="p">:</span>
@@ -4063,8 +4063,8 @@
         <span class="p">)</span>
 
     <span class="c1"># Only add new unique entries to the included list</span>
-    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">page_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-        <span class="n">typed_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">page_results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"included"</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="n">typed_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">'type'</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">d</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">if</span> <span class="n">typed_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">included_index</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">included_index</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">typed_id</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">included</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
@@ -4114,8 +4114,8 @@ repeating the query.</p>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RecoverableHTTPError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for any HTTP issues that may be recoverable by just</span>
-<span class="sd">    repeating the query.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Base class for any HTTP issues that may be recoverable by just</span>
+<span class="sd">    repeating the query."""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -4153,7 +4153,7 @@ repeating the query.</p>
                 <summary>Source code in <code>optimade/client/utils.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
 <span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TooManyRequestsException</span><span class="p">(</span><span class="n">RecoverableHTTPError</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;For when the underlying HTTP request returns 429: Too Many Requests.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""For when the underlying HTTP request returns 429: Too Many Requests."""</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -4191,11 +4191,11 @@ repeating the query.</p>
 <span class="normal">133</span>
 <span class="normal">134</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@contextmanager</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">silent_raise</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise an exception without printing a traceback, or the exception message itself.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Raise an exception without printing a traceback, or the exception message itself."""</span>
     <span class="n">default_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-        <span class="n">sys</span><span class="p">,</span> <span class="s2">&quot;tracebacklimit&quot;</span><span class="p">,</span> <span class="mi">1000</span>
-    <span class="p">)</span>  <span class="c1"># `1000` is a Python&#39;s default value</span>
-    <span class="n">default_excepthook</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s2">&quot;excepthook&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="p">,</span> <span class="s2">"tracebacklimit"</span><span class="p">,</span> <span class="mi">1000</span>
+    <span class="p">)</span>  <span class="c1"># `1000` is a Python's default value</span>
+    <span class="n">default_excepthook</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s2">"excepthook"</span><span class="p">)</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">tracebacklimit</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="k">lambda</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="kc">None</span>
     <span class="k">yield</span>
@@ -4283,10 +4283,10 @@ repeating the query.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3712,9 +3712,9 @@ Filters that use the prefixed form of these fields will then be passed through t
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>Example JSON config file fragment for adding two fields to each of the <code>structures</code> and <code>references</code> endpoints, that will be served as, e.g., <code>_exmpl_cell_volume</code> if the <code>provider.prefix</code> is set to 'exmpl'.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&quot;provider_fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;cell_volume&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;total_energy&quot;</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;references&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;orcid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;num_citations&quot;</span><span class="p">],</span>
+<div class="highlight"><pre><span></span><code><span class="nt">"provider_fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"structures"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"cell_volume"</span><span class="p">,</span><span class="w"> </span><span class="s2">"total_energy"</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"references"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"orcid"</span><span class="p">,</span><span class="w"> </span><span class="s2">"num_citations"</span><span class="p">],</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
@@ -3727,17 +3727,17 @@ This can be achieved by providing a dictionary per field at <a class="autorefs a
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <p>Example JSON config file fragment for adding a description, type and unit for the custom <code>_exmpl_cell_volume</code> field, which will cause it to be added to the <code>/info/structures</code> endpoint.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&quot;provider_fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<div class="highlight"><pre><span></span><code><span class="nt">"provider_fields"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"structures"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;cell_volume&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The volume of the cell per formula unit.&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Ao3&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;float&quot;</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cell_volume"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The volume of the cell per formula unit."</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ao3"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"float"</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="s2">&quot;total_energy&quot;</span>
+<span class="w">    </span><span class="s2">"total_energy"</span>
 <span class="w">  </span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;references&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;orcid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;num_citations&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"references"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"orcid"</span><span class="p">,</span><span class="w"> </span><span class="s2">"num_citations"</span><span class="p">],</span>
 <span class="p">}</span>
 </code></pre></div>
 </div>
@@ -3767,19 +3767,19 @@ In this case, it may be easier to write a custom endpoint for your entry type, t
 
 <span class="k">class</span><span class="w"> </span><span class="nc">MyStructureResourceAttributes</span><span class="p">(</span><span class="n">StructureResourceAttributes</span><span class="p">):</span>
      <span class="n">my_custom_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">OptimadeField</span><span class="p">(</span>
-        <span class="s2">&quot;default value&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;This is a custom field&quot;</span><span class="p">,</span>
+        <span class="s2">"default value"</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"This is a custom field"</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a pydantic `Config` that defines the alias generator,</span>
+<span class="w">        </span><span class="sd">"""Add a pydantic `Config` that defines the alias generator,</span>
 <span class="sd">        based on our configured `provider_fields`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nd">@classmethod</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">alias_generator</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;structures&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-                <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">CONFIG</span><span class="o">.</span><span class="n">provider_fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"structures"</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">return</span> <span class="n">name</span>
 
 
@@ -3787,7 +3787,7 @@ In this case, it may be easier to write a custom endpoint for your entry type, t
     <span class="n">attributes</span><span class="p">:</span> <span class="n">MyStructureResourceAttributes</span>
 
 
-<span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">[</span><span class="s2">&quot;structures&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MyStructureResource</span><span class="o">.</span><span class="n">schema</span>
+<span class="n">ENTRY_INFO_SCHEMAS</span><span class="p">[</span><span class="s2">"structures"</span><span class="p">]</span> <span class="o">=</span> <span class="n">MyStructureResource</span><span class="o">.</span><span class="n">schema</span>
 </code></pre></div>
 <p>Currently, the reference server is not flexible enough to use custom response classes via configuration only (there is an open issue tracking this <a href="https://github.com/Materials-Consortia/optimade-python-tools/issues/929">#929</a>), so instead the code will need to be forked and modified for your implementation.</p>
 <div class="admonition note">
@@ -3811,14 +3811,14 @@ If you want to use custom query parameters without redefining the classes mentio
   " href="../../api_reference/server/config/#optimade.server.config.ServerConfig.files_collection"><code>files_collection</code></a>).</p>
 <p>A minimal <code>files</code> entry needs an <code>id</code> plus the attributes defined by <a href="../../api_reference/models/files/#optimade.models.files.FileResourceAttributes"><code>FileResourceAttributes</code></a>. The most important of these is <code>url</code>, which <strong>must</strong> point at the actual byte stream of the file:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file_1&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;files&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;last_modified&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-01-15T08:30:00Z&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.org/files/cifs/1000000.cif&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1000000.cif&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;media_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;chemical/x-cif&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span>
+<span class="w">  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"file_1"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"files"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"last_modified"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-01-15T08:30:00Z"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://example.org/files/cifs/1000000.cif"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000000.cif"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"media_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chemical/x-cif"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -3902,10 +3902,10 @@ Instructions for how to do this can be found at in the <a href="https://github.c
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

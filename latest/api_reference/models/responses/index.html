@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -6299,7 +6299,7 @@
 <span class="normal">65</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EntryInfoResponse</span><span class="p">(</span><span class="n">Success</span><span class="p">):</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">EntryInfoResource</span><span class="p">,</span>
-        <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;OPTIMADE information for an entry endpoint.&quot;</span><span class="p">),</span>
+        <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"OPTIMADE information for an entry endpoint."</span><span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -6443,7 +6443,7 @@
 
 
 <h3 id="optimade.models.responses.EntryInfoResponse.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6497,18 +6497,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -6571,17 +6571,17 @@ microseconds, as filters may return unexpected results.</p>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>  <span class="c1"># type: ignore[assignment]</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of unique OPTIMADE entry resource objects.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"List of unique OPTIMADE entry resource objects."</span><span class="p">,</span>
             <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
     <span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of unique included OPTIMADE entry resources.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"A list of unique included OPTIMADE entry resources."</span><span class="p">,</span>
             <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
 </code></pre></div></td></tr></table></div>
@@ -6726,7 +6726,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseMany.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6780,18 +6780,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -6853,16 +6853,16 @@ microseconds, as filters may return unexpected results.</p>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The single entry resource returned by this query.&quot;</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"The single entry resource returned by this query."</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
     <span class="n">included</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of unique included OPTIMADE entry resources.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"A list of unique included OPTIMADE entry resources."</span><span class="p">,</span>
             <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment]</span>
 </code></pre></div></td></tr></table></div>
@@ -7008,7 +7008,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.EntryResponseOne.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7062,18 +7062,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -7138,24 +7138,24 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ErrorResponse</span><span class="p">(</span><span class="n">Response</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;errors MUST be present and data MUST be skipped&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""errors MUST be present and data MUST be skipped"""</span>
 
     <span class="n">meta</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">ResponseMeta</span><span class="p">,</span>
-        <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A meta object containing non-standard information.&quot;</span><span class="p">),</span>
+        <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"A meta object containing non-standard information."</span><span class="p">),</span>
     <span class="p">]</span>
     <span class="n">errors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">OptimadeError</span><span class="p">],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"A list of OPTIMADE-specific JSON API error objects, where the field detail MUST be present."</span><span class="p">,</span>
             <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
-    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">data_must_be_skipped</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ErrorResponse&quot;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">or</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;data MUST be skipped for failures reporting errors.&quot;</span><span class="p">)</span>
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data_must_be_skipped</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ErrorResponse"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">or</span> <span class="s2">"data"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"data MUST be skipped for failures reporting errors."</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -7299,7 +7299,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ErrorResponse.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7342,10 +7342,10 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
-<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">data_must_be_skipped</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ErrorResponse&quot;</span><span class="p">:</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">or</span> <span class="s2">&quot;data&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;data MUST be skipped for failures reporting errors.&quot;</span><span class="p">)</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">data_must_be_skipped</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ErrorResponse"</span><span class="p">:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">or</span> <span class="s2">"data"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"data MUST be skipped for failures reporting errors."</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -7376,15 +7376,15 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">409</span>
 <span class="normal">410</span>
 <span class="normal">411</span>
-<span class="normal">412</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Response&quot;</span><span class="p">:</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">,</span> <span class="s2">&quot;errors&quot;</span><span class="p">)</span>
+<span class="normal">412</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Response"</span><span class="p">:</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">,</span> <span class="s2">"errors"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response"</span>
         <span class="p">)</span>
-    <span class="k">if</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Errors MUST NOT be an empty or &#39;null&#39; value.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Errors MUST NOT be an empty or 'null' value."</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -7438,9 +7438,9 @@ microseconds, as filters may return unexpected results.</p>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">FileResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of unique OPTIMADE files entry resource objects.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"List of unique OPTIMADE files entry resource objects."</span><span class="p">,</span>
             <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -7585,7 +7585,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.FileResponseMany.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7639,18 +7639,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -7704,8 +7704,8 @@ microseconds, as filters may return unexpected results.</p>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">FileResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A single files entry resource.&quot;</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"A single files entry resource."</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -7850,7 +7850,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.FileResponseOne.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7904,18 +7904,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -7963,7 +7963,7 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">57</span>
 <span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">IndexInfoResponse</span><span class="p">(</span><span class="n">Success</span><span class="p">):</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">IndexInfoResource</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Index meta-database /info data.&quot;</span><span class="p">)</span>
+        <span class="n">IndexInfoResource</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Index meta-database /info data."</span><span class="p">)</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -8107,7 +8107,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.IndexInfoResponse.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -8161,18 +8161,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -8220,7 +8220,7 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">70</span>
 <span class="normal">71</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">InfoResponse</span><span class="p">(</span><span class="n">Success</span><span class="p">):</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">BaseInfoResource</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;The implementations /info data.&quot;</span><span class="p">)</span>
+        <span class="n">BaseInfoResource</span><span class="p">,</span> <span class="n">StrictField</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"The implementations /info data."</span><span class="p">)</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -8364,7 +8364,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.InfoResponse.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -8418,18 +8418,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -8484,9 +8484,9 @@ microseconds, as filters may return unexpected results.</p>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">LinksResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of unique OPTIMADE links resource objects.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"List of unique OPTIMADE links resource objects."</span><span class="p">,</span>
             <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -8631,7 +8631,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.LinksResponse.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -8685,18 +8685,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -8751,9 +8751,9 @@ microseconds, as filters may return unexpected results.</p>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">ReferenceResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of unique OPTIMADE references entry resource objects.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"List of unique OPTIMADE references entry resource objects."</span><span class="p">,</span>
             <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -8898,7 +8898,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseMany.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -8952,18 +8952,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -9017,8 +9017,8 @@ microseconds, as filters may return unexpected results.</p>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">ReferenceResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A single references entry resource.&quot;</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"A single references entry resource."</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -9163,7 +9163,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.ReferenceResponseOne.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -9217,18 +9217,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -9283,9 +9283,9 @@ microseconds, as filters may return unexpected results.</p>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">StructureResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of unique OPTIMADE structures entry resource objects.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"List of unique OPTIMADE structures entry resource objects."</span><span class="p">,</span>
             <span class="n">uniqueItems</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -9430,7 +9430,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseMany.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -9484,18 +9484,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -9549,8 +9549,8 @@ microseconds, as filters may return unexpected results.</p>
     <span class="n">data</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">StructureResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">StrictField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A single structures entry resource.&quot;</span><span class="p">,</span>
-            <span class="n">union_mode</span><span class="o">=</span><span class="s2">&quot;left_to_right&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"A single structures entry resource."</span><span class="p">,</span>
+            <span class="n">union_mode</span><span class="o">=</span><span class="s2">"left_to_right"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -9695,7 +9695,7 @@ microseconds, as filters may return unexpected results.</p>
 
 
 <h3 id="optimade.models.responses.StructureResponseOne.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)})</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">json_encoders</span><span class="o">=</span><span class="p">{</span><span class="n">datetime</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ'</span><span class="p">)})</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -9749,18 +9749,18 @@ microseconds, as filters may return unexpected results.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Success&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overwriting the existing validation function, since &#39;errors&#39; MUST NOT be set.&quot;&quot;&quot;</span>
-    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;meta&quot;</span><span class="p">)</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">either_data_meta_or_errors_must_be_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Success"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Overwriting the existing validation function, since 'errors' MUST NOT be set."""</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"meta"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response.&quot;</span>
+            <span class="sa">f</span><span class="s2">"At least one of </span><span class="si">{</span><span class="n">required_fields</span><span class="si">}</span><span class="s2"> MUST be specified in the top-level response."</span>
         <span class="p">)</span>
 
     <span class="c1"># errors MUST be skipped</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">&quot;errors&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;errors&#39; MUST be skipped for a successful response.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="ow">or</span> <span class="s2">"errors"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_fields_set</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"'errors' MUST be skipped for a successful response."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -9854,10 +9854,10 @@ microseconds, as filters may return unexpected results.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

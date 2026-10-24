@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -5457,7 +5457,7 @@ and provider.</p>
 <span class="normal">1367</span>
 <span class="normal">1368</span>
 <span class="normal">1369</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimadeClient</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class implemements a client for executing the same queries</span>
+<span class="w">    </span><span class="sd">"""This class implemements a client for executing the same queries</span>
 <span class="sd">    across multiple OPTIMADE APIs simultaneously, paging and caching the</span>
 <span class="sd">    results.</span>
 
@@ -5466,99 +5466,99 @@ and provider.</p>
 <span class="sd">    into the `all_results` attribute, keyed by endpoint, filter</span>
 <span class="sd">    and provider.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">base_urls</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list (or any iterable) of OPTIMADE base URLs to query.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A list (or any iterable) of OPTIMADE base URLs to query."""</span>
 
     <span class="n">all_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A nested dictionary keyed by endpoint and OPTIMADE filter string that contains</span>
+<span class="w">    </span><span class="sd">"""A nested dictionary keyed by endpoint and OPTIMADE filter string that contains</span>
 <span class="sd">    the results from each base URL for that particular filter.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">count_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A nested dictionary keyed by endpoint and OPTIMADE filter string that contains</span>
+<span class="w">    </span><span class="sd">"""A nested dictionary keyed by endpoint and OPTIMADE filter string that contains</span>
 <span class="sd">    the number of results from each base URL for that particular filter.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">max_results_per_provider</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum number of results to downlod per provider. If None, will</span>
+<span class="w">    </span><span class="sd">"""Maximum number of results to downlod per provider. If None, will</span>
 <span class="sd">    download all.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">property_lists</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A dictionary containing list of properties served by each database,</span>
+<span class="w">    </span><span class="sd">"""A dictionary containing list of properties served by each database,</span>
 <span class="sd">    broken down by entry type, then database.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;optimade-python-tools/</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Additional HTTP headers.&quot;&quot;&quot;</span>
+    <span class="n">headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"User-Agent"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"optimade-python-tools/</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
+<span class="w">    </span><span class="sd">"""Additional HTTP headers."""</span>
 
     <span class="n">http_timeout</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Timeout</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The timeout to use for each HTTP request.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The timeout to use for each HTTP request."""</span>
 
     <span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The maximum number of times to repeat a failed query before giving up.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The maximum number of times to repeat a failed query before giving up."""</span>
 
     <span class="n">max_requests_per_provider</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2_000_000</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An upper limit guard rail to avoid infinite hanging of the client on malformed APIs.</span>
+<span class="w">    </span><span class="sd">"""An upper limit guard rail to avoid infinite hanging of the client on malformed APIs.</span>
 <span class="sd">    If available, a better value will be estimated for each API based on the total number of entries.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">use_async</span><span class="p">:</span> <span class="nb">bool</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether or not to make all requests asynchronously using asyncio.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Whether or not to make all requests asynchronously using asyncio."""</span>
 
     <span class="n">callbacks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A list of callbacks to execute after each successful request, used</span>
+<span class="w">    </span><span class="sd">"""A list of callbacks to execute after each successful request, used</span>
 <span class="sd">    to e.g., write to a file, add results to a database or perform additional</span>
 <span class="sd">    filtering.</span>
 
 <span class="sd">    The callbacks will receive the request URL and the results extracted</span>
-<span class="sd">    from the JSON response, with keys &#39;data&#39;, &#39;meta&#39;, &#39;links&#39;, &#39;errors&#39;</span>
-<span class="sd">    and &#39;included&#39;.</span>
+<span class="sd">    from the JSON response, with keys 'data', 'meta', 'links', 'errors'</span>
+<span class="sd">    and 'included'.</span>
 
 <span class="sd">    Each callback can return a dictionary that can modify the `next_url` with the</span>
 <span class="sd">    key `next` and the progress bar with the key `advance_results`.</span>
 <span class="sd">    In the case of multiple provided callbacks, only the value returned by the final</span>
 <span class="sd">    callback in the stack will be used.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">count_binary_search</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enable binary search count for databases that do not support `meta-&gt;data_returned`.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Enable binary search count for databases that do not support `meta-&gt;data_returned`."""</span>
 
     <span class="n">silent</span><span class="p">:</span> <span class="nb">bool</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to disable progress bar printing.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Whether to disable progress bar printing."""</span>
 
     <span class="n">skip_ssl</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether to skip SSL verification.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Whether to skip SSL verification."""</span>
 
     <span class="n">_excluded_providers</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A set of providers IDs excluded from future queries.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A set of providers IDs excluded from future queries."""</span>
 
     <span class="n">_included_providers</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A set of providers IDs included from future queries.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A set of providers IDs included from future queries."""</span>
 
     <span class="n">_excluded_databases</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A set of child database URLs excluded from future queries.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A set of child database URLs excluded from future queries."""</span>
 
     <span class="n">__current_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used internally when querying via `client.structures.get()` to set the</span>
-<span class="sd">    chosen endpoint. Should be reset to `None` outside of all `get()` calls.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Used internally when querying via `client.structures.get()` to set the</span>
+<span class="sd">    chosen endpoint. Should be reset to `None` outside of all `get()` calls."""</span>
 
     <span class="n">_http_client</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Override the HTTP client class, primarily used for testing.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Override the HTTP client class, primarily used for testing."""</span>
 
     <span class="n">__strict_async</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Whether or not to fallover if `use_async` is true yet asynchronous mode</span>
+<span class="w">    </span><span class="sd">"""Whether or not to fallover if `use_async` is true yet asynchronous mode</span>
 <span class="sd">    is impossible due to, e.g., a running event loop.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">_force_binary_search</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setting to test binary searches in cases where servers do return</span>
+<span class="w">    </span><span class="sd">"""Setting to test binary searches in cases where servers do return</span>
 <span class="sd">    the count.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -5577,7 +5577,7 @@ and provider.</p>
         <span class="n">callbacks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">skip_ssl</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
+<span class="w">        </span><span class="sd">"""Create the OPTIMADE client object.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            base_urls: A list of OPTIMADE base URLs to query.</span>
@@ -5597,7 +5597,7 @@ and provider.</p>
 <span class="sd">                attribute [`OptimadeClient.callbacks`][optimade.client.client.OptimadeClient.callbacks] docstring for more details.</span>
 <span class="sd">            verbosity: The verbosity level of the client.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="o">=</span> <span class="n">max_results_per_provider</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
@@ -5635,7 +5635,7 @@ and provider.</p>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">or</span> <span class="n">include_providers</span> <span class="ow">or</span> <span class="n">exclude_databases</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s2">&quot;Cannot provide both a list of base URLs and included/excluded databases.&quot;</span>
+                    <span class="s2">"Cannot provide both a list of base URLs and included/excluded databases."</span>
                 <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
@@ -5646,7 +5646,7 @@ and provider.</p>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
-                <span class="s2">&quot;Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs.&quot;</span>
+                <span class="s2">"Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs."</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">http_timeout</span><span class="p">:</span>
@@ -5662,13 +5662,13 @@ and provider.</p>
             <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                        <span class="s2">&quot;Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client.&quot;</span>
+                        <span class="s2">"Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client."</span>
                     <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                        <span class="s2">&quot;Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client.&quot;</span>
+                        <span class="s2">"Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client."</span>
                     <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
@@ -5680,7 +5680,7 @@ and provider.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">=</span> <span class="n">callbacks</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Allows entry endpoints to be queried via attribute access, using the</span>
+<span class="w">        </span><span class="sd">"""Allows entry endpoints to be queried via attribute access, using the</span>
 <span class="sd">        allowed list for this module.</span>
 
 <span class="sd">        Should also pass through any `extensions/&lt;example&gt;` endpoints.</span>
@@ -5697,12 +5697,12 @@ and provider.</p>
 <span class="sd">            info_structures = cli.info.structures.get()</span>
 <span class="sd">            ```</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">ENDPOINTS</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">==</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;info/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">==</span> <span class="s2">&quot;extensions&quot;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;extensions/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">==</span> <span class="s2">"info"</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"info/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">==</span> <span class="s2">"extensions"</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"extensions/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="n">name</span>
             <span class="k">return</span> <span class="bp">self</span>
@@ -5716,7 +5716,7 @@ and provider.</p>
         <span class="n">response_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">sort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the results from the endpoint and filter across the</span>
+<span class="w">        </span><span class="sd">"""Gets the results from the endpoint and filter across the</span>
 <span class="sd">        defined OPTIMADE APIs.</span>
 
 <span class="sd">        Parameters:</span>
@@ -5732,17 +5732,17 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            A nested mapping from endpoint, filter and base URL to the query results.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;structures&quot;</span>
+                <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">"structures"</span>
 
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="nb">filter</span> <span class="o">=</span> <span class="s2">""</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
 
@@ -5750,7 +5750,7 @@ and provider.</p>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
                     <span class="n">Panel</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Performing query [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">"Performing query [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]"</span><span class="p">,</span>
                         <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -5768,7 +5768,7 @@ and provider.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Counts the number of results for the filter, requiring</span>
+<span class="w">        </span><span class="sd">"""Counts the number of results for the filter, requiring</span>
 <span class="sd">        only 1 request per provider by making use of the `meta-&gt;data_returned`</span>
 <span class="sd">        key. If missing, attempts will be made to perform an exponential/binary</span>
 <span class="sd">        search over pagination to count the results.</span>
@@ -5779,17 +5779,17 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            A nested mapping from endpoint, filter and base URL to the number of query results.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;structures&quot;</span>
+                <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">"structures"</span>
 
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="nb">filter</span> <span class="o">=</span> <span class="s2">""</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
@@ -5801,7 +5801,7 @@ and provider.</p>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
                     <span class="n">Panel</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Counting results for [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">"Counting results for [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]"</span><span class="p">,</span>
                         <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -5817,7 +5817,7 @@ and provider.</p>
 
             <span class="k">for</span> <span class="n">base_url</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
                 <span class="n">count_results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="s2">&quot;data_returned&quot;</span><span class="p">,</span> <span class="kc">None</span>
+                    <span class="s2">"data_returned"</span><span class="p">,</span> <span class="kc">None</span>
                 <span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">count_results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_binary_search</span><span class="p">:</span>
@@ -5827,7 +5827,7 @@ and provider.</p>
                         <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Warning: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> did not return a value for `meta-&gt;data_returned`, unable to count results. Full response: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">"Warning: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> did not return a value for `meta-&gt;data_returned`, unable to count results. Full response: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
                         <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">count_results</span><span class="p">[</span><span class="n">endpoint</span><span class="p">][</span><span class="nb">filter</span><span class="p">]</span> <span class="o">=</span> <span class="n">count_results</span>
@@ -5836,7 +5836,7 @@ and provider.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">binary_search_count</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;In cases where `data_returned` is not available (due to database limitations or</span>
+<span class="w">        </span><span class="sd">"""In cases where `data_returned` is not available (due to database limitations or</span>
 <span class="sd">        otherwise), iteratively probe the final page of results available for a filter using</span>
 <span class="sd">        binary search.</span>
 
@@ -5852,21 +5852,21 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            The number of results for the filter.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Performing binary search count for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Performing binary search count for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_binary_search_count_async</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s2">&quot;Binary search count is not yet implemented for synchronous queries.&quot;</span>
+                <span class="s2">"Binary search count is not yet implemented for synchronous queries."</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_binary_search_count_async</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run a series of asynchronously queries on a given API to</span>
+<span class="w">        </span><span class="sd">"""Run a series of asynchronously queries on a given API to</span>
 <span class="sd">        find the number of results for a filter.</span>
 
 <span class="sd">        Starting with logarithmically spaced page offsets, iteratively probe</span>
@@ -5881,7 +5881,7 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            The number of results for the filter.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># first a check that there are any results at all</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
@@ -5895,7 +5895,7 @@ and provider.</p>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Definitely found results&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">"Definitely found results"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
@@ -5916,7 +5916,7 @@ and provider.</p>
                     <span class="n">page_limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                     <span class="n">response_fields</span><span class="o">=</span><span class="p">[],</span>
                     <span class="n">paginate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="n">other_params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;page_offset&quot;</span><span class="p">:</span> <span class="n">probe</span><span class="p">},</span>
+                    <span class="n">other_params</span><span class="o">=</span><span class="p">{</span><span class="s2">"page_offset"</span><span class="p">:</span> <span class="n">probe</span><span class="p">},</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
@@ -5933,10 +5933,10 @@ and provider.</p>
             <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Binary search debug info: </span><span class="si">{</span><span class="n">window</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">probe</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Binary search debug info: </span><span class="si">{</span><span class="n">window</span><span class="si">=}</span><span class="s2">, </span><span class="si">{</span><span class="n">probe</span><span class="si">=}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Exceeded maximum number of attempts for binary search on </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">filter</span><span class="si">=}</span><span class="s2">&quot;</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Exceeded maximum number of attempts for binary search on </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">filter</span><span class="si">=}</span><span class="s2">"</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
@@ -5946,7 +5946,7 @@ and provider.</p>
         <span class="n">last_probe</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">below</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the new range, trial value and exit condition for exponential/binary search.</span>
+<span class="w">        </span><span class="sd">"""Sets the new range, trial value and exit condition for exponential/binary search.</span>
 <span class="sd">        When converged, returns the same value three times.</span>
 
 <span class="sd">        Parameters:</span>
@@ -5958,14 +5958,14 @@ and provider.</p>
 <span class="sd">            A tuple of the new window and probe value,</span>
 <span class="sd">            or the count three times if converged.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">last_probe</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="mi">1_000_000</span>
 
         <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">last_probe</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;Invalid arguments: must provide all or none of window, last_probe and below parameters&quot;</span>
+                <span class="s2">"Invalid arguments: must provide all or none of window, last_probe and below parameters"</span>
             <span class="p">)</span>
         <span class="n">probe</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">last_probe</span>
 
@@ -5983,11 +5983,11 @@ and provider.</p>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">window</span> <span class="o">=</span> <span class="p">(</span><span class="n">window</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">last_probe</span><span class="p">)</span>
 
-        <span class="c1"># If we&#39;ve not reached the upper bound yet, try 10x</span>
+        <span class="c1"># If we've not reached the upper bound yet, try 10x</span>
         <span class="k">if</span> <span class="n">window</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">probe</span> <span class="o">*=</span> <span class="mi">10</span>
 
-        <span class="c1"># Otherwise, if we&#39;re in the window and the ends of the window now have the same power of 10 (or within +-1),</span>
+        <span class="c1"># Otherwise, if we're in the window and the ends of the window now have the same power of 10 (or within +-1),</span>
         <span class="c1"># take the average (102 =&gt; 108) =&gt; 105</span>
         <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">window</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">window</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">probe</span> <span class="o">=</span> <span class="p">(</span><span class="n">window</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">window</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">//</span> <span class="mi">2</span>
@@ -6001,10 +6001,10 @@ and provider.</p>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the list of properties reported at `/info/&lt;entry_type&gt;`</span>
+<span class="w">        </span><span class="sd">"""Returns the list of properties reported at `/info/&lt;entry_type&gt;`</span>
 <span class="sd">        for the given entry type, for each database.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
@@ -6013,13 +6013,13 @@ and provider.</p>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
                     <span class="n">Panel</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Listing properties for [bold yellow]</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">[/bold yellow]&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">"Listing properties for [bold yellow]</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">[/bold yellow]"</span><span class="p">,</span>
                         <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
             <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_queries</span><span class="p">(</span>
-                <span class="s2">&quot;&quot;</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s2">&quot;info/</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">""</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"info/</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
                 <span class="n">paginate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">page_limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                 <span class="n">response_fields</span><span class="o">=</span><span class="p">[],</span>
@@ -6028,12 +6028,12 @@ and provider.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span> <span class="o">=</span> <span class="p">{</span><span class="n">entry_type</span><span class="p">:</span> <span class="p">{}}</span>
         <span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">database</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-                <span class="n">results</span><span class="p">[</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"properties"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">search_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Searches for the query substring within the listed properties</span>
+<span class="w">        </span><span class="sd">"""Searches for the query substring within the listed properties</span>
 <span class="sd">        served by each database.</span>
 
 <span class="sd">        Parameters:</span>
@@ -6044,7 +6044,7 @@ and provider.</p>
 <span class="sd">            A nested dictionary of matching property lists, arranged by</span>
 <span class="sd">            entry type and database.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">list_properties</span><span class="p">(</span><span class="n">entry_type</span><span class="o">=</span><span class="n">entry_type</span><span class="p">)</span>
 
@@ -6067,7 +6067,7 @@ and provider.</p>
         <span class="n">response_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">sort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the queries over the base URLs either asynchronously or</span>
+<span class="w">        </span><span class="sd">"""Executes the queries over the base URLs either asynchronously or</span>
 <span class="sd">        serially, depending on the `self.use_async` setting.</span>
 
 <span class="sd">        Parameters:</span>
@@ -6085,7 +6085,7 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            A mapping from base URL to `QueryResults` for each queried API.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span><span class="p">:</span>
             <span class="c1"># Check for a pre-existing event loop (e.g. within a Jupyter notebook)</span>
             <span class="c1"># and use it if present</span>
@@ -6094,10 +6094,10 @@ and provider.</p>
                 <span class="k">if</span> <span class="n">event_loop</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                            <span class="s2">&quot;Detected a running event loop, cannot run in async mode.&quot;</span>
+                            <span class="s2">"Detected a running event loop, cannot run in async mode."</span>
                         <span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                        <span class="s2">&quot;Detected a running event loop (e.g., Jupyter). Attempting to switch to synchronous mode.&quot;</span>
+                        <span class="s2">"Detected a running event loop (e.g., Jupyter). Attempting to switch to synchronous mode."</span>
                     <span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">False</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span>
@@ -6137,7 +6137,7 @@ and provider.</p>
         <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">override_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the query synchronously on one API.</span>
+<span class="w">        </span><span class="sd">"""Executes the query synchronously on one API.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            endpoint: The OPTIMADE endpoint to query.</span>
@@ -6157,7 +6157,7 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            A dictionary mapping from base URL to the results of the query.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_one</span><span class="p">(</span>
                 <span class="n">endpoint</span><span class="p">,</span>
@@ -6173,10 +6173,10 @@ and provider.</p>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
             <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
+                <span class="sa">f</span><span class="s2">"[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/red i]"</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">base_url</span><span class="p">:</span> <span class="n">error_query_results</span><span class="p">}</span>
 
@@ -6191,7 +6191,7 @@ and provider.</p>
         <span class="n">base_urls</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the query asynchronously across all defined APIs.</span>
+<span class="w">        </span><span class="sd">"""Executes the query asynchronously across all defined APIs.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            endpoint: The OPTIMADE endpoint to query.</span>
@@ -6210,7 +6210,7 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            A dictionary mapping from base URL to the results of the query.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
             <span class="n">base_urls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span>
 
@@ -6242,7 +6242,7 @@ and provider.</p>
         <span class="n">base_urls</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the query synchronously across all defined APIs.</span>
+<span class="w">        </span><span class="sd">"""Executes the query synchronously across all defined APIs.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            endpoint: The OPTIMADE endpoint to query.</span>
@@ -6261,7 +6261,7 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            A dictionary mapping from base URL to the results of the query.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">base_urls</span><span class="p">:</span>
             <span class="n">base_urls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
@@ -6294,7 +6294,7 @@ and provider.</p>
         <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">override_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Executes the query asynchronously on one API.</span>
+<span class="w">        </span><span class="sd">"""Executes the query asynchronously on one API.</span>
 
 <span class="sd">        !!! note</span>
 <span class="sd">            This method currently makes non-blocking requests</span>
@@ -6321,7 +6321,7 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            A dictionary mapping from base URL to the results of the query.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_one_async</span><span class="p">(</span>
                 <span class="n">endpoint</span><span class="p">,</span>
@@ -6337,10 +6337,10 @@ and provider.</p>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
             <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
+                <span class="sa">f</span><span class="s2">"[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span><span class="si">}</span><span class="s2">[/red i]"</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">base_url</span><span class="p">:</span> <span class="n">error_query_results</span><span class="p">}</span>
 
@@ -6356,7 +6356,7 @@ and provider.</p>
         <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">override_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;See [`OptimadeClient.get_one_async`][optimade.client.OptimadeClient.get_one_async].&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""See [`OptimadeClient.get_one_async`][optimade.client.OptimadeClient.get_one_async]."""</span>
         <span class="n">next_url</span><span class="p">,</span> <span class="n">_task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">(</span>
             <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
             <span class="n">base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
@@ -6384,24 +6384,24 @@ and provider.</p>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;Making request to </span><span class="si">{</span><span class="n">next_url</span><span class="si">!r}</span><span class="s2"> </span><span class="si">{</span><span class="n">attempts</span><span class="si">=}</span><span class="s2">&quot;</span>
+                                <span class="sa">f</span><span class="s2">"Making request to </span><span class="si">{</span><span class="n">next_url</span><span class="si">!r}</span><span class="s2"> </span><span class="si">{</span><span class="n">attempts</span><span class="si">=}</span><span class="s2">"</span>
                             <span class="p">)</span>
                         <span class="n">r</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                             <span class="n">next_url</span><span class="p">,</span> <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">http_timeout</span>
                         <span class="p">)</span>
                         <span class="n">page_results</span><span class="p">,</span> <span class="n">next_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">_task</span><span class="p">)</span>
-                        <span class="n">request_delay</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request_delay&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                        <span class="c1"># Don&#39;t wait any longer than 5 seconds</span>
+                        <span class="n">request_delay</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">"meta"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"request_delay"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                        <span class="c1"># Don't wait any longer than 5 seconds</span>
                         <span class="k">if</span> <span class="n">request_delay</span><span class="p">:</span>
                             <span class="n">request_delay</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">request_delay</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 
                         <span class="c1"># Compute the upper limit guard rail on pagination requests based on the number of entries in the entire db</span>
                         <span class="c1"># and the chosen page limit</span>
                         <span class="k">if</span> <span class="n">total_data_available</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="n">total_data_available</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                <span class="s2">&quot;data_available&quot;</span><span class="p">,</span> <span class="mi">0</span>
+                            <span class="n">total_data_available</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">"meta"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">"data_available"</span><span class="p">,</span> <span class="mi">0</span>
                             <span class="p">)</span>
-                            <span class="n">page_limit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+                            <span class="n">page_limit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
                             <span class="k">if</span> <span class="n">page_limit</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                                 <span class="n">page_limit</span> <span class="o">=</span> <span class="mi">1</span>
                             <span class="k">if</span> <span class="n">total_data_available</span> <span class="ow">and</span> <span class="n">total_data_available</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -6416,7 +6416,7 @@ and provider.</p>
                         <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
                         <span class="k">if</span> <span class="n">attempts</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span><span class="p">:</span>
                             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;Exceeded maximum number of retries for </span><span class="si">{</span><span class="n">next_url</span><span class="si">}</span><span class="s2">&quot;</span>
+                                <span class="sa">f</span><span class="s2">"Exceeded maximum number of retries for </span><span class="si">{</span><span class="n">next_url</span><span class="si">}</span><span class="s2">"</span>
                             <span class="p">)</span>
                         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">request_delay</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
                         <span class="k">continue</span>
@@ -6428,7 +6428,7 @@ and provider.</p>
 
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">number_of_requests</span> <span class="o">&gt;</span> <span class="n">stopping_criteria</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">next_url</span><span class="p">:</span>
-                            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Detected potential infinite loop for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> (more than </span><span class="si">{</span><span class="n">stopping_criteria</span><span class="si">=}</span><span class="s2"> requests made). Stopping download.&quot;</span>
+                            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Detected potential infinite loop for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> (more than </span><span class="si">{</span><span class="n">stopping_criteria</span><span class="si">=}</span><span class="s2"> requests made). Stopping download."</span>
                             <span class="n">results</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
@@ -6440,7 +6440,7 @@ and provider.</p>
                     <span class="p">):</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;Reached </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> results for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, exceeding `max_results_per_provider` parameter (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span><span class="si">}</span><span class="s2">). Stopping download.&quot;</span>
+                                <span class="sa">f</span><span class="s2">"Reached </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> results for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, exceeding `max_results_per_provider` parameter (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span><span class="si">}</span><span class="s2">). Stopping download."</span>
                             <span class="p">)</span>
                         <span class="k">break</span>
 
@@ -6461,7 +6461,7 @@ and provider.</p>
         <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">override_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;See [`OptimadeClient.get_one`][optimade.client.OptimadeClient.get_one].&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""See [`OptimadeClient.get_one`][optimade.client.OptimadeClient.get_one]."""</span>
         <span class="n">next_url</span><span class="p">,</span> <span class="n">_task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">(</span>
             <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
             <span class="n">base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
@@ -6494,7 +6494,7 @@ and provider.</p>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;Making request to </span><span class="si">{</span><span class="n">next_url</span><span class="si">!r}</span><span class="s2"> </span><span class="si">{</span><span class="n">attempts</span><span class="si">=}</span><span class="s2">&quot;</span>
+                                <span class="sa">f</span><span class="s2">"Making request to </span><span class="si">{</span><span class="n">next_url</span><span class="si">!r}</span><span class="s2"> </span><span class="si">{</span><span class="n">attempts</span><span class="si">=}</span><span class="s2">"</span>
                             <span class="p">)</span>
                         <span class="n">r</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">next_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
                         <span class="n">page_results</span><span class="p">,</span> <span class="n">next_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_response</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">_task</span><span class="p">)</span>
@@ -6502,10 +6502,10 @@ and provider.</p>
                         <span class="c1"># Compute the upper limit guard rail on pagination requests based on the number of entries in the entire db</span>
                         <span class="c1"># and the chosen page limit</span>
                         <span class="k">if</span> <span class="n">total_data_available</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="n">total_data_available</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                                <span class="s2">&quot;data_available&quot;</span><span class="p">,</span> <span class="mi">0</span>
+                            <span class="n">total_data_available</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">"meta"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                                <span class="s2">"data_available"</span><span class="p">,</span> <span class="mi">0</span>
                             <span class="p">)</span>
-                            <span class="n">page_limit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+                            <span class="n">page_limit</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
                             <span class="k">if</span> <span class="n">page_limit</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                                 <span class="n">page_limit</span> <span class="o">=</span> <span class="mi">1</span>
                             <span class="k">if</span> <span class="n">total_data_available</span> <span class="ow">and</span> <span class="n">total_data_available</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -6516,8 +6516,8 @@ and provider.</p>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">stopping_criteria</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span>
 
-                        <span class="n">request_delay</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;request_delay&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                        <span class="c1"># Don&#39;t wait any longer than 5 seconds</span>
+                        <span class="n">request_delay</span> <span class="o">=</span> <span class="n">page_results</span><span class="p">[</span><span class="s2">"meta"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"request_delay"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                        <span class="c1"># Don't wait any longer than 5 seconds</span>
                         <span class="k">if</span> <span class="n">request_delay</span><span class="p">:</span>
                             <span class="n">request_delay</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">request_delay</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 
@@ -6525,7 +6525,7 @@ and provider.</p>
                         <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
                         <span class="k">if</span> <span class="n">attempts</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_attempts</span><span class="p">:</span>
                             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;Exceeded maximum number of retries for </span><span class="si">{</span><span class="n">next_url</span><span class="si">}</span><span class="s2">&quot;</span>
+                                <span class="sa">f</span><span class="s2">"Exceeded maximum number of retries for </span><span class="si">{</span><span class="n">next_url</span><span class="si">}</span><span class="s2">"</span>
                             <span class="p">)</span>
                         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">request_delay</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
                         <span class="k">continue</span>
@@ -6534,7 +6534,7 @@ and provider.</p>
 
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">number_of_requests</span> <span class="o">&gt;</span> <span class="n">stopping_criteria</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">next_url</span><span class="p">:</span>
-                            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Detected potential infinite loop for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> (more than </span><span class="si">{</span><span class="n">stopping_criteria</span><span class="si">=}</span><span class="s2"> requests made). Stopping download.&quot;</span>
+                            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Detected potential infinite loop for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> (more than </span><span class="si">{</span><span class="n">stopping_criteria</span><span class="si">=}</span><span class="s2"> requests made). Stopping download."</span>
                             <span class="n">results</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
@@ -6546,7 +6546,7 @@ and provider.</p>
                     <span class="p">):</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s2">&quot;Reached </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> results for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, exceeding `max_results_per_provider` parameter (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span><span class="si">}</span><span class="s2">). Stopping download.&quot;</span>
+                                <span class="sa">f</span><span class="s2">"Reached </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> results for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">, exceeding `max_results_per_provider` parameter (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span><span class="si">}</span><span class="s2">). Stopping download."</span>
                             <span class="p">)</span>
                         <span class="k">break</span>
 
@@ -6568,12 +6568,12 @@ and provider.</p>
         <span class="n">sort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TaskID</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Constructs the first query URL and creates the progress bar task.</span>
+<span class="w">        </span><span class="sd">"""Constructs the first query URL and creates the progress bar task.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The URL for the first query and the Rich TaskID for progress logging.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_url</span><span class="p">(</span>
             <span class="n">base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
             <span class="n">endpoint</span><span class="o">=</span><span class="n">endpoint</span><span class="p">,</span>
@@ -6593,7 +6593,7 @@ and provider.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_url</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
+        <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="s2">"structures"</span><span class="p">,</span>
         <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">response_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6601,10 +6601,10 @@ and provider.</p>
         <span class="n">page_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the URL to query based on the passed parameters.</span>
+<span class="w">        </span><span class="sd">"""Builds the URL to query based on the passed parameters.</span>
 
 <span class="sd">        Parameters:</span>
-<span class="sd">            base_url: The server&#39;s base URL.</span>
+<span class="sd">            base_url: The server's base URL.</span>
 <span class="sd">            endpoint: The endpoint to query.</span>
 <span class="sd">            version: The OPTIMADE version string.</span>
 <span class="sd">            filter: The filter to apply to the endpoint.</span>
@@ -6616,64 +6616,64 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            The overall query URL, including parameters.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">version</span><span class="p">:</span>
-            <span class="n">version</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;v</span><span class="si">{</span><span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">while</span> <span class="n">base_url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"v</span><span class="si">{</span><span class="n">__api_version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">while</span> <span class="n">base_url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">):</span>
             <span class="n">base_url</span> <span class="o">=</span> <span class="n">base_url</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">params_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="nb">filter</span><span class="p">:</span>
-            <span class="n">params_dict</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;filter=</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">params_dict</span><span class="p">[</span><span class="s2">"filter"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"filter=</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">if</span> <span class="n">response_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># If we have requested no response fields (e.g., in the case of --count) then just ask for IDs</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">params_dict</span><span class="p">[</span><span class="s2">&quot;response_fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;response_fields=id&quot;</span>
+                <span class="n">params_dict</span><span class="p">[</span><span class="s2">"response_fields"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"response_fields=id"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">params_dict</span><span class="p">[</span><span class="s2">&quot;response_fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;response_fields=</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">params_dict</span><span class="p">[</span><span class="s2">"response_fields"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"response_fields=</span><span class="si">{</span><span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">page_limit</span><span class="p">:</span>
-            <span class="n">params_dict</span><span class="p">[</span><span class="s2">&quot;page_limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;page_limit=</span><span class="si">{</span><span class="n">page_limit</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">params_dict</span><span class="p">[</span><span class="s2">"page_limit"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"page_limit=</span><span class="si">{</span><span class="n">page_limit</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
-            <span class="n">params_dict</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;sort=</span><span class="si">{</span><span class="n">sort</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">params_dict</span><span class="p">[</span><span class="s2">"sort"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"sort=</span><span class="si">{</span><span class="n">sort</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="k">if</span> <span class="n">other_params</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">other_params</span><span class="p">:</span>
-                <span class="n">params_dict</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">other_params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">params_dict</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">other_params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
 
-        <span class="n">params</span> <span class="o">=</span> <span class="s2">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="s2">"&amp;"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
-            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;?</span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"?</span><span class="si">{</span><span class="n">params</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="k">return</span> <span class="n">url</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Passes the filter through [`LarkParser`][optimade.filterparser.LarkParser]</span>
+<span class="w">        </span><span class="sd">"""Passes the filter through [`LarkParser`][optimade.filterparser.LarkParser]</span>
 <span class="sd">        from the optimade-python-tools reference server implementation.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            filter: The filter string.</span>
-<span class="sd">            endpoint: The endpoint being queried. If this endpoint is not &quot;known&quot; to</span>
+<span class="sd">            endpoint: The endpoint being queried. If this endpoint is not "known" to</span>
 <span class="sd">                OPTIMADE, the filter will automatically pass.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            RuntimeError: If the filter cannot be parsed.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">in</span> <span class="n">ENDPOINTS</span><span class="p">:</span>
                 <span class="n">parser</span> <span class="o">=</span> <span class="n">LarkParser</span><span class="p">()</span>
                 <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">BadRequest</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;[bold red]Filter [blue i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">!r}</span><span class="s2">[/blue i] could not be parsed as an OPTIMADE filter.[/bold red]&quot;</span><span class="p">,</span>
-                <span class="n">Panel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[magenta]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/magenta]&quot;</span><span class="p">),</span>
+                <span class="sa">f</span><span class="s2">"[bold red]Filter [blue i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">!r}</span><span class="s2">[/blue i] could not be parsed as an OPTIMADE filter.[/bold red]"</span><span class="p">,</span>
+                <span class="n">Panel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[magenta]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/magenta]"</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="k">with</span> <span class="n">silent_raise</span><span class="p">():</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
@@ -6681,48 +6681,48 @@ and provider.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">_handle_response</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span> <span class="o">|</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">,</span> <span class="n">_task</span><span class="p">:</span> <span class="n">TaskID</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle the response from the server.</span>
+<span class="w">        </span><span class="sd">"""Handle the response from the server.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            response: The response from the server.</span>
-<span class="sd">            _task: The Rich TaskID for this task&#39;s progressbar.</span>
+<span class="sd">            _task: The Rich TaskID for this task's progressbar.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A dictionary containing the results, and a link to the next page,</span>
 <span class="sd">            if it exists.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Handle error statuses</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">429</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TooManyRequestsException</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">errors</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errors&quot;</span><span class="p">)</span>
-                <span class="n">error_message</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;detail&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">]</span>
+                <span class="n">errors</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"errors"</span><span class="p">)</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">error</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="p">[</span><span class="s1">'detail'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">]</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">error_message</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error_message</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">r</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Could not decode response as JSON: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="si">!r}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Could not decode response as JSON: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="si">!r}</span><span class="s2">"</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
 
         <span class="c1"># Accumulate results with correct empty containers if missing</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[]),</span>
-            <span class="s2">&quot;meta&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">,</span> <span class="p">{}),</span>
-            <span class="s2">&quot;links&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="p">{}),</span>
-            <span class="s2">&quot;included&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;included&quot;</span><span class="p">,</span> <span class="p">[]),</span>
-            <span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;errors&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="s2">"data"</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="s2">"meta"</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"meta"</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="s2">"links"</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"links"</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="s2">"included"</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"included"</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="s2">"errors"</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"errors"</span><span class="p">,</span> <span class="p">[]),</span>
         <span class="p">}</span>
 
         <span class="n">callback_response</span> <span class="o">=</span> <span class="kc">None</span>
@@ -6733,24 +6733,24 @@ and provider.</p>
         <span class="c1"># Advance the progress bar for this provider</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="n">_task</span><span class="p">,</span>
-            <span class="n">advance</span><span class="o">=</span><span class="n">callback_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;advance_results&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])),</span>
-            <span class="n">total</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data_returned&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">advance</span><span class="o">=</span><span class="n">callback_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"advance_results"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])),</span>
+            <span class="n">total</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s2">"meta"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data_returned"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="n">next_url</span> <span class="o">=</span> <span class="n">callback_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;links&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">next_url</span> <span class="o">=</span> <span class="n">callback_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"next"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="s2">"links"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"next"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">next_url</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">next_url</span> <span class="o">=</span> <span class="n">next_url</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span>
+            <span class="n">next_url</span> <span class="o">=</span> <span class="n">next_url</span><span class="p">[</span><span class="s2">"href"</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">next_url</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_task</span><span class="p">:</span> <span class="n">TaskID</span><span class="p">,</span> <span class="n">num_results</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the finished status of the progress bar depending on the number of results.</span>
+<span class="w">        </span><span class="sd">"""Update the finished status of the progress bar depending on the number of results.</span>
 
 <span class="sd">        Parameters:</span>
-<span class="sd">            _task: The Rich TaskID for this task&#39;s progressbar.</span>
+<span class="sd">            _task: The Rich TaskID for this task's progressbar.</span>
 <span class="sd">            num_results: The number of data entries returned.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">num_results</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_task</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">finished</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">complete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -6761,7 +6761,7 @@ and provider.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">_execute_callbacks</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Response</span> <span class="o">|</span> <span class="n">requests</span><span class="o">.</span><span class="n">Response</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute any callbacks registered with the client.</span>
+<span class="w">        </span><span class="sd">"""Execute any callbacks registered with the client.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            results: The results from the query.</span>
@@ -6770,7 +6770,7 @@ and provider.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            Either `None` or the string value returned from the *final* callback.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">request_url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
@@ -6968,7 +6968,7 @@ the number of results from each base URL for that particular filter.</p>
 
 
 <h3 id="optimade.client.client.OptimadeClient.headers" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;optimade-python-tools/</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span></code>
+            <code class="highlight language-python"><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'User-Agent'</span><span class="p">:</span> <span class="sa">f</span><span class="s1">'optimade-python-tools/</span><span class="si">{</span><span class="n">__version__</span><span class="si">}</span><span class="s1">'</span><span class="p">}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -7231,7 +7231,7 @@ original <code>__getattribute__</code>.</p>
 <span class="normal">298</span>
 <span class="normal">299</span>
 <span class="normal">300</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Allows entry endpoints to be queried via attribute access, using the</span>
+<span class="w">    </span><span class="sd">"""Allows entry endpoints to be queried via attribute access, using the</span>
 <span class="sd">    allowed list for this module.</span>
 
 <span class="sd">    Should also pass through any `extensions/&lt;example&gt;` endpoints.</span>
@@ -7248,12 +7248,12 @@ original <code>__getattribute__</code>.</p>
 <span class="sd">        info_structures = cli.info.structures.get()</span>
 <span class="sd">        ```</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">ENDPOINTS</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">==</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;info/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">==</span> <span class="s2">&quot;extensions&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;extensions/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">==</span> <span class="s2">"info"</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"info/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">==</span> <span class="s2">"extensions"</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"extensions/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="n">name</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -7631,7 +7631,7 @@ attribute <a class="autorefs autorefs-internal" title="callbacks = callbacks
     <span class="n">callbacks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">skip_ssl</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the OPTIMADE client object.</span>
+<span class="w">    </span><span class="sd">"""Create the OPTIMADE client object.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        base_urls: A list of OPTIMADE base URLs to query.</span>
@@ -7651,7 +7651,7 @@ attribute <a class="autorefs autorefs-internal" title="callbacks = callbacks
 <span class="sd">            attribute [`OptimadeClient.callbacks`][optimade.client.client.OptimadeClient.callbacks] docstring for more details.</span>
 <span class="sd">        verbosity: The verbosity level of the client.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="o">=</span> <span class="n">max_results_per_provider</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results_per_provider</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
@@ -7689,7 +7689,7 @@ attribute <a class="autorefs autorefs-internal" title="callbacks = callbacks
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">exclude_providers</span> <span class="ow">or</span> <span class="n">include_providers</span> <span class="ow">or</span> <span class="n">exclude_databases</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot provide both a list of base URLs and included/excluded databases.&quot;</span>
+                <span class="s2">"Cannot provide both a list of base URLs and included/excluded databases."</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span> <span class="o">=</span> <span class="n">base_urls</span>
@@ -7700,7 +7700,7 @@ attribute <a class="autorefs autorefs-internal" title="callbacks = callbacks
 
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_urls</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
-            <span class="s2">&quot;Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs.&quot;</span>
+            <span class="s2">"Unable to access any OPTIMADE base URLs. If you believe this is an error, try manually specifying some base URLs."</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">http_timeout</span><span class="p">:</span>
@@ -7716,13 +7716,13 @@ attribute <a class="autorefs autorefs-internal" title="callbacks = callbacks
         <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">httpx</span><span class="o">.</span><span class="n">AsyncClient</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s2">&quot;Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client.&quot;</span>
+                    <span class="s2">"Cannot use synchronous mode with an asynchronous HTTP client, please set `use_async=True` or pass an asynchronous HTTP client."</span>
                 <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_http_client</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">__strict_async</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                    <span class="s2">&quot;Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client.&quot;</span>
+                    <span class="s2">"Cannot use async mode with a synchronous HTTP client, please set `use_async=False` or pass an synchronous HTTP client."</span>
                 <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
@@ -7891,7 +7891,7 @@ asynchronously within a single API.</p>
 <span class="normal">454</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">binary_search_count</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;In cases where `data_returned` is not available (due to database limitations or</span>
+<span class="w">    </span><span class="sd">"""In cases where `data_returned` is not available (due to database limitations or</span>
 <span class="sd">    otherwise), iteratively probe the final page of results available for a filter using</span>
 <span class="sd">    binary search.</span>
 
@@ -7907,15 +7907,15 @@ asynchronously within a single API.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        The number of results for the filter.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbosity</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Performing binary search count for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Performing binary search count for </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_async</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_binary_search_count_async</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;Binary search count is not yet implemented for synchronous queries.&quot;</span>
+            <span class="s2">"Binary search count is not yet implemented for synchronous queries."</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -8057,7 +8057,7 @@ search over pagination to count the results.</p>
 <span class="normal">424</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Counts the number of results for the filter, requiring</span>
+<span class="w">    </span><span class="sd">"""Counts the number of results for the filter, requiring</span>
 <span class="sd">    only 1 request per provider by making use of the `meta-&gt;data_returned`</span>
 <span class="sd">    key. If missing, attempts will be made to perform an exponential/binary</span>
 <span class="sd">    search over pagination to count the results.</span>
@@ -8068,17 +8068,17 @@ search over pagination to count the results.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        A nested mapping from endpoint, filter and base URL to the number of query results.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;structures&quot;</span>
+            <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">"structures"</span>
 
     <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
@@ -8090,7 +8090,7 @@ search over pagination to count the results.</p>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
                 <span class="n">Panel</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Counting results for [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">"Counting results for [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]"</span><span class="p">,</span>
                     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -8106,7 +8106,7 @@ search over pagination to count the results.</p>
 
         <span class="k">for</span> <span class="n">base_url</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
             <span class="n">count_results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                <span class="s2">&quot;data_returned&quot;</span><span class="p">,</span> <span class="kc">None</span>
+                <span class="s2">"data_returned"</span><span class="p">,</span> <span class="kc">None</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">count_results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_force_binary_search</span><span class="p">:</span>
@@ -8116,7 +8116,7 @@ search over pagination to count the results.</p>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Warning: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> did not return a value for `meta-&gt;data_returned`, unable to count results. Full response: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Warning: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2"> did not return a value for `meta-&gt;data_returned`, unable to count results. Full response: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="n">base_url</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">count_results</span><span class="p">[</span><span class="n">endpoint</span><span class="p">][</span><span class="nb">filter</span><span class="p">]</span> <span class="o">=</span> <span class="n">count_results</span>
@@ -8331,7 +8331,7 @@ from the server.</p>
     <span class="n">response_fields</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">sort</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets the results from the endpoint and filter across the</span>
+<span class="w">    </span><span class="sd">"""Gets the results from the endpoint and filter across the</span>
 <span class="sd">    defined OPTIMADE APIs.</span>
 
 <span class="sd">    Parameters:</span>
@@ -8347,17 +8347,17 @@ from the server.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        A nested mapping from endpoint, filter and base URL to the query results.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">endpoint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">endpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__current_endpoint</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">&quot;structures&quot;</span>
+            <span class="n">endpoint</span> <span class="o">=</span> <span class="s2">"structures"</span>
 
     <span class="k">if</span> <span class="nb">filter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">filter</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="nb">filter</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_check_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
 
@@ -8365,7 +8365,7 @@ from the server.</p>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
                 <span class="n">Panel</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Performing query [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">"Performing query [bold yellow]</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">[/bold yellow]/?filter=[bold magenta][i]</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">[/i][/bold magenta]"</span><span class="p">,</span>
                     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -8642,7 +8642,7 @@ doing pagination externally.</p>
     <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">override_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Executes the query synchronously on one API.</span>
+<span class="w">    </span><span class="sd">"""Executes the query synchronously on one API.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        endpoint: The OPTIMADE endpoint to query.</span>
@@ -8662,7 +8662,7 @@ doing pagination externally.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        A dictionary mapping from base URL to the results of the query.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_one</span><span class="p">(</span>
             <span class="n">endpoint</span><span class="p">,</span>
@@ -8678,10 +8678,10 @@ doing pagination externally.</p>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
+            <span class="sa">f</span><span class="s2">"[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">[/red i]"</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">base_url</span><span class="p">:</span> <span class="n">error_query_results</span><span class="p">}</span>
 </code></pre></div></td></tr></table></div>
@@ -8966,7 +8966,7 @@ doing pagination externally.</p>
     <span class="n">other_params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">override_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">QueryResults</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Executes the query asynchronously on one API.</span>
+<span class="w">    </span><span class="sd">"""Executes the query asynchronously on one API.</span>
 
 <span class="sd">    !!! note</span>
 <span class="sd">        This method currently makes non-blocking requests</span>
@@ -8993,7 +8993,7 @@ doing pagination externally.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        A dictionary mapping from base URL to the results of the query.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_one_async</span><span class="p">(</span>
             <span class="n">endpoint</span><span class="p">,</span>
@@ -9009,10 +9009,10 @@ doing pagination externally.</p>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
         <span class="n">error_query_results</span> <span class="o">=</span> <span class="n">QueryResults</span><span class="p">()</span>
         <span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">exc</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span><span class="si">}</span><span class="s2">[/red i]&quot;</span>
+            <span class="sa">f</span><span class="s2">"[red]Error[/red]: Provider </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span><span class="si">!r}</span><span class="s2"> returned: [red i]</span><span class="si">{</span><span class="n">error_query_results</span><span class="o">.</span><span class="n">errors</span><span class="si">}</span><span class="s2">[/red i]"</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">base_url</span><span class="p">:</span> <span class="n">error_query_results</span><span class="p">}</span>
 </code></pre></div></td></tr></table></div>
@@ -9075,10 +9075,10 @@ for the given entry type, for each database.</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the list of properties reported at `/info/&lt;entry_type&gt;`</span>
+<span class="w">    </span><span class="sd">"""Returns the list of properties reported at `/info/&lt;entry_type&gt;`</span>
 <span class="sd">    for the given entry type, for each database.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span> <span class="o">=</span> <span class="n">OptimadeClientProgress</span><span class="p">()</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">disable</span> <span class="o">=</span> <span class="kc">True</span>
@@ -9087,13 +9087,13 @@ for the given entry type, for each database.</p>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">silent</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_progress</span><span class="o">.</span><span class="n">print</span><span class="p">(</span>
                 <span class="n">Panel</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Listing properties for [bold yellow]</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">[/bold yellow]&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">"Listing properties for [bold yellow]</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">[/bold yellow]"</span><span class="p">,</span>
                     <span class="n">expand</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execute_queries</span><span class="p">(</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;info/</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">""</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"info/</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="n">paginate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">page_limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
             <span class="n">response_fields</span><span class="o">=</span><span class="p">[],</span>
@@ -9102,7 +9102,7 @@ for the given entry type, for each database.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span> <span class="o">=</span> <span class="p">{</span><span class="n">entry_type</span><span class="p">:</span> <span class="p">{}}</span>
     <span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">database</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="n">results</span><span class="p">[</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">database</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"properties"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
@@ -9233,7 +9233,7 @@ served by each database.</p>
 <span class="normal">647</span>
 <span class="normal">648</span>
 <span class="normal">649</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">search_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Searches for the query substring within the listed properties</span>
+<span class="w">    </span><span class="sd">"""Searches for the query substring within the listed properties</span>
 <span class="sd">    served by each database.</span>
 
 <span class="sd">    Parameters:</span>
@@ -9244,7 +9244,7 @@ served by each database.</p>
 <span class="sd">        A nested dictionary of matching property lists, arranged by</span>
 <span class="sd">        entry type and database.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_lists</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">list_properties</span><span class="p">(</span><span class="n">entry_type</span><span class="o">=</span><span class="n">entry_type</span><span class="p">)</span>
 
@@ -9348,10 +9348,10 @@ served by each database.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

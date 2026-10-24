@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4110,7 +4110,7 @@
 <span class="normal">249</span>
 <span class="normal">250</span>
 <span class="normal">251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ElasticCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
-    <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="s2">&quot;page_offset&quot;</span><span class="p">)</span>
+    <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="s2">"page_offset"</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -4118,9 +4118,9 @@
         <span class="n">resource_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
         <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span><span class="p">,</span>
-        <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Elasticsearch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"Elasticsearch"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the ElasticCollection for the given parameters.</span>
+<span class="w">        </span><span class="sd">"""Initialize the ElasticCollection for the given parameters.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            name: The name of the collection.</span>
@@ -4129,7 +4129,7 @@
 <span class="sd">                format changes between deserialization and response.</span>
 <span class="sd">            client: A preconfigured Elasticsearch client.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">resource_cls</span><span class="o">=</span><span class="n">resource_cls</span><span class="p">,</span>
             <span class="n">resource_mapper</span><span class="o">=</span><span class="n">resource_mapper</span><span class="p">,</span>
@@ -4143,7 +4143,7 @@
         <span class="n">tmp_client</span> <span class="o">=</span> <span class="n">client</span> <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">get_elastic_client</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tmp_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s2">&quot;Tried to create ElasticCollection without an Elasticsearch backend&quot;</span>
+                <span class="s2">"Tried to create ElasticCollection without an Elasticsearch backend"</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">:</span> <span class="n">Elasticsearch</span> <span class="o">=</span> <span class="n">tmp_client</span>
@@ -4154,20 +4154,20 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">create_default_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the default index for the collection.</span>
+<span class="w">        </span><span class="sd">"""Create the default index for the collection.</span>
 
 <span class="sd">        For Elastic, the default is to create a search index</span>
 <span class="sd">        over all relevant OPTIMADE fields based on the configured</span>
 <span class="sd">        mapper.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_optimade_index</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">create_optimade_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load or create an index that can handle aliased OPTIMADE fields and attach it</span>
+<span class="w">        </span><span class="sd">"""Load or create an index that can handle aliased OPTIMADE fields and attach it</span>
 <span class="sd">        to the current client.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predefined_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_elastic_index_from_mapper</span><span class="p">(</span>
@@ -4175,22 +4175,22 @@
             <span class="p">)</span>
 
         <span class="n">properties</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">"mappings"</span><span class="p">][</span><span class="s2">"properties"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="n">properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)]</span> <span class="o">=</span> <span class="n">body</span><span class="p">[</span>
-                <span class="s2">&quot;mappings&quot;</span>
-            <span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
-        <span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
+                <span class="s2">"mappings"</span>
+            <span class="p">][</span><span class="s2">"properties"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"keyword"</span><span class="p">}</span>
+        <span class="n">body</span><span class="p">[</span><span class="s2">"mappings"</span><span class="p">][</span><span class="s2">"properties"</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="o">**</span><span class="n">body</span><span class="p">)</span>
 
         <span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with parameters </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with parameters </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">predefined_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads and returns the default pre-defined index.&quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;elastic_indexes.json&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Loads and returns the default pre-defined index."""</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">"elastic_indexes.json"</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">index</span>
 
@@ -4198,7 +4198,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">create_elastic_index_from_mapper</span><span class="p">(</span>
         <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span> <span class="n">fields</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a fallback elastic index based on a resource mapper.</span>
+<span class="w">        </span><span class="sd">"""Create a fallback elastic index based on a resource mapper.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            resource_mapper: The resource mapper to create the index for.</span>
@@ -4206,18 +4206,18 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The parameters to pass to `client.indices.create(...)` (previously</span>
-<span class="sd">                the &#39;body&#39; parameters).</span>
+<span class="sd">                the 'body' parameters).</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
+            <span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"keyword"</span><span class="p">}</span>
             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span>
         <span class="p">}</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="n">properties</span><span class="p">}}</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"keyword"</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"mappings"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"properties"</span><span class="p">:</span> <span class="n">properties</span><span class="p">}}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns the total number of entries in the collection."""</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">elasticsearch.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotFoundError</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">elasticsearch_dsl</span><span class="w"> </span><span class="kn">import</span> <span class="n">Search</span>
 
@@ -4228,7 +4228,7 @@
             <span class="k">return</span> <span class="mi">0</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">        </span><span class="sd">"""Add the given entries to the underlying database.</span>
 
 <span class="sd">        Warning:</span>
 <span class="sd">            No validation is performed on the incoming data.</span>
@@ -4236,20 +4236,20 @@
 <span class="sd">        Arguments:</span>
 <span class="sd">            data: The entry resource objects to add to the database.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;links&quot;</span><span class="p">:</span>
-                <span class="n">id_</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="k">elif</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                <span class="n">id_</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"links"</span><span class="p">:</span>
+                <span class="n">id_</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">'type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">elif</span> <span class="s2">"id"</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                <span class="n">id_</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="s2">"_id"</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
                 <span class="c1"># use the existing MongoDB ids in the test data</span>
-                <span class="n">id_</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
+                <span class="n">id_</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">"_id"</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># ES will generate ids</span>
                 <span class="n">id_</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"_id"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">id_</span>
 
         <span class="kn">from</span><span class="w"> </span><span class="nn">elasticsearch.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">bulk</span>
@@ -4258,9 +4258,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span>
             <span class="p">(</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;_index&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                    <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">),</span>
-                    <span class="s2">&quot;_source&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
+                    <span class="s2">"_index"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="s2">"_id"</span><span class="p">:</span> <span class="n">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">),</span>
+                    <span class="s2">"_source"</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
                 <span class="p">}</span>
                 <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span>
             <span class="p">),</span>
@@ -4269,7 +4269,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_run_db_query</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
+<span class="w">        </span><span class="sd">"""Run the query on the backend and collect the results.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            criteria: A dictionary representation of the query parameters.</span>
@@ -4279,18 +4279,18 @@
 <span class="sd">            The list of entries from the database (without any re-mapping), the total number of</span>
 <span class="sd">            entries matching the query and a boolean for whether or not there is more data available.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">elasticsearch_dsl</span><span class="w"> </span><span class="kn">import</span> <span class="n">Search</span>
 
         <span class="n">search</span> <span class="o">=</span> <span class="n">Search</span><span class="p">(</span><span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-            <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"filter"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">criteria</span><span class="p">[</span><span class="s2">"filter"</span><span class="p">])</span>
 
-        <span class="n">page_offset</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="n">page_above</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;page_above&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">page_offset</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"skip"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">page_above</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"page_above"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="n">limit</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">page_limit</span><span class="p">)</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"limit"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">page_limit</span><span class="p">)</span>
 
         <span class="n">all_aliased_fields</span> <span class="o">=</span> <span class="p">[</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_fields</span>
@@ -4298,12 +4298,12 @@
         <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">source</span><span class="p">(</span><span class="n">includes</span><span class="o">=</span><span class="n">all_aliased_fields</span><span class="p">)</span>
 
         <span class="n">elastic_sort</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="s2">&quot;desc&quot;</span> <span class="k">if</span> <span class="n">sort_dir</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;asc&quot;</span><span class="p">}}</span>
-            <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">sort_dir</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sort&quot;</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="p">{</span><span class="n">field</span><span class="p">:</span> <span class="p">{</span><span class="s2">"order"</span><span class="p">:</span> <span class="s2">"desc"</span> <span class="k">if</span> <span class="n">sort_dir</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="s2">"asc"</span><span class="p">}}</span>
+            <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">sort_dir</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sort"</span><span class="p">,</span> <span class="p">{})</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">elastic_sort</span><span class="p">:</span>
             <span class="n">elastic_sort</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="s2">&quot;asc&quot;</span><span class="p">}}</span>
+                <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="s2">"id"</span><span class="p">):</span> <span class="p">{</span><span class="s2">"order"</span><span class="p">:</span> <span class="s2">"asc"</span><span class="p">}}</span>
             <span class="p">]</span>
 
         <span class="n">search</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">*</span><span class="n">elastic_sort</span><span class="p">)</span>
@@ -4559,9 +4559,9 @@ format changes between deserialization and response.</p>
     <span class="n">resource_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">],</span>
     <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span><span class="p">,</span>
-    <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Elasticsearch&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"Elasticsearch"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the ElasticCollection for the given parameters.</span>
+<span class="w">    </span><span class="sd">"""Initialize the ElasticCollection for the given parameters.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        name: The name of the collection.</span>
@@ -4570,7 +4570,7 @@ format changes between deserialization and response.</p>
 <span class="sd">            format changes between deserialization and response.</span>
 <span class="sd">        client: A preconfigured Elasticsearch client.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
         <span class="n">resource_cls</span><span class="o">=</span><span class="n">resource_cls</span><span class="p">,</span>
         <span class="n">resource_mapper</span><span class="o">=</span><span class="n">resource_mapper</span><span class="p">,</span>
@@ -4584,7 +4584,7 @@ format changes between deserialization and response.</p>
     <span class="n">tmp_client</span> <span class="o">=</span> <span class="n">client</span> <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">get_elastic_client</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">tmp_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="s2">&quot;Tried to create ElasticCollection without an Elasticsearch backend&quot;</span>
+            <span class="s2">"Tried to create ElasticCollection without an Elasticsearch backend"</span>
         <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">:</span> <span class="n">Elasticsearch</span> <span class="o">=</span> <span class="n">tmp_client</span>
@@ -4622,7 +4622,7 @@ format changes between deserialization and response.</p>
 <span class="normal">140</span>
 <span class="normal">141</span>
 <span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Returns the total number of entries in the collection."""</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">elasticsearch.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotFoundError</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">elasticsearch_dsl</span><span class="w"> </span><span class="kn">import</span> <span class="n">Search</span>
 
@@ -4665,13 +4665,13 @@ mapper.</p>
 <span class="normal">76</span>
 <span class="normal">77</span>
 <span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_default_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the default index for the collection.</span>
+<span class="w">    </span><span class="sd">"""Create the default index for the collection.</span>
 
 <span class="sd">    For Elastic, the default is to create a search index</span>
 <span class="sd">    over all relevant OPTIMADE fields based on the configured</span>
 <span class="sd">    mapper.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_optimade_index</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4794,7 +4794,7 @@ the 'body' parameters).</p>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_elastic_index_from_mapper</span><span class="p">(</span>
     <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span> <span class="n">fields</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a fallback elastic index based on a resource mapper.</span>
+<span class="w">    </span><span class="sd">"""Create a fallback elastic index based on a resource mapper.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        resource_mapper: The resource mapper to create the index for.</span>
@@ -4802,15 +4802,15 @@ the 'body' parameters).</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The parameters to pass to `client.indices.create(...)` (previously</span>
-<span class="sd">            the &#39;body&#39; parameters).</span>
+<span class="sd">            the 'body' parameters).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
+        <span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"keyword"</span><span class="p">}</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span>
     <span class="p">}</span>
-    <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="n">properties</span><span class="p">}}</span>
+    <span class="n">properties</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"keyword"</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"mappings"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"properties"</span><span class="p">:</span> <span class="n">properties</span><span class="p">}}</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4891,14 +4891,14 @@ the mapper should be used to convert between the two).</p>
 <span class="normal">294</span>
 <span class="normal">295</span>
 <span class="normal">296</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unique</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an index on the given field, as stored in the database.</span>
+<span class="w">    </span><span class="sd">"""Create an index on the given field, as stored in the database.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        field: The database field to index (i.e., if different from the OPTIMADE field,</span>
 <span class="sd">            the mapper should be used to convert between the two).</span>
 <span class="sd">        unique: Whether or not the index should be unique.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4946,10 +4946,10 @@ to the current client.</p>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_optimade_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load or create an index that can handle aliased OPTIMADE fields and attach it</span>
+<span class="w">    </span><span class="sd">"""Load or create an index that can handle aliased OPTIMADE fields and attach it</span>
 <span class="sd">    to the current client.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predefined_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">body</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_elastic_index_from_mapper</span><span class="p">(</span>
@@ -4957,16 +4957,16 @@ to the current client.</p>
         <span class="p">)</span>
 
     <span class="n">properties</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">"mappings"</span><span class="p">][</span><span class="s2">"properties"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
         <span class="n">properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)]</span> <span class="o">=</span> <span class="n">body</span><span class="p">[</span>
-            <span class="s2">&quot;mappings&quot;</span>
-        <span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-    <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;keyword&quot;</span><span class="p">}</span>
-    <span class="n">body</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">][</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
+            <span class="s2">"mappings"</span>
+        <span class="p">][</span><span class="s2">"properties"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+    <span class="n">properties</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"keyword"</span><span class="p">}</span>
+    <span class="n">body</span><span class="p">[</span><span class="s2">"mappings"</span><span class="p">][</span><span class="s2">"properties"</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="o">**</span><span class="n">body</span><span class="p">)</span>
 
     <span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with parameters </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">"Created Elastic index for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> with parameters </span><span class="si">{</span><span class="n">body</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5159,7 +5159,7 @@ for more information.</p>
     <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Fetches results and indicates if more data is available.</span>
 
 <span class="sd">    Also gives the total number of data available in the absence of `page_limit`.</span>
@@ -5177,10 +5177,10 @@ for more information.</p>
 <span class="sd">        A tuple of various relevant values:</span>
 <span class="sd">        (`results`, `data_returned`, `more_data_available`, `exclude_fields`, `include_fields`).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">criteria</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="n">single_entry</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">)</span>
-    <span class="n">response_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;fields&quot;</span><span class="p">)</span>
+    <span class="n">response_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"fields"</span><span class="p">)</span>
 
     <span class="n">raw_results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_db_query</span><span class="p">(</span>
         <span class="n">criteria</span><span class="p">,</span> <span class="n">single_entry</span>
@@ -5197,9 +5197,9 @@ for more information.</p>
     <span class="n">all_attributes</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ALL_ATTRIBUTES</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">include_fields</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_attributes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-                    <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">supported_prefixes</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_"</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">supported_prefixes</span>
                 <span class="p">):</span>
                     <span class="n">bad_provider_fields</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -5207,13 +5207,13 @@ for more information.</p>
 
     <span class="k">if</span> <span class="n">bad_provider_fields</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unrecognised field(s) for this provider requested in `response_fields`: </span><span class="si">{</span><span class="n">bad_provider_fields</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Unrecognised field(s) for this provider requested in `response_fields`: </span><span class="si">{</span><span class="n">bad_provider_fields</span><span class="si">}</span><span class="s2">."</span><span class="p">,</span>
             <span class="n">category</span><span class="o">=</span><span class="n">UnknownProviderProperty</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">bad_optimade_fields</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
-            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unrecognised OPTIMADE field(s) in requested `response_fields`: </span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Unrecognised OPTIMADE field(s) in requested `response_fields`: </span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
 
     <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
@@ -5230,7 +5230,7 @@ for more information.</p>
                 <span class="ow">and</span> <span class="n">data_returned</span> <span class="o">&gt;</span> <span class="mi">1</span>
             <span class="p">):</span>
                 <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span>
-                    <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Instead of a single entry, </span><span class="si">{</span><span class="n">data_returned</span><span class="si">}</span><span class="s2"> entries were found&quot;</span><span class="p">,</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Instead of a single entry, </span><span class="si">{</span><span class="n">data_returned</span><span class="si">}</span><span class="s2"> entries were found"</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">data_returned</span> <span class="o">=</span> <span class="mi">1</span>
@@ -5321,7 +5321,7 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
 <span class="normal">333</span>
 <span class="normal">334</span>
 <span class="normal">335</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_attribute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the set of attribute fields</span>
+<span class="w">    </span><span class="sd">"""Get the set of attribute fields</span>
 
 <span class="sd">    Return only the _first-level_ attribute fields from the schema of the resource class,</span>
 <span class="sd">    resolving references along the way if needed.</span>
@@ -5334,14 +5334,14 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
 <span class="sd">    Returns:</span>
 <span class="sd">        Property names.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">annotation</span> <span class="o">=</span> <span class="n">_get_origin_type</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">annotation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">]</span><span class="o">.</span><span class="n">annotation</span>
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">Attributes</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-            <span class="s2">&quot;resource class &#39;attributes&#39; field must be a subclass of &#39;EntryResourceAttributes&#39;&quot;</span>
+            <span class="s2">"resource class 'attributes' field must be a subclass of 'EntryResourceAttributes'"</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">model_fields</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
@@ -5478,7 +5478,7 @@ link.</p>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
     <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides url query pagination parameters that will be used in the next</span>
+<span class="w">    </span><span class="sd">"""Provides url query pagination parameters that will be used in the next</span>
 <span class="sd">    link.</span>
 
 <span class="sd">    Arguments:</span>
@@ -5488,23 +5488,23 @@ link.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        A dictionary with the necessary query parameters.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">results</span><span class="p">:</span>
         <span class="c1"># If a user passed a particular pagination mechanism, keep using it</span>
         <span class="c1"># Otherwise, use the default pagination mechanism of the collection</span>
         <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="o">.</span><span class="n">OFFSET</span>
         <span class="k">for</span> <span class="n">pagination_key</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;page_number&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;page_above&quot;</span><span class="p">,</span>
+            <span class="s2">"page_offset"</span><span class="p">,</span>
+            <span class="s2">"page_number"</span><span class="p">,</span>
+            <span class="s2">"page_above"</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">pagination_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="n">pagination_key</span><span class="p">)</span>
                 <span class="k">break</span>
 
         <span class="k">if</span> <span class="n">pagination_mechanism</span> <span class="o">==</span> <span class="n">PaginationMechanism</span><span class="o">.</span><span class="n">OFFSET</span><span class="p">:</span>
-            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">"page_offset"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">page_offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>  <span class="c1"># type: ignore[list-item]</span>
             <span class="p">]</span>
 
@@ -5735,7 +5735,7 @@ or response format.</p>
 <span class="normal">443</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">handle_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span> <span class="o">|</span> <span class="n">SingleEntryQueryParams</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
+<span class="w">    </span><span class="sd">"""Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">    that can be used by the specific backend.</span>
 
 <span class="sd">    Note:</span>
@@ -5753,88 +5753,88 @@ or response format.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        A dictionary representation of the query parameters.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">cursor_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># filter</span>
-    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">"filter"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"filter"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">filter</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;filter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"filter"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># response_format</span>
     <span class="k">if</span> <span class="p">(</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;response_format&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-        <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">response_format</span> <span class="o">!=</span> <span class="s2">&quot;json&quot;</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">"response_format"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">params</span><span class="o">.</span><span class="n">response_format</span> <span class="o">!=</span> <span class="s2">"json"</span>
     <span class="p">):</span>
         <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
-            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Response format </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">response_format</span><span class="si">}</span><span class="s2"> is not supported, please use response_format=&#39;json&#39;&quot;</span>
+            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Response format </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">response_format</span><span class="si">}</span><span class="s2"> is not supported, please use response_format='json'"</span>
         <span class="p">)</span>
 
     <span class="c1"># page_limit</span>
-    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_limit&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">"page_limit"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">limit</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_limit</span>  <span class="c1"># type: ignore[union-attr]</span>
         <span class="k">if</span> <span class="n">limit</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">page_limit_max</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">Forbidden</span><span class="p">(</span>
-                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Max allowed page_limit is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">page_limit_max</span><span class="si">}</span><span class="s2">, you requested </span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Max allowed page_limit is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">page_limit_max</span><span class="si">}</span><span class="s2">, you requested </span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"limit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">limit</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">page_limit</span>
+        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"limit"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">page_limit</span>
 
     <span class="c1"># response_fields</span>
-    <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="kc">True</span>
+    <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"projection"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span> <span class="kc">True</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_fields</span>
     <span class="p">}</span>
 
-    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;response_fields&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="n">response_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">response_fields</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">"response_fields"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">response_fields</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">response_fields</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">))</span>
         <span class="n">response_fields</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_required_fields</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">response_fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_fields</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_fields</span>
+    <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"fields"</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_fields</span>
 
     <span class="c1"># sort</span>
-    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;sort&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;sort&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_sort_params</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">sort</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">"sort"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"sort"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_sort_params</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">sort</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
 
     <span class="c1"># warn if multiple pagination keys are present, and only use the first from this list</span>
     <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">warn_multiple_keys</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">"page_offset"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
         <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_offset</span>  <span class="c1"># type: ignore[union-attr]</span>
+        <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"skip"</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_offset</span>  <span class="c1"># type: ignore[union-attr]</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_number&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">"page_number"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">int</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">received_pagination_option</span><span class="p">:</span>
             <span class="n">warn_multiple_keys</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr]</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&#39;page_number&#39; is 1-based, using &#39;page_number=1&#39; instead of </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># type: ignore[union-attr]</span>
+                    <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">"'page_number' is 1-based, using 'page_number=1' instead of </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">page_number</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>  <span class="c1"># type: ignore[union-attr]</span>
                     <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">page_number</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">page_number</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_number</span>  <span class="c1"># type: ignore[union-attr]</span>
-            <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;skip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">page_number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;limit&quot;</span><span class="p">]</span>
+            <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"skip"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">page_number</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"limit"</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;page_above&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">"page_above"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">received_pagination_option</span><span class="p">:</span>
             <span class="n">warn_multiple_keys</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">received_pagination_option</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">&quot;page_above&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_above</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="n">cursor_kwargs</span><span class="p">[</span><span class="s2">"page_above"</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">page_above</span>  <span class="c1"># type: ignore[union-attr]</span>
 
     <span class="k">if</span> <span class="n">warn_multiple_keys</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Multiple pagination keys were provided, only using the first one of &#39;page_offset&#39;, &#39;page_number&#39; or &#39;page_above&#39;&quot;</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="s2">"Multiple pagination keys were provided, only using the first one of 'page_offset', 'page_number' or 'page_above'"</span><span class="p">,</span>
             <span class="n">category</span><span class="o">=</span><span class="n">QueryParamNotUsed</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -5935,7 +5935,7 @@ or response format.</p>
 <span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">    </span><span class="sd">"""Add the given entries to the underlying database.</span>
 
 <span class="sd">    Warning:</span>
 <span class="sd">        No validation is performed on the incoming data.</span>
@@ -5943,20 +5943,20 @@ or response format.</p>
 <span class="sd">    Arguments:</span>
 <span class="sd">        data: The entry resource objects to add to the database.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;links&quot;</span><span class="p">:</span>
-            <span class="n">id_</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">elif</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-            <span class="n">id_</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"links"</span><span class="p">:</span>
+            <span class="n">id_</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">'type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">elif</span> <span class="s2">"id"</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+            <span class="n">id_</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="s2">"_id"</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
             <span class="c1"># use the existing MongoDB ids in the test data</span>
-            <span class="n">id_</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
+            <span class="n">id_</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">"_id"</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># ES will generate ids</span>
             <span class="n">id_</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"_id"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">id_</span>
 
     <span class="kn">from</span><span class="w"> </span><span class="nn">elasticsearch.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">bulk</span>
@@ -5965,9 +5965,9 @@ or response format.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">,</span>
         <span class="p">(</span>
             <span class="p">{</span>
-                <span class="s2">&quot;_index&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">),</span>
-                <span class="s2">&quot;_source&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
+                <span class="s2">"_index"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">"_id"</span><span class="p">:</span> <span class="n">get_id</span><span class="p">(</span><span class="n">item</span><span class="p">),</span>
+                <span class="s2">"_source"</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span>
         <span class="p">),</span>
@@ -6107,7 +6107,7 @@ resolving aliases and dealing with any invalid fields.</p>
 <span class="normal">498</span>
 <span class="normal">499</span>
 <span class="normal">500</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parse_sort_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles any sort parameters passed to the collection,</span>
+<span class="w">    </span><span class="sd">"""Handles any sort parameters passed to the collection,</span>
 <span class="sd">    resolving aliases and dealing with any invalid fields.</span>
 
 <span class="sd">    Raises:</span>
@@ -6117,11 +6117,11 @@ resolving aliases and dealing with any invalid fields.</p>
 <span class="sd">        A list of tuples containing the aliased field name and</span>
 <span class="sd">        sort direction encoded as 1 (ascending) or -1 (descending).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">sort_spec</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">sort_params</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">sort_params</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">):</span>
         <span class="n">sort_dir</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"-"</span><span class="p">):</span>
             <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
             <span class="n">sort_dir</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">aliased_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
@@ -6134,16 +6134,16 @@ resolving aliases and dealing with any invalid fields.</p>
     <span class="p">]</span>
 
     <span class="k">if</span> <span class="n">unknown_fields</span><span class="p">:</span>
-        <span class="n">error_detail</span> <span class="o">=</span> <span class="s2">&quot;Unable to sort on unknown field</span><span class="si">{}</span><span class="s2"> &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="s2">&quot;s&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_fields</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unknown_fields</span><span class="p">),</span>
+        <span class="n">error_detail</span> <span class="o">=</span> <span class="s2">"Unable to sort on unknown field</span><span class="si">{}</span><span class="s2"> '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"s"</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_fields</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="s2">"', '"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unknown_fields</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="c1"># If all unknown fields are &quot;other&quot; provider-specific, then only provide a warning</span>
+        <span class="c1"># If all unknown fields are "other" provider-specific, then only provide a warning</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
             <span class="p">(</span>
-                <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;_[a-z_0-9]+_[a-z_0-9]*&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="ow">not</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">provider_prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span>
+                <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"_[a-z_0-9]+_[a-z_0-9]*"</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">provider_prefix</span><span class="si">}</span><span class="s2">_"</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">unknown_fields</span>
         <span class="p">):</span>
@@ -6253,10 +6253,10 @@ resolving aliases and dealing with any invalid fields.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

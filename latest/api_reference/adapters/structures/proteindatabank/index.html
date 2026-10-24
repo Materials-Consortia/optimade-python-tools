@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3736,7 +3736,7 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
 <span class="normal">280</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_pdb</span><span class="p">(</span>
     <span class="n">optimade_structure</span><span class="p">:</span> <span class="n">OptimadeStructure</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write Protein Data Bank (PDB) structure in the old PDB format from OPTIMADE structure.</span>
+<span class="w">    </span><span class="sd">"""Write Protein Data Bank (PDB) structure in the old PDB format from OPTIMADE structure.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        optimade_structure: OPTIMADE structure.</span>
@@ -3744,12 +3744,12 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
 <span class="sd">    Returns:</span>
 <span class="sd">        A PDB file as a single Python `str` object.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"np"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">warn</span><span class="p">(</span><span class="n">NUMPY_NOT_FOUND</span><span class="p">,</span> <span class="n">AdapterPackageNotFound</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># type: ignore[return-value]</span>
 
-    <span class="n">pdb</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">pdb</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="n">attributes</span> <span class="o">=</span> <span class="n">optimade_structure</span><span class="o">.</span><span class="n">attributes</span>
 
@@ -3761,20 +3761,20 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
         <span class="n">rotation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">currentcell</span><span class="p">,</span> <span class="n">exportedcell</span><span class="p">)</span>
         <span class="c1"># Setting Z-value = 1 and using P1 since we have all atoms defined explicitly</span>
         <span class="n">Z</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">spacegroup</span> <span class="o">=</span> <span class="s2">&quot;P 1&quot;</span>
+        <span class="n">spacegroup</span> <span class="o">=</span> <span class="s2">"P 1"</span>
         <span class="n">pdb</span> <span class="o">+=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;CRYST1</span><span class="si">{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">9.3f</span><span class="si">}{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">9.3f</span><span class="si">}{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s2">7.2f</span><span class="si">}{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">:</span><span class="s2">7.2f</span><span class="si">}{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="si">:</span><span class="s2">7.2f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">spacegroup</span><span class="si">:</span><span class="s2">11s</span><span class="si">}{</span><span class="n">Z</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"CRYST1</span><span class="si">{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">9.3f</span><span class="si">}{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">9.3f</span><span class="si">}{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s2">7.2f</span><span class="si">}{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">:</span><span class="s2">7.2f</span><span class="si">}{</span><span class="n">cellpar</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="si">:</span><span class="s2">7.2f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">spacegroup</span><span class="si">:</span><span class="s2">11s</span><span class="si">}{</span><span class="n">Z</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
         <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scaled_cell</span><span class="p">(</span><span class="n">currentcell</span><span class="p">)):</span>
-            <span class="n">pdb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;SCALE</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">    </span><span class="si">{</span><span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">10.6f</span><span class="si">}{</span><span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">10.6f</span><span class="si">}{</span><span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">10.6f</span><span class="si">}</span><span class="s2">     </span><span class="si">{</span><span class="mi">0</span><span class="si">:</span><span class="s2">10.5f</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">pdb</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"SCALE</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">    </span><span class="si">{</span><span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">10.6f</span><span class="si">}{</span><span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">10.6f</span><span class="si">}{</span><span class="n">vector</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">10.6f</span><span class="si">}</span><span class="s2">     </span><span class="si">{</span><span class="mi">0</span><span class="si">:</span><span class="s2">10.5f</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
 
     <span class="c1"># There is a limit of 5 digit numbers in this field.</span>
     <span class="n">pdb_maxnum</span> <span class="o">=</span> <span class="mi">100000</span>
     <span class="n">bfactor</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-    <span class="n">pdb</span> <span class="o">+=</span> <span class="s2">&quot;MODEL     1</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">pdb</span> <span class="o">+=</span> <span class="s2">"MODEL     1</span><span class="se">\n</span><span class="s2">"</span>
 
     <span class="n">species</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OptimadeStructureSpecies</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">species</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">species</span>
@@ -3792,26 +3792,26 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
         <span class="n">current_species</span> <span class="o">=</span> <span class="n">species</span><span class="p">[</span><span class="n">species_name</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">&quot;vacancy&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">"vacancy"</span><span class="p">:</span>
                 <span class="k">continue</span>
 
             <span class="n">label</span> <span class="o">=</span> <span class="n">species_name</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="s2">&quot;vacancy&quot;</span> <span class="ow">in</span> <span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span>
+                    <span class="s2">"vacancy"</span> <span class="ow">in</span> <span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span>
                     <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
                 <span class="p">):</span>
                     <span class="k">pass</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">symbol</span><span class="si">}{</span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">symbol</span><span class="si">}{</span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
 
             <span class="n">pdb</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;ATOM  </span><span class="si">{</span><span class="n">site_number</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">pdb_maxnum</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">label</span><span class="si">:</span><span class="s2">4</span><span class="si">}</span><span class="s2"> MOL     1    &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">site</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}{</span><span class="n">site</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}{</span><span class="n">site</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_species</span><span class="o">.</span><span class="n">concentration</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="si">:</span><span class="s2">6.2f</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">bfactor</span><span class="si">:</span><span class="s2">6.2f</span><span class="si">}</span><span class="s2">          </span><span class="si">{</span><span class="n">symbol</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">:</span><span class="s2">2</span><span class="si">}</span><span class="s2">  </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"ATOM  </span><span class="si">{</span><span class="n">site_number</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">pdb_maxnum</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">label</span><span class="si">:</span><span class="s2">4</span><span class="si">}</span><span class="s2"> MOL     1    "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">site</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}{</span><span class="n">site</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}{</span><span class="n">site</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">8.3f</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">current_species</span><span class="o">.</span><span class="n">concentration</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="si">:</span><span class="s2">6.2f</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">bfactor</span><span class="si">:</span><span class="s2">6.2f</span><span class="si">}</span><span class="s2">          </span><span class="si">{</span><span class="n">symbol</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">:</span><span class="s2">2</span><span class="si">}</span><span class="s2">  </span><span class="se">\n</span><span class="s2">"</span>
             <span class="p">)</span>
-    <span class="n">pdb</span> <span class="o">+=</span> <span class="s2">&quot;ENDMDL</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">pdb</span> <span class="o">+=</span> <span class="s2">"ENDMDL</span><span class="se">\n</span><span class="s2">"</span>
 
     <span class="k">return</span> <span class="n">pdb</span>
 </code></pre></div></td></tr></table></div>
@@ -4029,7 +4029,7 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
 <span class="normal">197</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_pdbx_mmcif</span><span class="p">(</span>
     <span class="n">optimade_structure</span><span class="p">:</span> <span class="n">OptimadeStructure</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure.</span>
+<span class="w">    </span><span class="sd">"""Write Protein Data Bank (PDB) structure in the PDBx/mmCIF format from OPTIMADE structure.</span>
 
 <span class="sd">    Warning:</span>
 <span class="sd">        The result of this function can currently not be parsed as a complete PDBx/mmCIF file.</span>
@@ -4040,12 +4040,12 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
 <span class="sd">    Return:</span>
 <span class="sd">        A modern PDBx/mmCIF file as a single Python `str` object.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"np"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">warn</span><span class="p">(</span><span class="n">NUMPY_NOT_FOUND</span><span class="p">,</span> <span class="n">AdapterPackageNotFound</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># type: ignore[return-value]</span>
 
-    <span class="n">cif</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;#</span>
+    <span class="n">cif</span> <span class="o">=</span> <span class="s2">"""#</span>
 <span class="s2"># Created from an OPTIMADE structure.</span>
 <span class="s2">#</span>
 <span class="s2"># See https://www.optimade.org and/or</span>
@@ -4054,92 +4054,92 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
 <span class="s2"># CIF 2.0 format, specifically mmCIF (PDBx).</span>
 <span class="s2"># See http://mmcif.wwpdb.org for more information.</span>
 <span class="s2">#</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">"""</span>
 
-    <span class="n">entry_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">optimade_structure</span><span class="o">.</span><span class="n">type</span><span class="si">}{</span><span class="n">optimade_structure</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">cif</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;data_</span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">_entry.id                         </span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">entry_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">optimade_structure</span><span class="o">.</span><span class="n">type</span><span class="si">}{</span><span class="n">optimade_structure</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">cif</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"data_</span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">_entry.id                         </span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">"</span>
 
     <span class="n">attributes</span> <span class="o">=</span> <span class="n">optimade_structure</span><span class="o">.</span><span class="n">attributes</span>
 
-    <span class="c1"># Do this only if there&#39;s three non-zero lattice vectors</span>
+    <span class="c1"># Do this only if there's three non-zero lattice vectors</span>
     <span class="k">if</span> <span class="n">valid_lattice_vector</span><span class="p">(</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">):</span>  <span class="c1"># type: ignore[arg-type]</span>
         <span class="n">a_vector</span><span class="p">,</span> <span class="n">b_vector</span><span class="p">,</span> <span class="n">c_vector</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">cell_to_cellpar</span><span class="p">(</span>
             <span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span>  <span class="c1"># type: ignore[arg-type]</span>
         <span class="p">)</span>
 
         <span class="n">cif</span> <span class="o">+=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;_cell.entry_id                    </span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;_cell.length_a                    </span><span class="si">{</span><span class="n">a_vector</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;_cell.length_b                    </span><span class="si">{</span><span class="n">b_vector</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;_cell.length_c                    </span><span class="si">{</span><span class="n">c_vector</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;_cell.angle_alpha                 </span><span class="si">{</span><span class="n">alpha</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;_cell.angle_beta                  </span><span class="si">{</span><span class="n">beta</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;_cell.angle_gamma                 </span><span class="si">{</span><span class="n">gamma</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;_cell.Z_PDB                       1</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"_cell.entry_id                    </span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"_cell.length_a                    </span><span class="si">{</span><span class="n">a_vector</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"_cell.length_b                    </span><span class="si">{</span><span class="n">b_vector</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"_cell.length_c                    </span><span class="si">{</span><span class="n">c_vector</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"_cell.angle_alpha                 </span><span class="si">{</span><span class="n">alpha</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"_cell.angle_beta                  </span><span class="si">{</span><span class="n">beta</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"_cell.angle_gamma                 </span><span class="si">{</span><span class="n">gamma</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">"_cell.Z_PDB                       1</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">"</span>
         <span class="p">)</span>
         <span class="n">cif</span> <span class="o">+=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;_symmetry.entry_id                </span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;_symmetry.space_group_name_H-M    &#39;P 1&#39;</span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="s2">&quot;_symmetry.Int_Tables_number       1</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"_symmetry.entry_id                </span><span class="si">{</span><span class="n">entry_id</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">"_symmetry.space_group_name_H-M    'P 1'</span><span class="se">\n</span><span class="s2">"</span>
+            <span class="s2">"_symmetry.Int_Tables_number       1</span><span class="se">\n</span><span class="s2">#</span><span class="se">\n</span><span class="s2">"</span>
         <span class="p">)</span>
 
         <span class="c1"># Since some structure viewers are having issues with cartesian coordinates,</span>
         <span class="c1"># we calculate the fractional coordinates if this is a 3D structure and we have all the necessary information.</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="s2">&quot;fractional_site_positions&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="s2">"fractional_site_positions"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
             <span class="n">attributes</span><span class="o">.</span><span class="n">fractional_site_positions</span> <span class="o">=</span> <span class="n">fractional_coordinates</span><span class="p">(</span>
                 <span class="n">cell</span><span class="o">=</span><span class="n">attributes</span><span class="o">.</span><span class="n">lattice_vectors</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
                 <span class="n">cartesian_positions</span><span class="o">=</span><span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
             <span class="p">)</span>
 
-    <span class="c1"># NOTE: The following lines are perhaps needed to create a &quot;valid&quot; PDBx/mmCIF file.</span>
-    <span class="c1"># However, at the same time, the information here is &quot;default&quot; and will for all structures &quot;at this moment in time&quot;</span>
+    <span class="c1"># NOTE: The following lines are perhaps needed to create a "valid" PDBx/mmCIF file.</span>
+    <span class="c1"># However, at the same time, the information here is "default" and will for all structures "at this moment in time"</span>
     <span class="c1"># be the same. I.e., no information is gained by adding this now.</span>
-    <span class="c1"># If it is found that they indeed are needed to create a &quot;valid&quot; PDBx/mmCIF file, they should be included in the output.</span>
+    <span class="c1"># If it is found that they indeed are needed to create a "valid" PDBx/mmCIF file, they should be included in the output.</span>
     <span class="c1"># cif += (</span>
-    <span class="c1">#     &quot;loop_\n&quot;</span>
-    <span class="c1">#     &quot;_struct_asym.id\n&quot;</span>
-    <span class="c1">#     &quot;_struct_asym.entity_id\n&quot;</span>
-    <span class="c1">#     &quot;A  1\n#\n&quot;  # At this point, not using this feature.</span>
+    <span class="c1">#     "loop_\n"</span>
+    <span class="c1">#     "_struct_asym.id\n"</span>
+    <span class="c1">#     "_struct_asym.entity_id\n"</span>
+    <span class="c1">#     "A  1\n#\n"  # At this point, not using this feature.</span>
     <span class="c1"># )</span>
 
     <span class="c1"># cif += (</span>
-    <span class="c1">#     &quot;loop_\n&quot;</span>
-    <span class="c1">#     &quot;_chem_comp.id\n&quot;</span>
-    <span class="c1">#     &quot;X\n#\n&quot;  # At this point, not using this feature.</span>
+    <span class="c1">#     "loop_\n"</span>
+    <span class="c1">#     "_chem_comp.id\n"</span>
+    <span class="c1">#     "X\n#\n"  # At this point, not using this feature.</span>
     <span class="c1"># )</span>
 
     <span class="c1"># cif += (</span>
-    <span class="c1">#     &quot;loop_\n&quot;</span>
-    <span class="c1">#     &quot;_entity.id\n&quot;</span>
-    <span class="c1">#     &quot;1\n#\n&quot;  # At this point, not using this feature.</span>
+    <span class="c1">#     "loop_\n"</span>
+    <span class="c1">#     "_entity.id\n"</span>
+    <span class="c1">#     "1\n#\n"  # At this point, not using this feature.</span>
     <span class="c1"># )</span>
 
     <span class="c1"># NOTE: This is otherwise a bit ahead of its time, since this OPTIMADE property is part of an open PR.</span>
     <span class="c1"># See https://github.com/Materials-Consortia/OPTIMADE/pull/206</span>
     <span class="n">coord_type</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;fract&quot;</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="s2">&quot;fractional_site_positions&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;Cartn&quot;</span>
+        <span class="s2">"fract"</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="s2">"fractional_site_positions"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"Cartn"</span>
     <span class="p">)</span>
 
     <span class="n">cif</span> <span class="o">+=</span> <span class="p">(</span>
-        <span class="s2">&quot;loop_</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="s2">&quot;_atom_site.group_PDB</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># Always &quot;ATOM&quot;</span>
-        <span class="s2">&quot;_atom_site.id</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># number (1-counting)</span>
-        <span class="s2">&quot;_atom_site.type_symbol</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># species.chemical_symbols</span>
-        <span class="s2">&quot;_atom_site.label_atom_id</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># species.checmical_symbols symbol + number</span>
+        <span class="s2">"loop_</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="s2">"_atom_site.group_PDB</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># Always "ATOM"</span>
+        <span class="s2">"_atom_site.id</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># number (1-counting)</span>
+        <span class="s2">"_atom_site.type_symbol</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># species.chemical_symbols</span>
+        <span class="s2">"_atom_site.label_atom_id</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># species.checmical_symbols symbol + number</span>
         <span class="c1"># For these next keys, see the comment above.</span>
-        <span class="c1"># &quot;_atom_site.label_asym_id\n&quot;  # Will be set to &quot;A&quot; _struct_asym.id above</span>
-        <span class="c1"># &quot;_atom_site.label_comp_id\n&quot;  # Will be set to &quot;X&quot; _chem_comp.id above</span>
-        <span class="c1"># &quot;_atom_site.label_entity_id\n&quot;  # Will be set to &quot;1&quot; _entity.id above</span>
-        <span class="c1"># &quot;_atom_site.label_seq_id\n&quot;</span>
-        <span class="s2">&quot;_atom_site.occupancy</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># species.concentration</span>
-        <span class="sa">f</span><span class="s2">&quot;_atom_site.</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">_x</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># cartesian_site_positions</span>
-        <span class="sa">f</span><span class="s2">&quot;_atom_site.</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">_y</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># cartesian_site_positions</span>
-        <span class="sa">f</span><span class="s2">&quot;_atom_site.</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">_z</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># cartesian_site_positions</span>
-        <span class="s2">&quot;_atom_site.thermal_displace_type</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># Set to &#39;Biso&#39;</span>
-        <span class="s2">&quot;_atom_site.B_iso_or_equiv</span><span class="se">\n</span><span class="s2">&quot;</span>  <span class="c1"># Set to 1.0:f</span>
+        <span class="c1"># "_atom_site.label_asym_id\n"  # Will be set to "A" _struct_asym.id above</span>
+        <span class="c1"># "_atom_site.label_comp_id\n"  # Will be set to "X" _chem_comp.id above</span>
+        <span class="c1"># "_atom_site.label_entity_id\n"  # Will be set to "1" _entity.id above</span>
+        <span class="c1"># "_atom_site.label_seq_id\n"</span>
+        <span class="s2">"_atom_site.occupancy</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># species.concentration</span>
+        <span class="sa">f</span><span class="s2">"_atom_site.</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">_x</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># cartesian_site_positions</span>
+        <span class="sa">f</span><span class="s2">"_atom_site.</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">_y</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># cartesian_site_positions</span>
+        <span class="sa">f</span><span class="s2">"_atom_site.</span><span class="si">{</span><span class="n">coord_type</span><span class="si">}</span><span class="s2">_z</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># cartesian_site_positions</span>
+        <span class="s2">"_atom_site.thermal_displace_type</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># Set to 'Biso'</span>
+        <span class="s2">"_atom_site.B_iso_or_equiv</span><span class="se">\n</span><span class="s2">"</span>  <span class="c1"># Set to 1.0:f</span>
     <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">coord_type</span> <span class="o">==</span> <span class="s2">&quot;fract&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">coord_type</span> <span class="o">==</span> <span class="s2">"fract"</span><span class="p">:</span>
         <span class="n">sites</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">fractional_site_positions</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">sites</span> <span class="o">=</span> <span class="n">attributes</span><span class="o">.</span><span class="n">cartesian_site_positions</span>
@@ -4156,23 +4156,23 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
         <span class="n">current_species</span> <span class="o">=</span> <span class="n">species</span><span class="p">[</span><span class="n">species_name</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">&quot;vacancy&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">symbol</span> <span class="o">==</span> <span class="s2">"vacancy"</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">species_name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}{</span><span class="n">site_number</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">species_name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}{</span><span class="n">site_number</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="s2">&quot;vacancy&quot;</span> <span class="ow">in</span> <span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span>
+                    <span class="s2">"vacancy"</span> <span class="ow">in</span> <span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span>
                     <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_species</span><span class="o">.</span><span class="n">chemical_symbols</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
                 <span class="p">):</span>
                     <span class="k">pass</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">symbol</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}{</span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">symbol</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}{</span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
 
             <span class="n">cif</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;ATOM  </span><span class="si">{</span><span class="n">site_number</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">label</span><span class="si">:</span><span class="s2">8</span><span class="si">}</span><span class="s2">  &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_species</span><span class="o">.</span><span class="n">concentration</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="si">:</span><span class="s2">6.4f</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">site</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">8.5f</span><span class="si">}</span><span class="s2">  &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">site</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">8.5f</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">site</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">8.5f</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="s1">&#39;Biso&#39;</span><span class="si">:</span><span class="s2">4</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="s1">&#39;1.000&#39;</span><span class="si">:</span><span class="s2">6</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"ATOM  </span><span class="si">{</span><span class="n">site_number</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">symbol</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">label</span><span class="si">:</span><span class="s2">8</span><span class="si">}</span><span class="s2">  "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">current_species</span><span class="o">.</span><span class="n">concentration</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="si">:</span><span class="s2">6.4f</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">site</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">8.5f</span><span class="si">}</span><span class="s2">  "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">site</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">8.5f</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">site</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">8.5f</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="s1">'Biso'</span><span class="si">:</span><span class="s2">4</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="s1">'1.000'</span><span class="si">:</span><span class="s2">6</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
             <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">cif</span>
@@ -4258,10 +4258,10 @@ and <a href="https://wiki.fysik.dtu.dk/ase/_modules/ase/io/cif.html#write_cif">h
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

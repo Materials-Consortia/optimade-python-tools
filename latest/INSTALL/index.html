@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3642,11 +3642,11 @@ git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="
 <span class="nb">cd</span><span class="w"> </span>optimade-python-tools
 
 <span class="c1"># Create a virtual environment and install the package and dependencies in editable</span>
-<span class="c1"># mode from the locked dependencies (the &quot;dev&quot; dependency group and &quot;server&quot; extra).</span>
+<span class="c1"># mode from the locked dependencies (the "dev" dependency group and "server" extra).</span>
 <span class="c1"># uv will fetch and pin a suitable Python interpreter automatically.</span>
 uv<span class="w"> </span>sync<span class="w"> </span>--locked<span class="w"> </span>--group<span class="w"> </span>dev<span class="w"> </span>--extra<span class="w"> </span>server
 
-<span class="c1"># Optional: Retrieve the list of OPTIMADE providers. (Without this submodule, some of the tests will fail because &quot;providers.json&quot; cannot be found.)</span>
+<span class="c1"># Optional: Retrieve the list of OPTIMADE providers. (Without this submodule, some of the tests will fail because "providers.json" cannot be found.)</span>
 git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init
 
 <span class="c1"># Run the tests with pytest (uv run executes commands inside the managed environment)</span>
@@ -3698,14 +3698,14 @@ Tests for the two "real" database backends, MongoDB and Elasticsearch, require a
 <a href="https://docs.docker.com/engine/install/">Docker installation instructions</a> will depend on your system; on Linux, the <code>docker</code> commands below may need to be prepended with <code>sudo</code>, depending on your distribution.
 These commands should be run from a local optimade-python-tools directory.</p>
 <p>The following command starts a local Elasticsearch v7 instance, runs the test suite, then stops and deletes the containers (required as the tests insert some data):</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>elasticsearch_test<span class="w"> </span>-p<span class="w"> </span><span class="m">9200</span>:9200<span class="w"> </span>-p<span class="w"> </span><span class="m">9300</span>:9300<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;discovery.type=single-node&quot;</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;xpack.security.enabled=false&quot;</span><span class="w"> </span>elasticsearch:7.17.7<span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>elasticsearch_test<span class="w"> </span>-p<span class="w"> </span><span class="m">9200</span>:9200<span class="w"> </span>-p<span class="w"> </span><span class="m">9300</span>:9300<span class="w"> </span>-e<span class="w"> </span><span class="s2">"discovery.type=single-node"</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">"xpack.security.enabled=false"</span><span class="w"> </span>elasticsearch:7.17.7<span class="w"> </span><span class="se">\</span>
 <span class="o">&amp;&amp;</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
-<span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">OPTIMADE_DATABASE_BACKEND</span><span class="o">=</span><span class="s2">&quot;elastic&quot;</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="p">;</span><span class="w"> </span><span class="se">\</span>
+<span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">OPTIMADE_DATABASE_BACKEND</span><span class="o">=</span><span class="s2">"elastic"</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="p">;</span><span class="w"> </span><span class="se">\</span>
 docker<span class="w"> </span>container<span class="w"> </span>stop<span class="w"> </span>elasticsearch_test<span class="p">;</span><span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>rm<span class="w"> </span>elasticsearch_test
 </code></pre></div>
 <p>The following command starts a local MongoDB instance, runs the test suite, then stops and deletes the containers:</p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>mongo_test<span class="w"> </span>-p<span class="w"> </span><span class="m">27017</span>:27017<span class="w"> </span>-d<span class="w"> </span>mongo:4.4.6<span class="w"> </span><span class="se">\</span>
-<span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">OPTIMADE_DATABASE_BACKEND</span><span class="o">=</span><span class="s2">&quot;mongodb&quot;</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="p">;</span><span class="w"> </span><span class="se">\</span>
+<span class="o">&amp;&amp;</span><span class="w"> </span><span class="nv">OPTIMADE_DATABASE_BACKEND</span><span class="o">=</span><span class="s2">"mongodb"</span><span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="p">;</span><span class="w"> </span><span class="se">\</span>
 docker<span class="w"> </span>container<span class="w"> </span>stop<span class="w"> </span>mongo_test<span class="p">;</span><span class="w"> </span>docker<span class="w"> </span>container<span class="w"> </span>rm<span class="w"> </span>mongo_test
 </code></pre></div>
 <h2 id="container-image">Container image<a class="headerlink" href="#container-image" title="Permanent link">&para;</a></h2>
@@ -3828,10 +3828,10 @@ docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</spa
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

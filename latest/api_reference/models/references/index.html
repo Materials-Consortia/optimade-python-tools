@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4597,12 +4597,12 @@
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Person</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A person, i.e., an author, editor or other.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A person, i.e., an author, editor or other."""</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Full name of the person, REQUIRED.&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""Full name of the person, REQUIRED."""</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -4611,7 +4611,7 @@
     <span class="n">firstname</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;First name of the person.&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""First name of the person."""</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -4620,7 +4620,7 @@
     <span class="n">lastname</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Last name of the person.&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""Last name of the person."""</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -4806,7 +4806,7 @@
 <span class="normal">331</span>
 <span class="normal">332</span>
 <span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceResource</span><span class="p">(</span><span class="n">EntryResource</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The `references` entries describe bibliographic references.</span>
+<span class="w">    </span><span class="sd">"""The `references` entries describe bibliographic references.</span>
 
 <span class="sd">    The following properties are used to provide the bibliographic details:</span>
 
@@ -4814,7 +4814,7 @@
 <span class="sd">    - **bib_type**: type of the reference, corresponding to **type** property in the BibTeX specification, value is string;</span>
 <span class="sd">    - **authors** and **editors**: lists of *person objects* which are dictionaries with the following keys:</span>
 <span class="sd">        - **name**: Full name of the person, REQUIRED.</span>
-<span class="sd">        - **firstname**, **lastname**: Parts of the person&#39;s name, OPTIONAL.</span>
+<span class="sd">        - **firstname**, **lastname**: Parts of the person's name, OPTIONAL.</span>
 <span class="sd">    - **doi** and **url**: values are strings.</span>
 <span class="sd">    - **Requirements/Conventions**:</span>
 <span class="sd">        - **Support**: OPTIONAL support in implementations, i.e., any of the properties MAY be `null`.</span>
@@ -4822,12 +4822,12 @@
 <span class="sd">            If supported, filters MAY support only a subset of comparison operators.</span>
 <span class="sd">        - Every references entry MUST contain at least one of the properties.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="nb">type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">],</span>
+        <span class="n">Literal</span><span class="p">[</span><span class="s2">"references"</span><span class="p">],</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;The name of the type of an entry.</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"""The name of the type of an entry.</span>
 <span class="s2">- **Type**: string.</span>
 <span class="s2">- **Requirements/Conventions**:</span>
 <span class="s2">    - **Support**: MUST be supported by all implementations, MUST NOT be `null`.</span>
@@ -4835,24 +4835,24 @@
 <span class="s2">    - **Response**: REQUIRED in the response.</span>
 <span class="s2">    - MUST be an existing entry type.</span>
 <span class="s2">    - The entry of type &lt;type&gt; and ID &lt;id&gt; MUST be returned in response to a request for `/&lt;type&gt;/&lt;id&gt;` under the versioned base URL.</span>
-<span class="s2">- **Example**: `&quot;structures&quot;`&quot;&quot;&quot;</span><span class="p">,</span>
-            <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;^references$&quot;</span><span class="p">,</span>
+<span class="s2">- **Example**: `"structures"`"""</span><span class="p">,</span>
+            <span class="n">pattern</span><span class="o">=</span><span class="s2">"^references$"</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">MUST</span><span class="p">,</span>
         <span class="p">),</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;references&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"references"</span>
     <span class="n">attributes</span><span class="p">:</span> <span class="n">ReferenceResourceAttributes</span>
 
-    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"attributes"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_attributes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;attributes field must be a mapping&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"attributes field must be a mapping"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;reference object must have at least one field defined&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"reference object must have at least one field defined"</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
               </details>
@@ -4996,7 +4996,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResource.type" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="s1">&#39;references&#39;</span></code>
+            <code class="highlight language-python"><span class="nb">type</span> <span class="o">=</span> <span class="s1">'references'</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -5043,16 +5043,16 @@
 <span class="normal">330</span>
 <span class="normal">331</span>
 <span class="normal">332</span>
-<span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">333</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"attributes"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">validate_attributes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;attributes field must be a mapping&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"attributes field must be a mapping"</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;reference object must have at least one field defined&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"reference object must have at least one field defined"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5339,17 +5339,17 @@
 <span class="normal">280</span>
 <span class="normal">281</span>
 <span class="normal">282</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ReferenceResourceAttributes</span><span class="p">(</span><span class="n">EntryResourceAttributes</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Model that stores the attributes of a reference.</span>
+<span class="w">    </span><span class="sd">"""Model that stores the attributes of a reference.</span>
 
 <span class="sd">    Many properties match the meaning described in the</span>
 <span class="sd">    [BibTeX specification](http://bibtexml.sourceforge.net/btxdoc.pdf).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">authors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of person objects containing the authors of the reference.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"List of person objects containing the authors of the reference."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5358,7 +5358,7 @@
     <span class="n">editors</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">Person</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;List of person objects containing the editors of the reference.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"List of person objects containing the editors of the reference."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5367,7 +5367,7 @@
     <span class="n">doi</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The digital object identifier of the reference.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"The digital object identifier of the reference."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5376,7 +5376,7 @@
     <span class="n">url</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">AnyUrl</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The URL of the reference.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"The URL of the reference."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5385,7 +5385,7 @@
     <span class="n">address</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5394,7 +5394,7 @@
     <span class="n">annote</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5403,7 +5403,7 @@
     <span class="n">booktitle</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5412,7 +5412,7 @@
     <span class="n">chapter</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5421,7 +5421,7 @@
     <span class="n">crossref</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5430,7 +5430,7 @@
     <span class="n">edition</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5439,7 +5439,7 @@
     <span class="n">howpublished</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5448,7 +5448,7 @@
     <span class="n">institution</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5457,7 +5457,7 @@
     <span class="n">journal</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5466,7 +5466,7 @@
     <span class="n">key</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5475,7 +5475,7 @@
     <span class="n">month</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5484,7 +5484,7 @@
     <span class="n">note</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5493,7 +5493,7 @@
     <span class="n">number</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5502,7 +5502,7 @@
     <span class="n">organization</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5511,7 +5511,7 @@
     <span class="n">pages</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5520,7 +5520,7 @@
     <span class="n">publisher</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5529,7 +5529,7 @@
     <span class="n">school</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5538,7 +5538,7 @@
     <span class="n">series</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5547,7 +5547,7 @@
     <span class="n">title</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5556,7 +5556,7 @@
     <span class="n">bib_type</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Type of the reference, corresponding to the **type** property in the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Type of the reference, corresponding to the **type** property in the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5565,7 +5565,7 @@
     <span class="n">volume</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5574,7 +5574,7 @@
     <span class="n">year</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">OptimadeField</span><span class="p">(</span>
-            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Meaning of property matches the BiBTeX specification.&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">"Meaning of property matches the BiBTeX specification."</span><span class="p">,</span>
             <span class="n">support</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
             <span class="n">queryable</span><span class="o">=</span><span class="n">SupportLevel</span><span class="o">.</span><span class="n">OPTIONAL</span><span class="p">,</span>
         <span class="p">),</span>
@@ -5932,7 +5932,7 @@
 
 
 <h3 id="optimade.models.references.ReferenceResourceAttributes.model_config" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s1">&#39;allow&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s1">'allow'</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -6230,10 +6230,10 @@
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@field_validator</span><span class="p">(</span><span class="s2">"immutable_id"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
 <span class="nd">@classmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">cast_immutable_id_to_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience validator for casting `immutable_id` to a string.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convenience validator for casting `immutable_id` to a string."""</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
@@ -6266,13 +6266,13 @@
 <span class="normal">335</span>
 <span class="normal">336</span>
 <span class="normal">337</span>
-<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">check_illegal_attributes_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Attributes&quot;</span><span class="p">:</span>
-    <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="s2">&quot;links&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">)</span>
+<span class="normal">338</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_illegal_attributes_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Attributes"</span><span class="p">:</span>
+    <span class="n">illegal_fields</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"relationships"</span><span class="p">,</span> <span class="s2">"links"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">illegal_fields</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Attributes&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">illegal_fields</span><span class="si">}</span><span class="s2"> MUST NOT be fields under Attributes"</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
@@ -6366,10 +6366,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

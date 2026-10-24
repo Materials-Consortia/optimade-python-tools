@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4532,7 +4532,7 @@ various field-related configuration.</p>
 <span class="normal">566</span>
 <span class="normal">567</span>
 <span class="normal">568</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MongoTransformer</span><span class="p">(</span><span class="n">BaseTransformer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A filter transformer for the MongoDB backend.</span>
+<span class="w">    </span><span class="sd">"""A filter transformer for the MongoDB backend.</span>
 
 <span class="sd">    Parses a lark tree into a dictionary representation to be</span>
 <span class="sd">    used by pymongo or mongomock. Uses post-processing functions</span>
@@ -4547,30 +4547,30 @@ various field-related configuration.</p>
 <span class="sd">            expected fields and acts as a container for</span>
 <span class="sd">            various field-related configuration.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">operator_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span> <span class="s2">&quot;$lt&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span> <span class="s2">&quot;$lte&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;$gt&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span> <span class="s2">&quot;$gte&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;!=&quot;</span><span class="p">:</span> <span class="s2">&quot;$ne&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;=&quot;</span><span class="p">:</span> <span class="s2">&quot;$eq&quot;</span><span class="p">,</span>
+        <span class="s2">"&lt;"</span><span class="p">:</span> <span class="s2">"$lt"</span><span class="p">,</span>
+        <span class="s2">"&lt;="</span><span class="p">:</span> <span class="s2">"$lte"</span><span class="p">,</span>
+        <span class="s2">"&gt;"</span><span class="p">:</span> <span class="s2">"$gt"</span><span class="p">,</span>
+        <span class="s2">"&gt;="</span><span class="p">:</span> <span class="s2">"$gte"</span><span class="p">,</span>
+        <span class="s2">"!="</span><span class="p">:</span> <span class="s2">"$ne"</span><span class="p">,</span>
+        <span class="s2">"="</span><span class="p">:</span> <span class="s2">"$eq"</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="n">inverse_operator_map</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;$lt&quot;</span><span class="p">:</span> <span class="s2">&quot;$gte&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;$lte&quot;</span><span class="p">:</span> <span class="s2">&quot;$gt&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;$gt&quot;</span><span class="p">:</span> <span class="s2">&quot;$lte&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;$gte&quot;</span><span class="p">:</span> <span class="s2">&quot;$lt&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;$ne&quot;</span><span class="p">:</span> <span class="s2">&quot;$eq&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;$eq&quot;</span><span class="p">:</span> <span class="s2">&quot;$ne&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;$in&quot;</span><span class="p">:</span> <span class="s2">&quot;$nin&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;$nin&quot;</span><span class="p">:</span> <span class="s2">&quot;$in&quot;</span><span class="p">,</span>
+        <span class="s2">"$lt"</span><span class="p">:</span> <span class="s2">"$gte"</span><span class="p">,</span>
+        <span class="s2">"$lte"</span><span class="p">:</span> <span class="s2">"$gt"</span><span class="p">,</span>
+        <span class="s2">"$gt"</span><span class="p">:</span> <span class="s2">"$lte"</span><span class="p">,</span>
+        <span class="s2">"$gte"</span><span class="p">:</span> <span class="s2">"$lt"</span><span class="p">,</span>
+        <span class="s2">"$ne"</span><span class="p">:</span> <span class="s2">"$eq"</span><span class="p">,</span>
+        <span class="s2">"$eq"</span><span class="p">:</span> <span class="s2">"$ne"</span><span class="p">,</span>
+        <span class="s2">"$in"</span><span class="p">:</span> <span class="s2">"$nin"</span><span class="p">,</span>
+        <span class="s2">"$nin"</span><span class="p">:</span> <span class="s2">"$in"</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used to post-process the nested dictionary of the parsed query.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Used to post-process the nested dictionary of the parsed query."""</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_relationship_filtering</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_length_operators</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_unknown_or_null_filter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -4580,37 +4580,37 @@ various field-related configuration.</p>
         <span class="k">return</span> <span class="n">query</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">value_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-        <span class="c1"># value_list: [ OPERATOR ] value ( &quot;,&quot; [ OPERATOR ] value )*</span>
+        <span class="c1"># value_list: [ OPERATOR ] value ( "," [ OPERATOR ] value )*</span>
         <span class="c1"># NOTE: no support for optional OPERATOR, yet, so this takes the</span>
         <span class="c1"># parsed values and returns an error if that is being attempted</span>
         <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;OPERATOR </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> inside value_list </span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2"> not implemented.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"OPERATOR </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> inside value_list </span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2"> not implemented."</span>
                 <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">arg</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">value_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-        <span class="c1"># value_zip: [ OPERATOR ] value &quot;:&quot; [ OPERATOR ] value (&quot;:&quot; [ OPERATOR ] value)*</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="c1"># value_zip: [ OPERATOR ] value ":" [ OPERATOR ] value (":" [ OPERATOR ] value)*</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Correlated list queries are not supported."</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">value_zip_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-        <span class="c1"># value_zip_list: value_zip ( &quot;,&quot; value_zip )*</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="c1"># value_zip_list: value_zip ( "," value_zip )*</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Correlated list queries are not supported."</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="c1"># expression: expression_clause ( OR expression_clause )</span>
-        <span class="c1"># expression with and without &#39;OR&#39;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$or&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">}</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># expression with and without 'OR'</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"$or"</span><span class="p">:</span> <span class="n">arg</span><span class="p">}</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expression_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="c1"># expression_clause: expression_phrase ( AND expression_phrase )*</span>
-        <span class="c1"># expression_clause with and without &#39;AND&#39;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">}</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># expression_clause with and without 'AND'</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"$and"</span><span class="p">:</span> <span class="n">arg</span><span class="p">}</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-        <span class="c1"># expression_phrase: [ NOT ] ( comparison | &quot;(&quot; expression &quot;)&quot; )</span>
+        <span class="c1"># expression_phrase: [ NOT ] ( comparison | "(" expression ")" )</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_expression_phrase</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
 
     <span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -4620,25 +4620,25 @@ various field-related configuration.</p>
 
         <span class="c1"># Awkwardly, MongoDB will match null fields in $ne filters,</span>
         <span class="c1"># so we need to add a check for null equality in evey $ne query.</span>
-        <span class="k">if</span> <span class="s2">&quot;$ne&quot;</span> <span class="ow">in</span> <span class="n">query</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="n">quantity</span><span class="p">:</span> <span class="n">query</span><span class="p">},</span> <span class="p">{</span><span class="n">quantity</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$ne&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}]}</span>
+        <span class="k">if</span> <span class="s2">"$ne"</span> <span class="ow">in</span> <span class="n">query</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"$and"</span><span class="p">:</span> <span class="p">[{</span><span class="n">quantity</span><span class="p">:</span> <span class="n">query</span><span class="p">},</span> <span class="p">{</span><span class="n">quantity</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$ne"</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}]}</span>
 
         <span class="c1"># Check if a $size query is being made (indicating a length_op_rhs filter); if so, check for</span>
         <span class="c1"># a defined length alias to replace the $size call with the corresponding filter on the</span>
         <span class="c1"># length quantity then carefully merge the two queries.</span>
         <span class="c1">#</span>
-        <span class="c1"># e.g. `(&quot;elements&quot;, {&quot;$size&quot;: 2, &quot;$all&quot;: [&quot;Ag&quot;, &quot;Au&quot;]})` should become</span>
-        <span class="c1"># `{&quot;elements&quot;: {&quot;$all&quot;: [&quot;Ag&quot;, &quot;Au&quot;]}, &quot;nelements&quot;: 2}` if the `elements` -&gt; `nelements`</span>
+        <span class="c1"># e.g. `("elements", {"$size": 2, "$all": ["Ag", "Au"]})` should become</span>
+        <span class="c1"># `{"elements": {"$all": ["Ag", "Au"]}, "nelements": 2}` if the `elements` -&gt; `nelements`</span>
         <span class="c1"># length alias is defined.</span>
-        <span class="k">if</span> <span class="s2">&quot;$size&quot;</span> <span class="ow">in</span> <span class="n">query</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"$size"</span> <span class="ow">in</span> <span class="n">query</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">quantity</span><span class="p">),</span> <span class="s2">&quot;length_quantity&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">quantity</span><span class="p">),</span> <span class="s2">"length_quantity"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="p">):</span>
                 <span class="n">size_query</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">backend_mapping</span><span class="p">[</span>  <span class="c1"># type: ignore[union-attr]</span>
                         <span class="n">quantity</span>
-                    <span class="p">]</span><span class="o">.</span><span class="n">length_quantity</span><span class="o">.</span><span class="n">backend_field</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;$size&quot;</span><span class="p">)</span>
+                    <span class="p">]</span><span class="o">.</span><span class="n">length_quantity</span><span class="o">.</span><span class="n">backend_field</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"$size"</span><span class="p">)</span>
                 <span class="p">}</span>
 
                 <span class="n">final_query</span> <span class="o">=</span> <span class="p">{}</span>
@@ -4668,124 +4668,124 @@ various field-related configuration.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">known_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="c1"># known_op_rhs: IS ( KNOWN | UNKNOWN )</span>
         <span class="c1"># The OPTIMADE spec also required a type comparison with null, this must be post-processed</span>
-        <span class="c1"># so here we use a special key &quot;#known&quot; which will get replaced in post-processing with the</span>
+        <span class="c1"># so here we use a special key "#known" which will get replaced in post-processing with the</span>
         <span class="c1"># expanded dict</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;#known&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;KNOWN&quot;</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"#known"</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"KNOWN"</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">fuzzy_string_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="c1"># fuzzy_string_op_rhs: CONTAINS value | STARTS [ WITH ] value | ENDS [ WITH ] value</span>
 
         <span class="c1"># The WITH keyword may be omitted.</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Token</span><span class="p">)</span> <span class="ow">and</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;WITH&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Token</span><span class="p">)</span> <span class="ow">and</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"WITH"</span><span class="p">:</span>
             <span class="n">pattern</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pattern</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># CONTAINS</span>
-        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CONTAINS&quot;</span><span class="p">:</span>
-            <span class="n">regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">elif</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;STARTS&quot;</span><span class="p">:</span>
-            <span class="n">regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;^</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">elif</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ENDS&quot;</span><span class="p">:</span>
-            <span class="n">regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">$&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$regex&quot;</span><span class="p">:</span> <span class="n">regex</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"CONTAINS"</span><span class="p">:</span>
+            <span class="n">regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">elif</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"STARTS"</span><span class="p">:</span>
+            <span class="n">regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"^</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">elif</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ENDS"</span><span class="p">:</span>
+            <span class="n">regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">$"</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"$regex"</span><span class="p">:</span> <span class="n">regex</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="c1"># set_op_rhs: HAS ( [ OPERATOR ] value | ALL value_list | ANY value_list | ONLY value_list )</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="c1"># only value without OPERATOR</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$in&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">:]}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"$in"</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">:]}</span>
 
-        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ALL&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$all&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
+        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ALL"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"$all"</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
 
-        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ANY&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$in&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
+        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ANY"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"$in"</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
 
-        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;ONLY&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;#only&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
+        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ONLY"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"#only"</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
 
         <span class="c1"># value with OPERATOR</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;set_op_rhs not implemented for use with OPERATOR. Given: </span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"set_op_rhs not implemented for use with OPERATOR. Given: </span><span class="si">{</span><span class="n">arg</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="c1"># property: IDENTIFIER ( &quot;.&quot; IDENTIFIER )*</span>
+        <span class="c1"># property: IDENTIFIER ( "." IDENTIFIER )*</span>
         <span class="n">quantity</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">):</span>
             <span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span><span class="o">.</span><span class="n">backend_field</span>
 
-        <span class="k">return</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">quantity</span><span class="p">]</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="k">return</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">quantity</span><span class="p">]</span> <span class="o">+</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">length_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="c1"># length_op_rhs: LENGTH [ OPERATOR ] value</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;=&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$size&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"="</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"$size"</span><span class="p">:</span> <span class="n">arg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]}</span>
 
-        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span> <span class="ow">and</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;!=&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span> <span class="ow">and</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"!="</span><span class="p">:</span>
             <span class="c1"># create an invalid query that needs to be post-processed</span>
-            <span class="c1"># e.g. {&#39;$size&#39;: {&#39;$gt&#39;: 2}}, which is not allowed by Mongo.</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$size&quot;</span><span class="p">:</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">[</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]]:</span> <span class="n">arg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]}}</span>
+            <span class="c1"># e.g. {'$size': {'$gt': 2}}, which is not allowed by Mongo.</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"$size"</span><span class="p">:</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="p">[</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]]:</span> <span class="n">arg</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]}}</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Operator </span><span class="si">{</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> not implemented for LENGTH filter.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Operator </span><span class="si">{</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> not implemented for LENGTH filter."</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_zip_op_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="c1"># set_zip_op_rhs: property_zip_addon HAS ( value_zip | ONLY value_zip_list | ALL value_zip_list |</span>
         <span class="c1"># ANY value_zip_list )</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Correlated list queries are not supported."</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">property_zip_addon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-        <span class="c1"># property_zip_addon: &quot;:&quot; property (&quot;:&quot; property)*</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Correlated list queries are not supported.&quot;</span><span class="p">)</span>
+        <span class="c1"># property_zip_addon: ":" property (":" property)*</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Correlated list queries are not supported."</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_recursive_expression_phrase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function for parsing `expression_phrase`. Recursively sorts out</span>
+<span class="w">        </span><span class="sd">"""Helper function for parsing `expression_phrase`. Recursively sorts out</span>
 <span class="sd">        the correct precedence for `$not`, `$and` and `$or`.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            arg: A list containing the expression to be evaluated and whether it</span>
-<span class="sd">                is negated, e.g., `[&quot;NOT&quot;, expr]` or just `[expr]`.</span>
+<span class="sd">                is negated, e.g., `["NOT", expr]` or just `[expr]`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">             The evaluated filter as a nested dictionary.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">handle_not_and</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Handle the case of `~(A &amp; B) -&gt; (~A | ~B)`.</span>
+<span class="w">            </span><span class="sd">"""Handle the case of `~(A &amp; B) -&gt; (~A | ~B)`.</span>
 
-<span class="sd">            We have to check for the special case in which the &quot;and&quot; was created</span>
+<span class="sd">            We have to check for the special case in which the "and" was created</span>
 <span class="sd">            by a previous NOT, e.g.,</span>
-<span class="sd">            `NOT (NOT ({&quot;a&quot;: {&quot;$eq&quot;: 6}})) -&gt; NOT({&quot;$and&quot;: [{&quot;a&quot;: {&quot;$ne&quot;: 6}},{&quot;a&quot;: {&quot;$ne&quot;: None}}]})`</span>
+<span class="sd">            `NOT (NOT ({"a": {"$eq": 6}})) -&gt; NOT({"$and": [{"a": {"$ne": 6}},{"a": {"$ne": None}}]})`</span>
 
 <span class="sd">            Parameters:</span>
-<span class="sd">                arg: A dictionary with key `&quot;$and&quot;` containing a list of expressions.</span>
+<span class="sd">                arg: A dictionary with key `"$and"` containing a list of expressions.</span>
 
 <span class="sd">            Returns:</span>
-<span class="sd">                A dictionary with key `&quot;$or&quot;` containing a list of the appropriate negated expressions.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">                A dictionary with key `"$or"` containing a list of the appropriate negated expressions.</span>
+<span class="sd">            """</span>
 
-            <span class="n">expr1</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;$and&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">expr2</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;$and&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">expr1</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="s2">"$and"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">expr2</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="s2">"$and"</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">expr1</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="n">expr2</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">expr1</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">permutations</span><span class="p">((</span><span class="n">expr1</span><span class="p">,</span> <span class="n">expr2</span><span class="p">)):</span>
-                    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;$ne&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}:</span>
-                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_expression_phrase</span><span class="p">([</span><span class="s2">&quot;NOT&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s2">"$ne"</span><span class="p">:</span> <span class="kc">None</span><span class="p">}:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_expression_phrase</span><span class="p">([</span><span class="s2">"NOT"</span><span class="p">,</span> <span class="n">f</span><span class="p">])</span>
 
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;$or&quot;</span><span class="p">:</span> <span class="p">[</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_expression_phrase</span><span class="p">([</span><span class="s2">&quot;NOT&quot;</span><span class="p">,</span> <span class="n">subdict</span><span class="p">])</span>
-                    <span class="k">for</span> <span class="n">subdict</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;$and&quot;</span><span class="p">]</span>
+                <span class="s2">"$or"</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_expression_phrase</span><span class="p">([</span><span class="s2">"NOT"</span><span class="p">,</span> <span class="n">subdict</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">subdict</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">[</span><span class="s2">"$and"</span><span class="p">]</span>
                 <span class="p">]</span>
             <span class="p">}</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">handle_not_or</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Handle the case of ~(A | B) -&gt; (~A &amp; ~B).</span>
+<span class="w">            </span><span class="sd">"""Handle the case of ~(A | B) -&gt; (~A &amp; ~B).</span>
 
 <span class="sd">            !!! note</span>
 <span class="sd">            Although the MongoDB `$nor` could be used here, it is not convenient as it</span>
@@ -4793,16 +4793,16 @@ various field-related configuration.</p>
 <span class="sd">            for inequality.</span>
 
 <span class="sd">            Parameters:</span>
-<span class="sd">                arg: A dictionary with key `&quot;$or&quot;` containing a list of expressions.</span>
+<span class="sd">                arg: A dictionary with key `"$or"` containing a list of expressions.</span>
 
 <span class="sd">            Returns:</span>
-<span class="sd">                A dictionary with key `&quot;$and&quot;` that lists the appropriate negated expressions.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">                A dictionary with key `"$and"` that lists the appropriate negated expressions.</span>
+<span class="sd">            """</span>
 
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_expression_phrase</span><span class="p">([</span><span class="s2">&quot;NOT&quot;</span><span class="p">,</span> <span class="n">subdict</span><span class="p">])</span>
-                    <span class="k">for</span> <span class="n">subdict</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;$or&quot;</span><span class="p">]</span>
+                <span class="s2">"$and"</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_recursive_expression_phrase</span><span class="p">([</span><span class="s2">"NOT"</span><span class="p">,</span> <span class="n">subdict</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">subdict</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">[</span><span class="s2">"$or"</span><span class="p">]</span>
                 <span class="p">]</span>
             <span class="p">}</span>
 
@@ -4810,68 +4810,68 @@ various field-related configuration.</p>
             <span class="c1"># without NOT</span>
             <span class="k">return</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="s2">&quot;$or&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s2">"$or"</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">handle_not_or</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="k">if</span> <span class="s2">&quot;$and&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s2">"$and"</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="k">return</span> <span class="n">handle_not_and</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="n">operator</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
-        <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;$not&quot;</span><span class="p">:</span>  <span class="c1"># Case of double negation e.g. NOT(&quot;$not&quot;:{ ...})</span>
+        <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">"$not"</span><span class="p">:</span>  <span class="c1"># Case of double negation e.g. NOT("$not":{ ...})</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
 
         <span class="c1"># If the NOT operator occurs at the lowest nesting level,</span>
         <span class="c1"># the expression can be simplified by using the opposite operator and removing the not.</span>
         <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse_operator_map</span><span class="p">:</span>
             <span class="n">filter_</span> <span class="o">=</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">inverse_operator_map</span><span class="p">[</span><span class="n">operator</span><span class="p">]:</span> <span class="n">value</span><span class="p">}}</span>
-            <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;$in&quot;</span><span class="p">,</span> <span class="s2">&quot;$eq&quot;</span><span class="p">):</span>
-                <span class="n">filter_</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">filter_</span><span class="p">,</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$ne&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}]}</span>  <span class="c1"># type: ignore[dict-item]</span>
+            <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"$in"</span><span class="p">,</span> <span class="s2">"$eq"</span><span class="p">):</span>
+                <span class="n">filter_</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"$and"</span><span class="p">:</span> <span class="p">[</span><span class="n">filter_</span><span class="p">,</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$ne"</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}]}</span>  <span class="c1"># type: ignore[dict-item]</span>
             <span class="k">return</span> <span class="n">filter_</span>
 
-        <span class="n">filter_</span> <span class="o">=</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$not&quot;</span><span class="p">:</span> <span class="n">expr</span><span class="p">}}</span>
-        <span class="k">if</span> <span class="s2">&quot;#known&quot;</span> <span class="ow">in</span> <span class="n">expr</span><span class="p">:</span>
+        <span class="n">filter_</span> <span class="o">=</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$not"</span><span class="p">:</span> <span class="n">expr</span><span class="p">}}</span>
+        <span class="k">if</span> <span class="s2">"#known"</span> <span class="ow">in</span> <span class="n">expr</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">filter_</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;$and&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">filter_</span><span class="p">,</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$ne&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}]}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"$and"</span><span class="p">:</span> <span class="p">[</span><span class="n">filter_</span><span class="p">,</span> <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$ne"</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}]}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_apply_length_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check for any invalid pymongo queries that involve applying a</span>
+<span class="w">        </span><span class="sd">"""Check for any invalid pymongo queries that involve applying a</span>
 <span class="sd">        comparison operator to the length of a field, and transform</span>
 <span class="sd">        them into a test for existence of the relevant entry, e.g.</span>
-<span class="sd">        &quot;list LENGTH &gt; 3&quot; becomes &quot;does the 4th list entry exist?&quot;.</span>
+<span class="sd">        "list LENGTH &gt; 3" becomes "does the 4th list entry exist?".</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">check_for_length_op_filter</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span>
                 <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="s2">&quot;$size&quot;</span> <span class="ow">in</span> <span class="n">expr</span>
-                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">[</span><span class="s2">&quot;$size&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="s2">"$size"</span> <span class="ow">in</span> <span class="n">expr</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">[</span><span class="s2">"$size"</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
             <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">apply_length_op</span><span class="p">(</span><span class="n">subdict</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
             <span class="c1"># assumes that the dictionary only has one element by design</span>
             <span class="c1"># (we just made it above in the transformer)</span>
-            <span class="n">operator</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">expr</span><span class="p">[</span><span class="s2">&quot;$size&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="ow">and</span> <span class="n">operator</span> <span class="o">!=</span> <span class="s2">&quot;$ne&quot;</span><span class="p">:</span>
+            <span class="n">operator</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">expr</span><span class="p">[</span><span class="s2">"$size"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operator_map</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="ow">and</span> <span class="n">operator</span> <span class="o">!=</span> <span class="s2">"$ne"</span><span class="p">:</span>
                 <span class="c1"># worth being explicit here, I think</span>
                 <span class="n">_prop</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="n">existence</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;$gt&quot;</span><span class="p">:</span>
-                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">"$gt"</span><span class="p">:</span>
+                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
                     <span class="n">existence</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;$gte&quot;</span><span class="p">:</span>
-                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">"$gte"</span><span class="p">:</span>
+                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span>
                     <span class="n">existence</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;$lt&quot;</span><span class="p">:</span>
-                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">"$lt"</span><span class="p">:</span>
+                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span>
                     <span class="n">existence</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;$lte&quot;</span><span class="p">:</span>
-                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">"$lte"</span><span class="p">:</span>
+                    <span class="n">_prop</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">value</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
                     <span class="n">existence</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">if</span> <span class="n">_prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">subdict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
-                    <span class="n">subdict</span><span class="p">[</span><span class="n">_prop</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span> <span class="n">existence</span><span class="p">}</span>
+                    <span class="n">subdict</span><span class="p">[</span><span class="n">_prop</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"$exists"</span><span class="p">:</span> <span class="n">existence</span><span class="p">}</span>
 
             <span class="k">return</span> <span class="n">subdict</span>
 
@@ -4882,26 +4882,26 @@ various field-related configuration.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_apply_relationship_filtering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check query for property names that match the entry</span>
+<span class="w">        </span><span class="sd">"""Check query for property names that match the entry</span>
 <span class="sd">        types, and transform them as relationship filters rather than</span>
 <span class="sd">        property filters.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">check_for_entry_type</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span>
-                <span class="s2">&quot;structures&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;references&quot;</span><span class="p">,</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="s2">"structures"</span><span class="p">,</span>
+                <span class="s2">"references"</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">replace_with_relationship</span><span class="p">(</span><span class="n">subdict</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-            <span class="n">_prop</span><span class="p">,</span> <span class="n">_field</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">_field</span> <span class="o">!=</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span>
+            <span class="n">_prop</span><span class="p">,</span> <span class="n">_field</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_field</span> <span class="o">!=</span> <span class="s2">"id"</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Cannot filter relationships by field &quot;</span><span class="si">{</span><span class="n">_field</span><span class="si">}</span><span class="s1">&quot;, only &quot;id&quot; is supported.&#39;</span>
+                    <span class="sa">f</span><span class="s1">'Cannot filter relationships by field "</span><span class="si">{</span><span class="n">_field</span><span class="si">}</span><span class="s1">", only "id" is supported.'</span>
                 <span class="p">)</span>
 
-            <span class="n">subdict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;relationships.</span><span class="si">{</span><span class="n">_prop</span><span class="si">}</span><span class="s2">.data.</span><span class="si">{</span><span class="n">_field</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">expr</span>
+            <span class="n">subdict</span><span class="p">[</span><span class="sa">f</span><span class="s2">"relationships.</span><span class="si">{</span><span class="n">_prop</span><span class="si">}</span><span class="s2">.data.</span><span class="si">{</span><span class="n">_field</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">expr</span>
             <span class="n">subdict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">subdict</span>
 
@@ -4910,16 +4910,16 @@ various field-related configuration.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_apply_has_only_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method loops through the query and replaces the magic key `&quot;#only&quot;`</span>
-<span class="sd">        with the proper &#39;HAS ONLY&#39; query.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This method loops through the query and replaces the magic key `"#only"`</span>
+<span class="sd">        with the proper 'HAS ONLY' query.</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">check_for_only_filter</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find cases where the magic key `&quot;#only&quot;` is in the query.&quot;&quot;&quot;</span>
-            <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s2">&quot;#only&quot;</span> <span class="ow">in</span> <span class="n">expr</span><span class="p">)</span>
+<span class="w">            </span><span class="sd">"""Find cases where the magic key `"#only"` is in the query."""</span>
+            <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s2">"#only"</span> <span class="ow">in</span> <span class="n">expr</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">replace_only_filter</span><span class="p">(</span><span class="n">subdict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Replace the magic key `&quot;#only&quot;` (added by this transformer) with an `$elemMatch`-based query.</span>
+<span class="w">            </span><span class="sd">"""Replace the magic key `"#only"` (added by this transformer) with an `$elemMatch`-based query.</span>
 
 <span class="sd">            The first part of the query selects all the documents that contain any value that does not</span>
 <span class="sd">            match any target values for the property `prop`.</span>
@@ -4929,32 +4929,32 @@ various field-related configuration.</p>
 <span class="sd">            these are removed in the second part of the query that makes sure that only documents</span>
 <span class="sd">            with lists that have at least one value are selected.</span>
 
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">            """</span>
 
-            <span class="k">if</span> <span class="s2">&quot;$and&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">subdict</span><span class="p">:</span>
-                <span class="n">subdict</span><span class="p">[</span><span class="s2">&quot;$and&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="s2">"$and"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">subdict</span><span class="p">:</span>
+                <span class="n">subdict</span><span class="p">[</span><span class="s2">"$and"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-            <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;relationships.&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"relationships."</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">prop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span>
-                    <span class="s2">&quot;relationships.references.data.id&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;relationships.structures.data.id&quot;</span><span class="p">,</span>
+                    <span class="s2">"relationships.references.data.id"</span><span class="p">,</span>
+                    <span class="s2">"relationships.structures.data.id"</span><span class="p">,</span>
                 <span class="p">):</span>
-                    <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to query on unrecognised field </span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-                <span class="n">first_part_prop</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-                <span class="n">subdict</span><span class="p">[</span><span class="s2">&quot;$and&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unable to query on unrecognised field </span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+                <span class="n">first_part_prop</span> <span class="o">=</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">subdict</span><span class="p">[</span><span class="s2">"$and"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="p">{</span>
                         <span class="n">first_part_prop</span><span class="p">:</span> <span class="p">{</span>
-                            <span class="s2">&quot;$not&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$elemMatch&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$nin&quot;</span><span class="p">:</span> <span class="n">expr</span><span class="p">[</span><span class="s2">&quot;#only&quot;</span><span class="p">]}}}</span>
+                            <span class="s2">"$not"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$elemMatch"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$nin"</span><span class="p">:</span> <span class="n">expr</span><span class="p">[</span><span class="s2">"#only"</span><span class="p">]}}}</span>
                         <span class="p">}</span>
                     <span class="p">}</span>
                 <span class="p">)</span>
-                <span class="n">subdict</span><span class="p">[</span><span class="s2">&quot;$and&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">first_part_prop</span> <span class="o">+</span> <span class="s2">&quot;.0&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}})</span>
+                <span class="n">subdict</span><span class="p">[</span><span class="s2">"$and"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">first_part_prop</span> <span class="o">+</span> <span class="s2">".0"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$exists"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}})</span>
 
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">subdict</span><span class="p">[</span><span class="s2">&quot;$and&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$not&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$elemMatch&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$nin&quot;</span><span class="p">:</span> <span class="n">expr</span><span class="p">[</span><span class="s2">&quot;#only&quot;</span><span class="p">]}}}}</span>
+                <span class="n">subdict</span><span class="p">[</span><span class="s2">"$and"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$not"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$elemMatch"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$nin"</span><span class="p">:</span> <span class="n">expr</span><span class="p">[</span><span class="s2">"#only"</span><span class="p">]}}}}</span>
                 <span class="p">)</span>
-                <span class="n">subdict</span><span class="p">[</span><span class="s2">&quot;$and&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">prop</span> <span class="o">+</span> <span class="s2">&quot;.0&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}})</span>
+                <span class="n">subdict</span><span class="p">[</span><span class="s2">"$and"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">prop</span> <span class="o">+</span> <span class="s2">".0"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$exists"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}})</span>
 
             <span class="n">subdict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">subdict</span>
@@ -4964,45 +4964,45 @@ various field-related configuration.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_apply_unknown_or_null_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method loops through the query and replaces the check for</span>
+<span class="w">        </span><span class="sd">"""This method loops through the query and replaces the check for</span>
 <span class="sd">        KNOWN with a check for existence and a check for not null, and the</span>
 <span class="sd">        inverse for UNKNOWN.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">check_for_known_filter</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find cases where the query dict looks like</span>
-<span class="sd">            `{&quot;field&quot;: {&quot;#known&quot;: T/F}}` or</span>
-<span class="sd">            `{&quot;field&quot;: &quot;$not&quot;: {&quot;#known&quot;: T/F}}`, which is a magic word</span>
+<span class="w">            </span><span class="sd">"""Find cases where the query dict looks like</span>
+<span class="sd">            `{"field": {"#known": T/F}}` or</span>
+<span class="sd">            `{"field": "$not": {"#known": T/F}}`, which is a magic word</span>
 <span class="sd">            for KNOWN/UNKNOWN filters in this transformer.</span>
 
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">            """</span>
             <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
-                <span class="s2">&quot;#known&quot;</span> <span class="ow">in</span> <span class="n">expr</span> <span class="ow">or</span> <span class="s2">&quot;#known&quot;</span> <span class="ow">in</span> <span class="n">expr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;$not&quot;</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="s2">"#known"</span> <span class="ow">in</span> <span class="n">expr</span> <span class="ow">or</span> <span class="s2">"#known"</span> <span class="ow">in</span> <span class="n">expr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"$not"</span><span class="p">,</span> <span class="p">{})</span>
             <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">replace_known_filter_with_or</span><span class="p">(</span><span class="n">subdict</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Replace magic key `&quot;#known&quot;` (added by this transformer) with the appropriate</span>
+<span class="w">            </span><span class="sd">"""Replace magic key `"#known"` (added by this transformer) with the appropriate</span>
 <span class="sd">            combination of `$exists` and/or test for nullity.</span>
 <span class="sd">            combination of $exists and/or $eq/$ne null.</span>
 
-<span class="sd">            &quot;&quot;&quot;</span>
-            <span class="n">not_</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;$not&quot;</span><span class="p">}</span>
+<span class="sd">            """</span>
+            <span class="n">not_</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">expr</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="p">{</span><span class="s2">"$not"</span><span class="p">}</span>
             <span class="k">if</span> <span class="n">not_</span><span class="p">:</span>
-                <span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span><span class="p">[</span><span class="s2">&quot;$not&quot;</span><span class="p">]</span>
+                <span class="n">expr</span> <span class="o">=</span> <span class="n">expr</span><span class="p">[</span><span class="s2">"$not"</span><span class="p">]</span>
 
-            <span class="n">exists</span> <span class="o">=</span> <span class="n">expr</span><span class="p">[</span><span class="s2">&quot;#known&quot;</span><span class="p">]</span> <span class="o">^</span> <span class="n">not_</span>
+            <span class="n">exists</span> <span class="o">=</span> <span class="n">expr</span><span class="p">[</span><span class="s2">"#known"</span><span class="p">]</span> <span class="o">^</span> <span class="n">not_</span>
 
-            <span class="n">top_level_key</span> <span class="o">=</span> <span class="s2">&quot;$or&quot;</span>
-            <span class="n">comparison_operator</span> <span class="o">=</span> <span class="s2">&quot;$eq&quot;</span>
+            <span class="n">top_level_key</span> <span class="o">=</span> <span class="s2">"$or"</span>
+            <span class="n">comparison_operator</span> <span class="o">=</span> <span class="s2">"$eq"</span>
             <span class="k">if</span> <span class="n">exists</span><span class="p">:</span>
-                <span class="n">top_level_key</span> <span class="o">=</span> <span class="s2">&quot;$and&quot;</span>
-                <span class="n">comparison_operator</span> <span class="o">=</span> <span class="s2">&quot;$ne&quot;</span>
+                <span class="n">top_level_key</span> <span class="o">=</span> <span class="s2">"$and"</span>
+                <span class="n">comparison_operator</span> <span class="o">=</span> <span class="s2">"$ne"</span>
 
             <span class="k">if</span> <span class="n">top_level_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">subdict</span><span class="p">:</span>
                 <span class="n">subdict</span><span class="p">[</span><span class="n">top_level_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
-            <span class="n">subdict</span><span class="p">[</span><span class="n">top_level_key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span> <span class="n">exists</span><span class="p">}})</span>
+            <span class="n">subdict</span><span class="p">[</span><span class="n">top_level_key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="s2">"$exists"</span><span class="p">:</span> <span class="n">exists</span><span class="p">}})</span>
             <span class="n">subdict</span><span class="p">[</span><span class="n">top_level_key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">prop</span><span class="p">:</span> <span class="p">{</span><span class="n">comparison_operator</span><span class="p">:</span> <span class="kc">None</span><span class="p">}})</span>
 
             <span class="n">subdict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
@@ -5014,25 +5014,25 @@ various field-related configuration.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_apply_mongo_id_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method loops through the query and replaces any operations</span>
+<span class="w">        </span><span class="sd">"""This method loops through the query and replaces any operations</span>
 <span class="sd">        on the special Mongodb `_id` key with the corresponding operation</span>
 <span class="sd">        on a BSON `ObjectId` type.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">check_for_id_key</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find cases where the query dict is operating on the `_id` field.&quot;&quot;&quot;</span>
-            <span class="k">return</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;_id&quot;</span>
+<span class="w">            </span><span class="sd">"""Find cases where the query dict is operating on the `_id` field."""</span>
+            <span class="k">return</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">"_id"</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">replace_str_id_with_objectid</span><span class="p">(</span><span class="n">subdict</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">bson</span><span class="w"> </span><span class="kn">import</span> <span class="n">ObjectId</span>
 
             <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="n">subdict</span><span class="p">[</span><span class="n">prop</span><span class="p">]:</span>
                 <span class="n">val</span> <span class="o">=</span> <span class="n">subdict</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">operator</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">operator</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;$eq&quot;</span><span class="p">,</span> <span class="s2">&quot;$ne&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">operator</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"$eq"</span><span class="p">,</span> <span class="s2">"$ne"</span><span class="p">):</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
                     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Operator </span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s2"> not supported for query on field </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2">, can only test for equality&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Operator </span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s2"> not supported for query on field </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2">, can only test for equality"</span>
                     <span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="n">subdict</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">operator</span><span class="p">]</span> <span class="o">=</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
@@ -5043,32 +5043,32 @@ various field-related configuration.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_apply_mongo_date_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This method loops through the query and replaces any operations</span>
+<span class="w">        </span><span class="sd">"""This method loops through the query and replaces any operations</span>
 <span class="sd">        on suspected timestamp properties with the corresponding operation</span>
 <span class="sd">        on a BSON `DateTime` type.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">check_for_timestamp_field</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find cases where the query dict is operating on a timestamp field.&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">"""Find cases where the query dict is operating on a timestamp field."""</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">get_optimade_field</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;last_modified&quot;</span>
+            <span class="k">return</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">"last_modified"</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">replace_str_date_with_datetime</span><span class="p">(</span><span class="n">subdict</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Encode suspected dates in with BSON.&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">"""Encode suspected dates in with BSON."""</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">bson.json_util</span>
 
             <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="n">subdict</span><span class="p">[</span><span class="n">prop</span><span class="p">]:</span>
                 <span class="n">query_datetime</span> <span class="o">=</span> <span class="n">bson</span><span class="o">.</span><span class="n">json_util</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
-                    <span class="n">bson</span><span class="o">.</span><span class="n">json_util</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;$date&quot;</span><span class="p">:</span> <span class="n">subdict</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">operator</span><span class="p">]}),</span>
+                    <span class="n">bson</span><span class="o">.</span><span class="n">json_util</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">"$date"</span><span class="p">:</span> <span class="n">subdict</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">operator</span><span class="p">]}),</span>
                     <span class="n">json_options</span><span class="o">=</span><span class="n">bson</span><span class="o">.</span><span class="n">json_util</span><span class="o">.</span><span class="n">DEFAULT_JSON_OPTIONS</span><span class="o">.</span><span class="n">with_options</span><span class="p">(</span>
                         <span class="n">tz_aware</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">bson</span><span class="o">.</span><span class="n">tz_util</span><span class="o">.</span><span class="n">utc</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">query_datetime</span><span class="o">.</span><span class="n">microsecond</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Query for timestamp </span><span class="si">{</span><span class="n">subdict</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">operator</span><span class="p">]</span><span class="si">!r}</span><span class="s2"> for field </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2"> contained microseconds, which is not RFC3339 compliant. &quot;</span>
-                        <span class="s2">&quot;This may cause undefined behaviour for the underlying database.&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">"Query for timestamp </span><span class="si">{</span><span class="n">subdict</span><span class="p">[</span><span class="n">prop</span><span class="p">][</span><span class="n">operator</span><span class="p">]</span><span class="si">!r}</span><span class="s2"> for field </span><span class="si">{</span><span class="n">prop</span><span class="si">!r}</span><span class="s2"> contained microseconds, which is not RFC3339 compliant. "</span>
+                        <span class="s2">"This may cause undefined behaviour for the underlying database."</span><span class="p">,</span>
                         <span class="n">TimestampNotRFCCompliant</span><span class="p">,</span>
                     <span class="p">)</span>
 
@@ -5163,9 +5163,9 @@ various field-related configuration.</p>
 <span class="normal">189</span>
 <span class="normal">190</span>
 <span class="normal">191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__default__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">meta</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The default rule to call when no definition is found for a particular construct.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The default rule to call when no definition is found for a particular construct."""</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Calling __default__, i.e., unknown grammar concept. data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">, children: </span><span class="si">{</span><span class="n">children</span><span class="si">}</span><span class="s2">, meta: </span><span class="si">{</span><span class="n">meta</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">"Calling __default__, i.e., unknown grammar concept. data: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">, children: </span><span class="si">{</span><span class="n">children</span><span class="si">}</span><span class="s2">, meta: </span><span class="si">{</span><span class="n">meta</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5196,10 +5196,10 @@ resource mapper for use when post-processing.</p>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise the transformer object, optionally loading in a</span>
+<span class="w">    </span><span class="sd">"""Initialise the transformer object, optionally loading in a</span>
 <span class="sd">    resource mapper for use when post-processing.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">mapper</span> <span class="o">=</span> <span class="n">mapper</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5229,7 +5229,7 @@ resource mapper for use when post-processing.</p>
 <span class="normal">302</span>
 <span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">comparison</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;comparison: constant_first_comparison | property_first_comparison&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""comparison: constant_first_comparison | property_first_comparison"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -5260,7 +5260,7 @@ resource mapper for use when post-processing.</p>
 <span class="normal">200</span>
 <span class="normal">201</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">constant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;constant: string | number&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""constant: string | number"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -5288,7 +5288,7 @@ resource mapper for use when post-processing.</p>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">193</span>
 <span class="normal">194</span>
 <span class="normal">195</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;filter: expression*&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""filter: expression*"""</span>
     <span class="k">return</span> <span class="n">arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">arg</span> <span class="k">else</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5318,7 +5318,7 @@ resource mapper for use when post-processing.</p>
 <span class="normal">212</span>
 <span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">non_string_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;non_string_value: number | property&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""non_string_value: number | property"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -5378,14 +5378,14 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="normal">223</span>
 <span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">not_implemented_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;not_implemented_string: value</span>
+<span class="w">    </span><span class="sd">"""not_implemented_string: value</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: For further information, see Materials-Consortia/OPTIMADE issue 157:</span>
 <span class="sd">            https://github.com/Materials-Consortia/OPTIMADE/issues/157</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Comparing strings is not yet implemented.&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">"Comparing strings is not yet implemented."</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5420,13 +5420,13 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="normal">296</span>
 <span class="normal">297</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;number: SIGNED_INT | SIGNED_FLOAT&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""number: SIGNED_INT | SIGNED_FLOAT"""</span>
     <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
         <span class="n">type_</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="nb">type</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_INT&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SIGNED_INT"</span><span class="p">:</span>
         <span class="n">type_</span> <span class="o">=</span> <span class="nb">int</span>
-    <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;SIGNED_FLOAT&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">number</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"SIGNED_FLOAT"</span><span class="p">:</span>
         <span class="n">type_</span> <span class="o">=</span> <span class="nb">float</span>
     <span class="k">return</span> <span class="n">type_</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -5460,7 +5460,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">postprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used to post-process the nested dictionary of the parsed query.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Used to post-process the nested dictionary of the parsed query."""</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_relationship_filtering</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_length_operators</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_apply_unknown_or_null_filter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -5495,7 +5495,7 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="normal">284</span>
 <span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">signed_int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;signed_int : SIGNED_INT&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""signed_int : SIGNED_INT"""</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5524,8 +5524,8 @@ https://github.com/Materials-Consortia/OPTIMADE/issues/157</p>
 <span class="normal">279</span>
 <span class="normal">280</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;string: ESCAPED_STRING&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""string: ESCAPED_STRING"""</span>
+    <span class="k">return</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">'"'</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -5555,10 +5555,10 @@ backend-specific post-processing methods.</p>
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree</span><span class="p">:</span> <span class="n">Tree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform the query using the Lark `Transformer` then run the</span>
+<span class="w">    </span><span class="sd">"""Transform the query using the Lark `Transformer` then run the</span>
 <span class="sd">    backend-specific post-processing methods.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">postprocess</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">tree</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5588,7 +5588,7 @@ backend-specific post-processing methods.</p>
 <span class="normal">206</span>
 <span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@v_args</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;value: string | number | property&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""value: string | number | property"""</span>
     <span class="c1"># Note: Return as is.</span>
     <span class="k">return</span> <span class="n">value</span>
 </code></pre></div></td></tr></table></div>
@@ -5697,10 +5697,10 @@ above).</p>
   <p>For the simple case of replacing one field name with
 another, the following functions could be used:</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">condition</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">&quot;field_name_old&quot;</span>
+    <span class="k">return</span> <span class="n">prop</span> <span class="o">==</span> <span class="s2">"field_name_old"</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">replacement</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
-    <span class="n">d</span><span class="p">[</span><span class="s2">&quot;field_name_old&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+    <span class="n">d</span><span class="p">[</span><span class="s2">"field_name_old"</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
 
 <span class="n">filter_</span> <span class="o">=</span> <span class="n">recursive_postprocessing</span><span class="p">(</span>
     <span class="n">filter_</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">replacement</span>
@@ -5766,7 +5766,7 @@ another, the following functions could be used:</p>
 <span class="normal">624</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">recursive_postprocessing</span><span class="p">(</span>
     <span class="n">filter_</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">,</span> <span class="n">condition</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">replacement</span><span class="p">:</span> <span class="n">Callable</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively descend into the query, checking each dictionary</span>
+<span class="w">    </span><span class="sd">"""Recursively descend into the query, checking each dictionary</span>
 <span class="sd">    (contained in a list, or as an entry in another dictionary) for</span>
 <span class="sd">    the condition passed. If the condition is true, apply the</span>
 <span class="sd">    replacement to the dictionary.</span>
@@ -5788,10 +5788,10 @@ another, the following functions could be used:</p>
 
 <span class="sd">        ```python</span>
 <span class="sd">        def condition(prop, expr):</span>
-<span class="sd">            return prop == &quot;field_name_old&quot;</span>
+<span class="sd">            return prop == "field_name_old"</span>
 
 <span class="sd">        def replacement(d, prop, expr):</span>
-<span class="sd">            d[&quot;field_name_old&quot;] = d.pop(prop)</span>
+<span class="sd">            d["field_name_old"] = d.pop(prop)</span>
 
 <span class="sd">        filter_ = recursive_postprocessing(</span>
 <span class="sd">            filter_, condition, replacement</span>
@@ -5799,7 +5799,7 @@ another, the following functions could be used:</p>
 
 <span class="sd">        ```</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filter_</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">recursive_postprocessing</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">filter_</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">result</span>
@@ -5899,10 +5899,10 @@ another, the following functions could be used:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

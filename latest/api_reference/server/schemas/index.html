@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3561,7 +3561,7 @@
 
 
 <h2 id="optimade.server.schemas.ENTRY_INFO_SCHEMAS" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;structures&#39;</span><span class="p">:</span> <span class="n">StructureResource</span><span class="p">,</span> <span class="s1">&#39;references&#39;</span><span class="p">:</span> <span class="n">ReferenceResource</span><span class="p">,</span> <span class="s1">&#39;files&#39;</span><span class="p">:</span> <span class="n">FileResource</span><span class="p">}</span></code>
+            <code class="highlight language-python"><span class="n">ENTRY_INFO_SCHEMAS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'structures'</span><span class="p">:</span> <span class="n">StructureResource</span><span class="p">,</span> <span class="s1">'references'</span><span class="p">:</span> <span class="n">ReferenceResource</span><span class="p">,</span> <span class="s1">'files'</span><span class="p">:</span> <span class="n">FileResource</span><span class="p">}</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -3805,8 +3805,8 @@ lookup schemas for any config-defined fields.</p>
     <span class="n">queryable_properties</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">entry_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;QueryableProperties&quot;</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively loops through a pydantic model, returning a dictionary of all the</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"QueryableProperties"</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Recursively loops through a pydantic model, returning a dictionary of all the</span>
 <span class="sd">    OPTIMADE-queryable properties of that model.</span>
 
 <span class="sd">    Parameters:</span>
@@ -3820,8 +3820,8 @@ lookup schemas for any config-defined fields.</p>
 <span class="sd">        description, unit, sortability, support level, queryability</span>
 <span class="sd">        and type, where provided.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">properties</span><span class="p">:</span> <span class="s2">&quot;QueryableProperties&quot;</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="sd">    """</span>
+    <span class="n">properties</span><span class="p">:</span> <span class="s2">"QueryableProperties"</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">model_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="c1"># Proceed if the field (name) is given explicitly in the queryable_properties</span>
         <span class="c1"># list or if the queryable_properties list is empty (i.e., all properties are</span>
@@ -3830,9 +3830,9 @@ lookup schemas for any config-defined fields.</p>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="c1"># If the field is another data model, &quot;unpack&quot; it by recursively calling</span>
+            <span class="c1"># If the field is another data model, "unpack" it by recursively calling</span>
             <span class="c1"># this function.</span>
-            <span class="c1"># But first, we need to &quot;unpack&quot; the annotation, getting in behind any</span>
+            <span class="c1"># But first, we need to "unpack" the annotation, getting in behind any</span>
             <span class="c1"># Optional, Union, or Annotated types.</span>
             <span class="n">annotation</span> <span class="o">=</span> <span class="n">_get_origin_type</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span>
 
@@ -3842,35 +3842,35 @@ lookup schemas for any config-defined fields.</p>
                     <span class="n">retrieve_queryable_properties</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">sub_queryable_properties</span><span class="p">)</span>
                 <span class="p">)</span>
 
-            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">value</span><span class="o">.</span><span class="n">description</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="n">value</span><span class="o">.</span><span class="n">description</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">}</span>
 
             <span class="c1"># Update schema with extension keys, provided they are not None</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span>
-                <span class="s2">&quot;x-optimade-unit&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;x-optimade-queryable&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;x-optimade-support&quot;</span><span class="p">,</span>
+                <span class="s2">"x-optimade-unit"</span><span class="p">,</span>
+                <span class="s2">"x-optimade-queryable"</span><span class="p">,</span>
+                <span class="s2">"x-optimade-support"</span><span class="p">,</span>
             <span class="p">):</span>
                 <span class="k">if</span> <span class="p">(</span>
                     <span class="n">value</span><span class="o">.</span><span class="n">json_schema_extra</span>
                     <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                 <span class="p">):</span>
                     <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span>
-                        <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;x-optimade-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore[index]</span>
+                        <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"x-optimade-"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>  <span class="c1"># type: ignore[index]</span>
                     <span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
             <span class="c1"># All properties are sortable with the MongoDB backend.</span>
             <span class="c1"># While the result for sorting lists may not be as expected, they are still sorted.</span>
-            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;sortable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">value</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;x-optimade-sortable&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">"sortable"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">value</span><span class="o">.</span><span class="n">json_schema_extra</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"x-optimade-sortable"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">json_schema_extra</span>
                 <span class="k">else</span> <span class="kc">True</span>
             <span class="p">)</span>
 
-            <span class="c1"># Try to get OpenAPI-specific &quot;format&quot; if possible, else get &quot;type&quot;; a mandatory OpenAPI key.</span>
-            <span class="n">json_schema</span> <span class="o">=</span> <span class="n">TypeAdapter</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">.</span><span class="n">json_schema</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">)</span>
+            <span class="c1"># Try to get OpenAPI-specific "format" if possible, else get "type"; a mandatory OpenAPI key.</span>
+            <span class="n">json_schema</span> <span class="o">=</span> <span class="n">TypeAdapter</span><span class="p">(</span><span class="n">annotation</span><span class="p">)</span><span class="o">.</span><span class="n">json_schema</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"validation"</span><span class="p">)</span>
 
-            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataType</span><span class="o">.</span><span class="n">from_json_type</span><span class="p">(</span>
-                <span class="n">json_schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="n">json_schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">))</span>
+            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataType</span><span class="o">.</span><span class="n">from_json_type</span><span class="p">(</span>
+                <span class="n">json_schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"format"</span><span class="p">,</span> <span class="n">json_schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">))</span>
             <span class="p">)</span>
 
     <span class="c1"># If specified, check the config for any additional well-described provider fields</span>
@@ -3882,15 +3882,15 @@ lookup schemas for any config-defined fields.</p>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">described_provider_fields</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
-                <span class="k">else</span> <span class="n">field</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">field</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span>
+                <span class="k">else</span> <span class="n">field</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
             <span class="p">)</span>
-            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">field</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">field</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s2">&quot;name&quot;</span><span class="p">}</span>
-            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">&quot;sortable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sortable&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">field</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">field</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s2">"name"</span><span class="p">}</span>
+            <span class="n">properties</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="s2">"sortable"</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sortable"</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># Remove JSON fields mistaken as properties</span>
-    <span class="n">non_property_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;relationships&quot;</span><span class="p">]</span>
+    <span class="n">non_property_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"attributes"</span><span class="p">,</span> <span class="s2">"relationships"</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">non_property_field</span> <span class="ow">in</span> <span class="n">non_property_fields</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">non_property_field</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">properties</span><span class="p">[</span><span class="n">non_property_field</span><span class="p">]</span>
@@ -3978,10 +3978,10 @@ lookup schemas for any config-defined fields.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

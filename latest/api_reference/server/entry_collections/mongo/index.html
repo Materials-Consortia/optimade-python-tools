@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4080,10 +4080,10 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 <span class="normal">251</span>
 <span class="normal">252</span>
 <span class="normal">253</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MongoCollection</span><span class="p">(</span><span class="n">EntryCollection</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for querying MongoDB collections (implemented by either pymongo or mongomock)</span>
+<span class="w">    </span><span class="sd">"""Class for querying MongoDB collections (implemented by either pymongo or mongomock)</span>
 <span class="sd">    containing serialized [`EntryResource`][optimade.models.entries.EntryResource]s objects.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -4092,14 +4092,14 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
+<span class="w">        </span><span class="sd">"""Initialize the MongoCollection for the given parameters.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            name: The name of the collection.</span>
 <span class="sd">            resource_cls: The type of entry resource that is stored by the collection.</span>
 <span class="sd">            resource_mapper: A resource mapper object that handles aliases and</span>
 <span class="sd">                format changes between deserialization and response.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">resource_cls</span><span class="p">,</span>
             <span class="n">resource_mapper</span><span class="p">,</span>
@@ -4119,34 +4119,34 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">all_length_aliases</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns the total number of entries in the collection."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
+<span class="w">        </span><span class="sd">"""Returns the number of entries matching the query specified</span>
 <span class="sd">        by the keyword arguments, or `None` if the count timed out.</span>
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            **kwargs: Query parameters as keyword arguments. The keys</span>
-<span class="sd">                &#39;filter&#39;, &#39;skip&#39;, &#39;limit&#39;, &#39;hint&#39; and &#39;maxTimeMS&#39; will be passed</span>
+<span class="sd">                'filter', 'skip', 'limit', 'hint' and 'maxTimeMS' will be passed</span>
 <span class="sd">                to the `pymongo.collection.Collection.count_documents` method.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="s2">&quot;hint&quot;</span><span class="p">,</span> <span class="s2">&quot;maxTimeMS&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"filter"</span><span class="p">,</span> <span class="s2">"skip"</span><span class="p">,</span> <span class="s2">"limit"</span><span class="p">,</span> <span class="s2">"hint"</span><span class="p">,</span> <span class="s2">"maxTimeMS"</span><span class="p">):</span>
                 <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-        <span class="k">if</span> <span class="s2">&quot;filter&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"filter"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;maxTimeMS&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;maxTimeMS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">mongo_count_timeout</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">"maxTimeMS"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">"maxTimeMS"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">mongo_count_timeout</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">ExecutionTimeout</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">        </span><span class="sd">"""Add the given entries to the underlying database.</span>
 
 <span class="sd">        Warning:</span>
 <span class="sd">            No validation is performed on the incoming data, this data</span>
@@ -4156,11 +4156,11 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 <span class="sd">        Arguments:</span>
 <span class="sd">            data: The entries to add to the database.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">insert_many</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">create_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unique</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an index on the given field, as stored in the database.</span>
+<span class="w">        </span><span class="sd">"""Create an index on the given field, as stored in the database.</span>
 
 <span class="sd">        If any error is raised during index creation, this method should faithfully</span>
 <span class="sd">        return it, except for the simple case where an identical index already exists.</span>
@@ -4170,23 +4170,23 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 <span class="sd">                the mapper should be used to convert between the two).</span>
 <span class="sd">            unique: Whether or not the index should be unique.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="n">unique</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">create_default_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the default index for the collection.</span>
+<span class="w">        </span><span class="sd">"""Create the default index for the collection.</span>
 
 <span class="sd">        For MongoDB, the default is to create a unique index</span>
 <span class="sd">        on the `id` field. This method should obey any configured</span>
 <span class="sd">        mappers.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="s2">"id"</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">handle_query_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span> <span class="o">|</span> <span class="n">SingleEntryQueryParams</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
+<span class="w">        </span><span class="sd">"""Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">        that can be used by MongoDB.</span>
 
 <span class="sd">        This Mongo-specific method calls the base `EntryCollection.handle_query_params` method</span>
@@ -4203,28 +4203,28 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 <span class="sd">        Returns:</span>
 <span class="sd">            A dictionary representation of the query parameters.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">criteria</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
         <span class="c1"># Handle MongoDB ObjectIDs:</span>
         <span class="c1"># - If they were not requested, then explicitly remove them</span>
         <span class="c1"># - If they were requested, then cast them to strings in the response</span>
-        <span class="k">if</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{}):</span>
-            <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="s2">"_id"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"projection"</span><span class="p">,</span> <span class="p">{}):</span>
+            <span class="n">criteria</span><span class="p">[</span><span class="s2">"projection"</span><span class="p">][</span><span class="s2">"_id"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="k">if</span> <span class="s2">&quot;page_above&quot;</span> <span class="ow">in</span> <span class="n">criteria</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"page_above"</span> <span class="ow">in</span> <span class="n">criteria</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-                <span class="s2">&quot;`page_above` is not implemented for this backend.&quot;</span>
+                <span class="s2">"`page_above` is not implemented for this backend."</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
-            <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$toString&quot;</span><span class="p">:</span> <span class="s2">&quot;$_id&quot;</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"projection"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_id"</span><span class="p">):</span>
+            <span class="n">criteria</span><span class="p">[</span><span class="s2">"projection"</span><span class="p">][</span><span class="s2">"_id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"$toString"</span><span class="p">:</span> <span class="s2">"$_id"</span><span class="p">}</span>
 
         <span class="k">return</span> <span class="n">criteria</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_run_db_query</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">criteria</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">single_entry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the query on the backend and collect the results.</span>
+<span class="w">        </span><span class="sd">"""Run the query on the backend and collect the results.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            criteria: A dictionary representation of the query parameters.</span>
@@ -4234,29 +4234,29 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
 <span class="sd">            The list of entries from the database (without any re-mapping), the total number of</span>
 <span class="sd">            entries matching the query and a boolean for whether or not there is more data available.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">database_backend</span> <span class="o">==</span> <span class="n">SupportedBackend</span><span class="o">.</span><span class="n">MONGOMOCK</span> <span class="ow">and</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{}</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
+            <span class="s2">"projection"</span><span class="p">,</span> <span class="p">{}</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_id"</span><span class="p">):</span>
             <span class="c1"># mongomock does not support `$toString`` in projection, so we have to do it manually</span>
             <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
-                <span class="n">results</span><span class="p">[</span><span class="n">ind</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">])</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">ind</span><span class="p">][</span><span class="s2">"_id"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">"_id"</span><span class="p">])</span>
 
         <span class="n">nresults_now</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">single_entry</span><span class="p">:</span>
             <span class="n">criteria_nolimit</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">skip</span> <span class="o">=</span> <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="c1"># If we&#39;re on the first page, set a much higher timeout for counting the results (10 s)</span>
+            <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"limit"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">skip</span> <span class="o">=</span> <span class="n">criteria_nolimit</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"skip"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># If we're on the first page, set a much higher timeout for counting the results (10 s)</span>
             <span class="k">if</span> <span class="n">skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">criteria_nolimit</span><span class="p">[</span><span class="s2">&quot;maxTimeMS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">10</span>
+                <span class="n">criteria_nolimit</span><span class="p">[</span><span class="s2">"maxTimeMS"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">10</span>
             <span class="n">data_returned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="o">**</span><span class="n">criteria_nolimit</span><span class="p">)</span>
             <span class="c1"># Only correct most of the time: if the total number of remaining results is exactly the page limit</span>
             <span class="c1"># then this will incorrectly say there is more_data_available</span>
             <span class="k">if</span> <span class="n">data_returned</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">nresults_now</span> <span class="o">==</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">nresults_now</span> <span class="o">==</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"limit"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">more_data_available</span> <span class="o">=</span> <span class="n">nresults_now</span> <span class="o">+</span> <span class="n">skip</span> <span class="o">&lt;</span> <span class="n">data_returned</span>
         <span class="k">else</span><span class="p">:</span>
@@ -4267,11 +4267,11 @@ containing serialized <a class="autorefs autorefs-internal" href="../../../model
         <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_aliases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aliases</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check that aliases do not clash with mongo keywords.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Check that aliases do not clash with mongo keywords."""</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-            <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">alias</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span>
+            <span class="n">alias</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"$"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">alias</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"$"</span><span class="p">)</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">aliases</span>
         <span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot define an alias starting with a &#39;$&#39;: </span><span class="si">{</span><span class="n">aliases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cannot define an alias starting with a '$': </span><span class="si">{</span><span class="n">aliases</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -4338,7 +4338,7 @@ This means the set is created the first time the property is requested and then 
 
 
 <h3 id="optimade.server.entry_collections.mongo.MongoCollection.pagination_mechanism" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="s1">&#39;page_offset&#39;</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="s1">'page_offset'</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
@@ -4478,14 +4478,14 @@ format changes between deserialization and response.</p>
     <span class="n">resource_mapper</span><span class="p">:</span> <span class="n">BaseResourceMapper</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the MongoCollection for the given parameters.</span>
+<span class="w">    </span><span class="sd">"""Initialize the MongoCollection for the given parameters.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        name: The name of the collection.</span>
 <span class="sd">        resource_cls: The type of entry resource that is stored by the collection.</span>
 <span class="sd">        resource_mapper: A resource mapper object that handles aliases and</span>
 <span class="sd">            format changes between deserialization and response.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
         <span class="n">resource_cls</span><span class="p">,</span>
         <span class="n">resource_mapper</span><span class="p">,</span>
@@ -4528,7 +4528,7 @@ format changes between deserialization and response.</p>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the total number of entries in the collection.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Returns the total number of entries in the collection."""</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4608,23 +4608,23 @@ to the <code>pymongo.collection.Collection.count_documents</code> method.</p>
 <span class="normal">123</span>
 <span class="normal">124</span>
 <span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the number of entries matching the query specified</span>
+<span class="w">    </span><span class="sd">"""Returns the number of entries matching the query specified</span>
 <span class="sd">    by the keyword arguments, or `None` if the count timed out.</span>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        **kwargs: Query parameters as keyword arguments. The keys</span>
-<span class="sd">            &#39;filter&#39;, &#39;skip&#39;, &#39;limit&#39;, &#39;hint&#39; and &#39;maxTimeMS&#39; will be passed</span>
+<span class="sd">            'filter', 'skip', 'limit', 'hint' and 'maxTimeMS' will be passed</span>
 <span class="sd">            to the `pymongo.collection.Collection.count_documents` method.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;filter&quot;</span><span class="p">,</span> <span class="s2">&quot;skip&quot;</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">,</span> <span class="s2">&quot;hint&quot;</span><span class="p">,</span> <span class="s2">&quot;maxTimeMS&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"filter"</span><span class="p">,</span> <span class="s2">"skip"</span><span class="p">,</span> <span class="s2">"limit"</span><span class="p">,</span> <span class="s2">"hint"</span><span class="p">,</span> <span class="s2">"maxTimeMS"</span><span class="p">):</span>
             <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-    <span class="k">if</span> <span class="s2">&quot;filter&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">"filter"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">estimated_document_count</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">&quot;maxTimeMS&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;maxTimeMS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">mongo_count_timeout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"maxTimeMS"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">"maxTimeMS"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">mongo_count_timeout</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">count_documents</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">ExecutionTimeout</span><span class="p">:</span>
@@ -4663,14 +4663,14 @@ mappers.</p>
 <span class="normal">161</span>
 <span class="normal">162</span>
 <span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_default_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the default index for the collection.</span>
+<span class="w">    </span><span class="sd">"""Create the default index for the collection.</span>
 
 <span class="sd">    For MongoDB, the default is to create a unique index</span>
 <span class="sd">    on the `id` field. This method should obey any configured</span>
 <span class="sd">    mappers.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="s2">"id"</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4756,7 +4756,7 @@ the mapper should be used to convert between the two).</p>
 <span class="normal">151</span>
 <span class="normal">152</span>
 <span class="normal">153</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">create_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unique</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an index on the given field, as stored in the database.</span>
+<span class="w">    </span><span class="sd">"""Create an index on the given field, as stored in the database.</span>
 
 <span class="sd">    If any error is raised during index creation, this method should faithfully</span>
 <span class="sd">    return it, except for the simple case where an identical index already exists.</span>
@@ -4766,7 +4766,7 @@ the mapper should be used to convert between the two).</p>
 <span class="sd">            the mapper should be used to convert between the two).</span>
 <span class="sd">        unique: Whether or not the index should be unique.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">create_index</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="n">unique</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4959,7 +4959,7 @@ for more information.</p>
     <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Fetches results and indicates if more data is available.</span>
 
 <span class="sd">    Also gives the total number of data available in the absence of `page_limit`.</span>
@@ -4977,10 +4977,10 @@ for more information.</p>
 <span class="sd">        A tuple of various relevant values:</span>
 <span class="sd">        (`results`, `data_returned`, `more_data_available`, `exclude_fields`, `include_fields`).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">criteria</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="n">single_entry</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">SingleEntryQueryParams</span><span class="p">)</span>
-    <span class="n">response_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;fields&quot;</span><span class="p">)</span>
+    <span class="n">response_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">criteria</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"fields"</span><span class="p">)</span>
 
     <span class="n">raw_results</span><span class="p">,</span> <span class="n">data_returned</span><span class="p">,</span> <span class="n">more_data_available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_db_query</span><span class="p">(</span>
         <span class="n">criteria</span><span class="p">,</span> <span class="n">single_entry</span>
@@ -4997,9 +4997,9 @@ for more information.</p>
     <span class="n">all_attributes</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">ALL_ATTRIBUTES</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">include_fields</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_attributes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"_"</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-                    <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">supported_prefixes</span>
+                    <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">_"</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">supported_prefixes</span>
                 <span class="p">):</span>
                     <span class="n">bad_provider_fields</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -5007,13 +5007,13 @@ for more information.</p>
 
     <span class="k">if</span> <span class="n">bad_provider_fields</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unrecognised field(s) for this provider requested in `response_fields`: </span><span class="si">{</span><span class="n">bad_provider_fields</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Unrecognised field(s) for this provider requested in `response_fields`: </span><span class="si">{</span><span class="n">bad_provider_fields</span><span class="si">}</span><span class="s2">."</span><span class="p">,</span>
             <span class="n">category</span><span class="o">=</span><span class="n">UnknownProviderProperty</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">bad_optimade_fields</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
-            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Unrecognised OPTIMADE field(s) in requested `response_fields`: </span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Unrecognised OPTIMADE field(s) in requested `response_fields`: </span><span class="si">{</span><span class="n">bad_optimade_fields</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
 
     <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
@@ -5030,7 +5030,7 @@ for more information.</p>
                 <span class="ow">and</span> <span class="n">data_returned</span> <span class="o">&gt;</span> <span class="mi">1</span>
             <span class="p">):</span>
                 <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span>
-                    <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Instead of a single entry, </span><span class="si">{</span><span class="n">data_returned</span><span class="si">}</span><span class="s2"> entries were found&quot;</span><span class="p">,</span>
+                    <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Instead of a single entry, </span><span class="si">{</span><span class="n">data_returned</span><span class="si">}</span><span class="s2"> entries were found"</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">data_returned</span> <span class="o">=</span> <span class="mi">1</span>
@@ -5121,7 +5121,7 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
 <span class="normal">333</span>
 <span class="normal">334</span>
 <span class="normal">335</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_attribute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the set of attribute fields</span>
+<span class="w">    </span><span class="sd">"""Get the set of attribute fields</span>
 
 <span class="sd">    Return only the _first-level_ attribute fields from the schema of the resource class,</span>
 <span class="sd">    resolving references along the way if needed.</span>
@@ -5134,14 +5134,14 @@ Other special keys can be found in <a href="https://swagger.io/docs/specificatio
 <span class="sd">    Returns:</span>
 <span class="sd">        Property names.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">annotation</span> <span class="o">=</span> <span class="n">_get_origin_type</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">annotation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resource_cls</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">]</span><span class="o">.</span><span class="n">annotation</span>
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">NoneType</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">annotation</span><span class="p">,</span> <span class="n">Attributes</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-            <span class="s2">&quot;resource class &#39;attributes&#39; field must be a subclass of &#39;EntryResourceAttributes&#39;&quot;</span>
+            <span class="s2">"resource class 'attributes' field must be a subclass of 'EntryResourceAttributes'"</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">model_fields</span><span class="p">)</span>  <span class="c1"># type: ignore[attr-defined]</span>
@@ -5278,7 +5278,7 @@ link.</p>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
     <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Provides url query pagination parameters that will be used in the next</span>
+<span class="w">    </span><span class="sd">"""Provides url query pagination parameters that will be used in the next</span>
 <span class="sd">    link.</span>
 
 <span class="sd">    Arguments:</span>
@@ -5288,23 +5288,23 @@ link.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        A dictionary with the necessary query parameters.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">query</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">results</span><span class="p">:</span>
         <span class="c1"># If a user passed a particular pagination mechanism, keep using it</span>
         <span class="c1"># Otherwise, use the default pagination mechanism of the collection</span>
         <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="o">.</span><span class="n">OFFSET</span>
         <span class="k">for</span> <span class="n">pagination_key</span> <span class="ow">in</span> <span class="p">(</span>
-            <span class="s2">&quot;page_offset&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;page_number&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;page_above&quot;</span><span class="p">,</span>
+            <span class="s2">"page_offset"</span><span class="p">,</span>
+            <span class="s2">"page_number"</span><span class="p">,</span>
+            <span class="s2">"page_above"</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">pagination_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">pagination_mechanism</span> <span class="o">=</span> <span class="n">PaginationMechanism</span><span class="p">(</span><span class="n">pagination_key</span><span class="p">)</span>
                 <span class="k">break</span>
 
         <span class="k">if</span> <span class="n">pagination_mechanism</span> <span class="o">==</span> <span class="n">PaginationMechanism</span><span class="o">.</span><span class="n">OFFSET</span><span class="p">:</span>
-            <span class="n">query</span><span class="p">[</span><span class="s2">&quot;page_offset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">query</span><span class="p">[</span><span class="s2">"page_offset"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">page_offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>  <span class="c1"># type: ignore[list-item]</span>
             <span class="p">]</span>
 
@@ -5461,7 +5461,7 @@ or response format.</p>
 <span class="normal">201</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">handle_query_params</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span> <span class="o">|</span> <span class="n">SingleEntryQueryParams</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
+<span class="w">    </span><span class="sd">"""Parse and interpret the backend-agnostic query parameter models into a dictionary</span>
 <span class="sd">    that can be used by MongoDB.</span>
 
 <span class="sd">    This Mongo-specific method calls the base `EntryCollection.handle_query_params` method</span>
@@ -5478,21 +5478,21 @@ or response format.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        A dictionary representation of the query parameters.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">criteria</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">handle_query_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
     <span class="c1"># Handle MongoDB ObjectIDs:</span>
     <span class="c1"># - If they were not requested, then explicitly remove them</span>
     <span class="c1"># - If they were requested, then cast them to strings in the response</span>
-    <span class="k">if</span> <span class="s2">&quot;_id&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{}):</span>
-        <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="s2">"_id"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"projection"</span><span class="p">,</span> <span class="p">{}):</span>
+        <span class="n">criteria</span><span class="p">[</span><span class="s2">"projection"</span><span class="p">][</span><span class="s2">"_id"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">if</span> <span class="s2">&quot;page_above&quot;</span> <span class="ow">in</span> <span class="n">criteria</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">"page_above"</span> <span class="ow">in</span> <span class="n">criteria</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;`page_above` is not implemented for this backend.&quot;</span>
+            <span class="s2">"`page_above` is not implemented for this backend."</span>
         <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;projection&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_id&quot;</span><span class="p">):</span>
-        <span class="n">criteria</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">][</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$toString&quot;</span><span class="p">:</span> <span class="s2">&quot;$_id&quot;</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">criteria</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"projection"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"_id"</span><span class="p">):</span>
+        <span class="n">criteria</span><span class="p">[</span><span class="s2">"projection"</span><span class="p">][</span><span class="s2">"_id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"$toString"</span><span class="p">:</span> <span class="s2">"$_id"</span><span class="p">}</span>
 
     <span class="k">return</span> <span class="n">criteria</span>
 </code></pre></div></td></tr></table></div>
@@ -5568,7 +5568,7 @@ insertion.</p>
 <span class="normal">137</span>
 <span class="normal">138</span>
 <span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add the given entries to the underlying database.</span>
+<span class="w">    </span><span class="sd">"""Add the given entries to the underlying database.</span>
 
 <span class="sd">    Warning:</span>
 <span class="sd">        No validation is performed on the incoming data, this data</span>
@@ -5578,7 +5578,7 @@ insertion.</p>
 <span class="sd">    Arguments:</span>
 <span class="sd">        data: The entries to add to the database.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">insert_many</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5715,7 +5715,7 @@ resolving aliases and dealing with any invalid fields.</p>
 <span class="normal">498</span>
 <span class="normal">499</span>
 <span class="normal">500</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parse_sort_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort_params</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles any sort parameters passed to the collection,</span>
+<span class="w">    </span><span class="sd">"""Handles any sort parameters passed to the collection,</span>
 <span class="sd">    resolving aliases and dealing with any invalid fields.</span>
 
 <span class="sd">    Raises:</span>
@@ -5725,11 +5725,11 @@ resolving aliases and dealing with any invalid fields.</p>
 <span class="sd">        A list of tuples containing the aliased field name and</span>
 <span class="sd">        sort direction encoded as 1 (ascending) or -1 (descending).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">sort_spec</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">sort_params</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">sort_params</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">):</span>
         <span class="n">sort_dir</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"-"</span><span class="p">):</span>
             <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
             <span class="n">sort_dir</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">aliased_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_mapper</span><span class="o">.</span><span class="n">get_backend_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
@@ -5742,16 +5742,16 @@ resolving aliases and dealing with any invalid fields.</p>
     <span class="p">]</span>
 
     <span class="k">if</span> <span class="n">unknown_fields</span><span class="p">:</span>
-        <span class="n">error_detail</span> <span class="o">=</span> <span class="s2">&quot;Unable to sort on unknown field</span><span class="si">{}</span><span class="s2"> &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="s2">&quot;s&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_fields</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unknown_fields</span><span class="p">),</span>
+        <span class="n">error_detail</span> <span class="o">=</span> <span class="s2">"Unable to sort on unknown field</span><span class="si">{}</span><span class="s2"> '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"s"</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_fields</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="s2">"', '"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unknown_fields</span><span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="c1"># If all unknown fields are &quot;other&quot; provider-specific, then only provide a warning</span>
+        <span class="c1"># If all unknown fields are "other" provider-specific, then only provide a warning</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
             <span class="p">(</span>
-                <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;_[a-z_0-9]+_[a-z_0-9]*&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="ow">not</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">provider_prefix</span><span class="si">}</span><span class="s2">_&quot;</span><span class="p">)</span>
+                <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"_[a-z_0-9]+_[a-z_0-9]*"</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="n">field</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">provider_prefix</span><span class="si">}</span><span class="s2">_"</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">unknown_fields</span>
         <span class="p">):</span>
@@ -5825,7 +5825,7 @@ resolving aliases and dealing with any invalid fields.</p>
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_mongo_client</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ServerConfig</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a cached MongoClient for (backend, uri), creating it if necessary.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Return a cached MongoClient for (backend, uri), creating it if necessary."""</span>
     <span class="n">backend</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">database_backend</span><span class="o">.</span><span class="n">value</span>
     <span class="n">uri</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mongo_uri</span>
     <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">uri</span><span class="p">)</span>
@@ -5833,18 +5833,18 @@ resolving aliases and dealing with any invalid fields.</p>
     <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_CLIENTS</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_CLIENTS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">&quot;mongodb&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">"mongodb"</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">MongoClient</span>
 
-        <span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using: Real MongoDB (pymongo) @ </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using: Real MongoDB (pymongo) @ </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">&quot;mongomock&quot;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s2">"mongomock"</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">mongomock</span><span class="w"> </span><span class="kn">import</span> <span class="n">MongoClient</span>
 
-        <span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using: Mock MongoDB (mongomock) @ </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using: Mock MongoDB (mongomock) @ </span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported backend </span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unsupported backend </span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">_CLIENTS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">client</span>
     <span class="k">return</span> <span class="n">client</span>
@@ -5930,10 +5930,10 @@ resolving aliases and dealing with any invalid fields.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3728,12 +3728,12 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
 <span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">JSONAPIResponse</span><span class="p">(</span><span class="n">JSONResponse</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;This class simply patches `fastapi.responses.JSONResponse` to use the</span>
-<span class="sd">    JSON:API &#39;application/vnd.api+json&#39; MIME type.</span>
+<span class="w">    </span><span class="sd">"""This class simply patches `fastapi.responses.JSONResponse` to use the</span>
+<span class="sd">    JSON:API 'application/vnd.api+json' MIME type.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="n">media_type</span> <span class="o">=</span> <span class="s2">&quot;application/vnd.api+json&quot;</span>
+    <span class="n">media_type</span> <span class="o">=</span> <span class="s2">"application/vnd.api+json"</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -3801,19 +3801,19 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
         <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">ParseResult</span> <span class="o">|</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">SplitResult</span> <span class="o">|</span> <span class="n">StarletteURL</span> <span class="o">|</span> <span class="nb">str</span>
     <span class="p">),</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get base URL for current server</span>
+<span class="w">    </span><span class="sd">"""Get base URL for current server</span>
 
 <span class="sd">    Take the base URL from the config file, if it exists, otherwise use the request.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">parsed_url_request</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">parsed_url_request</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parsed_url_request</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
         <span class="k">else</span> <span class="n">parsed_url_request</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">base_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">base_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">base_url</span>
-        <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parsed_url_request</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">parsed_url_request</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">parsed_url_request</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">parsed_url_request</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3904,7 +3904,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
     <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">EntryListingQueryParams</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generalized /{entry} endpoint getter&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Generalized /{entry} endpoint getter"""</span>
 
     <span class="n">config</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">config</span>
     <span class="n">entry_collections</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">entry_collections</span>
@@ -3920,8 +3920,8 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
     <span class="p">)</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
     <span class="n">include</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">&quot;include&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="n">include</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">include</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="s2">"include"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">include</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">include</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">))</span>
 
     <span class="n">included</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -3938,9 +3938,9 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
         <span class="c1"># if base_url contains a subpath, it is already included in request.url.path</span>
         <span class="c1"># so remove it from base_url</span>
         <span class="n">parsed_base</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span>
-        <span class="n">base_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parsed_base</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">parsed_base</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">parsed_base</span><span class="o">.</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">parsed_base</span><span class="o">.</span><span class="n">netloc</span><span class="si">}</span><span class="s2">"</span>
 
-        <span class="n">links</span> <span class="o">=</span> <span class="n">ToplevelLinks</span><span class="p">(</span><span class="nb">next</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}{</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">urlencoded</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">ToplevelLinks</span><span class="p">(</span><span class="nb">next</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">base_url</span><span class="si">}{</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">urlencoded</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">links</span> <span class="o">=</span> <span class="n">ToplevelLinks</span><span class="p">(</span><span class="nb">next</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
@@ -3948,9 +3948,9 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
         <span class="n">results</span> <span class="o">=</span> <span class="n">handle_response_fields</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">include_fields</span><span class="p">)</span>  <span class="c1"># type: ignore[assignment]</span>
 
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;links&quot;</span><span class="p">:</span> <span class="n">links</span><span class="p">,</span>
-        <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">results</span> <span class="k">if</span> <span class="n">results</span> <span class="k">else</span> <span class="p">[],</span>
-        <span class="s2">&quot;meta&quot;</span><span class="p">:</span> <span class="n">meta_values</span><span class="p">(</span>
+        <span class="s2">"links"</span><span class="p">:</span> <span class="n">links</span><span class="p">,</span>
+        <span class="s2">"data"</span><span class="p">:</span> <span class="n">results</span> <span class="k">if</span> <span class="n">results</span> <span class="k">else</span> <span class="p">[],</span>
+        <span class="s2">"meta"</span><span class="p">:</span> <span class="n">meta_values</span><span class="p">(</span>
             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
             <span class="n">url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span>
             <span class="n">data_returned</span><span class="o">=</span><span class="n">data_returned</span><span class="p">,</span>
@@ -3960,7 +3960,7 @@ JSON:API 'application/vnd.api+json' MIME type.</p>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">is_index</span>
             <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">index_schema_url</span><span class="p">,</span>
         <span class="p">),</span>
-        <span class="s2">&quot;included&quot;</span><span class="p">:</span> <span class="n">included</span><span class="p">,</span>
+        <span class="s2">"included"</span><span class="p">:</span> <span class="n">included</span><span class="p">,</span>
     <span class="p">}</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -4168,7 +4168,7 @@ of resource objects for that entry type.</p>
     <span class="n">ENTRY_COLLECTIONS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">EntryCollection</span><span class="p">],</span>
     <span class="n">include_param</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Filters the included relationships and makes the appropriate compound request</span>
+<span class="w">    </span><span class="sd">"""Filters the included relationships and makes the appropriate compound request</span>
 <span class="sd">    to include them in the response.</span>
 
 <span class="sd">    Parameters:</span>
@@ -4182,17 +4182,17 @@ of resource objects for that entry type.</p>
 <span class="sd">        Dictionary with the same keys as ENTRY_COLLECTIONS, each containing the list</span>
 <span class="sd">            of resource objects for that entry type.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">results</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="n">include_param</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">entry_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ENTRY_COLLECTIONS</span> <span class="ow">and</span> <span class="n">entry_type</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">entry_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ENTRY_COLLECTIONS</span> <span class="ow">and</span> <span class="n">entry_type</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">BadRequest</span><span class="p">(</span>
-                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">&#39; cannot be identified as a valid relationship type. &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;Known relationship types: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ENTRY_COLLECTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">entry_type</span><span class="si">}</span><span class="s2">' cannot be identified as a valid relationship type. "</span>
+                <span class="sa">f</span><span class="s2">"Known relationship types: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">ENTRY_COLLECTIONS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
     <span class="n">endpoint_includes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">dict</span><span class="p">)</span>
@@ -4208,7 +4208,7 @@ of resource objects for that entry type.</p>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">relationships</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">relationships</span>  <span class="c1"># type: ignore</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="n">relationships</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">relationships</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"relationships"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">relationships</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">continue</span>
@@ -4223,24 +4223,24 @@ of resource objects for that entry type.</p>
 
             <span class="n">entry_relationship</span> <span class="o">=</span> <span class="n">relationships</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entry_type</span><span class="p">,</span> <span class="p">{})</span>
             <span class="k">if</span> <span class="n">entry_relationship</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">refs</span> <span class="o">=</span> <span class="n">entry_relationship</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="n">refs</span> <span class="o">=</span> <span class="n">entry_relationship</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="p">[])</span>
                 <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">refs</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">ref</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]:</span>
-                        <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">ref</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ref</span>
+                    <span class="k">if</span> <span class="n">ref</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]:</span>
+                        <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">][</span><span class="n">ref</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ref</span>
 
     <span class="n">included</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span>
         <span class="nb">str</span><span class="p">,</span>
         <span class="nb">list</span><span class="p">[</span><span class="n">EntryResource</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
     <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">entry_type</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">:</span>
-        <span class="n">compound_filter</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;id=&quot;</span><span class="si">{</span><span class="n">ref_id</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="k">for</span> <span class="n">ref_id</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]]</span>
+        <span class="n">compound_filter</span> <span class="o">=</span> <span class="s2">" OR "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span><span class="sa">f</span><span class="s1">'id="</span><span class="si">{</span><span class="n">ref_id</span><span class="si">}</span><span class="s1">"'</span> <span class="k">for</span> <span class="n">ref_id</span> <span class="ow">in</span> <span class="n">endpoint_includes</span><span class="p">[</span><span class="n">entry_type</span><span class="p">]]</span>
         <span class="p">)</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">EntryListingQueryParams</span><span class="p">(</span>
             <span class="nb">filter</span><span class="o">=</span><span class="n">compound_filter</span><span class="p">,</span>
-            <span class="n">response_format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">,</span>
-            <span class="n">response_fields</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">sort</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">response_format</span><span class="o">=</span><span class="s2">"json"</span><span class="p">,</span>
+            <span class="n">response_fields</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
+            <span class="n">sort</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
             <span class="n">page_limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
             <span class="n">page_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>
@@ -4428,12 +4428,12 @@ HTTP configuration (e.g. proxies). Defaults to the module-level <code>requests</
 <span class="normal">210</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_providers</span><span class="p">(</span>
     <span class="n">add_mongo_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</span>
+<span class="w">    </span><span class="sd">"""Retrieve Materials-Consortia providers (from https://providers.optimade.org/v1/links).</span>
 
 <span class="sd">    Fallback order if providers.optimade.org is not available:</span>
 
 <span class="sd">    1. Try Materials-Consortia/providers on GitHub.</span>
-<span class="sd">    2. Try submodule `providers`&#39; list of providers.</span>
+<span class="sd">    2. Try submodule `providers`' list of providers.</span>
 <span class="sd">    3. Log warning that providers list from Materials-Consortia is not included in the</span>
 <span class="sd">       `/links`-endpoint.</span>
 
@@ -4446,7 +4446,7 @@ HTTP configuration (e.g. proxies). Defaults to the module-level <code>requests</
 <span class="sd">    Returns:</span>
 <span class="sd">        List of raw JSON-decoded providers including MongoDB object IDs.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
     <span class="n">_get</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span> <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span>
@@ -4470,28 +4470,28 @@ HTTP configuration (e.g. proxies). Defaults to the module-level <code>requests</
             <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.server.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGER</span>
 
             <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-<span class="w">                </span><span class="sd">&quot;&quot;&quot;Could not retrieve a list of providers!</span>
+<span class="w">                </span><span class="sd">"""Could not retrieve a list of providers!</span>
 
 <span class="sd">    Tried the following resources:</span>
 
 <span class="sd">{}</span>
 <span class="sd">    The list of providers will not be included in the `/links`-endpoint.</span>
-<span class="sd">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;    * </span><span class="si">{</span><span class="n">_</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">PROVIDER_LIST_URLS</span><span class="p">]))</span>
+<span class="sd">"""</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">"    * </span><span class="si">{</span><span class="n">_</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">PROVIDER_LIST_URLS</span><span class="p">]))</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="p">[]</span>
 
     <span class="n">providers_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="n">providers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-        <span class="c1"># Remove/skip &quot;exmpl&quot;</span>
-        <span class="k">if</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;exmpl&quot;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="n">providers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="c1"># Remove/skip "exmpl"</span>
+        <span class="k">if</span> <span class="n">provider</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"exmpl"</span><span class="p">:</span>
             <span class="k">continue</span>
 
-        <span class="n">provider</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">provider</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+        <span class="n">provider</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">provider</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"attributes"</span><span class="p">,</span> <span class="p">{}))</span>
 
         <span class="c1"># Add MongoDB ObjectId</span>
         <span class="k">if</span> <span class="n">add_mongo_id</span><span class="p">:</span>
-            <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;$oid&quot;</span><span class="p">:</span> <span class="n">mongo_id_for_database</span><span class="p">(</span><span class="n">provider</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">provider</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">])</span>
+            <span class="n">provider</span><span class="p">[</span><span class="s2">"_id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"$oid"</span><span class="p">:</span> <span class="n">mongo_id_for_database</span><span class="p">(</span><span class="n">provider</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="n">provider</span><span class="p">[</span><span class="s2">"type"</span><span class="p">])</span>
             <span class="p">}</span>
 
         <span class="n">providers_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
@@ -4650,7 +4650,7 @@ set to null if missing in the entry.</p>
     <span class="n">exclude_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">include_fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handle query parameter `response_fields`.</span>
+<span class="w">    </span><span class="sd">"""Handle query parameter `response_fields`.</span>
 
 <span class="sd">    It is assumed that all fields are under `attributes`.</span>
 <span class="sd">    This is due to all other top-level fields are REQUIRED in the response.</span>
@@ -4664,7 +4664,7 @@ set to null if missing in the entry.</p>
 <span class="sd">        List of resulting resources as dictionaries after pruning according to</span>
 <span class="sd">        the `response_fields` OPTIMADE URL query parameter.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">results</span><span class="p">]</span>
 
@@ -4678,13 +4678,13 @@ set to null if missing in the entry.</p>
 
         <span class="c1"># Remove fields excluded by their omission in `response_fields`</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">exclude_fields</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">new_entry</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
-                <span class="k">del</span> <span class="n">new_entry</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="n">field</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">new_entry</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">]:</span>
+                <span class="k">del</span> <span class="n">new_entry</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">][</span><span class="n">field</span><span class="p">]</span>
 
         <span class="c1"># Include missing fields that were requested in `response_fields`</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">include_fields</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new_entry</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
-                <span class="n">new_entry</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new_entry</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">]:</span>
+                <span class="n">new_entry</span><span class="p">[</span><span class="s2">"attributes"</span><span class="p">][</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">new_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_entry</span><span class="p">)</span>
 
@@ -4759,15 +4759,15 @@ set to null if missing in the entry.</p>
     <span class="n">schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ResponseMeta</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper to initialize the meta values&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Helper to initialize the meta values"""</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseMetaQuery</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
     <span class="c1"># To catch all (valid) variations of the version part of the URL, a regex is used</span>
-    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/v[0-9]+(\.[0-9]+){,2}/.*&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">url_path</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/v[0-9]+(\.[0-9]+){,2}/&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"/v[0-9]+(\.[0-9]+){,2}/.*"</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">url_path</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"/v[0-9]+(\.[0-9]+){,2}/"</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">,</span> <span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">url_path</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">path</span>
 
@@ -4776,10 +4776,10 @@ set to null if missing in the entry.</p>
 
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">request_delay</span><span class="p">:</span>
         <span class="c1"># Double-guard against the server setting an adversarially large request delay</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;request_delay&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">request_delay</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"request_delay"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">request_delay</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ResponseMeta</span><span class="p">(</span>
-        <span class="n">query</span><span class="o">=</span><span class="n">ResponseMetaQuery</span><span class="p">(</span><span class="n">representation</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">url_path</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="n">query</span><span class="o">=</span><span class="n">ResponseMetaQuery</span><span class="p">(</span><span class="n">representation</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">url_path</span><span class="si">}</span><span class="s2">?</span><span class="si">{</span><span class="n">url</span><span class="o">.</span><span class="n">query</span><span class="si">}</span><span class="s2">"</span><span class="p">),</span>
         <span class="n">api_version</span><span class="o">=</span><span class="n">__api_version__</span><span class="p">,</span>
         <span class="n">time_stamp</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
         <span class="n">data_returned</span><span class="o">=</span><span class="n">data_returned</span><span class="p">,</span>
@@ -4824,14 +4824,14 @@ set to null if missing in the entry.</p>
 <span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mongo_id_for_database</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a deterministic MongoDB ObjectId for a database&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Produce a deterministic MongoDB ObjectId for a database"""</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 
     <span class="kn">from</span><span class="w"> </span><span class="nn">bson.objectid</span><span class="w"> </span><span class="kn">import</span> <span class="n">ObjectId</span>
 
-    <span class="n">combined</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">database_id</span><span class="si">}{</span><span class="n">database_type</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">combined</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">database_id</span><span class="si">}{</span><span class="n">database_type</span><span class="si">}</span><span class="s2">"</span>
 
-    <span class="n">hash_obj</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">combined</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+    <span class="n">hash_obj</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">combined</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span>
     <span class="n">hash_bytes</span> <span class="o">=</span> <span class="n">hash_obj</span><span class="o">.</span><span class="n">digest</span><span class="p">()[:</span><span class="mi">12</span><span class="p">]</span>  <span class="c1"># ObjectId requires 12 bytes</span>
 
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">ObjectId</span><span class="p">(</span><span class="n">hash_bytes</span><span class="p">))</span>
@@ -4917,10 +4917,10 @@ set to null if missing in the entry.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

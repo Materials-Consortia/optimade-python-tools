@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3565,14 +3565,14 @@
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-    <span class="s2">&quot;/versions&quot;</span><span class="p">,</span>
-    <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Versions&quot;</span><span class="p">],</span>
+    <span class="s2">"/versions"</span><span class="p">,</span>
+    <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"Versions"</span><span class="p">],</span>
     <span class="n">response_class</span><span class="o">=</span><span class="n">CsvResponse</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_versions</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">CsvResponse</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Respond with the text/csv representation for the served versions.&quot;&quot;&quot;</span>
-    <span class="n">version</span> <span class="o">=</span> <span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">&quot;major&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/v&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;version</span><span class="se">\n</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="sd">"""Respond with the text/csv representation for the served versions."""</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">BASE_URL_PREFIXES</span><span class="p">[</span><span class="s2">"major"</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/v"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"version</span><span class="se">\n</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">"</span>
     <span class="k">return</span> <span class="n">CsvResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">response</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -3656,10 +3656,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": [], "search": "../../../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

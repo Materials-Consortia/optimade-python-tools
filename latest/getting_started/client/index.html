@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3723,22 +3723,23 @@ pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </s
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Command line</label><label for="__tabbed_1_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">&#39;elements HAS &quot;Ag&quot;&#39;</span>
+<div class="highlight"><pre><span></span><code>optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">'elements HAS "Ag"'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
+
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">()</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;elements HAS &quot;Ag&quot;&#39;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'elements HAS "Ag"'</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
 </div>
 <p>At the command line, it may be immediately useful to redirect or save these results to a file:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Save the results to a JSON file directly</span>
-optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">&#39;elements HAS &quot;Ag&quot;&#39;</span><span class="w"> </span>--output-file<span class="w"> </span>results.json
+optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">'elements HAS "Ag"'</span><span class="w"> </span>--output-file<span class="w"> </span>results.json
 <span class="c1"># or redirect the results (in a POSIX shell)</span>
-optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">&#39;elements HAS &quot;Ag&quot;&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>results.json
+optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">'elements HAS "Ag"'</span><span class="w"> </span>&gt;<span class="w"> </span>results.json
 </code></pre></div>
 <p>We can refine the search by manually specifying some URLs:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Command line</label><label for="__tabbed_2_2">Python</label></div>
@@ -3749,8 +3750,9 @@ optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class=
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
+
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
-    <span class="n">base_urls</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;https://optimade.fly.dev&quot;</span><span class="p">,</span> <span class="s2">&quot;https://optimade.odbx.science&quot;</span><span class="p">]</span>
+    <span class="n">base_urls</span><span class="o">=</span><span class="p">[</span><span class="s2">"https://optimade.fly.dev"</span><span class="p">,</span> <span class="s2">"https://optimade.odbx.science"</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 </code></pre></div>
@@ -3769,8 +3771,9 @@ optimade-get<span class="w"> </span>--include-providers<span class="w"> </span>e
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># Only query databases served by the example providers</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
+
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
-    <span class="n">include_providers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;exmpl&quot;</span><span class="p">,</span> <span class="s2">&quot;optimade&quot;</span><span class="p">},</span>
+    <span class="n">include_providers</span><span class="o">=</span><span class="p">{</span><span class="s2">"exmpl"</span><span class="p">,</span> <span class="s2">"optimade"</span><span class="p">},</span>
 <span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 </code></pre></div>
@@ -3788,8 +3791,9 @@ optimade-get<span class="w"> </span>--exclude-providers<span class="w"> </span>e
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># Exclude example providers from global list</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
+
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
-    <span class="n">exclude_providers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;exmpl&quot;</span><span class="p">,</span> <span class="s2">&quot;optimade&quot;</span><span class="p">},</span>
+    <span class="n">exclude_providers</span><span class="o">=</span><span class="p">{</span><span class="s2">"exmpl"</span><span class="p">,</span> <span class="s2">"optimade"</span><span class="p">},</span>
 <span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 </code></pre></div>
@@ -3807,8 +3811,9 @@ optimade-get<span class="w"> </span>--exclude-databases<span class="w"> </span>h
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="c1"># Exclude specific example databases</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
+
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span>
-    <span class="n">exclude_databases</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;https://example.org/optimade&quot;</span><span class="p">,</span> <span class="s2">&quot;https://optimade.org/example&quot;</span><span class="p">}</span>
+    <span class="n">exclude_databases</span><span class="o">=</span><span class="p">{</span><span class="s2">"https://example.org/optimade"</span><span class="p">,</span> <span class="s2">"https://optimade.org/example"</span><span class="p">}</span>
 <span class="p">)</span>
 <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 </code></pre></div>
@@ -3821,13 +3826,14 @@ You can specify your desired filter as follows (note the quotation marks):</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Command line</label><label for="__tabbed_6_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">&#39;elements HAS &quot;Ag&quot; AND nsites &lt; 2&#39;</span><span class="w"> </span>--output-file<span class="w"> </span>results.json
+<div class="highlight"><pre><span></span><code>optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">'elements HAS "Ag" AND nsites &lt; 2'</span><span class="w"> </span>--output-file<span class="w"> </span>results.json
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
+
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;elements HAS &quot;Ag&quot; AND nsites &lt; 2&#39;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'elements HAS "Ag" AND nsites &lt; 2'</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -3836,40 +3842,40 @@ You can specify your desired filter as follows (note the quotation marks):</p>
 <h3 id="accessing-the-results">Accessing the results<a class="headerlink" href="#accessing-the-results" title="Permanent link">&para;</a></h3>
 <p>At the command-line, the results of the query will be printed to <code>stdout</code>, ready to be redirected to a file or piped into another program.
 For example:</p>
-<div class="highlight"><pre><span></span><code>optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">&#39;nsites = 1&#39;</span><span class="w"> </span>--output-file<span class="w"> </span>results.json<span class="w"> </span>https://optimade.fly.dev
+<div class="highlight"><pre><span></span><code>optimade-get<span class="w"> </span>--filter<span class="w"> </span><span class="s1">'nsites = 1'</span><span class="w"> </span>--output-file<span class="w"> </span>results.json<span class="w"> </span>https://optimade.fly.dev
 cat<span class="w"> </span>results.json
 </code></pre></div>
 <p>has the following (truncated) output:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">  </span><span class="c1">// The endpoint that was queried</span>
-<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"structures"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// The filter applied to that endpoint</span>
-<span class="w">    </span><span class="nt">&quot;nsites = 1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"nsites = 1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="c1">// The base URL of the OPTIMADE API</span>
-<span class="w">      </span><span class="nt">&quot;https://optimade.fly.dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"https://optimade.fly.dev"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// The OPTIMADE API response as if called with an infinite `page_limit`</span>
-<span class="w">        </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">          </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mpf_1&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;structures&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mpf_1"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"structures"</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">                </span><span class="err">...</span>
 <span class="w">            </span><span class="p">}</span>
-<span class="w">            </span><span class="nt">&quot;relationships&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"relationships"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">                </span><span class="err">...</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">          </span><span class="p">},</span>
 <span class="w">          </span><span class="err">...</span>
 <span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">        </span><span class="nt">&quot;links&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;next&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;prev&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">        </span><span class="nt">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">        </span><span class="nt">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"next"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"prev"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;included&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="nt">"included"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">            </span><span class="err">...</span>
 <span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="err">...</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
@@ -3880,19 +3886,20 @@ cat<span class="w"> </span>results.json
 <p>The response is broken down by queried endpoint, filter and then base URL so that the query URL can be easily reconstructed.
 This is the same format as the cached results of the Python client:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="s2">&quot;https://optimade.fly.dev&quot;</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites = 1&#39;</span><span class="p">)</span>
-<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nsites = 2&#39;</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">base_urls</span><span class="o">=</span><span class="s2">"https://optimade.fly.dev"</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"nsites = 1"</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"nsites = 2"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">all_results</span><span class="p">)</span>
 </code></pre></div>
 <p>will return a dictionary with top-level keys:
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;nsites = 1&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;https://optimade.fly.dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span>
+<span class="w">    </span><span class="nt">"structures"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"nsites = 1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"https://optimade.fly.dev"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">&quot;nsites = 2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;https://optimade.fly.dev&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span>
+<span class="w">        </span><span class="nt">"nsites = 2"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">"https://optimade.fly.dev"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -3910,28 +3917,29 @@ In the Python interface, the different endpoints can be queried as attributes of
 <div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Command line</label><label for="__tabbed_7_2">Python</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code>optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">&quot;structures&quot;</span>
-optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">&quot;references&quot;</span>
-optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">&quot;info&quot;</span>
-optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">&quot;info/structures&quot;</span>
-optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">&quot;extensions/properties&quot;</span>
+<div class="highlight"><pre><span></span><code>optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">"structures"</span>
+optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">"references"</span>
+optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">"info"</span>
+optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">"info/structures"</span>
+optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span class="s2">"extensions/properties"</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
+
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">()</span>
 
 <span class="n">client</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">&quot;references&quot;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">"references"</span><span class="p">)</span>
 
 <span class="n">client</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">"info"</span><span class="p">)</span>
 
 <span class="n">client</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">structures</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">&quot;info/structures&quot;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">"info/structures"</span><span class="p">)</span>
 
 <span class="n">client</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">&quot;extensions/properties&quot;</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="s2">"extensions/properties"</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -3947,8 +3955,8 @@ optimade-get<span class="w"> </span>--endpoint<span class="w"> </span><span clas
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>from optimade.client import OptimadeClient
-client = OptimadeClient(include_providers={&quot;odbx&quot;})
-client.list_properties(&quot;structures&quot;)
+client = OptimadeClient(include_providers={"odbx"})
+client.list_properties("structures")
 </code></pre></div>
 </div>
 </div>
@@ -3963,7 +3971,7 @@ client.list_properties(&quot;structures&quot;)
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>from optimade.client import OptimadeClient
 client = OptimadeClient()
-client.list_properties(&quot;structures&quot;)
+client.list_properties("structures")
 </code></pre></div>
 </div>
 </div>
@@ -3985,18 +3993,19 @@ We can use this to repeat the queries from the <a href="https://doi.org/10.1038/
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code>optimade-get<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--count<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--filter<span class="w"> </span><span class="s1">&#39;elements HAS ANY &quot;C&quot;, &quot;Si&quot;, &quot;Ge&quot;, &quot;Sn&quot;, &quot;Pb&quot;&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--filter<span class="w"> </span><span class="s1">&#39;elements HAS ANY &quot;C&quot;, &quot;Si&quot;, &quot;Ge&quot;, &quot;Sn&quot;, &quot;Pb&quot; AND nelements=2&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--filter<span class="w"> </span><span class="s1">&#39;elements HAS ANY &quot;C&quot;, &quot;Si&quot;, &quot;Ge&quot;, &quot;Sn&quot; AND NOT elements HAS &quot;Pb&quot; AND elements LENGTH 3&#39;</span>
+<span class="w">    </span>--filter<span class="w"> </span><span class="s1">'elements HAS ANY "C", "Si", "Ge", "Sn", "Pb"'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--filter<span class="w"> </span><span class="s1">'elements HAS ANY "C", "Si", "Ge", "Sn", "Pb" AND nelements=2'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--filter<span class="w"> </span><span class="s1">'elements HAS ANY "C", "Si", "Ge", "Sn" AND NOT elements HAS "Pb" AND elements LENGTH 3'</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">optimade.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">OptimadeClient</span>
+
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">()</span>
 <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;elements HAS ANY &quot;C&quot;, &quot;Si&quot;, &quot;Ge&quot;, &quot;Sn&quot;, &quot;Pb&quot;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;elements HAS ANY &quot;C&quot;, &quot;Si&quot;, &quot;Ge&quot;, &quot;Sn&quot;, &quot;Pb&quot; AND nelements=2&#39;</span>
-    <span class="s1">&#39;elements HAS ANY &quot;C&quot;, &quot;Si&quot;, &quot;Ge&quot;, &quot;Sn&quot; AND NOT elements HAS &quot;Pb&quot; AND elements LENGTH 3&#39;</span>
+    <span class="s1">'elements HAS ANY "C", "Si", "Ge", "Sn", "Pb"'</span><span class="p">,</span>
+    <span class="s1">'elements HAS ANY "C", "Si", "Ge", "Sn", "Pb" AND nelements=2'</span>
+    <span class="s1">'elements HAS ANY "C", "Si", "Ge", "Sn" AND NOT elements HAS "Pb" AND elements LENGTH 3'</span><span class="p">,</span>
 <span class="p">]</span>
 <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">:</span>
     <span class="n">client</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -4006,78 +4015,78 @@ We can use this to repeat the queries from the <a href="https://doi.org/10.1038/
 </div>
 <p>which, at the timing of writing, yields the results:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;structures&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;elements HAS ANY \&quot;C\&quot;, \&quot;Si\&quot;, \&quot;Ge\&quot;, \&quot;Sn\&quot;, \&quot;Pb\&quot;&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;http://aflow.org/API/optimade/&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://www.crystallography.net/cod/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">436062</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/sssplibrary/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">487</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/2dstructures/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1427</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/2dtopo/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/tc-applicability/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3719</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/3dd/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/mc3d-structures/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9592</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/autowannier/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1093</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/curated-cofs/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4395</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/stoceriaitf/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/pyrene-mofs/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">348</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/tin-antimony-sulfoiodide/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">503</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://optimade.materialsproject.org&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30351</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://api.mpds.io&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://nomad-lab.eu/prod/rae/optimade/&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4451056</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://optimade.odbx.science&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">55</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;http://optimade.openmaterialsdb.se&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">58718</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;http://oqmd.org/optimade/&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://jarvis.nist.gov/optimade/jarvisdft&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://www.crystallography.net/tcod/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2632</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;http://optimade.2dmatpedia.org&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1172</span>
+<span class="w">  </span><span class="nt">"structures"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"elements HAS ANY \"C\", \"Si\", \"Ge\", \"Sn\", \"Pb\""</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"http://aflow.org/API/optimade/"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://www.crystallography.net/cod/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">436062</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/sssplibrary/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">487</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/2dstructures/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">1427</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/2dtopo/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/tc-applicability/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">3719</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/3dd/optimade"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/mc3d-structures/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">9592</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/autowannier/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">1093</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/curated-cofs/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">4395</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/stoceriaitf/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/pyrene-mofs/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">348</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/tin-antimony-sulfoiodide/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">503</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://optimade.materialsproject.org"</span><span class="p">:</span><span class="w"> </span><span class="mi">30351</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://api.mpds.io"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://nomad-lab.eu/prod/rae/optimade/"</span><span class="p">:</span><span class="w"> </span><span class="mi">4451056</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://optimade.odbx.science"</span><span class="p">:</span><span class="w"> </span><span class="mi">55</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"http://optimade.openmaterialsdb.se"</span><span class="p">:</span><span class="w"> </span><span class="mi">58718</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"http://oqmd.org/optimade/"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://jarvis.nist.gov/optimade/jarvisdft"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://www.crystallography.net/tcod/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">2632</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"http://optimade.2dmatpedia.org"</span><span class="p">:</span><span class="w"> </span><span class="mi">1172</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;elements HAS ANY \&quot;C\&quot;, \&quot;Si\&quot;, \&quot;Ge\&quot;, \&quot;Sn\&quot;, \&quot;Pb\&quot; AND nelements=2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;http://aflow.org/API/optimade/&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">63011</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://www.crystallography.net/cod/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3968</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/sssplibrary/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/2dstructures/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">779</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/2dtopo/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/tc-applicability/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">334</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/3dd/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/mc3d-structures/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1566</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/autowannier/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">276</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/curated-cofs/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/stoceriaitf/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/pyrene-mofs/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/tin-antimony-sulfoiodide/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://optimade.materialsproject.org&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3728</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://api.mpds.io&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://nomad-lab.eu/prod/rae/optimade/&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">587923</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://optimade.odbx.science&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">54</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;http://optimade.openmaterialsdb.se&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">690</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;http://oqmd.org/optimade/&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://jarvis.nist.gov/optimade/jarvisdft&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://www.crystallography.net/tcod/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">296</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;http://optimade.2dmatpedia.org&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">739</span>
+<span class="w">    </span><span class="nt">"elements HAS ANY \"C\", \"Si\", \"Ge\", \"Sn\", \"Pb\" AND nelements=2"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"http://aflow.org/API/optimade/"</span><span class="p">:</span><span class="w"> </span><span class="mi">63011</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://www.crystallography.net/cod/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">3968</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/sssplibrary/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/2dstructures/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">779</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/2dtopo/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/tc-applicability/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">334</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/3dd/optimade"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/mc3d-structures/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">1566</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/autowannier/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">276</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/curated-cofs/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/stoceriaitf/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/pyrene-mofs/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/tin-antimony-sulfoiodide/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://optimade.materialsproject.org"</span><span class="p">:</span><span class="w"> </span><span class="mi">3728</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://api.mpds.io"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://nomad-lab.eu/prod/rae/optimade/"</span><span class="p">:</span><span class="w"> </span><span class="mi">587923</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://optimade.odbx.science"</span><span class="p">:</span><span class="w"> </span><span class="mi">54</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"http://optimade.openmaterialsdb.se"</span><span class="p">:</span><span class="w"> </span><span class="mi">690</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"http://oqmd.org/optimade/"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://jarvis.nist.gov/optimade/jarvisdft"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://www.crystallography.net/tcod/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">296</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"http://optimade.2dmatpedia.org"</span><span class="p">:</span><span class="w"> </span><span class="mi">739</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;elements HAS ANY \&quot;C\&quot;, \&quot;Si\&quot;, \&quot;Ge\&quot;, \&quot;Sn\&quot; AND NOT elements HAS \&quot;Pb\&quot; AND elements LENGTH 3&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;http://aflow.org/API/optimade/&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://www.crystallography.net/cod/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">33776</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/sssplibrary/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/2dstructures/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">378</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/2dtopo/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/tc-applicability/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">144</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/3dd/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/mc3d-structures/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4398</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/autowannier/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">74</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/curated-cofs/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1447</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/stoceriaitf/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/pyrene-mofs/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://aiida.materialscloud.org/tin-antimony-sulfoiodide/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://optimade.materialsproject.org&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11559</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://api.mpds.io&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://nomad-lab.eu/prod/rae/optimade/&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2092989</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://optimade.odbx.science&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;http://optimade.openmaterialsdb.se&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7428</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;http://oqmd.org/optimade/&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://jarvis.nist.gov/optimade/jarvisdft&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;https://www.crystallography.net/tcod/optimade&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">661</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;http://optimade.2dmatpedia.org&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">255</span>
+<span class="w">    </span><span class="nt">"elements HAS ANY \"C\", \"Si\", \"Ge\", \"Sn\" AND NOT elements HAS \"Pb\" AND elements LENGTH 3"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"http://aflow.org/API/optimade/"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://www.crystallography.net/cod/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">33776</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/sssplibrary/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/2dstructures/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">378</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/2dtopo/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/tc-applicability/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">144</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/3dd/optimade"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/mc3d-structures/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">4398</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/autowannier/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">74</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/curated-cofs/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">1447</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/stoceriaitf/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/pyrene-mofs/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://aiida.materialscloud.org/tin-antimony-sulfoiodide/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://optimade.materialsproject.org"</span><span class="p">:</span><span class="w"> </span><span class="mi">11559</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://api.mpds.io"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://nomad-lab.eu/prod/rae/optimade/"</span><span class="p">:</span><span class="w"> </span><span class="mi">2092989</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://optimade.odbx.science"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"http://optimade.openmaterialsdb.se"</span><span class="p">:</span><span class="w"> </span><span class="mi">7428</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"http://oqmd.org/optimade/"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://jarvis.nist.gov/optimade/jarvisdft"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"https://www.crystallography.net/tcod/optimade"</span><span class="p">:</span><span class="w"> </span><span class="mi">661</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"http://optimade.2dmatpedia.org"</span><span class="p">:</span><span class="w"> </span><span class="mi">255</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
@@ -4096,11 +4105,13 @@ Care should be taken if combining an asynchronous client with callbacks, as the 
 
 <span class="n">db</span> <span class="o">=</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">MongoClient</span><span class="p">()</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">structures</span>
 
+
 <span class="k">def</span><span class="w"> </span><span class="nf">write_to_db</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
-        <span class="n">entry</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;attributes&quot;</span><span class="p">))</span>
-        <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;immutable_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]:</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"attributes"</span><span class="p">))</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s2">"immutable_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
         <span class="n">db</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">OptimadeClient</span><span class="p">(</span><span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">write_to_db</span><span class="p">],</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -4188,10 +4199,10 @@ result captured.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>
