@@ -87,7 +87,7 @@ jobs:
         sleep 15
 
     - name: Test server, including OPTIONAL base URLs
-      uses: Materials-Consortia/optimade-validator-action@v2
+      uses: Materials-Consortia/optimade-validator-action@b8873dd8e60883c7c8357fadebab40ed6a6d2c27
       with:
         port: 3213
         path: /
@@ -101,7 +101,7 @@ jobs:
         sleep 15
 
     - name: Test index server, including OPTIONAL base URLs
-      uses: Materials-Consortia/optimade-validator-action@v2
+      uses: Materials-Consortia/optimade-validator-action@b8873dd8e60883c7c8357fadebab40ed6a6d2c27
       with:
         port: 3214
         path: /
