@@ -9,7 +9,7 @@ on:
 
 env:
   PYTEST_ADDOPTS: "--color=yes"
-  LINTING_PY_VERSION: "3.10"  # The version of Python to use for linting (typically the minimum supported)
+  LINTING_PY_VERSION: "3.11"  # The version of Python to use for linting (typically the minimum supported)
 
 # Cancel running workflows when additional changes are pushed
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-using-a-fallback-value
@@ -119,7 +119,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.11', '3.12', '3.13']
 
     services:
       mongo:
