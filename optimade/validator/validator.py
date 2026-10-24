@@ -388,8 +388,9 @@ class ImplementationValidator:
 
         for prop in _impl_properties:
             # check support level of property
-            prop_type = _impl_properties[prop]["type"]
-            sortable = _impl_properties[prop]["sortable"]
+            prop_type, sortable = self._get_property_type_and_sortability(
+                _impl_properties[prop]
+            )
             optional = (
                 CONF.entry_schemas[endp].get(prop, {}).get("queryable")
                 == SupportLevel.OPTIONAL
@@ -412,6 +413,37 @@ class ImplementationValidator:
         self._test_completely_unknown_property(endp)
 
         return True, f"successfully recursed through endpoint {endp}."
+
+    @staticmethod
+    def _get_property_type_and_sortability(
+        property_info: dict[str, Any],
+    ) -> tuple[DataType | None, bool]:
+        """Extracts the type and sortability of a property from its (deserialized)
+        description at the entry info endpoint, which is either an OPTIMADE property
+        definition, or the simpler description used before v1.2 of the specification.
+
+        Parameters:
+            property_info: The value under `properties` for the given property.
+
+        Returns:
+            The OPTIMADE data type of the property (or `None` if it was not reported
+            or is a provider-specific type), and whether the implementation has
+            indicated that the property is sortable.
+
+        """
+        for type_key, implementation_key in (
+            ("optimade_type", "implementation"),
+            ("x-optimade-type", "x-optimade-implementation"),
+        ):
+            if type_key in property_info:
+                try:
+                    prop_type = DataType(property_info[type_key])
+                except ValueError:
+                    prop_type = None
+                implementation = property_info.get(implementation_key) or {}
+                return prop_type, bool(implementation.get("sortable", False))
+
+        return property_info.get("type"), bool(property_info.get("sortable", False))
 
     @test_case
     def _test_completely_unknown_property(self, endp):
@@ -631,11 +663,6 @@ class ImplementationValidator:
             else prop_type
         )
 
-        if prop_type is None:
-            raise ResponseError(
-                f"Cannot validate queries on {prop!r} as field type was not reported in `/info/{endp}`"
-            )
-
         # this is the case of a provider field
         if prop not in CONF.entry_schemas[endp]:
             if self.provider_prefix is None:
@@ -649,6 +676,11 @@ class ImplementationValidator:
             return (
                 None,
                 f"Found provider field {prop!r}, will not test queries as they are strictly optional.",
+            )
+
+        if prop_type is None:
+            raise ResponseError(
+                f"Cannot validate queries on {prop!r} as field type was not reported in `/info/{endp}`"
             )
 
         query_optional = (

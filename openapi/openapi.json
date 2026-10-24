@@ -2099,6 +2099,103 @@
         "title": "DataType",
         "description": "Optimade Data types\n\nSee the section \"Data types\" in the OPTIMADE API specification for more information."
       },
+      "DefinitionMetadata": {
+        "properties": {
+          "format": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+$",
+            "title": "Format",
+            "description": "The OPTIMADE definition format that the definition adheres to, expressed as the `MAJOR.MINOR` version of the specification that describes the format."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "property",
+              "unit",
+              "constant",
+              "prefix",
+              "entrytype",
+              "unitsystem",
+              "standard"
+            ],
+            "title": "Kind",
+            "description": "What entity is being defined. For Property Definitions this MUST be `property`."
+          },
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z_][a-z_0-9]*$",
+            "title": "Name",
+            "description": "A short non-unique identifier for the entity being defined."
+          },
+          "label": {
+            "type": "string",
+            "pattern": "^[a-z_][a-z_0-9]*$",
+            "title": "Label",
+            "description": "An extended identifier that is unique within a set of definitions provided together. SHOULD start with the name."
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+            "title": "Version",
+            "description": "The version of the definition, which SHOULD follow semantic versioning."
+          },
+          "resources": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resources",
+            "description": "A list of references to remote resources that describe the defined entity."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "format",
+          "kind",
+          "name",
+          "label"
+        ],
+        "title": "DefinitionMetadata",
+        "description": "The `x-optimade-definition` field: additional information about a\ndefinition that is not covered by fields in the JSON Schema standard."
+      },
+      "DefinitionResource": {
+        "properties": {
+          "relation": {
+            "type": "string",
+            "title": "Relation",
+            "description": "A human-readable description of the relationship between the defined entity and the remote resource."
+          },
+          "resource-id": {
+            "type": "string",
+            "title": "Resource-Id",
+            "description": "An IRI of the external resource, which MAY be a resolvable URL."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "relation",
+          "resource-id"
+        ],
+        "title": "DefinitionResource",
+        "description": "A reference to a remote resource that describes the entity being defined."
+      },
       "EntryInfoProperty": {
         "properties": {
           "description": {
@@ -2147,7 +2244,8 @@
         "required": [
           "description"
         ],
-        "title": "EntryInfoProperty"
+        "title": "EntryInfoProperty",
+        "description": "The description of a property used at `/info/<entry_type>` endpoints by\nversions of the specification before v1.2, which has since been replaced by\n[`PropertyDefinition`][optimade.models.property_definitions.PropertyDefinition]."
       },
       "EntryInfoResource": {
         "properties": {
@@ -2178,12 +2276,19 @@
           "properties": {
             "patternProperties": {
               "^[a-z_][a-z_0-9]+$": {
-                "$ref": "#/components/schemas/EntryInfoProperty"
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/PropertyDefinition"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EntryInfoProperty"
+                  }
+                ]
               }
             },
             "type": "object",
             "title": "Properties",
-            "description": "A dictionary describing queryable properties for this entry type, where each key is a property name."
+            "description": "A dictionary describing properties for this entry type, where each key is a property name and the value is an OPTIMADE Property Definition.\nImplementations of versions of the specification before v1.2 instead describe each property with only its `description`, `unit`, `sortable` and `type`."
           },
           "output_fields_by_format": {
             "additionalProperties": {
@@ -3659,6 +3764,249 @@
         "title": "Meta",
         "description": "Non-standard meta-information that can not be represented as an attribute or relationship."
       },
+      "NestedPropertyDefinition": {
+        "properties": {
+          "$id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "$Id",
+            "description": "A static IRI identifier that is a URN or URL representing the specific version of this level of the defined property."
+          },
+          "$schema": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "$Schema",
+            "description": "A URL for a meta schema that describes the Property Definitions format."
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title",
+            "description": "A short single-line human-readable explanation of the defined property appropriate to show as part of a user interface."
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description",
+            "description": "A human-readable multi-line description that explains the purpose, requirements, and conventions of the defined property."
+          },
+          "x-optimade-definition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DefinitionMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Additional information about the definition that is not covered by fields in the JSON Schema standard."
+          },
+          "x-optimade-type": {
+            "type": "string",
+            "pattern": "^(string|integer|float|boolean|timestamp|list|dictionary|_\\S+_\\S+)$",
+            "title": "X-Optimade-Type",
+            "description": "The OPTIMADE data type for this level of the defined property, or the name of a namespace-specific data type that starts with an underscore followed by the provider-specific prefix."
+          },
+          "x-optimade-unit": {
+            "type": "string",
+            "title": "X-Optimade-Unit",
+            "description": "A (compound) symbol for the physical unit in which the value of the defined property is given, or one of the strings `dimensionless` or `inapplicable`."
+          },
+          "type": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 1,
+            "title": "Type",
+            "description": "The JSON type corresponding to `x-optimade-type`, optionally followed by `null` if the defined property can be `null`."
+          },
+          "x-optimade-unit-definitions": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PhysicalUnitDefinition"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "X-Optimade-Unit-Definitions",
+            "description": "Definitions of the symbols used at any level of the definition for the physical units given in `x-optimade-unit`."
+          },
+          "x-optimade-dimensions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PropertyDimensions"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The dimensions of one or multi-dimensional data represented as multiple levels of lists."
+          },
+          "x-optimade-implementation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PropertyImplementation"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The level of OPTIMADE API functionality provided by the present implementation."
+          },
+          "x-optimade-requirements": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PropertyRequirements"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The level of OPTIMADE API functionality required by all implementations of this property."
+          },
+          "x-optimade-metadata-definition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NestedPropertyDefinition"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The definition of the dictionary of metadata properties that can accompany this property."
+          },
+          "$comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "$Comment",
+            "description": "A human-readable comment relevant in the context of the raw definition data."
+          },
+          "deprecated": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deprecated",
+            "description": "If `true`, implementations SHOULD NOT use the defined property, and it MAY be removed in the future."
+          },
+          "examples": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Examples",
+            "description": "A list of example values that the defined property can have."
+          },
+          "enum": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enum",
+            "description": "The defined property MUST take one of the values given in this list."
+          },
+          "properties": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/NestedPropertyDefinition"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Properties",
+            "description": "For dictionaries: the inner property definitions of each allowed key."
+          },
+          "required": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required",
+            "description": "For dictionaries: the keys that MUST be present in the defined property."
+          },
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NestedPropertyDefinition"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "For lists: the inner property definition that each item MUST match."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "x-optimade-type",
+          "x-optimade-unit",
+          "type"
+        ],
+        "title": "NestedPropertyDefinition",
+        "description": "A property definition as it can appear at any level of nesting, i.e., in\nthe `items` of a list or `properties` of a dictionary.\n\nThe outermost level of a definition has additional mandatory keys and is\ndescribed by [`PropertyDefinition`][optimade.models.property_definitions.PropertyDefinition].\n\nInstances should be serialized with `by_alias=True` to recover the keys used by\nthe specification, e.g., `x-optimade-type`."
+      },
       "OptimadeError": {
         "properties": {
           "id": {
@@ -3823,6 +4171,508 @@
         "title": "Person",
         "description": "A person, i.e., an author, editor or other."
       },
+      "PhysicalUnitDefinition": {
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "title": "Symbol",
+            "description": "The symbol used in `x-optimade-unit` to reference this unit."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "A human-readable single-line name for the unit."
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "A human-readable detailed description of the unit."
+          },
+          "$id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "$Id",
+            "description": "A static IRI identifier for this version of the unit definition."
+          },
+          "x-optimade-definition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DefinitionMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Additional information about the definition; the `kind` MUST be `unit`."
+          },
+          "standard": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard",
+            "description": "The pre-existing standard that the unit is part of, given by its `name` and the `symbol` of the unit in that standard."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "symbol",
+          "title",
+          "description"
+        ],
+        "title": "PhysicalUnitDefinition",
+        "description": "A physical unit definition, as embedded in `x-optimade-unit-definitions`.\n\nOnly the keys that identify the unit are modelled explicitly, any others\nare passed through."
+      },
+      "PropertyDefinition": {
+        "properties": {
+          "$id": {
+            "type": "string",
+            "title": "$Id",
+            "description": "A static IRI identifier that is a URN or URL representing the specific version of the defined property. It MUST be changed when the property definition changes."
+          },
+          "$schema": {
+            "type": "string",
+            "title": "$Schema",
+            "description": "A URL for a meta schema that describes the Property Definitions format."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "A short single-line human-readable explanation of the defined property appropriate to show as part of a user interface."
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "A human-readable multi-line description that explains the purpose, requirements, and conventions of the defined property."
+          },
+          "x-optimade-definition": {
+            "$ref": "#/components/schemas/DefinitionMetadata",
+            "description": "Additional information about the definition that is not covered by fields in the JSON Schema standard."
+          },
+          "x-optimade-type": {
+            "type": "string",
+            "pattern": "^(string|integer|float|boolean|timestamp|list|dictionary|_\\S+_\\S+)$",
+            "title": "X-Optimade-Type",
+            "description": "The OPTIMADE data type for this level of the defined property, or the name of a namespace-specific data type that starts with an underscore followed by the provider-specific prefix."
+          },
+          "x-optimade-unit": {
+            "type": "string",
+            "title": "X-Optimade-Unit",
+            "description": "A (compound) symbol for the physical unit in which the value of the defined property is given, or one of the strings `dimensionless` or `inapplicable`."
+          },
+          "type": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 1,
+            "title": "Type",
+            "description": "The JSON type corresponding to `x-optimade-type`, optionally followed by `null` if the defined property can be `null`."
+          },
+          "x-optimade-unit-definitions": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PhysicalUnitDefinition"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "X-Optimade-Unit-Definitions",
+            "description": "Definitions of the symbols used at any level of the definition for the physical units given in `x-optimade-unit`."
+          },
+          "x-optimade-dimensions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PropertyDimensions"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The dimensions of one or multi-dimensional data represented as multiple levels of lists."
+          },
+          "x-optimade-implementation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PropertyImplementation"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The level of OPTIMADE API functionality provided by the present implementation."
+          },
+          "x-optimade-requirements": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PropertyRequirements"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The level of OPTIMADE API functionality required by all implementations of this property."
+          },
+          "x-optimade-metadata-definition": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NestedPropertyDefinition"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The definition of the dictionary of metadata properties that can accompany this property."
+          },
+          "$comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "$Comment",
+            "description": "A human-readable comment relevant in the context of the raw definition data."
+          },
+          "deprecated": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deprecated",
+            "description": "If `true`, implementations SHOULD NOT use the defined property, and it MAY be removed in the future."
+          },
+          "examples": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Examples",
+            "description": "A list of example values that the defined property can have."
+          },
+          "enum": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enum",
+            "description": "The defined property MUST take one of the values given in this list."
+          },
+          "properties": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/NestedPropertyDefinition"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Properties",
+            "description": "For dictionaries: the inner property definitions of each allowed key."
+          },
+          "required": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required",
+            "description": "For dictionaries: the keys that MUST be present in the defined property."
+          },
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NestedPropertyDefinition"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "For lists: the inner property definition that each item MUST match."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "$id",
+          "$schema",
+          "title",
+          "description",
+          "x-optimade-definition",
+          "x-optimade-type",
+          "x-optimade-unit",
+          "type"
+        ],
+        "title": "PropertyDefinition",
+        "description": "The outermost level of an OPTIMADE Property Definition, as served\nunder `properties` at the `/info/<entry_type>` endpoints.\n\nInstances should be serialized with `by_alias=True` to recover the keys used by\nthe specification, e.g., `$id` and `x-optimade-type`."
+      },
+      "PropertyDimensions": {
+        "properties": {
+          "names": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Names",
+            "description": "The names of the dimensions, ordered from the outermost list inwards."
+          },
+          "sizes": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Sizes",
+            "description": "The fixed length requirements of each dimension; `null` allows for arbitrary-length lists."
+          },
+          "compactable": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Compactable",
+            "description": "For each dimension, the compact format that can be used along that dimension, or `no`."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "names",
+          "sizes"
+        ],
+        "title": "PropertyDimensions",
+        "description": "The `x-optimade-dimensions` field: the dimensions of one or\nmulti-dimensional data represented as multiple levels of lists."
+      },
+      "PropertyImplementation": {
+        "properties": {
+          "sortable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sortable",
+            "description": "Whether results can be sorted on this property. Omitting the field is equivalent to `false`."
+          },
+          "query-support": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QuerySupport"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The level of support for formulating queries on this field. Omitting the field is equivalent to `none`."
+          },
+          "query-support-operators": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "<",
+                    "<=",
+                    ">",
+                    ">=",
+                    "=",
+                    "!=",
+                    "CONTAINS",
+                    "STARTS WITH",
+                    "ENDS WITH",
+                    "HAS",
+                    "HAS ALL",
+                    "HAS ANY",
+                    "HAS ONLY",
+                    "IS KNOWN",
+                    "IS UNKNOWN"
+                  ]
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query-Support-Operators",
+            "description": "The filter language features supported on this property. MUST be present if and only if `query-support` is `partial`."
+          },
+          "response-default": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response-Default",
+            "description": "Whether the implementation includes the property in responses by default, i.e., when not specifically requested."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "PropertyImplementation",
+        "description": "The `x-optimade-implementation` field: the level of OPTIMADE API\nfunctionality provided for a property by the present implementation."
+      },
+      "PropertyRequirements": {
+        "properties": {
+          "sortable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sortable",
+            "description": "Whether results can be sorted on this property. Omitting the field is equivalent to `false`."
+          },
+          "query-support": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QuerySupport"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The level of support for formulating queries on this field. Omitting the field is equivalent to `none`."
+          },
+          "query-support-operators": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "<",
+                    "<=",
+                    ">",
+                    ">=",
+                    "=",
+                    "!=",
+                    "CONTAINS",
+                    "STARTS WITH",
+                    "ENDS WITH",
+                    "HAS",
+                    "HAS ALL",
+                    "HAS ANY",
+                    "HAS ONLY",
+                    "IS KNOWN",
+                    "IS UNKNOWN"
+                  ]
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query-Support-Operators",
+            "description": "The filter language features supported on this property. MUST be present if and only if `query-support` is `partial`."
+          },
+          "support": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "must",
+                  "should",
+                  "may"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Support",
+            "description": "The minimal required level of support for the property by an implementation. Omitting the field is equivalent to `may`."
+          },
+          "response-default-level": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "always",
+                  "must",
+                  "should",
+                  "may",
+                  "should not",
+                  "must not"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response-Default-Level",
+            "description": "Whether an implementation is required to include the property in responses when it is not specifically requested. Omitting the field is equivalent to `may`."
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "PropertyRequirements",
+        "description": "The `x-optimade-requirements` field: the level of OPTIMADE API\nfunctionality required by all implementations of a property."
+      },
       "Provider": {
         "properties": {
           "name": {
@@ -3867,6 +4717,17 @@
         ],
         "title": "Provider",
         "description": "Information on the database provider of the implementation."
+      },
+      "QuerySupport": {
+        "type": "string",
+        "enum": [
+          "all mandatory",
+          "equality only",
+          "partial",
+          "none"
+        ],
+        "title": "QuerySupport",
+        "description": "The levels of support for formulating queries on a property."
       },
       "ReferenceRelationship": {
         "properties": {
