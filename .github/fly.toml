@@ -5,7 +5,10 @@ swap_size_mb = 1024
 processes = {}
 
 [build]
-  builder = "paketobuildpacks/builder:base"
+  builder = "paketobuildpacks/builder-jammy-base"
+
+[build.args]
+  BP_CPYTHON_VERSION = "3.13.*"
 
 [env]
 PORT = "5000"
