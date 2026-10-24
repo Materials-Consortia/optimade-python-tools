@@ -40,7 +40,7 @@ filter
 ```
 
 ```python
-tree = p.parse('_mp_bandgap > 5.0 AND _cod_molecular_weight < 350')
+tree = p.parse("_mp_bandgap > 5.0 AND _cod_molecular_weight < 350")
 print(tree.pretty())
 ```
 
@@ -77,7 +77,7 @@ from optimade.filtertransformers.mongo import MongoTransformer
 
 transformer = MongoTransformer()
 
-tree = p.parse('_mp_bandgap > 5.0 AND _cod_molecular_weight < 350')
+tree = p.parse("_mp_bandgap > 5.0 AND _cod_molecular_weight < 350")
 query = transformer.transform(tree)
 print(query)
 ```
