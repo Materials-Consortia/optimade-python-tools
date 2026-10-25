@@ -5456,7 +5456,13 @@ and provider.</p>
 <span class="normal">1366</span>
 <span class="normal">1367</span>
 <span class="normal">1368</span>
-<span class="normal">1369</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimadeClient</span><span class="p">:</span>
+<span class="normal">1369</span>
+<span class="normal">1370</span>
+<span class="normal">1371</span>
+<span class="normal">1372</span>
+<span class="normal">1373</span>
+<span class="normal">1374</span>
+<span class="normal">1375</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimadeClient</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""This class implemements a client for executing the same queries</span>
 <span class="sd">    across multiple OPTIMADE APIs simultaneously, paging and caching the</span>
 <span class="sd">    results.</span>
@@ -6627,25 +6633,31 @@ and provider.</p>
 
         <span class="n">params_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
+        <span class="c1"># Percent-encode the values (RFC 3986), otherwise characters such as `+`, `&amp;`</span>
+        <span class="c1"># and `#` in a filter (e.g., `_mp_stability.gga_gga+u`) change its meaning;</span>
+        <span class="c1"># commas are kept as they separate list values</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_encode</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">quote</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">safe</span><span class="o">=</span><span class="s2">","</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">filter</span><span class="p">:</span>
-            <span class="n">params_dict</span><span class="p">[</span><span class="s2">"filter"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"filter=</span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">params_dict</span><span class="p">[</span><span class="s2">"filter"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"filter=</span><span class="si">{</span><span class="n">_encode</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">if</span> <span class="n">response_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># If we have requested no response fields (e.g., in the case of --count) then just ask for IDs</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">params_dict</span><span class="p">[</span><span class="s2">"response_fields"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"response_fields=id"</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">params_dict</span><span class="p">[</span><span class="s2">"response_fields"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"response_fields=</span><span class="si">{</span><span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"response_fields=</span><span class="si">{</span><span class="n">_encode</span><span class="p">(</span><span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">response_fields</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">page_limit</span><span class="p">:</span>
             <span class="n">params_dict</span><span class="p">[</span><span class="s2">"page_limit"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"page_limit=</span><span class="si">{</span><span class="n">page_limit</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
-            <span class="n">params_dict</span><span class="p">[</span><span class="s2">"sort"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"sort=</span><span class="si">{</span><span class="n">sort</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">params_dict</span><span class="p">[</span><span class="s2">"sort"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"sort=</span><span class="si">{</span><span class="n">_encode</span><span class="p">(</span><span class="n">sort</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="k">if</span> <span class="n">other_params</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">other_params</span><span class="p">:</span>
-                <span class="n">params_dict</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">other_params</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">params_dict</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">_encode</span><span class="p">(</span><span class="n">other_params</span><span class="p">[</span><span class="n">p</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="n">params</span> <span class="o">=</span> <span class="s2">"&amp;"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
