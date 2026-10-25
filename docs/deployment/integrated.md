@@ -21,7 +21,7 @@ Before importing any `optimade` modules, you can set the `OPTIMADE_CONFIG_FILE` 
 import os
 from pathlib import Path
 
-os.environ['OPTIMADE_CONFIG_FILE'] = str(Path(__file__).parent / "optimade_config.json")
+os.environ["OPTIMADE_CONFIG_FILE"] = str(Path(__file__).parent / "optimade_config.json")
 ```
 
 ## Customize the [`EntryCollection`][optimade.server.entry_collections.entry_collections.EntryCollection] implementation

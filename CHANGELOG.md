@@ -672,9 +672,11 @@ This minor release contains new client functionality and improved support for AS
 
   DATABASE = pymongo.MongoClient().database.collection
 
+
   def save_callback(url, results) -> None:
       for structure in results["data"]:
           DATABASE.insert_one(structure)
+
 
   client = OptimadeClient(callbacks=[save_callback])
   client.get()
@@ -685,7 +687,7 @@ This minor release contains new client functionality and improved support for AS
   from optimade.adapters import Structure
   from ase import Atoms
 
-  co = Atoms('CO', positions=[(0, 0, 0), (0, 0, 1.1)])
+  co = Atoms("CO", positions=[(0, 0, 0), (0, 0, 1.1)])
 
   structure = Structure.from_ase_atoms(co)
   ```

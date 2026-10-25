@@ -9,7 +9,7 @@ ci:
     submodules: true
 
 default_language_version:
-  python: python3.10
+  python: python3.11
 
 # pre-commit hooks
 repos:
@@ -26,13 +26,13 @@ repos:
       args: [--markdown-linebreak-ext=md]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.2
+    rev: v3.22.0
     hooks:
     - id: pyupgrade
       args: [--py310-plus]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.15.15'
+    rev: 'v0.17.2'
 
     hooks:
     - id: ruff
@@ -56,7 +56,7 @@ repos:
       description: Update the API Reference documentation whenever a Python file is touched in the code base.
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v2.1.0
+    rev: v2.4.0
     hooks:
       - id: mypy
         name: "MyPy"

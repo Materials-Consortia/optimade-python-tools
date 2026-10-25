@@ -129,7 +129,11 @@ jobs:
       # `--no-emit-project` omits the editable `-e .` line: the buildpack installs
       # these (hashed) dependencies and runs the app from source, as before. pip
       # rejects editable requirements in hash-checking mode, so it must not be emitted.
-      run: uv export --extra server --no-emit-project > requirements.txt
+      # `uv.lock` is then removed so that the buildpack installs from `requirements.txt` with pip,
+      # rather than running a plain `uv sync`, which would omit the `server` extra (e.g., uvicorn).
+      run: |
+        uv export --extra server --no-emit-project > requirements.txt
+        rm uv.lock
 
     - name: Deploy to Fly
       run: flyctl deploy --remote-only -c ./.github/fly.toml

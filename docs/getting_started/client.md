@@ -45,6 +45,7 @@ By default, the client will query all OPTIMADE API URLs that it can find via the
 === "Python"
     ```python
     from optimade.client import OptimadeClient
+
     client = OptimadeClient()
     results = client.get('elements HAS "Ag"')
     ```
@@ -68,6 +69,7 @@ We can refine the search by manually specifying some URLs:
 === "Python"
     ```python
     from optimade.client import OptimadeClient
+
     client = OptimadeClient(
         base_urls=["https://optimade.fly.dev", "https://optimade.odbx.science"]
     )
@@ -88,6 +90,7 @@ Query only a list of included providers (after a lookup of the providers list):
     ```python
     # Only query databases served by the example providers
     from optimade.client import OptimadeClient
+
     client = OptimadeClient(
         include_providers={"exmpl", "optimade"},
     )
@@ -106,6 +109,7 @@ Exclude certain providers:
     ```python
     # Exclude example providers from global list
     from optimade.client import OptimadeClient
+
     client = OptimadeClient(
         exclude_providers={"exmpl", "optimade"},
     )
@@ -124,6 +128,7 @@ Exclude particular databases by URL:
     ```python
     # Exclude specific example databases
     from optimade.client import OptimadeClient
+
     client = OptimadeClient(
         exclude_databases={"https://example.org/optimade", "https://optimade.org/example"}
     )
@@ -143,6 +148,7 @@ You can specify your desired filter as follows (note the quotation marks):
 === "Python"
     ```python
     from optimade.client import OptimadeClient
+
     client = OptimadeClient()
     client.get('elements HAS "Ag" AND nsites < 2')
     ```
@@ -205,9 +211,10 @@ This is the same format as the cached results of the Python client:
 
 ```python
 from optimade.client import OptimadeClient
+
 client = OptimadeClient(base_urls="https://optimade.fly.dev")
-client.get('nsites = 1')
-client.get('nsites = 2')
+client.get("nsites = 1")
+client.get("nsites = 2")
 print(client.all_results)
 ```
 
@@ -250,6 +257,7 @@ In the Python interface, the different endpoints can be queried as attributes of
 === "Python"
     ```python
     from optimade.client import OptimadeClient
+
     client = OptimadeClient()
 
     client.references.count()
@@ -325,11 +333,12 @@ We can use this to repeat the queries from the [OPTIMADE paper](https://doi.org/
 === "Python"
     ```python
     from optimade.client import OptimadeClient
+
     client = OptimadeClient()
     filters = [
         'elements HAS ANY "C", "Si", "Ge", "Sn", "Pb"',
         'elements HAS ANY "C", "Si", "Ge", "Sn", "Pb" AND nelements=2'
-        'elements HAS ANY "C", "Si", "Ge", "Sn" AND NOT elements HAS "Pb" AND elements LENGTH 3'
+        'elements HAS ANY "C", "Si", "Ge", "Sn" AND NOT elements HAS "Pb" AND elements LENGTH 3',
     ]
     for f in filters:
         client.count(f)
@@ -433,11 +442,13 @@ Care should be taken if combining an asynchronous client with callbacks, as the 
 
     db = pymongo.MongoClient().database.structures
 
+
     def write_to_db(url, results):
         for entry in results["data"]:
             entry.update(entry.pop("attributes"))
             entry["immutable_id"] = url
             db.insert_one(entry)
+
 
     client = OptimadeClient(callbacks=[write_to_db], silent=True)
 
