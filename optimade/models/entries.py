@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Annotated, Any, ClassVar, Literal
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 from optimade.models.jsonapi import Attributes, Relationships, Resource
 from optimade.models.optimade_json import (
@@ -10,6 +10,7 @@ from optimade.models.optimade_json import (
     Relationship,
     ValidIdentifier,
 )
+from optimade.models.property_definitions import PropertyDefinition
 from optimade.models.utils import OptimadeField, StrictField, SupportLevel
 
 __all__ = (
@@ -186,12 +187,17 @@ Database-provider-specific properties need to include the database-provider-spec
         EntryRelationships | None,
         StrictField(
             description="""A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).
-The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.""",
+The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object, and the OPTIONAL kind of relationship in its `role` field.""",
         ),
     ] = None
 
 
 class EntryInfoProperty(BaseModel):
+    """The description of a property used at `/info/<entry_type>` endpoints by
+    versions of the specification before v1.2, which has since been replaced by
+    [`PropertyDefinition`][optimade.models.property_definitions.PropertyDefinition].
+    """
+
     description: Annotated[
         str,
         StrictField(description="A human-readable description of the entry property"),
@@ -255,9 +261,16 @@ class EntryInfoResource(BaseModel):
     description: Annotated[str, StrictField(description="Description of the entry.")]
 
     properties: Annotated[
-        dict[ValidIdentifier, EntryInfoProperty],
+        dict[
+            ValidIdentifier,
+            Annotated[
+                PropertyDefinition | EntryInfoProperty,
+                Field(union_mode="left_to_right"),
+            ],
+        ],
         StrictField(
-            description="A dictionary describing queryable properties for this entry type, where each key is a property name.",
+            description="""A dictionary describing properties for this entry type, where each key is a property name and the value is an OPTIMADE Property Definition.
+Implementations of versions of the specification before v1.2 instead describe each property with only its `description`, `unit`, `sortable` and `type`.""",
         ),
     ]
 

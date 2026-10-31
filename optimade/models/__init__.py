@@ -5,6 +5,7 @@ from .index_metadb import *  # noqa: F403
 from .jsonapi import *  # noqa: F403
 from .links import *  # noqa: F403
 from .optimade_json import *  # noqa: F403
+from .property_definitions import *  # noqa: F403
 from .references import *  # noqa: F403
 from .responses import *  # noqa: F403
 from .structures import *  # noqa: F403
@@ -22,4 +23,5 @@ __all__ = (
     + responses.__all__  # type: ignore[name-defined] # noqa: F405
     + structures.__all__  # type: ignore[name-defined] # noqa: F405
     + files.__all__  # type: ignore[name-defined] # noqa: F405
+    + property_definitions.__all__  # type: ignore[name-defined] # noqa: F405
 )

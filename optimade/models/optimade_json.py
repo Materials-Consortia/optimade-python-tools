@@ -422,11 +422,20 @@ class BaseRelationshipMeta(jsonapi.Meta):
     """Specific meta field for base relationship resource"""
 
     description: Annotated[
-        str,
+        str | None,
         StrictField(
             description="OPTIONAL human-readable description of the relationship."
         ),
-    ]
+    ] = None
+
+    role: Annotated[
+        str | None,
+        StrictField(
+            optimade_version=">= 1.3",
+            description="""OPTIONAL string defining the kind of relationship between the related entries.
+Possible roles between each pair of entry types are defined under the Entry List section, e.g., `"input"` and `"output"` for `files` related to `calculations`.""",
+        ),
+    ] = None
 
 
 class BaseRelationshipResource(jsonapi.BaseResource):
@@ -435,7 +444,7 @@ class BaseRelationshipResource(jsonapi.BaseResource):
     meta: Annotated[
         BaseRelationshipMeta | None,
         StrictField(
-            description="Relationship meta field. MUST contain 'description' if supplied.",
+            description="Relationship meta field, which MAY contain the OPTIONAL `description` and `role` keys.",
         ),
     ] = None
 
