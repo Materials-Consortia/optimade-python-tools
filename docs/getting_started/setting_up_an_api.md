@@ -65,7 +65,7 @@ This can be achieved by providing a dictionary per field at [`provider_fields`][
 ### Property definitions
 
 Since v1.2 of the OPTIMADE specification, the properties listed at `/info/<entry_type>` are described by [OPTIMADE Property Definitions](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#property-definitions), an extension of JSON Schema that can describe nested properties, their units and the level of support provided for them by the API.
-For the properties defined by the specification, the reference server returns the standard definitions published at [schemas.optimade.org](https://schemas.optimade.org/defs/) for the supported version of the specification (these are bundled with the package and can be accessed with [`get_standard_entry_type_definition()`][optimade.models.property_definitions.get_standard_entry_type_definition]), with `x-optimade-implementation` describing whether each property can be sorted on or queried.
+For the properties defined by the specification, the reference server returns the standard definitions published at [schemas.optimade.org](https://schemas.optimade.org/defs/) for the supported version of the specification (these are bundled with the package and can be accessed with [`get_standard_entry_type_definition()`](../api_reference/models/property_definitions.md#optimade.models.property_definitions.get_standard_entry_type_definition)), with `x-optimade-implementation` describing whether each property can be sorted on or queried.
 
 A full definition can be provided for a custom field under the `definition` key.
 The `x-optimade-type`, `x-optimade-unit`, `type` and `description` keys are always required, as are `items` for lists, `properties` for dictionaries and `x-optimade-unit-definitions` for any units that are used.
@@ -78,7 +78,7 @@ The following defaults will be used for the other mandatory keys if they are omi
   If a definition is shared with other databases (e.g., by a [definition provider](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#namespace-prefixes)), then its canonical `$id` should be given instead.
 - `x-optimade-implementation`: `{"sortable": true}`, unless `"sortable": false` is set alongside the `definition`.
 
-The definitions are validated with the [`PropertyDefinition`][optimade.models.property_definitions.PropertyDefinition] model when the configuration is loaded.
+The definitions are validated with the [`PropertyDefinition`](../api_reference/models/property_definitions.md#optimade.models.property_definitions.PropertyDefinition) model when the configuration is loaded.
 
 !!! example
     Example JSON config file fragment for adding a full definition of the custom `_exmpl_cell_volume` field, which will cause it to be added to the `/info/structures` endpoint.
