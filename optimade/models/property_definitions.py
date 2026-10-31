@@ -848,8 +848,8 @@ def _nested_definition_from_json_schema(
         if "$ref" in schema:
             inner = defs[schema.pop("$ref").split("/")[-1]]
         else:
-            key = next(k for k in ("anyOf", "oneOf", "allOf") if k in schema)
-            options = schema.pop(key)
+            union_key = next(k for k in ("anyOf", "oneOf", "allOf") if k in schema)
+            options = schema.pop(union_key)
             non_null_options = [o for o in options if o.get("type") != "null"]
             nullable = nullable or len(non_null_options) != len(options)
             if not non_null_options:
