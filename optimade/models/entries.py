@@ -187,7 +187,7 @@ Database-provider-specific properties need to include the database-provider-spec
         EntryRelationships | None,
         StrictField(
             description="""A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).
-The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object.""",
+The OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object, and the OPTIONAL kind of relationship in its `role` field.""",
         ),
     ] = None
 
