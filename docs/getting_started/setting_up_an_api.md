@@ -59,8 +59,66 @@ Filters that use the prefixed form of these fields will then be passed through t
     }
     ```
 
-It is recommended that you provide a description, type and unit for each custom field that can be returned at the corresponding `/info/<entry_type>` endpoint.
+It is recommended that you describe each custom field so that it can be returned at the corresponding `/info/<entry_type>` endpoint; fields that are only listed by name will not appear there.
 This can be achieved by providing a dictionary per field at [`provider_fields`][optimade.server.config.ServerConfig.provider_fields], rather than a simple list.
+
+### Property definitions
+
+Since v1.2 of the OPTIMADE specification, the properties listed at `/info/<entry_type>` are described by [OPTIMADE Property Definitions](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#property-definitions), an extension of JSON Schema that can describe nested properties, their units and the level of support provided for them by the API.
+For the properties defined by the specification, the reference server returns the standard definitions published at [schemas.optimade.org](https://schemas.optimade.org/defs/) for the supported version of the specification (these are bundled with the package and can be accessed with [`get_standard_entry_type_definition()`](../api_reference/models/property_definitions.md#optimade.models.property_definitions.get_standard_entry_type_definition)), with `x-optimade-implementation` describing whether each property can be sorted on or queried.
+
+A full definition can be provided for a custom field under the `definition` key.
+The `x-optimade-type`, `x-optimade-unit`, `type` and `description` keys are always required, as are `items` for lists, `properties` for dictionaries and `x-optimade-unit-definitions` for any units that are used.
+The following defaults will be used for the other mandatory keys if they are omitted:
+
+- `$schema`: the meta schema for the version of the definition format in use (currently `https://schemas.optimade.org/meta/v1.2/optimade/property_definition.json`).
+- `x-optimade-definition`: the prefixed name of the field, with the entry type added to make the `label`.
+- `title`: the prefixed name of the field.
+- `$id`: a `urn:uuid` that is generated from the content of the definition, such that it only changes when the definition does.
+  If a definition is shared with other databases (e.g., by a [definition provider](https://github.com/Materials-Consortia/OPTIMADE/blob/master/optimade.rst#namespace-prefixes)), then its canonical `$id` should be given instead.
+- `x-optimade-implementation`: `{"sortable": true}`, unless `"sortable": false` is set alongside the `definition`.
+
+The definitions are validated with the [`PropertyDefinition`](../api_reference/models/property_definitions.md#optimade.models.property_definitions.PropertyDefinition) model when the configuration is loaded.
+
+!!! example
+    Example JSON config file fragment for adding a full definition of the custom `_exmpl_cell_volume` field, which will cause it to be added to the `/info/structures` endpoint.
+
+    ```json
+    "provider_fields": {
+      "structures": [
+        {
+          "name": "cell_volume",
+          "definition": {
+            "$id": "https://example.com/definitions/v1/structures/_exmpl_cell_volume",
+            "title": "cell volume",
+            "description": "The volume of the cell per formula unit.",
+            "x-optimade-type": "float",
+            "type": ["number", "null"],
+            "x-optimade-unit": "angstrom^3",
+            "x-optimade-unit-definitions": [
+              {
+                "symbol": "angstrom",
+                "title": "ångström",
+                "display-symbol": "Å",
+                "description": "A unit of length equal to 10⁻¹⁰ meter.",
+                "standard": {"name": "gnu units", "symbol": "angstrom"}
+              }
+            ],
+            "x-optimade-implementation": {
+              "sortable": true,
+              "query-support": "all mandatory"
+            }
+          }
+        },
+        "total_energy"
+      ],
+      "references": ["orcid", "num_citations"],
+    }
+    ```
+
+### Simple descriptions
+
+Alternatively, a description, type and unit can be given for each field, following the format used at `/info/<entry_type>` by versions of the specification before v1.2.
 
 !!! example
     Example JSON config file fragment for adding a description, type and unit for the custom `_exmpl_cell_volume` field, which will cause it to be added to the `/info/structures` endpoint.
@@ -79,6 +137,16 @@ This can be achieved by providing a dictionary per field at [`provider_fields`][
       "references": ["orcid", "num_citations"],
     }
     ```
+
+These descriptions are converted into property definitions on a best-effort basis:
+
+- the `unit` is assumed to be a [UCUM](https://unitsofmeasure.org/ucum.html) symbol, as required by the old format, and numerical fields without a unit are declared to be dimensionless,
+- nothing is known about the keys of fields with type `dictionary`, so none are described,
+- fields with type `list` cannot be converted, as the definition of their items is mandatory, so they are not listed at `/info/<entry_type>` (a warning will be logged) until a full `definition` is provided.
+
+### Serving the old format
+
+If you have clients that rely on the format used before v1.2 of the specification (i.e., a flat dictionary containing `description`, `type`, `unit` and `sortable` for each property), then this can be restored by setting the [`legacy_info_properties`][optimade.server.config.ServerConfig.legacy_info_properties] configuration option to `true`.
 
 ### Extending the pydantic models
 

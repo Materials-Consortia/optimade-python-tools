@@ -64,6 +64,67 @@ def test_with_validator_json_response(
     assert validator.valid
 
 
+def test_with_validator_calculations(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Test that the validator handles an entry type without a dedicated model,
+    by serving the reference server's `references` as `calculations` entries that
+    only have the properties shared by all entry types.
+    """
+    from .utils import client_factory
+
+    shared = ("id", "type", "immutable_id", "last_modified")
+
+    def as_calculation(entry: dict) -> dict:
+        attributes = {
+            key: value
+            for key, value in entry.get("attributes", {}).items()
+            if key in shared
+        }
+        return {"id": entry["id"], "type": "calculations", "attributes": attributes}
+
+    client = client_factory()(server="regular", raise_server_exceptions=False)
+    get = client.get
+
+    def get_with_calculations(url, *args, **kwargs):
+        url = str(url)
+        if url.startswith("calculations"):
+            response = get("references" + url[len("calculations") :], *args, **kwargs)
+            if response.status_code != 200:
+                return response
+            body = response.json()
+            if isinstance(body["data"], list):
+                body["data"] = [as_calculation(entry) for entry in body["data"]]
+            else:
+                body["data"] = as_calculation(body["data"])
+        elif url == "info/calculations":
+            response = get("info/references", *args, **kwargs)
+            body = response.json()
+            body["data"]["id"] = "calculations"
+            body["data"]["properties"] = {
+                name: prop
+                for name, prop in body["data"]["properties"].items()
+                if name in shared
+            }
+            body["data"]["output_fields_by_format"] = {"json": list(shared)}
+        elif url == "info":
+            response = get(url, *args, **kwargs)
+            body = response.json()
+            body["data"]["attributes"]["entry_types_by_format"]["json"].append(
+                "calculations"
+            )
+            body["data"]["attributes"]["available_endpoints"].append("calculations")
+        else:
+            return get(url, *args, **kwargs)
+        return type(response)(response.status_code, json=body, request=response.request)
+
+    monkeypatch.setattr(client, "get", get_with_calculations)
+
+    validator = ImplementationValidator(client=client)
+    validator.validate_implementation()
+    assert validator.results.failure_count == 0
+    assert validator.results.internal_failure_count == 0
+    assert validator.valid
+
+
 def test_as_type_with_validator(
     client: "OptimadeTestClient", capsys: pytest.CaptureFixture
 ) -> None:
