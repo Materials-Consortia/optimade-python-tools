@@ -13,7 +13,7 @@ import time
 from collections import defaultdict
 from collections.abc import Callable, Iterable
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 
 # External deps that are only used in the client code
 try:
@@ -1217,25 +1217,31 @@ class OptimadeClient:
 
         params_dict: dict[str, str] = {}
 
+        # Percent-encode the values (RFC 3986), otherwise characters such as `+`, `&`
+        # and `#` in a filter (e.g., `_mp_stability.gga_gga+u`) change its meaning;
+        # commas are kept as they separate list values
+        def _encode(value: Any) -> str:
+            return quote(str(value), safe=",")
+
         if filter:
-            params_dict["filter"] = f"filter={filter}"
+            params_dict["filter"] = f"filter={_encode(filter)}"
         if response_fields is not None:
             # If we have requested no response fields (e.g., in the case of --count) then just ask for IDs
             if len(response_fields) == 0:
                 params_dict["response_fields"] = "response_fields=id"
             else:
                 params_dict["response_fields"] = (
-                    f"response_fields={','.join(response_fields)}"
+                    f"response_fields={_encode(','.join(response_fields))}"
                 )
 
         if page_limit:
             params_dict["page_limit"] = f"page_limit={page_limit}"
         if sort:
-            params_dict["sort"] = f"sort={sort}"
+            params_dict["sort"] = f"sort={_encode(sort)}"
 
         if other_params:
             for p in other_params:
-                params_dict[p] = f"{p}={other_params[p]}"
+                params_dict[p] = f"{p}={_encode(other_params[p])}"
 
         params = "&".join(p for p in params_dict.values() if p)
         if params:

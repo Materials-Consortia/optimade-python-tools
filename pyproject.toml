@@ -13,7 +13,6 @@ dynamic = ["version"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -24,7 +23,7 @@ classifiers = [
     "Topic :: Database :: Database Engines/Servers",
     "Topic :: Database :: Front-Ends",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
     "lark~=1.1",
     "pydantic[email]~=2.2",
@@ -83,10 +82,7 @@ http-client = [
 
 ase = ["ase~=3.22"]
 cif = ["numpy>=1.22,<3.0"]
-pymatgen = [
-    "pymatgen>=2022",
-    "pandas~=2.2",
-]
+pymatgen = ["pymatgen>=2022"]
 jarvis = [
     "jarvis-tools>=2023.1.8",
 ]
