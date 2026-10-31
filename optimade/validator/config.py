@@ -15,6 +15,7 @@ from pydantic_settings import BaseSettings
 
 from optimade.models import (
     DataType,
+    EntryResource,
     IndexInfoResponse,
     InfoResponse,
     StructureFeatures,
@@ -32,14 +33,16 @@ from optimade.validator.utils import (
 
 __all__ = ("ValidatorConfig", "VALIDATOR_CONFIG")
 
+_ENTRY_ENDPOINTS = ("structures", "references", "calculations")
+
+# Entry types without a dedicated model (e.g., `calculations`) are checked
+# against the properties shared by all entry types.
 _ENTRY_SCHEMAS = {
     endp: retrieve_queryable_properties(
-        ENTRY_INFO_SCHEMAS[endp], ("id", "type", "attributes")
+        ENTRY_INFO_SCHEMAS.get(endp, EntryResource), ("id", "type", "attributes")
     )
-    for endp in ENTRY_INFO_SCHEMAS
+    for endp in (*ENTRY_INFO_SCHEMAS, *_ENTRY_ENDPOINTS)
 }
-
-_ENTRY_ENDPOINTS = ("structures", "references", "calculations")
 
 _NON_ENTRY_ENDPOINTS = ("info", "links", "versions")
 
