@@ -6,6 +6,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.staticfiles import StaticFiles
 
 with warnings.catch_warnings(record=True) as w:
     from optimade.server.config import DEFAULT_CONFIG_FILE_PATH, ServerConfig
@@ -288,34 +289,31 @@ def create_app(
             compresslevel=config.gzip.compresslevel,
         )
 
-        # Mount static files
-    if config.static_files.enabled and config.static_files.directory:
-        static_dir = config.static_files.directory
-        if (
-            static_dir.exists()
-            and static_dir.is_dir()
-            and os.access(static_dir, os.R_OK)
-        ):
-            from fastapi.staticfiles import StaticFiles
-
-            app.mount(
-                config.static_files.route,
-                StaticFiles(directory=str(static_dir)),
-                name="static",
-            )
-
     # Add exception handlers
     for exception, handler in OPTIMADE_EXCEPTIONS:
         app.add_exception_handler(exception, handler)
 
     # Add various endpoints to unversioned URL
-    endpoints = INDEX_ENDPOINTS if index else MAIN_ENDPOINTS
-    endpoints += [versions]
+    # (build a new list so that the module-level endpoint lists are not mutated)
+    endpoints = [*(INDEX_ENDPOINTS if index else MAIN_ENDPOINTS), versions]
     for endpoint in endpoints:
         app.include_router(endpoint.router)
 
     # add the versioned endpoints
     add_major_version_base_url(app, index=index)
     add_optional_versioned_base_urls(app, index=index)
+
+    # Mount static files last, so that the API routes always take precedence.
+    # The config is validated on load, so `directory` is set and readable here.
+    if config.static_files.enabled:
+        app.mount(
+            config.static_files.route,
+            StaticFiles(directory=config.static_files.directory),
+            name="static",
+        )
+        logger.info(
+            f"Serving static files from {config.static_files.directory} "
+            f"at {config.static_files.route}"
+        )
 
     return app
