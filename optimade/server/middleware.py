@@ -78,18 +78,23 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
     """If a non-supported versioned base URL is supplied return `553 Version Not Supported`."""
 
     @staticmethod
-    def check_url(config: ServerConfig, url: StarletteURL):
+    def check_url(
+        config: ServerConfig, url: StarletteURL, root_path: str | None = None
+    ):
         """Check URL path for versioned part.
 
         Parameters:
+            config: The server config.
             url: A complete urllib-parsed raw URL.
+            root_path: The path prefix under which the API is served, if any
+                (e.g., from the ASGI scope when mounted as a sub-application).
 
         Raises:
             VersionNotSupported: If the URL represents an OPTIMADE versioned base URL
                 and the version part is not supported by the implementation.
 
         """
-        base_url = get_base_url(config, url)
+        base_url = get_base_url(config, url, root_path=root_path)
         optimade_path = f"{url.scheme}://{url.netloc}{url.path}"[len(base_url) :]
         match = re.match(r"^(?P<version>/v[0-9]+(\.[0-9]+){0,2}).*", optimade_path)
         if match is not None:
@@ -105,7 +110,9 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         config = request.app.state.config
         if request.url.path:
-            self.check_url(config, request.url)
+            self.check_url(
+                config, request.url, root_path=request.scope.get("root_path")
+            )
         response = await call_next(request)
         return response
 
@@ -197,7 +204,9 @@ class HandleApiHint(BaseHTTPMiddleware):
         )
 
     @staticmethod
-    def is_versioned_base_url(config: ServerConfig, url: str) -> bool:
+    def is_versioned_base_url(
+        config: ServerConfig, url: str, root_path: str | None = None
+    ) -> bool:
         """Determine whether a request is for a versioned base URL.
 
         First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.
@@ -205,7 +214,10 @@ class HandleApiHint(BaseHTTPMiddleware):
         Return `bool` of final result.
 
         Parameters:
+            config: The server config.
             url: The full URL to check.
+            root_path: The path prefix under which the API is served, if any
+                (e.g., from the ASGI scope when mounted as a sub-application).
 
         Returns:
             Whether or not the full URL represents an OPTIMADE versioned base URL.
@@ -214,7 +226,7 @@ class HandleApiHint(BaseHTTPMiddleware):
         if not re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url):
             return False
 
-        base_url = get_base_url(config, url)
+        base_url = get_base_url(config, url, root_path=root_path)
         return bool(re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url[len(base_url) :]))
 
     async def dispatch(self, request: Request, call_next):
@@ -222,7 +234,9 @@ class HandleApiHint(BaseHTTPMiddleware):
         parsed_query = urllib.parse.parse_qs(request.url.query, keep_blank_values=True)
 
         if "api_hint" in parsed_query:
-            if self.is_versioned_base_url(config, str(request.url)):
+            if self.is_versioned_base_url(
+                config, str(request.url), root_path=request.scope.get("root_path")
+            ):
                 warnings.warn(
                     QueryParamNotUsed(
                         detail=(
@@ -241,7 +255,7 @@ class HandleApiHint(BaseHTTPMiddleware):
                 version_path = self.handle_api_hint(parsed_query["api_hint"])
 
                 if version_path:
-                    base_url = get_base_url(config, request.url)
+                    base_url = get_base_url(config, request)
 
                     new_request = (
                         f"{base_url}{version_path}{str(request.url)[len(base_url) :]}"

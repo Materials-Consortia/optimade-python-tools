@@ -511,6 +511,18 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
 
         return value
 
+    @field_validator("root_path", mode="after")
+    @classmethod
+    def normalize_root_path(cls, value: str | None) -> str | None:
+        """Normalize the root path to have a single leading slash and no
+        trailing slash, e.g., `"optimade/"` -> `"/optimade"`.
+        An empty path or `"/"` is treated as no root path.
+        """
+        if value is None:
+            return None
+        value = value.strip("/")
+        return f"/{value}" if value else None
+
     @field_validator("implementation", mode="before")
     @classmethod
     def set_implementation_version(cls, value: Any) -> dict[str, Any]:

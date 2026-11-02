@@ -229,23 +229,58 @@ def get_included_relationships(
 def get_base_url(
     config: ServerConfig,
     parsed_url_request: (
-        urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str
+        Request
+        | urllib.parse.ParseResult
+        | urllib.parse.SplitResult
+        | StarletteURL
+        | str
     ),
+    root_path: str | None = None,
 ) -> str:
     """Get base URL for current server
 
-    Take the base URL from the config file, if it exists, otherwise use the request.
+    Take the base URL from the config file, if it exists, otherwise construct it
+    from the request URL's scheme and netloc, plus any path prefix the API is
+    served under.
+
+    The path prefix is taken from (in order of precedence):
+
+    1. the `root_path` argument, if given;
+    2. the ASGI scope of `parsed_url_request`, if it is a `Request`. This is set
+       by FastAPI from its own `root_path` and extended by Starlette when the
+       app is mounted as a sub-application;
+    3. the `root_path` server config option.
+
+    Parameters:
+        config: The server config.
+        parsed_url_request: The current request, or its URL.
+        root_path: An explicit path prefix under which the API is served.
+
+    Returns:
+        The base URL, without a trailing slash.
+
     """
+    if config.base_url:
+        return config.base_url.rstrip("/")
+
+    if isinstance(parsed_url_request, Request):
+        if not root_path:
+            root_path = parsed_url_request.scope.get("root_path")
+        parsed_url_request = parsed_url_request.url
+
+    if not root_path:
+        root_path = config.root_path
+
     parsed_url_request = (
         urllib.parse.urlparse(parsed_url_request)
         if isinstance(parsed_url_request, str)
         else parsed_url_request
     )
-    return (
-        config.base_url.rstrip("/")
-        if config.base_url
-        else f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
-    )
+    base_url = f"{parsed_url_request.scheme}://{parsed_url_request.netloc}"
+    if root_path and root_path.strip("/"):
+        base_url += "/" + root_path.strip("/")
+
+    return base_url
 
 
 def get_entries(
@@ -282,7 +317,7 @@ def get_entries(
         query.update(collection.get_next_query_params(params, results))
 
         urlencoded = urllib.parse.urlencode(query, doseq=True)
-        base_url = get_base_url(config, request.url)
+        base_url = get_base_url(config, request)
 
         # if base_url contains a subpath, it is already included in request.url.path
         # so remove it from base_url

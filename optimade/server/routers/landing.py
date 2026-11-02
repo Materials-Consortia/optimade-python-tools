@@ -9,8 +9,8 @@ from optimade import __api_version__
 from optimade.server.config import ServerConfig
 from optimade.server.routers.utils import get_base_url, meta_values
 
-# In-process cache: {(config_id, url, custom_mtime): HTMLResponse}
-_PAGE_CACHE: dict[tuple[int, str, float | None], HTMLResponse] = {}
+# In-process cache: {(config_id, url, root_path, custom_mtime): HTMLResponse}
+_PAGE_CACHE: dict[tuple[int, str, str | None, float | None], HTMLResponse] = {}
 
 
 def _custom_file_mtime(config: ServerConfig) -> float | None:
@@ -24,10 +24,10 @@ def _custom_file_mtime(config: ServerConfig) -> float | None:
 
 
 def render_landing_page(
-    config: ServerConfig, entry_collections, url: str
+    config: ServerConfig, entry_collections, url: str, root_path: str | None = None
 ) -> HTMLResponse:
     """Render and cache the landing page with a manual, hashable key."""
-    cache_key = (id(config), url, _custom_file_mtime(config))
+    cache_key = (id(config), url, root_path, _custom_file_mtime(config))
     if cache_key in _PAGE_CACHE:
         return _PAGE_CACHE[cache_key]
 
@@ -35,7 +35,9 @@ def render_landing_page(
         config, url, 1, 1, more_data_available=False, schema=config.schema_url
     )
     major_version = __api_version__.split(".")[0]
-    versioned_url = f"{get_base_url(config, url)}/v{major_version}/"
+    versioned_url = (
+        f"{get_base_url(config, url, root_path=root_path)}/v{major_version}/"
+    )
 
     if config.custom_landing_page:
         html = Path(config.custom_landing_page).resolve().read_text()
@@ -87,7 +89,10 @@ def render_landing_page(
 async def landing(request: Request):
     """Show landing page when the base URL is accessed."""
     return render_landing_page(
-        request.app.state.config, request.app.state.entry_collections, str(request.url)
+        request.app.state.config,
+        request.app.state.entry_collections,
+        str(request.url),
+        root_path=request.scope.get("root_path"),
     )
 
 
