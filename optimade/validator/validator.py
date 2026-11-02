@@ -468,7 +468,10 @@ class ImplementationValidator:
 
         if response is not None:
             deserialized, _ = self._deserialize_response(
-                response, CONF.response_classes[endp], request=request, multistage=True
+                response,
+                CONF.response_classes.get(endp, ValidatorEntryResponseMany),
+                request=request,
+                multistage=True,
             )
 
             return (
