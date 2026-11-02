@@ -220,3 +220,116 @@ def test_get_providers_warning(caplog, top_dir):
             from optimade.server.data import providers
 
             assert providers == providers_cache
+
+
+@pytest.mark.parametrize(
+    "request_url,expected",
+    [
+        ("http://www.example.com", "http://www.example.com/optimade"),
+        ("http://www.example.com/", "http://www.example.com/optimade"),
+        ("http://www.example.com/optimade/v1/links", "http://www.example.com/optimade"),
+        ("http://www.structures.com/links", "http://www.structures.com/optimade"),
+        (
+            "https://www.links.org/optimade/structures/123456",
+            "https://www.links.org/optimade",
+        ),
+    ],
+)
+@pytest.mark.parametrize("root_path", ["/optimade", "/optimade/", "optimade"])
+def test_get_base_url_with_root_path(request_url, expected, root_path):
+    """Check that the configured `root_path` is included when the base URL
+    is derived from the request URL."""
+    from optimade.server.config import ServerConfig
+    from optimade.server.routers.utils import get_base_url
+
+    config = ServerConfig.model_construct(base_url=None, root_path=root_path)
+    assert get_base_url(config, request_url) == expected
+
+
+def test_get_base_url_without_root_path():
+    """Check that the base URL is only the scheme and netloc when no
+    `root_path` or `base_url` are configured."""
+    from optimade.server.config import ServerConfig
+    from optimade.server.routers.utils import get_base_url
+
+    config = ServerConfig.model_construct(base_url=None, root_path=None)
+    assert (
+        get_base_url(config, "https://www.example.com/v1/structures")
+        == "https://www.example.com"
+    )
+
+
+def test_get_base_url_config_takes_precedence():
+    """Check that a configured `base_url` overrides `root_path` handling."""
+    from optimade.server.config import ServerConfig
+    from optimade.server.routers.utils import get_base_url
+
+    config = ServerConfig.model_construct(
+        base_url="https://example.org/api/", root_path="/optimade"
+    )
+    assert (
+        get_base_url(config, "http://www.example.com/optimade/v1/links")
+        == "https://example.org/api"
+    )
+
+
+def _make_request(url: str, root_path: str = ""):
+    """Build a minimal Starlette request for the given URL and ASGI `root_path`."""
+    import urllib.parse
+
+    from starlette.requests import Request
+
+    parsed = urllib.parse.urlsplit(url)
+    return Request(
+        {
+            "type": "http",
+            "scheme": parsed.scheme,
+            "server": (parsed.hostname, parsed.port or 80),
+            "path": parsed.path or "/",
+            "root_path": root_path,
+            "query_string": parsed.query.encode(),
+            "headers": [(b"host", parsed.netloc.encode())],
+        }
+    )
+
+
+@pytest.mark.parametrize(
+    "scope_root_path,config_root_path,expected",
+    [
+        # Mounted sub-application: only the ASGI scope knows the prefix
+        ("/app1", None, "http://www.example.com/app1"),
+        # Scope takes precedence over config
+        ("/app1", "/optimade", "http://www.example.com/app1"),
+        # Empty scope root path falls back to config
+        ("", "/optimade", "http://www.example.com/optimade"),
+        ("", None, "http://www.example.com"),
+    ],
+)
+def test_get_base_url_from_request_scope(scope_root_path, config_root_path, expected):
+    """Check that the base URL includes the `root_path` from the request's ASGI
+    scope, e.g., when the app is mounted as a sub-application."""
+    from optimade.server.config import ServerConfig
+    from optimade.server.routers.utils import get_base_url
+
+    config = ServerConfig.model_construct(base_url=None, root_path=config_root_path)
+    request = _make_request(
+        f"http://www.example.com{scope_root_path}/v1/structures", scope_root_path
+    )
+    assert get_base_url(config, request) == expected
+
+
+def test_get_base_url_explicit_root_path():
+    """Check that an explicitly passed `root_path` overrides the config and scope."""
+    from optimade.server.config import ServerConfig
+    from optimade.server.routers.utils import get_base_url
+
+    config = ServerConfig.model_construct(base_url=None, root_path="/optimade")
+    request = _make_request("http://www.example.com/app1/v1/structures", "/app1")
+    assert (
+        get_base_url(config, request, root_path="/other")
+        == "http://www.example.com/other"
+    )
+    assert (
+        get_base_url(config, "http://www.example.com/x", root_path="/other/")
+        == "http://www.example.com/other"
+    )

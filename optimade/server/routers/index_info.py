@@ -40,7 +40,7 @@ def get_info(request: Request) -> IndexInfoResponse:
                 api_version=f"{__api_version__}",
                 available_api_versions=[
                     {
-                        "url": f"{get_base_url(config, request.url)}/v{__api_version__.split('.')[0]}/",
+                        "url": f"{get_base_url(config, request)}/v{__api_version__.split('.')[0]}/",
                         "version": f"{__api_version__}",
                     }
                 ],
