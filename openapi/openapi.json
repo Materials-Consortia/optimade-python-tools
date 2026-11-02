@@ -2039,16 +2039,32 @@
       "BaseRelationshipMeta": {
         "properties": {
           "description": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Description",
             "description": "OPTIONAL human-readable description of the relationship."
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role",
+            "description": "OPTIONAL string defining the kind of relationship between the related entries.\nPossible roles between each pair of entry types are defined under the Entry List section, e.g., `\"input\"` and `\"output\"` for `files` related to `calculations`."
           }
         },
         "additionalProperties": true,
         "type": "object",
-        "required": [
-          "description"
-        ],
         "title": "BaseRelationshipMeta",
         "description": "Specific meta field for base relationship resource"
       },
@@ -2073,7 +2089,7 @@
                 "type": "null"
               }
             ],
-            "description": "Relationship meta field. MUST contain 'description' if supplied."
+            "description": "Relationship meta field, which MAY contain the OPTIONAL `description` and `role` keys."
           }
         },
         "type": "object",
@@ -2476,7 +2492,7 @@
                 "type": "null"
               }
             ],
-            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
+            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object, and the OPTIONAL kind of relationship in its `role` field."
           }
         },
         "type": "object",
@@ -2863,7 +2879,7 @@
                 "type": "null"
               }
             ],
-            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
+            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object, and the OPTIONAL kind of relationship in its `role` field."
           }
         },
         "type": "object",
@@ -3561,7 +3577,7 @@
                 "type": "null"
               }
             ],
-            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
+            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object, and the OPTIONAL kind of relationship in its `role` field."
           }
         },
         "type": "object",
@@ -4829,7 +4845,7 @@
                 "type": "null"
               }
             ],
-            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
+            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object, and the OPTIONAL kind of relationship in its `role` field."
           }
         },
         "type": "object",
@@ -5985,7 +6001,7 @@
                 "type": "null"
               }
             ],
-            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object."
+            "description": "A dictionary containing references to other entries according to the description in section Relationships encoded as [JSON API Relationships](https://jsonapi.org/format/1.0/#document-resource-object-relationships).\nThe OPTIONAL human-readable description of the relationship MAY be provided in the `description` field inside the `meta` dictionary of the JSON API resource identifier object, and the OPTIONAL kind of relationship in its `role` field."
           }
         },
         "type": "object",
