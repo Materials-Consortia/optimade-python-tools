@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import warnings
 from enum import Enum
 from pathlib import Path
@@ -165,6 +166,101 @@ class GZipConfig(BaseModel):
     ] = 3
 
 
+class StaticFilesConfig(BaseModel):
+    """Configuration for serving static files."""
+
+    enabled: Annotated[
+        bool,
+        Field(description="Enable serving static files from a directory."),
+    ] = False
+
+    directory: Annotated[
+        Path | None,
+        Field(
+            description=(
+                "Path to the directory containing static files to serve. "
+                "Relative paths are resolved against the current working directory "
+                "when the config is loaded. Required when `enabled` is `True`."
+            ),
+            examples=["/path/to/static"],
+        ),
+    ] = None
+
+    route: Annotated[
+        str,
+        Field(
+            description=(
+                "URL route prefix for serving static files (e.g., '/static'). "
+                "Must start with '/' and must not clash with any OPTIMADE API path "
+                "(e.g., '/', '/info', '/structures', '/versions' or versioned base URLs "
+                "such as '/v1')."
+            ),
+            examples=["/static", "/assets"],
+        ),
+    ] = "/static"
+
+    path_field: Annotated[
+        str | None,
+        Field(
+            description=(
+                "Name of the database field of `files` entries that holds the path of the "
+                "file relative to `directory`, used to serve the file contents by entry ID at "
+                "`<route>/files/<id>`. If unset, or not present for an entry, the entry's "
+                "`id` is used as its path. This field does not need to be exposed in the API."
+            ),
+            examples=["local_path"],
+        ),
+    ] = None
+
+    @field_validator("route")
+    @classmethod
+    def validate_route(cls, value: str) -> str:
+        """Normalise the route and check that it does not clash with any API paths."""
+        route = value.strip()
+        if not route.startswith("/"):
+            raise ValueError(f"Static files route must start with '/', got {value!r}.")
+        route = route.rstrip("/")
+        if not route:
+            raise ValueError(
+                "Static files route cannot be '/', as this would shadow the OPTIMADE API."
+            )
+        first_segment = route.split("/")[1]
+        if first_segment in _RESERVED_ROUTE_SEGMENTS or re.fullmatch(
+            r"v\d+(\.\d+){0,2}", first_segment
+        ):
+            raise ValueError(
+                f"Static files route {value!r} clashes with the OPTIMADE API path "
+                f"'/{first_segment}'."
+            )
+        return route
+
+    @model_validator(mode="after")
+    def validate_directory(self) -> "StaticFilesConfig":
+        """When enabled, check that the directory is set, exists and is readable,
+        and resolve it to an absolute path."""
+        if not self.enabled:
+            return self
+        if self.directory is None:
+            raise ValueError(
+                "A static files `directory` must be provided when `enabled` is `True`."
+            )
+        path = Path(self.directory).resolve()
+        if not path.exists():
+            raise ValueError(f"Static files directory does not exist: {path}")
+        if not path.is_dir():
+            raise ValueError(f"Static files path is not a directory: {path}")
+        if not os.access(path, os.R_OK | os.X_OK):
+            raise ValueError(f"Static files directory is not readable: {path}")
+        self.directory = path
+        return self
+
+
+_RESERVED_ROUTE_SEGMENTS = frozenset(
+    ("info", "links", "references", "structures", "files", "versions", "extensions")
+)
+"""First path segments used by the OPTIMADE API that a static files route may not use."""
+
+
 class ServerConfig(BaseSettings):
     """This class stores server config parameters in a way that
     can be easily extended for new config file types.
@@ -224,6 +320,11 @@ class ServerConfig(BaseSettings):
         GZipConfig,
         Field(description="Configuration options for GZip compression."),
     ] = GZipConfig()
+
+    static_files: Annotated[
+        StaticFilesConfig,
+        Field(description="Configuration options for serving static files."),
+    ] = StaticFilesConfig()
 
     use_real_mongo: Annotated[
         bool | None,

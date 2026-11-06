@@ -446,6 +446,11 @@ class AddWarnings(BaseHTTPMiddleware):
 
         response = await call_next(request)
 
+        # Only JSON responses with warnings to add need to be rewritten; anything else
+        # (e.g., binary static files) is passed through untouched.
+        if not self._warnings or "json" not in response.headers.get("content-type", ""):
+            return response
+
         status = response.status_code
         headers = response.headers
         media_type = response.media_type

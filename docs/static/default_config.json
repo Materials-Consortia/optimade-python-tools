@@ -31,5 +31,11 @@
     "log_level": "info",
     "log_dir": "/var/log/optimade/",
     "validate_query_parameters": true,
-    "validate_api_response": true
+    "validate_api_response": true,
+    "static_files": {
+        "enabled": false,
+        "directory": null,
+        "route": "/static",
+        "path_field": null
+    }
 }
