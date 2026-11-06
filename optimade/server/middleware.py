@@ -17,6 +17,7 @@ from starlette.datastructures import URL as StarletteURL
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, StreamingResponse
+from starlette.routing import get_route_path
 
 from optimade.exceptions import BadRequest, VersionNotSupported
 from optimade.models import Warnings
@@ -74,23 +75,60 @@ class EnsureQueryParamIntegrity(BaseHTTPMiddleware):
         return response
 
 
+def _get_optimade_path(
+    config: ServerConfig,
+    url: urllib.parse.ParseResult | urllib.parse.SplitResult | StarletteURL | str,
+    root_path: str | None = None,
+) -> str:
+    """Return the path of `url` relative to the (unversioned) base URL of the API.
+
+    If a root path is known (e.g., from the ASGI scope, or the `root_path` config
+    option), it is removed from the start of the URL path if present. As with
+    Starlette's routing, the root path may be absent from the URL path, e.g., if
+    it was stripped by a reverse proxy. Otherwise, the base URL is removed from
+    the start of the URL if present. Failing both, the URL path is returned as-is,
+    e.g., if a public `base_url` is configured that differs from the URL the
+    server receives requests on.
+
+    """
+    if isinstance(url, str):
+        url = urllib.parse.urlsplit(url)
+
+    root_path = (root_path or config.root_path or "").rstrip("/")
+    if root_path:
+        if url.path == root_path or url.path.startswith(f"{root_path}/"):
+            return url.path[len(root_path) :]
+        return url.path
+
+    full_url = f"{url.scheme}://{url.netloc}{url.path}"
+    base_url = get_base_url(config, url)
+    if full_url.startswith(base_url):
+        return full_url[len(base_url) :]
+
+    return url.path
+
+
 class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
     """If a non-supported versioned base URL is supplied return `553 Version Not Supported`."""
 
     @staticmethod
-    def check_url(config: ServerConfig, url: StarletteURL):
+    def check_url(
+        config: ServerConfig, url: StarletteURL, root_path: str | None = None
+    ):
         """Check URL path for versioned part.
 
         Parameters:
+            config: The server config.
             url: A complete urllib-parsed raw URL.
+            root_path: The path prefix under which the API is served, if any
+                (e.g., from the ASGI scope when mounted as a sub-application).
 
         Raises:
             VersionNotSupported: If the URL represents an OPTIMADE versioned base URL
                 and the version part is not supported by the implementation.
 
         """
-        base_url = get_base_url(config, url)
-        optimade_path = f"{url.scheme}://{url.netloc}{url.path}"[len(base_url) :]
+        optimade_path = _get_optimade_path(config, url, root_path=root_path)
         match = re.match(r"^(?P<version>/v[0-9]+(\.[0-9]+){0,2}).*", optimade_path)
         if match is not None:
             if match.group("version") not in BASE_URL_PREFIXES.values():
@@ -105,7 +143,9 @@ class CheckWronglyVersionedBaseUrls(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         config = request.app.state.config
         if request.url.path:
-            self.check_url(config, request.url)
+            self.check_url(
+                config, request.url, root_path=request.scope.get("root_path")
+            )
         response = await call_next(request)
         return response
 
@@ -197,7 +237,9 @@ class HandleApiHint(BaseHTTPMiddleware):
         )
 
     @staticmethod
-    def is_versioned_base_url(config: ServerConfig, url: str) -> bool:
+    def is_versioned_base_url(
+        config: ServerConfig, url: str, root_path: str | None = None
+    ) -> bool:
         """Determine whether a request is for a versioned base URL.
 
         First, simply check whether a `/vMAJOR(.MINOR.PATCH)` part exists in the URL.
@@ -205,7 +247,10 @@ class HandleApiHint(BaseHTTPMiddleware):
         Return `bool` of final result.
 
         Parameters:
+            config: The server config.
             url: The full URL to check.
+            root_path: The path prefix under which the API is served, if any
+                (e.g., from the ASGI scope when mounted as a sub-application).
 
         Returns:
             Whether or not the full URL represents an OPTIMADE versioned base URL.
@@ -214,15 +259,17 @@ class HandleApiHint(BaseHTTPMiddleware):
         if not re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url):
             return False
 
-        base_url = get_base_url(config, url)
-        return bool(re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", url[len(base_url) :]))
+        optimade_path = _get_optimade_path(config, url, root_path=root_path)
+        return bool(re.findall(r"(/v[0-9]+(\.[0-9]+){0,2})", optimade_path))
 
     async def dispatch(self, request: Request, call_next):
         config = request.app.state.config
         parsed_query = urllib.parse.parse_qs(request.url.query, keep_blank_values=True)
 
         if "api_hint" in parsed_query:
-            if self.is_versioned_base_url(config, str(request.url)):
+            if self.is_versioned_base_url(
+                config, str(request.url), root_path=request.scope.get("root_path")
+            ):
                 warnings.warn(
                     QueryParamNotUsed(
                         detail=(
@@ -236,29 +283,26 @@ class HandleApiHint(BaseHTTPMiddleware):
                     )
                 )
             else:
-                from optimade.server.routers.utils import get_base_url
-
                 version_path = self.handle_api_hint(parsed_query["api_hint"])
 
                 if version_path:
-                    base_url = get_base_url(config, request.url)
-
-                    new_request = (
-                        f"{base_url}{version_path}{str(request.url)[len(base_url) :]}"
-                    )
-                    url = urllib.parse.urlsplit(new_request)
+                    # Insert the version after any path prefix (e.g., `root_path` or
+                    # the mount path of a sub-application), which may or may not be
+                    # present in the request path, e.g., if stripped by a proxy
+                    root_path = (request.scope.get("root_path") or "").rstrip("/")
+                    path = f"{root_path}{version_path}{get_route_path(request.scope)}"
                     q = "&".join(
                         [
                             f"{key}={value}"
                             for key, value in urllib.parse.parse_qsl(
-                                url.query, keep_blank_values=True
+                                request.url.query, keep_blank_values=True
                             )
                             if key != "api_hint"
                         ]
                     )
 
                     return RedirectResponse(
-                        request.url.replace(path=url.path, query=q),
+                        request.url.replace(path=path, query=q),
                         headers=request.headers,
                     )
                     # This is the non-URL changing solution:
