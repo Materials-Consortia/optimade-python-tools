@@ -76,7 +76,7 @@ aiida = ["aiida-core~=2.1, != 2.7.1"]
 http-client = [
     "httpx2 ~= 2.4",
     "rich>=13,<16",
-    "click~=8.1",
+    "click >= 8.1, < 9",
 ]
 
 ase = ["ase~=3.22"]
