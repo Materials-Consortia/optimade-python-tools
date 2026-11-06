@@ -28,6 +28,23 @@ def index_client() -> "OptimadeTestClient":
     return client_factory()(server="index")
 
 
+@pytest.fixture(scope="session")
+def legacy_info_client() -> "OptimadeTestClient":
+    """Return TestClient for a regular OPTIMADE server that has been configured
+    to describe properties at `/info/<entry_type>` in the format used before
+    v1.2 of the specification.
+    """
+    from optimade.server.config import ServerConfig
+    from optimade.server.create_app import create_app
+
+    from .utils import OptimadeTestClient
+
+    config = ServerConfig(
+        legacy_info_properties=True, insert_test_data=False, insert_from_jsonl=None
+    )
+    return OptimadeTestClient(create_app(config), base_url="http://example.org")
+
+
 @pytest.fixture(scope="session", params=["regular"])
 def client_with_empty_extension_endpoint(
     request: pytest.FixtureRequest,

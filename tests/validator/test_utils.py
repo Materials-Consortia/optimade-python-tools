@@ -455,3 +455,47 @@ def test_versions_test_cases():
         assert validator.results.success_count == 1
         assert validator.results.failure_count == 0
         assert validator.results.optional_failure_count == num_errors
+
+
+def test_property_type_and_sortability():
+    """Check that the validator can interpret properties described at entry info
+    endpoints as either property definitions, or in the pre-v1.2 format."""
+    from optimade.models import DataType, EntryInfoProperty, PropertyDefinition
+    from optimade.validator.validator import ImplementationValidator
+
+    get = ImplementationValidator._get_property_type_and_sortability
+
+    definition = {
+        "$id": "urn:uuid:81edf372-7b1b-4518-9c14-7d482bd67834",
+        "$schema": "https://schemas.optimade.org/meta/v1.2/optimade/property_definition.json",
+        "title": "Number of elements",
+        "description": "Number of different elements in the structure as an integer.",
+        "x-optimade-definition": {
+            "kind": "property",
+            "format": "1.2",
+            "name": "nelements",
+            "label": "nelements_structures",
+        },
+        "x-optimade-type": "integer",
+        "x-optimade-unit": "dimensionless",
+        "type": ["integer", "null"],
+    }
+    assert get(definition) == (DataType.INTEGER, False)
+    assert get(PropertyDefinition(**definition).model_dump()) == (
+        DataType.INTEGER,
+        False,
+    )
+
+    definition["x-optimade-implementation"] = {"sortable": True}
+    assert get(definition) == (DataType.INTEGER, True)
+    assert get(PropertyDefinition(**definition).model_dump()) == (
+        DataType.INTEGER,
+        True,
+    )
+
+    definition["x-optimade-type"] = "_exmpl_count"
+    assert get(PropertyDefinition(**definition).model_dump()) == (None, True)
+
+    legacy = {"description": "Number of elements", "type": "integer", "sortable": True}
+    assert get(EntryInfoProperty(**legacy).model_dump()) == (DataType.INTEGER, True)
+    assert get(EntryInfoProperty(description="A field").model_dump()) == (None, False)

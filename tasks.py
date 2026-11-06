@@ -168,6 +168,41 @@ def set_optimade_ver(_, ver=""):
     print(f"Bumped OPTIMADE API version to {ver}")
 
 
+@task(
+    help={
+        "ver": "OPTIMADE API version to fetch the definitions for; defaults to the supported version.",
+        "entry-types": "Comma-separated list of the entry types to bundle.",
+    }
+)
+def update_property_definitions(_, ver="", entry_types="structures,references,files"):
+    """Update the bundled standard property definitions from schemas.optimade.org."""
+    import requests
+
+    from optimade import __api_version__
+
+    ver = (ver or __api_version__).lstrip("v")
+    minor_version = ".".join(ver.split(".")[:2])
+    url = f"https://schemas.optimade.org/defs/v{minor_version}/standards/optimade.json"
+    response = requests.get(url, timeout=60)
+    response.raise_for_status()
+    standard = response.json()
+
+    definitions_dir = TOP_DIR.joinpath("optimade/models/definitions")
+    definitions_dir.mkdir(exist_ok=True)
+
+    for entry_type in entry_types.split(","):
+        with open(definitions_dir / f"{entry_type}.json", "w", encoding="utf-8") as f:
+            json.dump(
+                standard["entrytypes"][entry_type], f, indent=2, ensure_ascii=False
+            )
+            print("", file=f)  # Empty EOL
+
+    print(
+        f"Updated property definitions for {entry_types} from {standard['$id']} "
+        f"(v{standard['x-optimade-definition']['version']})"
+    )
+
+
 @task
 def get_markdown_spec(ctx):
     """Convert the develop OPTIMADE specification from `rst` to `md`."""
@@ -205,7 +240,7 @@ def create_api_reference_docs(context, pre_clean=False, pre_commit=False):
     optimade_dir = TOP_DIR.joinpath("optimade")
     docs_dir = TOP_DIR.joinpath("docs/api_reference")
 
-    unwanted_subdirs = ("__pycache__", "data", "grammar", "static")
+    unwanted_subdirs = ("__pycache__", "data", "definitions", "grammar", "static")
 
     pages_template = 'title: "{name}"\n'
     md_template = "# {name}\n\n::: {py_path}\n"

@@ -41,9 +41,27 @@ def test_advanced_relationships():
     }
     EntryRelationships(**relationship)
 
+    # Both `description` and `role` are OPTIONAL keys of `meta`
+    relationships = (
+        {
+            "references": {
+                "data": [{"id": "dijkstra1968", "type": "references", "meta": {}}]
+            }
+        },
+        {
+            "structures": {
+                "data": [
+                    {"id": "struct1", "type": "structures", "meta": {"role": "input"}}
+                ]
+            }
+        },
+    )
+    for relationship in relationships:
+        EntryRelationships(**relationship)
+
     relationship = {
         "references": {
-            "data": [{"id": "dijkstra1968", "type": "references", "meta": {}}]
+            "data": [{"id": "dijkstra1968", "type": "references", "meta": {"role": 1}}]
         }
     }
     with pytest.raises(ValidationError):

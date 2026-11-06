@@ -382,10 +382,24 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
             default_factory=dict,
             description=(
                 "A list of additional fields to be served with the provider's prefix "
-                "attached, broken down by endpoint."
+                "attached, broken down by endpoint. Each field is either given by its "
+                "name, or as a dictionary containing its `name` and either a full OPTIMADE "
+                "property `definition`, or a `description`, `type` and `unit`, that will be "
+                "used to describe the field at the `/info/<entry_type>` endpoint."
             ),
         ),
     ]
+    legacy_info_properties: Annotated[
+        bool,
+        Field(
+            description=(
+                "If True, the properties at `/info/<entry_type>` endpoints will be "
+                "described in the format used before v1.2 of the specification (i.e., "
+                "with only a `description`, `type`, `unit` and `sortable`), rather than "
+                "as full OPTIMADE property definitions."
+            ),
+        ),
+    ] = False
     aliases: Annotated[
         dict[Literal["links", "references", "structures"], dict[str, str]],
         Field(
@@ -549,6 +563,43 @@ Otherwise, the license will be given as the provided URL and no SPDX identifier 
             raise ValueError(f"License URL '{value}' is not accessible: {exc}") from exc
 
         return value
+
+    @model_validator(mode="after")
+    def check_provider_field_definitions(self) -> "ServerConfig":
+        """Check that any provider fields given as dictionaries have a name, and
+        that any property definitions provided for them are valid.
+
+        """
+        from optimade.models.property_definitions import complete_property_definition
+
+        for entry_type, fields in self.provider_fields.items():
+            for field in fields:
+                if not isinstance(field, dict):
+                    continue
+
+                definition = field.get("definition")
+                if definition is not None and not isinstance(definition, dict):
+                    raise ValueError(
+                        f"The `definition` of a provider field for {entry_type!r} must be a dictionary, not {type(definition)}."
+                    )
+
+                if "name" not in field:
+                    name = (
+                        (definition or {}).get("x-optimade-definition", {}).get("name")
+                    )
+                    if not name:
+                        raise ValueError(
+                            f"Provider fields for {entry_type!r} must have a `name`: {field}"
+                        )
+                    field["name"] = name
+
+                if definition is not None:
+                    name = field["name"]
+                    if not name.startswith("_"):
+                        name = f"_{self.provider.prefix}_{name}"
+                    complete_property_definition(definition, name, entry_type)
+
+        return self
 
     @model_validator(mode="after")
     def align_mongo_uri_and_mongo_database(self) -> "ServerConfig":

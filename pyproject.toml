@@ -54,6 +54,7 @@ namespaces = false
 
 [tool.setuptools.package-data]
 optimade = ["py.typed"]
+"optimade.models" = ["definitions/*.json"]
 "optimade.server" = ["*.json"]
 "optimade.server.data" = ["*.json"]
 "optimade.server.routers" = ["static/*.html"]
