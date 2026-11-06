@@ -149,6 +149,7 @@ follow_imports = "skip"
 [tool.pytest.ini_options]
 testpaths = "tests"
 addopts = "-rs"
+asyncio_default_fixture_loop_scope = "function"
 filterwarnings = [
     "error",
     "ignore:.*flaky.*:UserWarning",
