@@ -31,6 +31,7 @@ from optimade.server.routers import (
     structures,
     versions,
 )
+from optimade.server.routers.static_files import create_file_download_router
 from optimade.server.routers.utils import BASE_URL_PREFIXES, JSONAPIResponse
 
 MAIN_ENDPOINTS = [info, links, references, structures, files, landing]
@@ -306,6 +307,10 @@ def create_app(
     # Mount static files last, so that the API routes always take precedence.
     # The config is validated on load, so `directory` is set and readable here.
     if config.static_files.enabled:
+        if not index:
+            # Serve the contents of `files` entries by ID at `<route>/files/{entry_id}`,
+            # which must be added before the static files mount to take precedence
+            app.include_router(create_file_download_router(config))
         app.mount(
             config.static_files.route,
             StaticFiles(directory=config.static_files.directory),

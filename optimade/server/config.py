@@ -199,6 +199,19 @@ class StaticFilesConfig(BaseModel):
         ),
     ] = "/static"
 
+    path_field: Annotated[
+        str | None,
+        Field(
+            description=(
+                "Name of the database field of `files` entries that holds the path of the "
+                "file relative to `directory`, used to serve the file contents by entry ID at "
+                "`<route>/files/<id>`. If unset, or not present for an entry, the entry's "
+                "`id` is used as its path. This field does not need to be exposed in the API."
+            ),
+            examples=["local_path"],
+        ),
+    ] = None
+
     @field_validator("route")
     @classmethod
     def validate_route(cls, value: str) -> str:

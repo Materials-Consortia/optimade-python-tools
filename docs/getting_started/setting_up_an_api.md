@@ -159,9 +159,26 @@ A minimal `files` entry needs an `id` plus the attributes defined by [`FileResou
 ```
 
 !!! warning "Serving the file contents is your responsibility"
-    The reference server only serves the **metadata** about each file; it does not (yet) serve the file contents themselves.
+    The `files` endpoint only serves the **metadata** about each file.
     It is up to you, the implementer, to ensure that the `url` of each entry resolves to the actual contents of the file (a byte stream, not a preview or landing page), and that it stays accessible.
     The `url` can point anywhere the file is hosted — object storage, a static file server, a CDN, a reverse proxy in front of this API etc., as long as a client can retrieve the bytes directly from it.
+
+For small deployments, the server can also serve the file contents itself from a local directory, using the [`static_files`](../configuration.md#serving-static-files) configuration option.
+Each entry's file can then be [downloaded by its ID](../configuration.md#serving-files-entries-by-id) at `<base_url>/static/files/<id>`, and entries without a `url` in the database will automatically be given one pointing there.
+In this case, the database only needs to store the location of the file relative to the static files directory (or, if the files are named after their IDs, nothing at all):
+
+```json
+{
+  "id": "file_1",
+  "last_modified": "2023-01-15T08:30:00Z",
+  "local_path": "cifs/1000000.cif",
+  "name": "1000000.cif",
+  "media_type": "chemical/x-cif",
+  "size": 4096
+}
+```
+
+with `"static_files": {"enabled": true, "directory": "/data/optimade_files", "path_field": "local_path"}` in the configuration.
 
 
 ## Validating your implementation

@@ -422,3 +422,174 @@ def test_create_app_does_not_mutate_endpoint_lists():
 
     assert MAIN_ENDPOINTS == main_before
     assert INDEX_ENDPOINTS == index_before
+
+
+class TestFileDownloadById:
+    """Tests for serving the contents of `files` entries by their ID."""
+
+    @pytest.fixture
+    def files_app(self, tmp_path):
+        """Create an app with a fresh `files` collection whose entries refer to
+        files in the static directory by ID or via `path_field`."""
+        import uuid
+        from datetime import datetime, timezone
+
+        static_path = tmp_path / "static"
+        (static_path / "cifs").mkdir(parents=True)
+        (static_path / "dir" / "with").mkdir(parents=True)
+        (tmp_path / "outside").mkdir()
+
+        (static_path / "file_by_id").write_text("Found by ID")
+        (static_path / "cifs" / "1.cif").write_text("data_1")
+        (static_path / "dir" / "with" / "slash").write_bytes(PNG_BYTES)
+        (tmp_path / "outside" / "secret.txt").write_text(
+            "This should not be accessible"
+        )
+
+        config = ServerConfig(
+            static_files=StaticFilesConfig(
+                enabled=True, directory=static_path, path_field="local_path"
+            ),
+            files_collection=f"files_{uuid.uuid4().hex}",
+            # derive the base URL from the request, unless set explicitly in a test
+            base_url=None,
+        )
+        app = create_app(config=config)
+
+        now = datetime.now(timezone.utc)
+
+        def entry(id_, **kwargs):
+            return {"id": id_, "name": id_, "last_modified": now, **kwargs}
+
+        app.state.entry_collections["files"].insert(
+            [
+                entry("file_by_id", media_type="text/plain", name="by_id.txt"),
+                entry(
+                    "file_by_path",
+                    local_path="cifs/1.cif",
+                    media_type="chemical/x-cif",
+                    name="1.cif",
+                ),
+                entry("dir/with/slash"),
+                entry("file_external", url="https://example.org/external.cif"),
+                entry("file_missing", local_path="does_not_exist.txt"),
+                entry("file_escape", local_path="../outside/secret.txt"),
+                entry("file_absolute", local_path=str(tmp_path / "outside/secret.txt")),
+            ]
+        )
+        return app
+
+    @pytest.fixture
+    def files_client(self, files_app):
+        return TestClient(files_app)
+
+    def test_download_by_id(self, files_client):
+        """Test that a file named after the entry ID is served."""
+        response = files_client.get("/static/files/file_by_id")
+        assert response.status_code == 200
+        assert response.text == "Found by ID"
+        assert response.headers["content-type"].startswith("text/plain")
+        assert "by_id.txt" in response.headers["content-disposition"]
+
+    def test_download_by_path_field(self, files_client):
+        """Test that a file is found via the configured `path_field`."""
+        response = files_client.get("/static/files/file_by_path")
+        assert response.status_code == 200
+        assert response.text == "data_1"
+        assert response.headers["content-type"] == "chemical/x-cif"
+        assert "1.cif" in response.headers["content-disposition"]
+
+    def test_download_id_with_slashes(self, files_client):
+        """Test that IDs containing slashes are supported, and binary files are intact."""
+        response = files_client.get("/static/files/dir/with/slash")
+        assert response.status_code == 200
+        assert response.content == PNG_BYTES
+
+    @pytest.mark.parametrize(
+        "entry_id",
+        [
+            "does_not_exist",
+            "file_missing",
+            "file_external",
+            "file_escape",
+            "file_absolute",
+        ],
+    )
+    def test_download_not_available(self, files_client, entry_id):
+        """Test that unknown entries, missing files and paths outside of the
+        static directory all return a 404 OPTIMADE error."""
+        response = files_client.get(f"/static/files/{entry_id}")
+        assert response.status_code == 404
+        assert "errors" in response.json()
+        assert "should not be accessible" not in response.text
+
+    def test_static_files_still_served_by_path(self, files_client):
+        """Test that files are still served by path outside of `<route>/files/`."""
+        response = files_client.get("/static/cifs/1.cif")
+        assert response.status_code == 200
+        assert response.text == "data_1"
+
+    def test_url_filled_in_for_entries_without_url(self, files_client):
+        """Test that the `url` of entries without one points to the download route,
+        and that stored URLs are left untouched."""
+        response = files_client.get("/files")
+        assert response.status_code == 200
+        urls = {e["id"]: e["attributes"]["url"] for e in response.json()["data"]}
+        assert urls["file_by_id"] == "http://testserver/static/files/file_by_id"
+        assert urls["file_by_path"] == "http://testserver/static/files/file_by_path"
+        assert urls["dir/with/slash"] == "http://testserver/static/files/dir/with/slash"
+        assert urls["file_external"] == "https://example.org/external.cif"
+
+        # and the generated URL can be followed
+        assert files_client.get(urls["file_by_path"]).text == "data_1"
+
+    def test_url_filled_in_single_entry(self, files_client):
+        """Test that the `url` is filled in for single-entry responses, including
+        when explicitly requested via `response_fields`."""
+        response = files_client.get("/files/file_by_id")
+        assert response.status_code == 200
+        url = response.json()["data"]["attributes"]["url"]
+        assert url == "http://testserver/static/files/file_by_id"
+
+        response = files_client.get(
+            "/v1/files/file_by_id", params={"response_fields": "url"}
+        )
+        assert response.status_code == 200
+        assert response.json()["data"]["attributes"] == {"url": url}
+
+    def test_url_not_added_when_excluded(self, files_client):
+        """Test that `url` is not added when excluded via `response_fields`."""
+        response = files_client.get(
+            "/files/file_by_id", params={"response_fields": "name"}
+        )
+        assert response.status_code == 200
+        assert "url" not in response.json()["data"]["attributes"]
+
+    def test_url_uses_configured_base_url(self, files_app):
+        """Test that the configured `base_url` is used for the generated `url`."""
+        files_app.state.config.base_url = "https://example.org/optimade/"
+        response = TestClient(files_app).get("/files/file_by_id")
+        assert response.status_code == 200
+        assert (
+            response.json()["data"]["attributes"]["url"]
+            == "https://example.org/optimade/static/files/file_by_id"
+        )
+
+    def test_url_uses_root_path_when_mounted(self, files_app):
+        """Test that the generated `url` includes the path at which the app is mounted."""
+        from fastapi import FastAPI
+
+        parent = FastAPI()
+        parent.mount("/sub", files_app)
+        client = TestClient(parent)
+
+        url = client.get("/sub/files/file_by_id").json()["data"]["attributes"]["url"]
+        assert url == "http://testserver/sub/static/files/file_by_id"
+        response = client.get(url)
+        assert response.status_code == 200
+        assert response.text == "Found by ID"
+
+    def test_no_download_route_when_disabled(self):
+        """Test that the download route is not added when static files are disabled."""
+        response = TestClient(create_app()).get("/static/files/file_1")
+        assert response.status_code == 404

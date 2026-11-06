@@ -13,6 +13,7 @@ from optimade.models import EntryResource, ResponseMeta, ToplevelLinks
 from optimade.server.config import ServerConfig
 from optimade.server.entry_collections import EntryCollection
 from optimade.server.query_params import EntryListingQueryParams, SingleEntryQueryParams
+from optimade.server.routers.static_files import add_file_urls
 from optimade.utils import PROVIDER_LIST_URLS, get_providers, mongo_id_for_database
 
 __all__ = (
@@ -296,6 +297,9 @@ def get_entries(
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)  # type: ignore[assignment]
 
+    add_file_urls(results, request, exclude_fields=fields)
+    add_file_urls(included, request)
+
     return {
         "links": links,
         "data": results if results else [],
@@ -350,6 +354,9 @@ def get_single_entry(
 
     if results is not None and (fields or include_fields):
         results = handle_response_fields(results, fields, include_fields)[0]  # type: ignore[assignment]
+
+    add_file_urls(results, request, exclude_fields=fields)
+    add_file_urls(included, request)
 
     return {
         "links": links,
