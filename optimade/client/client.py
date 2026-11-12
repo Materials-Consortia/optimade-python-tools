@@ -965,12 +965,12 @@ class OptimadeClient:
         results = QueryResults()
         number_of_requests = 0
         total_data_available: int | None = None
+        attempts = 0
         try:
             async with self._http_client(headers=self.headers) as client:  # type: ignore[union-attr,call-arg,misc]
                 while next_url:
                     number_of_requests += 1
 
-                    attempts = 0
                     try:
                         if self.verbosity:
                             self._progress.print(
@@ -1011,6 +1011,7 @@ class OptimadeClient:
                         await asyncio.sleep(request_delay or 1)
                         continue
 
+                    attempts = 0
                     results.update(page_results)
 
                     if not paginate:
@@ -1070,6 +1071,7 @@ class OptimadeClient:
         results = QueryResults()
         number_of_requests: int = 0
         total_data_available: int | None = None
+        attempts = 0
         try:
             with self._http_client() as client:  # type: ignore[misc]
                 client.headers.update(self.headers)
@@ -1080,7 +1082,6 @@ class OptimadeClient:
 
                 while next_url:
                     number_of_requests += 1
-                    attempts = 0
                     try:
                         if self.verbosity:
                             self._progress.print(
@@ -1120,6 +1121,7 @@ class OptimadeClient:
                         time.sleep(request_delay or 1)
                         continue
 
+                    attempts = 0
                     results.update(page_results)
 
                     if len(results.data) == 0 or number_of_requests > stopping_criteria:

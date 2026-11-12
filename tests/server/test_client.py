@@ -654,3 +654,70 @@ def test_guardrail_sync(http_client):
     )
     assert len(result[TEST_URL].errors) == 1
     assert "infinite" in result[TEST_URL].errors[0]
+
+
+def _always_too_many_requests(calls: list[str], monkeypatch):
+    """Returns sync and async test HTTP clients that always respond with
+    429 Too Many Requests, recording each requested URL in `calls`, and
+    disables the client's wait between retries."""
+    from .utils import AsyncHttpxTestClient, RequestsTestClient
+
+    def too_many_requests(url):
+        calls.append(url)
+        # Fail loudly rather than hang if the retry limit is never reached
+        if len(calls) > 50:
+            raise ValueError("Retry limit was not respected")
+        return httpx.Response(429, content=b"Too Many Requests")
+
+    class SyncClient(RequestsTestClient):
+        def request(self, method, url, *args, **kwargs):
+            return too_many_requests(url)
+
+    class AsyncClient(AsyncHttpxTestClient):
+        async def request(self, method, url, **kwargs):
+            return too_many_requests(url)
+
+    async def no_sleep(*_):
+        pass
+
+    monkeypatch.setattr("optimade.client.client.time.sleep", lambda *_: None)
+    monkeypatch.setattr("optimade.client.client.asyncio.sleep", no_sleep)
+
+    return SyncClient, AsyncClient
+
+
+@pytest.mark.asyncio
+async def test_retry_limit_async(monkeypatch):
+    """Test that a provider that always returns 429 is retried at most
+    `max_attempts` times, rather than forever."""
+    calls: list[str] = []
+    _, async_client = _always_too_many_requests(calls, monkeypatch)
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        http_client=async_client,
+        use_async=True,
+        max_attempts=2,
+    )
+    result = await cli.get_one_async(
+        endpoint="structures", base_url=TEST_URL, filter=""
+    )
+    assert len(calls) == cli.max_attempts + 1
+    assert len(result[TEST_URL].errors) == 1
+    assert "Exceeded maximum number of retries" in result[TEST_URL].errors[0]
+
+
+def test_retry_limit_sync(monkeypatch):
+    """Test that a provider that always returns 429 is retried at most
+    `max_attempts` times, rather than forever."""
+    calls: list[str] = []
+    sync_client, _ = _always_too_many_requests(calls, monkeypatch)
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        http_client=sync_client,
+        use_async=False,
+        max_attempts=2,
+    )
+    result = cli.get_one(endpoint="structures", base_url=TEST_URL, filter="")
+    assert len(calls) == cli.max_attempts + 1
+    assert len(result[TEST_URL].errors) == 1
+    assert "Exceeded maximum number of retries" in result[TEST_URL].errors[0]
