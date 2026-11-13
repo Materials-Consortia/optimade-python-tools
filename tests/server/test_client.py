@@ -7,6 +7,7 @@ from urllib.parse import parse_qs, urlparse
 
 import httpx2 as httpx
 import pytest
+import requests
 
 from optimade.client.cli import _get
 from optimade.server.config import ServerConfig, SupportedBackend
@@ -533,12 +534,83 @@ def test_list_properties(
     cli.__strict_async = True
 
     results = cli.list_properties("structures")
+    assert set(results) == set(TEST_URLS)
     for database in results:
         assert len(results[database]) == 33, str(results[database])
 
-    results = cli.search_property("structures", "site")
+    results = cli.search_property("site", "structures")
+    assert set(results) == set(TEST_URLS)
     for database in results:
-        assert results[database] == ["nsites", "cartesian_site_positions"]
+        assert results[database] == [
+            "cartesian_site_positions",
+            "fractional_site_positions",
+            "site_coordinate_span",
+            "site_coordinate_span_description",
+            "nsites",
+            "species_at_sites",
+        ]
+
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_list_properties_failed_database(
+    async_http_client,
+    http_client,
+    use_async,
+):
+    """Test that a database that cannot be reached is left out of the results,
+    rather than breaking the property listing for all databases."""
+    failing_url = TEST_URLS[1]
+
+    class SyncClient(http_client):
+        def request(self, method, url, *args, **kwargs):
+            if str(url).startswith(failing_url):
+                raise requests.ConnectionError(f"Could not connect to {url}")
+            return super().request(method, url, *args, **kwargs)
+
+    class AsyncClient(async_http_client):
+        async def request(self, method, url, **kwargs):
+            if str(url).startswith(failing_url):
+                raise httpx.ConnectError(f"Could not connect to {url}")
+            return await super().request(method, url, **kwargs)
+
+    cli = OptimadeClient(
+        base_urls=TEST_URLS,
+        use_async=use_async,
+        http_client=AsyncClient if use_async else SyncClient,
+    )
+
+    results = cli.list_properties("structures")
+    assert set(results) == set(TEST_URLS) - {failing_url}
+    for database in results:
+        assert len(results[database]) == 33, str(results[database])
+
+
+@pytest.mark.parametrize("use_async", [True, False])
+def test_search_property_multiple_entry_types(
+    async_http_client,
+    http_client,
+    use_async,
+):
+    """Test that searching a second entry type lists its properties, that
+    listing it does not discard the properties of the first entry type, and
+    that property lists are not shared between clients."""
+    cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
+    )
+
+    cli.list_properties("structures")
+    assert cli.search_property("year", "references") == {TEST_URL: ["year"]}
+    assert cli.search_property("nsites", "structures") == {TEST_URL: ["nsites"]}
+
+    # Each client keeps its own property lists
+    other_cli = OptimadeClient(
+        base_urls=[TEST_URL],
+        use_async=use_async,
+        http_client=async_http_client if use_async else http_client,
+    )
+    assert not other_cli.property_lists
 
 
 @pytest.mark.parametrize(

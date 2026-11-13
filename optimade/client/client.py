@@ -199,6 +199,7 @@ class OptimadeClient:
 
         self.max_attempts = max_attempts
         self.silent = silent
+        self.property_lists = defaultdict(dict)
         self.verbosity = verbosity
         self.skip_ssl = skip_ssl
 
@@ -594,6 +595,9 @@ class OptimadeClient:
         """Returns the list of properties reported at `/info/<entry_type>`
         for the given entry type, for each database.
 
+        Databases that could not be queried are left out of the results;
+        their errors are reported as for any other query.
+
         """
         self._progress = OptimadeClientProgress()
         if self.silent:
@@ -615,10 +619,14 @@ class OptimadeClient:
                 response_fields=[],
                 sort=None,
             )
-        self.property_lists = {entry_type: {}}
+        self.property_lists[entry_type] = {}
         for database in results:
+            data = results[database].data
+            # A failed query leaves `data` as an empty list
+            if not isinstance(data, dict):
+                continue
             self.property_lists[entry_type][database] = list(
-                results[database].data.get("properties", {}).keys()  # type: ignore
+                data.get("properties", {}).keys()
             )
         return self.property_lists[entry_type]
 
@@ -635,7 +643,7 @@ class OptimadeClient:
             entry type and database.
 
         """
-        if not self.property_lists:
+        if entry_type not in self.property_lists:
             self.list_properties(entry_type=entry_type)
 
         matching_properties: dict[str, dict[str, list[str]]] = {
